@@ -15,7 +15,7 @@
     --shadow: 0 8px 0 rgba(59, 42, 85, 0.15);
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; height: 100%; }
+  html, body { margin: 0; height: 100%; overflow-x: hidden; }
   body {
     font-family: "Comic Sans MS", "Chalkboard SE", "Baloo 2", system-ui, sans-serif;
     color: var(--ink);
@@ -107,6 +107,24 @@
     40% { transform: scale(1.15) rotate(-5deg); }
     70% { transform: scale(.95) rotate(3deg); }
   }
+  .home { display: flex; flex-direction: column; align-items: center; gap: clamp(24px, 5vh, 48px); }
+  .styles { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .style {
+    border: 3px solid transparent;
+    background: var(--card);
+    border-radius: 20px;
+    padding: 6px 12px 6px 6px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font: inherit;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+  .style img { width: 44px; height: 44px; }
+  .style[aria-pressed="true"] { border-color: var(--accent); background: #fff1e6; }
   .modes {
     display: flex;
     flex-wrap: wrap;
@@ -155,9 +173,12 @@
 </header>
 
 <main>
-  <div class="modes" id="modes">
+  <div class="home" id="home">
+  <div class="styles" id="styles" aria-label="music style"></div>
+  <div class="modes">
     <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small class="mini" data-pics="guitar piano trumpet"></small></button>
     <button class="start" data-mode="listen" aria-label="find the picture from its sound"><span>👂</span><small>🎵🎶🎵</small></button>
+  </div>
   </div>
 
   <div class="prompt hidden" id="promptRow">
@@ -170,31 +191,88 @@
 <script src="sounds.js"></script>
 <script src="pictures.js"></script>
 <script>
-// Each instrument: names, and a family so the sound game never shows two look-alike
-// sounds (trumpet + trombone) together. Pictures are in pictures.js, sounds in sounds.js.
+// Each instrument: names, styles, and a family. Instruments of the same family look or sound
+// alike (trumpet / trombone), so a question never shows two of them together.
+// Pictures are in pictures.js, sounds in sounds.js. `many` = plural in English ("Where are the…").
+const O = "orchestra", J = "jazz", R = "rock", W = "world";
 const INSTRUMENTS = [
-  { id: "guitar",     en: "guitar",     fr: "la guitare",   family: "plucked" },
-  { id: "banjo",      en: "banjo",      fr: "le banjo",     family: "plucked" },
-  { id: "harp",       en: "harp",       fr: "la harpe",     family: "plucked" },
-  { id: "violin",     en: "violin",     fr: "le violon",    family: "bowed" },
-  { id: "piano",      en: "piano",      fr: "le piano",     family: "keys" },
-  { id: "accordion",  en: "accordion",  fr: "l'accordéon",  family: "keys" },
-  { id: "trumpet",    en: "trumpet",    fr: "la trompette", family: "brass" },
-  { id: "trombone",   en: "trombone",   fr: "le trombone",  family: "brass" },
-  { id: "horn",       en: "horn",       fr: "le cor",       family: "brass" },
-  { id: "saxophone",  en: "saxophone",  fr: "le saxophone", family: "brass" },
-  { id: "flute",      en: "flute",      fr: "la flûte",     family: "wind" },
-  { id: "drum",       en: "drum",       fr: "le tambour",   family: "drum" },
-  { id: "maracas",    en: "maracas",    fr: "les maracas",  family: "shaker" },
-  { id: "tambourine", en: "tambourine", fr: "le tambourin", family: "shaker" },
-  { id: "triangle",   en: "triangle",   fr: "le triangle",  family: "ring" },
-  { id: "bell",       en: "bell",       fr: "la cloche",    family: "ring" },
-  { id: "xylophone",  en: "xylophone",  fr: "le xylophone", family: "ring" },
+  // strings
+  { id: "violin",          en: "violin",          fr: "le violon",            family: "bowed",   styles: [O] },
+  { id: "cello",           en: "cello",           fr: "le violoncelle",       family: "bowed",   styles: [O] },
+  { id: "double-bass",     en: "double bass",     fr: "la contrebasse",       family: "bowed",   styles: [O, J] },
+  { id: "harp",            en: "harp",            fr: "la harpe",             family: "harp",    styles: [O] },
+  { id: "guitar",          en: "guitar",          fr: "la guitare",           family: "guitar",  styles: [R, W] },
+  { id: "electric-guitar", en: "electric guitar", fr: "la guitare électrique", family: "guitar", styles: [R] },
+  { id: "bass-guitar",     en: "bass guitar",     fr: "la guitare basse",     family: "guitar",  styles: [R] },
+  { id: "banjo",           en: "banjo",           fr: "le banjo",             family: "guitar",  styles: [J, W] },
+  { id: "ukulele",         en: "ukulele",         fr: "le ukulélé",           family: "guitar",  styles: [W] },
+  { id: "sitar",           en: "sitar",           fr: "le sitar",             family: "guitar",  styles: [W] },
+  { id: "shamisen",        en: "shamisen",        fr: "le shamisen",          family: "guitar",  styles: [W] },
+  { id: "koto",            en: "koto",            fr: "le koto",              family: "harp",    styles: [W] },
+  // keyboards
+  { id: "piano",           en: "piano",           fr: "le piano",             family: "keys",    styles: [O, J, R] },
+  { id: "pipe-organ",      en: "pipe organ",      fr: "l'orgue",              family: "keys",    styles: [O] },
+  { id: "synthesizer",     en: "synthesizer",     fr: "le synthétiseur",      family: "keys",    styles: [R] },
+  { id: "accordion",       en: "accordion",       fr: "l'accordéon",          family: "reed",    styles: [W] },
+  { id: "harmonica",       en: "harmonica",       fr: "l'harmonica",          family: "reed",    styles: [J, R] },
+  { id: "bagpipes",        en: "bagpipes",        fr: "la cornemuse",         family: "reed",    styles: [W], many: true },
+  // woodwinds
+  { id: "flute",           en: "flute",           fr: "la flûte",             family: "flute",   styles: [O] },
+  { id: "recorder",        en: "recorder",        fr: "la flûte à bec",       family: "flute",   styles: [W] },
+  { id: "pan-flute",       en: "pan flute",       fr: "la flûte de Pan",      family: "flute",   styles: [W] },
+  { id: "ocarina",         en: "ocarina",         fr: "l'ocarina",            family: "flute",   styles: [W] },
+  { id: "whistle",         en: "whistle",         fr: "le sifflet",           family: "flute",   styles: [W] },
+  { id: "clarinet",        en: "clarinet",        fr: "la clarinette",        family: "pipe",    styles: [O, J] },
+  { id: "oboe",            en: "oboe",            fr: "le hautbois",          family: "pipe",    styles: [O] },
+  { id: "bassoon",         en: "bassoon",         fr: "le basson",            family: "pipe",    styles: [O] },
+  { id: "saxophone",       en: "saxophone",       fr: "le saxophone",         family: "pipe",    styles: [J] },
+  // brass
+  { id: "trumpet",         en: "trumpet",         fr: "la trompette",         family: "brass",   styles: [O, J] },
+  { id: "trombone",        en: "trombone",        fr: "le trombone",          family: "brass",   styles: [O, J] },
+  { id: "horn",            en: "French horn",     fr: "le cor",               family: "brass",   styles: [O] },
+  { id: "tuba",            en: "tuba",            fr: "le tuba",              family: "brass",   styles: [O, J] },
+  // drums
+  { id: "drum",            en: "drum",            fr: "le tambour",           family: "drum",    styles: [O] },
+  { id: "bass-drum",       en: "bass drum",       fr: "la grosse caisse",     family: "drum",    styles: [O] },
+  { id: "timpani",         en: "timpani",         fr: "les timbales",         family: "drum",    styles: [O], many: true },
+  { id: "drum-kit",        en: "drum kit",        fr: "la batterie",          family: "drum",    styles: [J, R] },
+  { id: "djembe",          en: "djembe",          fr: "le djembé",            family: "drum",    styles: [W] },
+  { id: "bongos",          en: "bongos",          fr: "les bongos",           family: "drum",    styles: [W], many: true },
+  { id: "taiko",           en: "taiko drum",      fr: "le taiko",             family: "drum",    styles: [W] },
+  { id: "tabla",           en: "tabla",           fr: "le tabla",             family: "drum",    styles: [W] },
+  // tuned percussion
+  { id: "xylophone",       en: "xylophone",       fr: "le xylophone",         family: "mallet",  styles: [O] },
+  { id: "glockenspiel",    en: "glockenspiel",    fr: "le glockenspiel",      family: "mallet",  styles: [O] },
+  { id: "kalimba",         en: "kalimba",         fr: "le kalimba",           family: "mallet",  styles: [W] },
+  { id: "steel-drum",      en: "steel drum",      fr: "le steel drum",        family: "mallet",  styles: [W] },
+  { id: "music-box",       en: "music box",       fr: "la boîte à musique",   family: "mallet",  styles: [W] },
+  // metal
+  { id: "bell",            en: "bell",            fr: "la cloche",            family: "metal",   styles: [O] },
+  { id: "triangle",        en: "triangle",        fr: "le triangle",          family: "metal",   styles: [O] },
+  { id: "cymbals",         en: "cymbals",         fr: "les cymbales",         family: "metal",   styles: [O], many: true },
+  { id: "cowbell",         en: "cowbell",         fr: "la cloche à vache",    family: "metal",   styles: [R, W] },
+  { id: "jingle-bells",    en: "jingle bells",    fr: "les grelots",          family: "metal",   styles: [W], many: true },
+  // shakers and wood
+  { id: "maracas",         en: "maracas",         fr: "les maracas",          family: "shaker",  styles: [W], many: true },
+  { id: "tambourine",      en: "tambourine",      fr: "le tambourin",         family: "shaker",  styles: [R, W] },
+  { id: "castanets",       en: "castanets",       fr: "les castagnettes",     family: "wood",    styles: [W], many: true },
+  { id: "claves",          en: "claves",          fr: "les claves",           family: "wood",    styles: [W], many: true },
+  { id: "guiro",           en: "guiro",           fr: "le guiro",             family: "wood",    styles: [W] },
+  { id: "woodblock",       en: "wood block",      fr: "le wood-block",        family: "wood",    styles: [W] },
+];
+
+// Styles for the picker; `pic` is the instrument shown on its button.
+const STYLES = [
+  { id: "all",  pic: "violin",          en: "All",        fr: "Tout" },
+  { id: O,      pic: "cello",           en: "Orchestra",  fr: "Orchestre" },
+  { id: J,      pic: "saxophone",       en: "Jazz",       fr: "Jazz" },
+  { id: R,      pic: "electric-guitar", en: "Rock & pop", fr: "Rock & pop" },
+  { id: W,      pic: "djembe",          en: "World",      fr: "Monde" },
 ];
 
 const TEXT = {
-  en: { where: n => `Where is the ${n}?`, listen: "Listen! Who is playing?", yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US" },
-  fr: { where: n => `Où est ${n} ?`, listen: "Écoute ! Qui joue ?", yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR" },
+  en: { where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?", yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US" },
+  fr: { where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?", yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR" },
 };
 
 const ROUNDS = 10;
@@ -202,6 +280,9 @@ const CHOICES = 3;
 
 let lang = "en";
 try { lang = localStorage.getItem("quiz-lang") || (navigator.language.startsWith("fr") ? "fr" : "en"); } catch (e) {}
+let style = "all";
+try { style = localStorage.getItem("quiz-style") || "all"; } catch (e) {}
+let deck = []; // instruments still to ask this game, so nothing repeats
 let mode = "name", round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
 let questionId = 0; // bumps every question so stale timers/speech callbacks do nothing
 
@@ -233,17 +314,18 @@ function audio() {
   if (ctx.state === "suspended") ctx.resume();
   return ctx;
 }
-// Decode the embedded recordings (data: URIs, so it also works when opened as a local file).
-function loadRecordings() {
-  const a = audio();
-  Object.entries(window.INSTRUMENT_SOUNDS || {}).forEach(([id, uri]) => {
-    if (buffers[id]) return;
+// Decode an embedded recording the first time it is needed (data: URIs, so it also
+// works when the page is opened as a local file).
+function recording(id) {
+  const uri = (window.INSTRUMENT_SOUNDS || {})[id];
+  if (!buffers[id] && uri) {
     const bin = atob(uri.split(",")[1]);
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    buffers[id] = new Promise((ok, fail) => a.decodeAudioData(bytes.buffer, ok, fail));
+    buffers[id] = new Promise((ok, fail) => audio().decodeAudioData(bytes.buffer, ok, fail));
     buffers[id].catch(() => { delete buffers[id]; });
-  });
+  }
+  return buffers[id] || Promise.reject();
 }
 function tone(freq, start, len, wave = "sine", vol = 0.25) {
   const a = audio(), o = a.createOscillator(), g = a.createGain();
@@ -259,7 +341,7 @@ function playInstrument(inst) {
   if (current) { try { current.stop(); } catch (e) {} current = null; }
   const token = ++playToken;
   // waits for the recording if it is still decoding; a newer play request wins
-  (buffers[inst.id] || Promise.reject()).then(b => {
+  recording(inst.id).then(b => {
     if (token !== playToken) return;
     const src = audio().createBufferSource();
     src.buffer = b;
@@ -278,26 +360,39 @@ function shuffle(arr) {
   return a;
 }
 
+function stylePool() { return style === "all" ? INSTRUMENTS : INSTRUMENTS.filter(i => i.styles.includes(style)); }
+
+function renderStyles() {
+  document.querySelectorAll(".style").forEach(b => {
+    const st = STYLES.find(x => x.id === b.dataset.style);
+    b.setAttribute("aria-pressed", st.id === style);
+    b.querySelector("span").textContent = st[lang];
+  });
+}
+
 function renderStars() { $("stars").textContent = "⭐".repeat(stars); }
 
-function promptText() { return mode === "listen" ? TEXT[lang].listen : TEXT[lang].where(answer[lang]); }
+function promptText() { return mode === "listen" ? TEXT[lang].listen : TEXT[lang].where(answer[lang], answer.many); }
 
 // Ask (or re-ask) the current question: speak the name, or say "Listen!" then play the sound.
 function ask() {
   const q = questionId;
   if (mode === "listen") say(TEXT[lang].listen, () => { if (q === questionId) playInstrument(answer); });
-  else say(TEXT[lang].where(answer[lang]));
+  else say(TEXT[lang].where(answer[lang], answer.many));
 }
 
 function askQuestion() {
   locked = false; firstTry = true; questionId++;
-  // never ask the same instrument twice in a row
-  const candidates = INSTRUMENTS.filter(i => i !== lastAnswer);
-  answer = candidates[Math.floor(Math.random() * candidates.length)];
+  const pool = stylePool();
+  // go through the style's instruments in random order before repeating any
+  if (!deck.length) deck = shuffle(pool.filter(i => i !== lastAnswer));
+  answer = deck.pop();
   lastAnswer = answer;
-  // wrong choices come from different families, so the sounds are easy to tell apart
+  recording(answer.id); // start decoding now so the sound is ready
+  // wrong choices come from other families, so pictures and sounds are easy to tell
+  // apart; prefer instruments from the same style
   const others = [];
-  for (const i of shuffle(INSTRUMENTS)) {
+  for (const i of [...shuffle(pool), ...shuffle(INSTRUMENTS)]) {
     if (others.length < CHOICES - 1 && i.family !== answer.family && !others.some(o => o.family === i.family)) others.push(i);
   }
   const options = shuffle([answer, ...others]);
@@ -350,7 +445,7 @@ function pick(inst, btn) {
     } else {
       // say what they tapped, then gently repeat the question
       say(`${inst[lang].replace(/^(le |la |les |l')/, "")}. ${TEXT[lang].no}`);
-      setTimeout(() => { if (q === questionId) say(TEXT[lang].where(answer[lang])); }, 1800);
+      setTimeout(() => { if (q === questionId) say(TEXT[lang].where(answer[lang], answer.many)); }, 1800);
     }
   }
 }
@@ -360,16 +455,15 @@ function finish() {
   confetti(60);
   $("promptRow").classList.add("hidden");
   $("choices").classList.add("hidden");
-  $("modes").classList.remove("hidden");
+  $("home").classList.remove("hidden");
 }
 
 function start(m) {
   audio();
-  loadRecordings();
   mode = m;
-  round = 0; stars = 0; lastAnswer = null; renderStars();
+  round = 0; stars = 0; lastAnswer = null; deck = []; renderStars();
   $("speak").textContent = mode === "listen" ? "👂" : "🔊";
-  $("modes").classList.add("hidden");
+  $("home").classList.add("hidden");
   $("promptRow").classList.remove("hidden");
   $("choices").classList.remove("hidden");
   askQuestion();
@@ -381,7 +475,7 @@ function confetti(n) {
     const s = document.createElement("span");
     s.className = "confetti";
     s.textContent = bits[i % bits.length];
-    s.style.left = Math.random() * 100 + "vw";
+    s.style.left = Math.random() * 90 + "vw";
     s.style.animationDuration = 1.5 + Math.random() * 1.5 + "s";
     s.style.animationDelay = Math.random() * 0.5 + "s";
     document.body.appendChild(s);
@@ -394,6 +488,7 @@ function setLang(l) {
   try { localStorage.setItem("quiz-lang", l); } catch (e) {}
   $("lang").textContent = TEXT[l].flag;
   document.documentElement.lang = l;
+  renderStyles();
   if (answer && !$("choices").classList.contains("hidden")) {
     document.querySelectorAll(".choice").forEach(b => {
       const inst = INSTRUMENTS.find(i => i.id === b.dataset.id);
@@ -405,6 +500,22 @@ function setLang(l) {
 }
 
 document.querySelectorAll(".start").forEach(b => b.onclick = () => start(b.dataset.mode));
+STYLES.forEach(st => {
+  const b = document.createElement("button");
+  b.className = "style";
+  b.dataset.style = st.id;
+  const img = document.createElement("img");
+  img.src = window.INSTRUMENT_PICTURES[st.pic];
+  img.alt = "";
+  b.append(img, document.createElement("span"));
+  b.onclick = () => {
+    style = st.id;
+    try { localStorage.setItem("quiz-style", style); } catch (e) {}
+    renderStyles();
+    playInstrument(INSTRUMENTS.find(i => i.id === st.pic)); // a taste of the style
+  };
+  $("styles").appendChild(b);
+});
 $("speak").onclick = () => { if (!locked) ask(); };
 document.querySelectorAll(".mini").forEach(el => el.dataset.pics.split(" ").forEach(id => {
   const img = document.createElement("img");

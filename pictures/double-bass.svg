@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M64 122 L64 127" stroke="#607d8b" stroke-width="3" stroke-linecap="round"/>
+  <path d="M64 2 q-8 0 -8 7 q0 6 8 6" fill="none" stroke="#3e2216" stroke-width="5" stroke-linecap="round"/>
+  <path d="M64 40 C56 40 46 48 40 56 C34 64 38 72 37 78 C36 86 26 90 28 104 C30 118 48 122 64 122 C80 122 98 118 100 104 C102 90 92 86 91 78 C90 72 94 64 88 56 C82 48 72 40 64 40 Z" fill="#8e3b13"/>
+  <path d="M64 45 C57 45 49 51 44 58 C40 64 43 71 42 78 C41 86 33 91 34 103 C35 114 50 117 64 117" fill="none" stroke="#b5562a" stroke-width="3" opacity=".8"/>
+  <rect x="59.5" y="12" width="9" height="66" rx="3" fill="#212121"/>
+  <rect x="57" y="102" width="14" height="5" rx="2" fill="#212121"/>
+  <rect x="61" y="82" width="6" height="10" rx="1" fill="#f5deb3"/>
+  <g stroke="#ffe0b2" stroke-width="1.2"><path d="M61.8 12 V104"/><path d="M63.3 12 V104"/><path d="M64.7 12 V104"/><path d="M66.2 12 V104"/></g>
+  <path d="M49 76 q-3 7 0 14 M79 76 q3 7 0 14" fill="none" stroke="#3e1a08" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="#bdbdbd"><circle cx="54" cy="18" r="3"/><circle cx="74" cy="18" r="3"/><circle cx="54" cy="27" r="3"/><circle cx="74" cy="27" r="3"/></g>
+</svg>

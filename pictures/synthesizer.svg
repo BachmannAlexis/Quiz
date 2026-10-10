@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect x="4" y="34" width="120" height="66" rx="8" fill="#37474f"/>
+  <rect x="10" y="40" width="34" height="18" rx="3" fill="#1de9b6"/>
+  <path d="M13 52 q4 -10 8 0 t8 0 t8 0 t5 -6" fill="none" stroke="#004d40" stroke-width="2"/>
+  <g><circle cx="56" cy="49" r="6" fill="#ff7043"/><circle cx="74" cy="49" r="6" fill="#ffca28"/><circle cx="92" cy="49" r="6" fill="#42a5f5"/><circle cx="110" cy="49" r="6" fill="#ab47bc"/></g>
+  <g stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M56 49 l0 -5M74 49 l4 -3M92 49 l-4 -3M110 49 l3 3"/></g>
+  <rect x="10" y="64" width="108" height="30" rx="2" fill="#fafafa"/>
+  <g stroke="#bdbdbd" stroke-width="1"><path d="M19 64v30M28 64v30M37 64v30M46 64v30M55 64v30M64 64v30M73 64v30M82 64v30M91 64v30M100 64v30M109 64v30"/></g>
+  <g fill="#212121"><rect x="16" y="64" width="6" height="17"/><rect x="25" y="64" width="6" height="17"/><rect x="43" y="64" width="6" height="17"/><rect x="52" y="64" width="6" height="17"/><rect x="61" y="64" width="6" height="17"/><rect x="79" y="64" width="6" height="17"/><rect x="88" y="64" width="6" height="17"/><rect x="106" y="64" width="6" height="17"/></g>
+</svg>

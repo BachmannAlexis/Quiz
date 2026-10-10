@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M60 14 C50 4 34 8 40 20 M68 14 C78 4 94 8 88 20" fill="none" stroke="#e53935" stroke-width="4" stroke-linecap="round"/>
+  <g transform="rotate(-14 40 70)">
+    <path d="M40 22 C14 22 8 52 10 74 C12 100 28 118 44 118 C60 118 70 100 70 74 C70 52 64 22 40 22 Z" fill="#7b1f1f"/>
+    <path d="M22 50 C18 64 18 84 26 100" fill="none" stroke="#b74747" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g transform="rotate(14 88 70)">
+    <path d="M88 22 C114 22 120 52 118 74 C116 100 100 118 84 118 C68 118 58 100 58 74 C58 52 64 22 88 22 Z" fill="#922b21"/>
+    <path d="M106 50 C110 64 110 84 102 100" fill="none" stroke="#c0392b" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g stroke="#ffb300" stroke-width="3" stroke-linecap="round"><path d="M64 60 v12"/><path d="M58 92 l-2 8"/><path d="M70 92 l2 8"/></g>
+</svg>
