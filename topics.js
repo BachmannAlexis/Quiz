@@ -1,0 +1,232 @@
+// The quiz topics and their items. Each item has an id (its picture in pictures.js),
+// English and French names, and a family: items of the same family look or sound alike
+// (trumpet / trombone, lion / tiger), so a question never shows two of them together.
+// `styles` puts an item in groups of its topic, `many` makes it plural in English
+// ("Where are the…"). Animals can have `says` (what the voice says they say), and
+// poisonous mushrooms have `poison`.
+
+// ---------- Instruments (sounds in sounds.js)
+const O = "orchestra", J = "jazz", R = "rock", W = "world";
+const INSTRUMENTS = [
+  // strings
+  { id: "violin",          en: "violin",          fr: "le violon",            family: "bowed",   styles: [O] },
+  { id: "cello",           en: "cello",           fr: "le violoncelle",       family: "bowed",   styles: [O] },
+  { id: "double-bass",     en: "double bass",     fr: "la contrebasse",       family: "bowed",   styles: [O, J] },
+  { id: "harp",            en: "harp",            fr: "la harpe",             family: "harp",    styles: [O] },
+  { id: "guitar",          en: "guitar",          fr: "la guitare",           family: "guitar",  styles: [R, W] },
+  { id: "electric-guitar", en: "electric guitar", fr: "la guitare électrique", family: "guitar", styles: [R] },
+  { id: "bass-guitar",     en: "bass guitar",     fr: "la guitare basse",     family: "guitar",  styles: [R] },
+  { id: "banjo",           en: "banjo",           fr: "le banjo",             family: "guitar",  styles: [J, W] },
+  { id: "ukulele",         en: "ukulele",         fr: "le ukulélé",           family: "guitar",  styles: [W] },
+  { id: "sitar",           en: "sitar",           fr: "le sitar",             family: "guitar",  styles: [W] },
+  { id: "shamisen",        en: "shamisen",        fr: "le shamisen",          family: "guitar",  styles: [W] },
+  { id: "koto",            en: "koto",            fr: "le koto",              family: "harp",    styles: [W] },
+  // keyboards
+  { id: "piano",           en: "piano",           fr: "le piano",             family: "keys",    styles: [O, J, R] },
+  { id: "pipe-organ",      en: "pipe organ",      fr: "l'orgue",              family: "keys",    styles: [O] },
+  { id: "synthesizer",     en: "synthesizer",     fr: "le synthétiseur",      family: "keys",    styles: [R] },
+  { id: "accordion",       en: "accordion",       fr: "l'accordéon",          family: "reed",    styles: [W] },
+  { id: "harmonica",       en: "harmonica",       fr: "l'harmonica",          family: "reed",    styles: [J, R] },
+  { id: "bagpipes",        en: "bagpipes",        fr: "la cornemuse",         family: "reed",    styles: [W], many: true },
+  // woodwinds
+  { id: "flute",           en: "flute",           fr: "la flûte",             family: "flute",   styles: [O] },
+  { id: "recorder",        en: "recorder",        fr: "la flûte à bec",       family: "flute",   styles: [W] },
+  { id: "pan-flute",       en: "pan flute",       fr: "la flûte de Pan",      family: "flute",   styles: [W] },
+  { id: "ocarina",         en: "ocarina",         fr: "l'ocarina",            family: "flute",   styles: [W] },
+  { id: "whistle",         en: "whistle",         fr: "le sifflet",           family: "flute",   styles: [W] },
+  { id: "clarinet",        en: "clarinet",        fr: "la clarinette",        family: "pipe",    styles: [O, J] },
+  { id: "oboe",            en: "oboe",            fr: "le hautbois",          family: "pipe",    styles: [O] },
+  { id: "bassoon",         en: "bassoon",         fr: "le basson",            family: "pipe",    styles: [O] },
+  { id: "saxophone",       en: "saxophone",       fr: "le saxophone",         family: "pipe",    styles: [J] },
+  // brass
+  { id: "trumpet",         en: "trumpet",         fr: "la trompette",         family: "brass",   styles: [O, J] },
+  { id: "trombone",        en: "trombone",        fr: "le trombone",          family: "brass",   styles: [O, J] },
+  { id: "horn",            en: "French horn",     fr: "le cor",               family: "brass",   styles: [O] },
+  { id: "tuba",            en: "tuba",            fr: "le tuba",              family: "brass",   styles: [O, J] },
+  // drums
+  { id: "drum",            en: "drum",            fr: "le tambour",           family: "drum",    styles: [O] },
+  { id: "bass-drum",       en: "bass drum",       fr: "la grosse caisse",     family: "drum",    styles: [O] },
+  { id: "timpani",         en: "timpani",         fr: "les timbales",         family: "drum",    styles: [O], many: true },
+  { id: "drum-kit",        en: "drum kit",        fr: "la batterie",          family: "drum",    styles: [J, R] },
+  { id: "djembe",          en: "djembe",          fr: "le djembé",            family: "drum",    styles: [W] },
+  { id: "bongos",          en: "bongos",          fr: "les bongos",           family: "drum",    styles: [W], many: true },
+  { id: "taiko",           en: "taiko drum",      fr: "le taiko",             family: "drum",    styles: [W] },
+  { id: "tabla",           en: "tabla",           fr: "le tabla",             family: "drum",    styles: [W] },
+  // tuned percussion
+  { id: "xylophone",       en: "xylophone",       fr: "le xylophone",         family: "mallet",  styles: [O] },
+  { id: "glockenspiel",    en: "glockenspiel",    fr: "le glockenspiel",      family: "mallet",  styles: [O] },
+  { id: "kalimba",         en: "kalimba",         fr: "le kalimba",           family: "mallet",  styles: [W] },
+  { id: "steel-drum",      en: "steel drum",      fr: "le steel drum",        family: "mallet",  styles: [W] },
+  { id: "music-box",       en: "music box",       fr: "la boîte à musique",   family: "mallet",  styles: [W] },
+  // metal
+  { id: "bell",            en: "bell",            fr: "la cloche",            family: "metal",   styles: [O] },
+  { id: "triangle",        en: "triangle",        fr: "le triangle",          family: "metal",   styles: [O] },
+  { id: "cymbals",         en: "cymbals",         fr: "les cymbales",         family: "metal",   styles: [O], many: true },
+  { id: "cowbell",         en: "cowbell",         fr: "la cloche à vache",    family: "metal",   styles: [R, W] },
+  { id: "jingle-bells",    en: "jingle bells",    fr: "les grelots",          family: "metal",   styles: [W], many: true },
+  // shakers and wood
+  { id: "maracas",         en: "maracas",         fr: "les maracas",          family: "shaker",  styles: [W], many: true },
+  { id: "tambourine",      en: "tambourine",      fr: "le tambourin",         family: "shaker",  styles: [R, W] },
+  { id: "castanets",       en: "castanets",       fr: "les castagnettes",     family: "wood",    styles: [W], many: true },
+  { id: "claves",          en: "claves",          fr: "les claves",           family: "wood",    styles: [W], many: true },
+  { id: "guiro",           en: "guiro",           fr: "le guiro",             family: "wood",    styles: [W] },
+  { id: "woodblock",       en: "wood block",      fr: "le wood-block",        family: "wood",    styles: [W] },
+];
+
+// Styles for the picker; `pic` is the instrument shown on its button.
+const STYLES = [
+  { id: "all",  pic: "violin",          en: "All",        fr: "Tout" },
+  { id: O,      pic: "cello",           en: "Orchestra",  fr: "Orchestre" },
+  { id: J,      pic: "saxophone",       en: "Jazz",       fr: "Jazz" },
+  { id: R,      pic: "electric-guitar", en: "Rock & pop", fr: "Rock & pop" },
+  { id: W,      pic: "djembe",          en: "World",      fr: "Monde" },
+];
+
+
+// ---------- Animals
+const FARM = "farm", WILD = "wild", SEA = "sea", BIRD = "birds", BUG = "bugs";
+const ANIMALS = [
+  { id: "dog",        en: "dog",          fr: "le chien",          family: "canine",  styles: [FARM], says: ["woof woof", "ouaf ouaf"] },
+  { id: "cat",        en: "cat",          fr: "le chat",           family: "cat",     styles: [FARM], says: ["meow", "miaou"] },
+  { id: "cow",        en: "cow",          fr: "la vache",          family: "cow",     styles: [FARM], says: ["moo", "meuh"] },
+  { id: "pig",        en: "pig",          fr: "le cochon",         family: "pig",     styles: [FARM], says: ["oink oink", "groin groin"] },
+  { id: "horse",      en: "horse",        fr: "le cheval",         family: "horse",   styles: [FARM], says: ["neigh", "hiii hiii"] },
+  { id: "donkey",     en: "donkey",       fr: "l'âne",             family: "horse",   styles: [FARM], says: ["hee-haw", "hi-han"] },
+  { id: "sheep",      en: "sheep",        fr: "le mouton",         family: "sheep",   styles: [FARM], says: ["baa", "bêêê"] },
+  { id: "goat",       en: "goat",         fr: "la chèvre",         family: "sheep",   styles: [FARM], says: ["maa", "mêêê"] },
+  { id: "hen",        en: "hen",          fr: "la poule",          family: "poultry", styles: [FARM], says: ["cluck cluck", "cot cot codet"] },
+  { id: "rooster",    en: "rooster",      fr: "le coq",            family: "poultry", styles: [FARM], says: ["cock-a-doodle-doo", "cocorico"] },
+  { id: "turkey",     en: "turkey",       fr: "la dinde",          family: "poultry", styles: [FARM], says: ["gobble gobble", "glou glou"] },
+  { id: "duck",       en: "duck",         fr: "le canard",         family: "water",   styles: [FARM, BIRD], says: ["quack quack", "coin coin"] },
+  { id: "rabbit",     en: "rabbit",       fr: "le lapin",          family: "rodent",  styles: [FARM] },
+  { id: "mouse",      en: "mouse",        fr: "la souris",         family: "rodent",  styles: [FARM, WILD], says: ["squeak squeak", "couic couic"] },
+  { id: "lion",       en: "lion",         fr: "le lion",           family: "bigcat",  styles: [WILD], says: ["roar", "groaaar"] },
+  { id: "tiger",      en: "tiger",        fr: "le tigre",          family: "bigcat",  styles: [WILD] },
+  { id: "elephant",   en: "elephant",     fr: "l'éléphant",        family: "elephant", styles: [WILD] },
+  { id: "monkey",     en: "monkey",       fr: "le singe",          family: "ape",     styles: [WILD] },
+  { id: "gorilla",    en: "gorilla",      fr: "le gorille",        family: "ape",     styles: [WILD] },
+  { id: "giraffe",    en: "giraffe",      fr: "la girafe",         family: "giraffe", styles: [WILD] },
+  { id: "zebra",      en: "zebra",        fr: "le zèbre",          family: "horse",   styles: [WILD] },
+  { id: "bear",       en: "bear",         fr: "l'ours",            family: "bear",    styles: [WILD] },
+  { id: "polar-bear", en: "polar bear",   fr: "l'ours polaire",    family: "bear",    styles: [WILD] },
+  { id: "panda",      en: "panda",        fr: "le panda",          family: "bear",    styles: [WILD] },
+  { id: "koala",      en: "koala",        fr: "le koala",          family: "koala",   styles: [WILD] },
+  { id: "fox",        en: "fox",          fr: "le renard",         family: "canine",  styles: [WILD] },
+  { id: "wolf",       en: "wolf",         fr: "le loup",           family: "canine",  styles: [WILD], says: ["awoooo", "ahouuuu"] },
+  { id: "deer",       en: "deer",         fr: "le cerf",           family: "deer",    styles: [WILD] },
+  { id: "camel",      en: "camel",        fr: "le chameau",        family: "camel",   styles: [WILD] },
+  { id: "hippo",      en: "hippo",        fr: "l'hippopotame",     family: "bigbeast", styles: [WILD] },
+  { id: "rhino",      en: "rhino",        fr: "le rhinocéros",     family: "bigbeast", styles: [WILD] },
+  { id: "kangaroo",   en: "kangaroo",     fr: "le kangourou",      family: "kangaroo", styles: [WILD] },
+  { id: "hedgehog",   en: "hedgehog",     fr: "le hérisson",       family: "hedgehog", styles: [WILD] },
+  { id: "sloth",      en: "sloth",        fr: "le paresseux",      family: "sloth",   styles: [WILD] },
+  { id: "bat",        en: "bat",          fr: "la chauve-souris",  family: "bat",     styles: [WILD] },
+  { id: "frog",       en: "frog",         fr: "la grenouille",     family: "frog",    styles: [WILD], says: ["ribbit", "croâ croâ"] },
+  { id: "snake",      en: "snake",        fr: "le serpent",        family: "reptile", styles: [WILD], says: ["hiss", "sssss"] },
+  { id: "crocodile",  en: "crocodile",    fr: "le crocodile",      family: "reptile", styles: [WILD] },
+  { id: "turtle",     en: "turtle",       fr: "la tortue",         family: "turtle",  styles: [WILD, SEA] },
+  { id: "dolphin",    en: "dolphin",      fr: "le dauphin",        family: "whale",   styles: [SEA] },
+  { id: "whale",      en: "whale",        fr: "la baleine",        family: "whale",   styles: [SEA] },
+  { id: "shark",      en: "shark",        fr: "le requin",         family: "whale",   styles: [SEA] },
+  { id: "octopus",    en: "octopus",      fr: "la pieuvre",        family: "octopus", styles: [SEA] },
+  { id: "jellyfish",  en: "jellyfish",    fr: "la méduse",         family: "octopus", styles: [SEA] },
+  { id: "crab",       en: "crab",         fr: "le crabe",          family: "crab",    styles: [SEA] },
+  { id: "fish",       en: "fish",         fr: "le poisson",        family: "fish",    styles: [SEA] },
+  { id: "seal",       en: "seal",         fr: "le phoque",         family: "seal",    styles: [SEA] },
+  { id: "penguin",    en: "penguin",      fr: "le manchot",        family: "penguin", styles: [SEA, BIRD] },
+  { id: "owl",        en: "owl",          fr: "la chouette",       family: "raptor",  styles: [BIRD], says: ["hoo hoo", "hou hou"] },
+  { id: "eagle",      en: "eagle",        fr: "l'aigle",           family: "raptor",  styles: [BIRD] },
+  { id: "parrot",     en: "parrot",       fr: "le perroquet",      family: "parrot",  styles: [BIRD], says: ["hello hello", "bonjour bonjour"] },
+  { id: "flamingo",   en: "flamingo",     fr: "le flamant rose",   family: "flamingo", styles: [BIRD] },
+  { id: "peacock",    en: "peacock",      fr: "le paon",           family: "peacock", styles: [BIRD] },
+  { id: "swan",       en: "swan",         fr: "le cygne",          family: "water",   styles: [BIRD] },
+  { id: "dove",       en: "dove",         fr: "la colombe",        family: "dove",    styles: [BIRD], says: ["coo coo", "rou rou"] },
+  { id: "butterfly",  en: "butterfly",    fr: "le papillon",       family: "butterfly", styles: [BUG] },
+  { id: "bee",        en: "bee",          fr: "l'abeille",         family: "bee",     styles: [BUG], says: ["buzz", "bzzzz"] },
+  { id: "ladybug",    en: "ladybug",      fr: "la coccinelle",     family: "beetle",  styles: [BUG] },
+  { id: "ant",        en: "ant",          fr: "la fourmi",         family: "bee",     styles: [BUG] },
+  { id: "spider",     en: "spider",       fr: "l'araignée",        family: "spider",  styles: [BUG] },
+  { id: "snail",      en: "snail",        fr: "l'escargot",        family: "crawler", styles: [BUG] },
+  { id: "caterpillar", en: "caterpillar", fr: "la chenille",       family: "crawler", styles: [BUG] },
+  { id: "worm",       en: "worm",         fr: "le ver de terre",   family: "crawler", styles: [BUG] },
+];
+const ANIMAL_GROUPS = [
+  { id: "all", pic: "lion",      en: "All",   fr: "Tous" },
+  { id: FARM,  pic: "cow",       en: "Farm",  fr: "La ferme" },
+  { id: WILD,  pic: "giraffe",   en: "Wild",  fr: "Sauvages" },
+  { id: SEA,   pic: "dolphin",   en: "Sea",   fr: "La mer" },
+  { id: BIRD,  pic: "parrot",    en: "Birds", fr: "Oiseaux" },
+  { id: BUG,   pic: "ladybug",   en: "Bugs",  fr: "Petites bêtes" },
+];
+
+// ---------- Flowers, trees, mushrooms, scenery
+const FLOWERS = [
+  { id: "rose",           en: "rose",           fr: "la rose",              family: "red" },
+  { id: "poppy",          en: "poppy",          fr: "le coquelicot",        family: "red" },
+  { id: "tulip",          en: "tulip",          fr: "la tulipe",            family: "tulip" },
+  { id: "sunflower",      en: "sunflower",      fr: "le tournesol",         family: "round" },
+  { id: "daisy",          en: "daisy",          fr: "la marguerite",        family: "round" },
+  { id: "dandelion",      en: "dandelion",      fr: "le pissenlit",         family: "round" },
+  { id: "cherry-blossom", en: "cherry blossom", fr: "la fleur de cerisier", family: "blossom" },
+  { id: "hibiscus",       en: "hibiscus",       fr: "l'hibiscus",           family: "star" },
+  { id: "lotus",          en: "lotus",          fr: "le lotus",             family: "star" },
+  { id: "lily",           en: "lily",           fr: "le lys",               family: "star" },
+  { id: "lavender",       en: "lavender",       fr: "la lavande",           family: "spike" },
+  { id: "hyacinth",       en: "hyacinth",       fr: "la jacinthe",          family: "spike" },
+  { id: "bluebell",       en: "bluebell",       fr: "la jacinthe des bois", family: "spike" },
+  { id: "pansy",          en: "pansy",          fr: "la pensée",            family: "pansy" },
+];
+const TREES = [
+  { id: "fir",            en: "fir tree",       fr: "le sapin",             family: "conifer" },
+  { id: "christmas-tree", en: "Christmas tree", fr: "le sapin de Noël",     family: "conifer" },
+  { id: "palm-tree",      en: "palm tree",      fr: "le palmier",           family: "palm" },
+  { id: "oak",            en: "oak tree",       fr: "le chêne",             family: "green" },
+  { id: "apple-tree",     en: "apple tree",     fr: "le pommier",           family: "green" },
+  { id: "birch",          en: "birch tree",     fr: "le bouleau",           family: "birch" },
+  { id: "willow",         en: "weeping willow", fr: "le saule pleureur",    family: "willow" },
+  { id: "maple",          en: "maple tree",     fr: "l'érable",             family: "maple" },
+  { id: "cherry-tree",    en: "cherry tree",    fr: "le cerisier",          family: "cherry" },
+  { id: "baobab",         en: "baobab",         fr: "le baobab",            family: "baobab" },
+  { id: "olive-tree",     en: "olive tree",     fr: "l'olivier",            family: "olive" },
+  { id: "bamboo",         en: "bamboo",         fr: "le bambou",            family: "bamboo" },
+];
+const MUSHROOMS = [
+  { id: "fly-agaric",       en: "fly agaric",       fr: "l'amanite tue-mouches", family: "red",   poison: true },
+  { id: "death-cap",        en: "death cap",        fr: "l'amanite phalloïde",   family: "white", poison: true },
+  { id: "button-mushroom",  en: "button mushroom",  fr: "le champignon de Paris", family: "white" },
+  { id: "porcini",          en: "porcini",          fr: "le cèpe",               family: "brown" },
+  { id: "parasol-mushroom", en: "parasol mushroom", fr: "la coulemelle",         family: "brown" },
+  { id: "chanterelle",      en: "chanterelle",      fr: "la girolle",            family: "chanterelle" },
+  { id: "morel",            en: "morel",            fr: "la morille",            family: "morel" },
+  { id: "oyster-mushroom",  en: "oyster mushroom",  fr: "le pleurote",           family: "oyster" },
+  { id: "puffball",         en: "puffball",         fr: "la vesse-de-loup",      family: "puffball" },
+];
+const SCENERY = [
+  { id: "mountain",   en: "mountain",    fr: "la montagne",      family: "mountain" },
+  { id: "volcano",    en: "volcano",     fr: "le volcan",        family: "mountain" },
+  { id: "beach",      en: "beach",       fr: "la plage",         family: "sea" },
+  { id: "island",     en: "island",      fr: "l'île",            family: "sea" },
+  { id: "wave",       en: "big wave",    fr: "la vague",         family: "sea" },
+  { id: "desert",     en: "desert",      fr: "le désert",        family: "desert" },
+  { id: "river",      en: "river",       fr: "la rivière",       family: "river" },
+  { id: "waterfall",  en: "waterfall",   fr: "la cascade",       family: "river" },
+  { id: "forest",     en: "forest",      fr: "la forêt",         family: "forest" },
+  { id: "meadow",     en: "meadow",      fr: "la prairie",       family: "meadow" },
+  { id: "cave",       en: "cave",        fr: "la grotte",        family: "cave" },
+  { id: "iceberg",    en: "iceberg",     fr: "l'iceberg",        family: "ice" },
+  { id: "city",       en: "city",        fr: "la ville",         family: "city" },
+  { id: "starry-sky", en: "starry sky",  fr: "le ciel étoilé",   family: "sky" },
+  { id: "sunset",     en: "sunset",      fr: "le coucher de soleil", family: "sky" },
+  { id: "rainbow",    en: "rainbow",     fr: "l'arc-en-ciel",    family: "sky" },
+];
+
+// Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
+// name (hear the name), listen (hear the sound), play (instrument keys) or explore (tap to hear names).
+const TOPICS = [
+  { id: "instruments", pic: "violin",     en: "Music",     fr: "Musique",       items: INSTRUMENTS, groups: STYLES,        modes: ["name", "listen", "play"] },
+  { id: "animals",     pic: "cow",        en: "Animals",   fr: "Animaux",       items: ANIMALS,     groups: ANIMAL_GROUPS, modes: ["name", "listen", "explore"] },
+  { id: "flowers",     pic: "sunflower",  en: "Flowers",   fr: "Fleurs",        items: FLOWERS,     modes: ["name", "explore"] },
+  { id: "trees",       pic: "oak",        en: "Trees",     fr: "Arbres",        items: TREES,       modes: ["name", "explore"] },
+  { id: "mushrooms",   pic: "fly-agaric", en: "Mushrooms", fr: "Champignons",   items: MUSHROOMS,   modes: ["name", "explore"] },
+  { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",     items: SCENERY,     modes: ["name", "explore"] },
+];

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Instrument Quiz</title>
+<title>Picture Quiz</title>
 <style>
   :root {
     --bg1: #fff6d6;
@@ -53,6 +53,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    justify-content: safe center;
     gap: 24px;
     padding: 0 16px 24px;
   }
@@ -98,6 +99,9 @@
     font: inherit;
     color: var(--ink);
   }
+  .choice, .thumb, .big { position: relative; }
+  /* poisonous mushrooms */
+  .poison::after { content: "⚠️"; position: absolute; top: 6%; right: 8%; font-size: clamp(1rem, 4vw, 1.8rem); }
   .choice img { width: 72%; height: 72%; object-fit: contain; pointer-events: none; transition: height .2s; }
   /* the instrument's name appears once the card is chosen */
   .choice .label { display: none; font-size: clamp(1rem, 3.6vw, 1.6rem); line-height: 1.1; padding: 0 6px; text-align: center; }
@@ -117,7 +121,26 @@
     40% { transform: scale(1.15) rotate(-5deg); }
     70% { transform: scale(.95) rotate(3deg); }
   }
-  .home { display: flex; flex-direction: column; align-items: center; gap: clamp(24px, 5vh, 48px); }
+  .home { display: flex; flex-direction: column; align-items: center; gap: clamp(18px, 4vh, 40px); }
+  .topics { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .topic {
+    border: 3px solid transparent;
+    background: var(--card);
+    border-radius: 22px;
+    padding: 8px 10px 6px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: clamp(96px, 27vw, 128px);
+    font: inherit;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  .topic img { width: 56px; height: 56px; }
+  .topic[aria-pressed="true"] { border-color: var(--accent); background: #fff1e6; }
   .styles { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .style {
     border: 3px solid transparent;
@@ -139,13 +162,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: clamp(20px, 6vw, 56px);
+    gap: clamp(12px, 4vw, 48px);
   }
   .start {
     border: none;
     background: var(--card);
     border-radius: 40px;
-    width: clamp(150px, 38vw, 260px);
+    width: clamp(96px, 27vw, 220px);
     aspect-ratio: 1;
     box-shadow: var(--shadow);
     cursor: pointer;
@@ -156,8 +179,8 @@
     justify-content: center;
     gap: 4px;
   }
-  .start span { font-size: clamp(4rem, 18vw, 7.5rem); line-height: 1; }
-  .start small { font-size: clamp(1.4rem, 6vw, 2.4rem); display: flex; gap: 4px; }
+  .start span { font-size: clamp(3rem, 14vw, 6.5rem); line-height: 1; }
+  .start small { font-size: clamp(1.1rem, 5vw, 2.2rem); display: flex; gap: 4px; min-height: 1em; }
   .start small img { width: 1em; height: 1em; }
   .start[data-mode="listen"] { animation-delay: .8s; }
   @keyframes pulse { 50% { transform: scale(1.08); } }
@@ -246,11 +269,12 @@
 
 <main>
   <div class="home" id="home">
-  <div class="styles" id="styles" aria-label="music style"></div>
+  <div class="topics" id="topics" aria-label="topic"></div>
+  <div class="styles" id="styles" aria-label="group"></div>
   <div class="modes">
-    <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small class="mini" data-pics="guitar piano trumpet"></small></button>
-    <button class="start" data-mode="listen" aria-label="find the picture from its sound"><span>👂</span><small>🎵🎶🎵</small></button>
-    <button class="start" data-mode="play" aria-label="play the instruments"><span>👆</span><small class="mini" data-pics="drum xylophone trumpet"></small></button>
+    <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small></small></button>
+    <button class="start" data-mode="listen" aria-label="find the picture from its sound"><span>👂</span><small></small></button>
+    <button class="start" data-mode="play" aria-label="tap and discover"><span>👆</span><small></small></button>
   </div>
   </div>
 
@@ -272,104 +296,51 @@
 
 <script src="sounds.js"></script>
 <script src="pictures.js"></script>
+<script src="topics.js"></script>
 <script>
-// Each instrument: names, styles, and a family. Instruments of the same family look or sound
-// alike (trumpet / trombone), so a question never shows two of them together.
-// Pictures are in pictures.js, sounds in sounds.js. `many` = plural in English ("Where are the…").
-const O = "orchestra", J = "jazz", R = "rock", W = "world";
-const INSTRUMENTS = [
-  // strings
-  { id: "violin",          en: "violin",          fr: "le violon",            family: "bowed",   styles: [O] },
-  { id: "cello",           en: "cello",           fr: "le violoncelle",       family: "bowed",   styles: [O] },
-  { id: "double-bass",     en: "double bass",     fr: "la contrebasse",       family: "bowed",   styles: [O, J] },
-  { id: "harp",            en: "harp",            fr: "la harpe",             family: "harp",    styles: [O] },
-  { id: "guitar",          en: "guitar",          fr: "la guitare",           family: "guitar",  styles: [R, W] },
-  { id: "electric-guitar", en: "electric guitar", fr: "la guitare électrique", family: "guitar", styles: [R] },
-  { id: "bass-guitar",     en: "bass guitar",     fr: "la guitare basse",     family: "guitar",  styles: [R] },
-  { id: "banjo",           en: "banjo",           fr: "le banjo",             family: "guitar",  styles: [J, W] },
-  { id: "ukulele",         en: "ukulele",         fr: "le ukulélé",           family: "guitar",  styles: [W] },
-  { id: "sitar",           en: "sitar",           fr: "le sitar",             family: "guitar",  styles: [W] },
-  { id: "shamisen",        en: "shamisen",        fr: "le shamisen",          family: "guitar",  styles: [W] },
-  { id: "koto",            en: "koto",            fr: "le koto",              family: "harp",    styles: [W] },
-  // keyboards
-  { id: "piano",           en: "piano",           fr: "le piano",             family: "keys",    styles: [O, J, R] },
-  { id: "pipe-organ",      en: "pipe organ",      fr: "l'orgue",              family: "keys",    styles: [O] },
-  { id: "synthesizer",     en: "synthesizer",     fr: "le synthétiseur",      family: "keys",    styles: [R] },
-  { id: "accordion",       en: "accordion",       fr: "l'accordéon",          family: "reed",    styles: [W] },
-  { id: "harmonica",       en: "harmonica",       fr: "l'harmonica",          family: "reed",    styles: [J, R] },
-  { id: "bagpipes",        en: "bagpipes",        fr: "la cornemuse",         family: "reed",    styles: [W], many: true },
-  // woodwinds
-  { id: "flute",           en: "flute",           fr: "la flûte",             family: "flute",   styles: [O] },
-  { id: "recorder",        en: "recorder",        fr: "la flûte à bec",       family: "flute",   styles: [W] },
-  { id: "pan-flute",       en: "pan flute",       fr: "la flûte de Pan",      family: "flute",   styles: [W] },
-  { id: "ocarina",         en: "ocarina",         fr: "l'ocarina",            family: "flute",   styles: [W] },
-  { id: "whistle",         en: "whistle",         fr: "le sifflet",           family: "flute",   styles: [W] },
-  { id: "clarinet",        en: "clarinet",        fr: "la clarinette",        family: "pipe",    styles: [O, J] },
-  { id: "oboe",            en: "oboe",            fr: "le hautbois",          family: "pipe",    styles: [O] },
-  { id: "bassoon",         en: "bassoon",         fr: "le basson",            family: "pipe",    styles: [O] },
-  { id: "saxophone",       en: "saxophone",       fr: "le saxophone",         family: "pipe",    styles: [J] },
-  // brass
-  { id: "trumpet",         en: "trumpet",         fr: "la trompette",         family: "brass",   styles: [O, J] },
-  { id: "trombone",        en: "trombone",        fr: "le trombone",          family: "brass",   styles: [O, J] },
-  { id: "horn",            en: "French horn",     fr: "le cor",               family: "brass",   styles: [O] },
-  { id: "tuba",            en: "tuba",            fr: "le tuba",              family: "brass",   styles: [O, J] },
-  // drums
-  { id: "drum",            en: "drum",            fr: "le tambour",           family: "drum",    styles: [O] },
-  { id: "bass-drum",       en: "bass drum",       fr: "la grosse caisse",     family: "drum",    styles: [O] },
-  { id: "timpani",         en: "timpani",         fr: "les timbales",         family: "drum",    styles: [O], many: true },
-  { id: "drum-kit",        en: "drum kit",        fr: "la batterie",          family: "drum",    styles: [J, R] },
-  { id: "djembe",          en: "djembe",          fr: "le djembé",            family: "drum",    styles: [W] },
-  { id: "bongos",          en: "bongos",          fr: "les bongos",           family: "drum",    styles: [W], many: true },
-  { id: "taiko",           en: "taiko drum",      fr: "le taiko",             family: "drum",    styles: [W] },
-  { id: "tabla",           en: "tabla",           fr: "le tabla",             family: "drum",    styles: [W] },
-  // tuned percussion
-  { id: "xylophone",       en: "xylophone",       fr: "le xylophone",         family: "mallet",  styles: [O] },
-  { id: "glockenspiel",    en: "glockenspiel",    fr: "le glockenspiel",      family: "mallet",  styles: [O] },
-  { id: "kalimba",         en: "kalimba",         fr: "le kalimba",           family: "mallet",  styles: [W] },
-  { id: "steel-drum",      en: "steel drum",      fr: "le steel drum",        family: "mallet",  styles: [W] },
-  { id: "music-box",       en: "music box",       fr: "la boîte à musique",   family: "mallet",  styles: [W] },
-  // metal
-  { id: "bell",            en: "bell",            fr: "la cloche",            family: "metal",   styles: [O] },
-  { id: "triangle",        en: "triangle",        fr: "le triangle",          family: "metal",   styles: [O] },
-  { id: "cymbals",         en: "cymbals",         fr: "les cymbales",         family: "metal",   styles: [O], many: true },
-  { id: "cowbell",         en: "cowbell",         fr: "la cloche à vache",    family: "metal",   styles: [R, W] },
-  { id: "jingle-bells",    en: "jingle bells",    fr: "les grelots",          family: "metal",   styles: [W], many: true },
-  // shakers and wood
-  { id: "maracas",         en: "maracas",         fr: "les maracas",          family: "shaker",  styles: [W], many: true },
-  { id: "tambourine",      en: "tambourine",      fr: "le tambourin",         family: "shaker",  styles: [R, W] },
-  { id: "castanets",       en: "castanets",       fr: "les castagnettes",     family: "wood",    styles: [W], many: true },
-  { id: "claves",          en: "claves",          fr: "les claves",           family: "wood",    styles: [W], many: true },
-  { id: "guiro",           en: "guiro",           fr: "le guiro",             family: "wood",    styles: [W] },
-  { id: "woodblock",       en: "wood block",      fr: "le wood-block",        family: "wood",    styles: [W] },
-];
-
-// Styles for the picker; `pic` is the instrument shown on its button.
-const STYLES = [
-  { id: "all",  pic: "violin",          en: "All",        fr: "Tout" },
-  { id: O,      pic: "cello",           en: "Orchestra",  fr: "Orchestre" },
-  { id: J,      pic: "saxophone",       en: "Jazz",       fr: "Jazz" },
-  { id: R,      pic: "electric-guitar", en: "Rock & pop", fr: "Rock & pop" },
-  { id: W,      pic: "djembe",          en: "World",      fr: "Monde" },
-];
-
 const TEXT = {
-  en: { where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?", yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US" },
-  fr: { where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?", yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR" },
+  en: {
+    where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?",
+    who: sound => `Who says ${sound}?`, says: (n, sound) => `The ${n} says ${sound}!`,
+    poison: "Careful! This mushroom is poisonous. Never eat it!",
+    yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US",
+  },
+  fr: {
+    where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
+    who: sound => `Qui fait ${sound} ?`, says: (n, sound) => `${cap(n)} fait ${sound} !`,
+    poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
+    yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR",
+  },
+};
+const CONFETTI = {
+  instruments: ["🎵", "🎶", "⭐", "🎉", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
+  trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
 };
 
 const ROUNDS = 10;
 const CHOICES = 3;
 
-let lang = "en";
-try { lang = localStorage.getItem("quiz-lang") || (navigator.language.startsWith("fr") ? "fr" : "en"); } catch (e) {}
-let style = "all";
-try { style = localStorage.getItem("quiz-style") || "all"; } catch (e) {}
-let deck = []; // instruments still to ask this game, so nothing repeats
+const $ = id => document.getElementById(id);
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const store = {
+  get(k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+};
+
+let lang = store.get("quiz-lang", navigator.language.startsWith("fr") ? "fr" : "en");
+let topic = TOPICS.find(t => t.id === store.get("quiz-topic")) || TOPICS[0];
+const groupOf = {}; // topic id -> chosen group
+TOPICS.forEach(t => { groupOf[t.id] = store.get("quiz-group-" + t.id, t.id === "instruments" ? store.get("quiz-style", "all") : "all"); });
+const ITEMS = new Map(TOPICS.flatMap(t => t.items.map(i => [i.id, i])));
+let deck = []; // items still to ask this game, so nothing repeats
 let mode = "name", round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
 let gameId = 0; // bumps when a game starts or ends, so its pending timers do nothing
 let questionId = 0; // bumps every question so stale timers/speech callbacks do nothing
 
-const $ = id => document.getElementById(id);
+const isMusic = () => topic.id === "instruments";
+const nameOf = item => item[lang];
+const shortName = item => cap(item[lang].replace(/^(le |la |les |l')/, "")); // "la flûte à bec" -> "Flûte à bec"
+const soundOf = item => item.says && item.says[lang === "en" ? 0 : 1];
 
 // ---------- Speech ----------
 function say(text, onDone) {
@@ -386,7 +357,7 @@ function say(text, onDone) {
   u.onend = finish;
   u.onerror = finish;
   speechSynthesis.speak(u);
-  if (onDone) setTimeout(finish, 2500); // some browsers never fire onend
+  if (onDone) setTimeout(finish, 1500 + text.length * 90); // some browsers never fire onend
 }
 
 // ---------- Sounds ----------
@@ -422,8 +393,9 @@ function tone(freq, start, len, wave = "sine", vol = 0.25) {
   o.connect(g).connect(a.destination);
   o.start(t); o.stop(t + len + 0.05);
 }
+function stopSound() { if (current) { try { current.stop(); } catch (e) {} current = null; } }
 function playInstrument(inst) {
-  if (current) { try { current.stop(); } catch (e) {} current = null; }
+  stopSound();
   const token = ++playToken;
   // waits for the recording if it is still decoding; a newer play request wins
   recording(inst.id).then(b => {
@@ -439,7 +411,7 @@ function playInstrument(inst) {
 const KEY_STEPS = [-5, -3, 0, 2, 4, 7, 9, 12];
 const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#7cb342", "#26a69a", "#1e88e5", "#5e35b1", "#d81b60"];
 function playNote(inst, k) {
-  if (current) { try { current.stop(); } catch (e) {} current = null; playToken++; }
+  stopSound(); playToken++;
   const info = window.INSTRUMENT_NOTES[inst.id];
   // several sounds (drum kit, tabla): one per key; one sound: tuned up and down
   const many = info.samples.length > 1;
@@ -455,156 +427,224 @@ function playNote(inst, k) {
 function cheer() { [523, 659, 784, 1047].forEach((n, i) => tone(n, i * 0.09, 0.25, "triangle", 0.2)); }
 function boop() { tone(220, 0, 0.2, "sine", 0.2); tone(180, 0.12, 0.25, "sine", 0.2); }
 
-// ---------- Game ----------
+// ---------- Pools ----------
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
+const families = items => new Set(items.map(i => i.family)).size;
+// the chosen group of the current topic
+function groupPool() {
+  const g = groupOf[topic.id];
+  return g === "all" ? topic.items : topic.items.filter(i => i.styles.includes(g));
+}
+// what a game asks about: in the animal sound game, only animals with a sound; if the
+// group has too few, all of them
+function gamePool() {
+  if (mode !== "listen" || isMusic()) return groupPool();
+  const pool = groupPool().filter(i => i.says);
+  return families(pool) >= CHOICES ? pool : topic.items.filter(i => i.says);
+}
 
-function stylePool() { return style === "all" ? INSTRUMENTS : INSTRUMENTS.filter(i => i.styles.includes(style)); }
+// what the voice adds after naming an item: an animal's sound or a mushroom warning
+function extra(item) {
+  if (item.says) return TEXT[lang].says(nameOf(item), soundOf(item));
+  if (item.poison) return TEXT[lang].poison;
+  return "";
+}
 
-function renderStyles() {
-  document.querySelectorAll(".style").forEach(b => {
-    const st = STYLES.find(x => x.id === b.dataset.style);
-    b.setAttribute("aria-pressed", st.id === style);
-    b.querySelector("span").textContent = st[lang];
+// ---------- Home ----------
+function picture(id) {
+  const img = document.createElement("img");
+  img.src = window.INSTRUMENT_PICTURES[id];
+  img.alt = "";
+  return img;
+}
+
+function renderHome() {
+  document.querySelectorAll(".topic").forEach(b => {
+    const t = TOPICS.find(x => x.id === b.dataset.topic);
+    b.setAttribute("aria-pressed", t === topic);
+    b.querySelector("span").textContent = t[lang];
+  });
+  const styles = $("styles");
+  styles.innerHTML = "";
+  styles.classList.toggle("hidden", !topic.groups);
+  (topic.groups || []).forEach(st => {
+    const b = document.createElement("button");
+    b.className = "style";
+    b.setAttribute("aria-pressed", st.id === groupOf[topic.id]);
+    const label = document.createElement("span");
+    label.textContent = st[lang];
+    b.append(picture(st.pic), label);
+    b.onclick = () => {
+      groupOf[topic.id] = st.id;
+      store.set("quiz-group-" + topic.id, st.id);
+      renderHome();
+      if (isMusic()) playInstrument(ITEMS.get(st.pic)); // a taste of the style
+      else say(st[lang]);
+    };
+    styles.appendChild(b);
+  });
+  // the games this topic offers, with a few of its pictures on each button
+  const show = m => topic.modes.includes(m) || (m === "play" && topic.modes.includes("explore"));
+  document.querySelectorAll(".start").forEach(b => {
+    b.classList.toggle("hidden", !show(b.dataset.mode));
+    const mini = b.querySelector("small");
+    mini.innerHTML = "";
+    if (b.dataset.mode === "listen" && isMusic()) mini.textContent = "🎵🎶🎵";
+    else {
+      const pool = b.dataset.mode === "listen" ? topic.items.filter(i => i.says) : topic.items;
+      const offset = { name: 0, listen: 4, play: 8 }[b.dataset.mode];
+      pool.slice(offset, offset + 3).forEach(i => mini.appendChild(picture(i.id)));
+    }
   });
 }
 
+function selectTopic(t) {
+  topic = t;
+  store.set("quiz-topic", t.id);
+  renderHome();
+  say(t[lang]);
+}
+
+// ---------- Quiz ----------
 function renderStars() { $("stars").textContent = "⭐".repeat(stars); }
 
-function promptText() { return mode === "listen" ? TEXT[lang].listen : TEXT[lang].where(answer[lang], answer.many); }
+function promptText() {
+  if (mode !== "listen") return TEXT[lang].where(nameOf(answer), answer.many);
+  return isMusic() ? TEXT[lang].listen : TEXT[lang].who(soundOf(answer));
+}
 
-// Ask (or re-ask) the current question: speak the name, or say "Listen!" then play the sound.
+// Ask (or re-ask) the current question: speak the name, say "Listen!" then play the
+// instrument, or ask "Who says moo?".
 function ask() {
   const q = questionId;
-  if (mode === "listen") say(TEXT[lang].listen, () => { if (q === questionId) playInstrument(answer); });
-  else say(TEXT[lang].where(answer[lang], answer.many));
+  if (mode === "listen" && isMusic()) say(TEXT[lang].listen, () => { if (q === questionId) playInstrument(answer); });
+  else say(promptText());
+}
+
+function card(item) {
+  const b = document.createElement("button");
+  b.className = "choice" + (item.poison ? " poison" : "");
+  b.dataset.id = item.id;
+  b.setAttribute("aria-label", nameOf(item));
+  const label = document.createElement("span");
+  label.className = "label";
+  b.append(picture(item.id), label);
+  return b;
 }
 
 function askQuestion() {
   locked = false; firstTry = true; questionId++;
-  const pool = stylePool();
-  // go through the style's instruments in random order before repeating any
+  const pool = gamePool();
+  // go through the pool in random order before repeating anything
   if (!deck.length) deck = shuffle(pool.filter(i => i !== lastAnswer));
   answer = deck.pop();
   lastAnswer = answer;
-  recording(answer.id); // start decoding now so the sound is ready
+  if (isMusic()) recording(answer.id); // start decoding now so the sound is ready
   // wrong choices come from other families, so pictures and sounds are easy to tell
-  // apart; prefer instruments from the same style
+  // apart; prefer the same group, and in the animal sound game animals with a sound
+  const fallback = mode === "listen" && !isMusic() ? topic.items.filter(i => i.says) : topic.items;
   const others = [];
-  for (const i of [...shuffle(pool), ...shuffle(INSTRUMENTS)]) {
+  for (const i of [...shuffle(pool), ...shuffle(fallback)]) {
     if (others.length < CHOICES - 1 && i.family !== answer.family && !others.some(o => o.family === i.family)) others.push(i);
   }
-  const options = shuffle([answer, ...others]);
-
   const box = $("choices");
   box.innerHTML = "";
-  options.forEach(inst => {
-    const b = document.createElement("button");
-    b.className = "choice";
-    b.dataset.id = inst.id;
-    b.setAttribute("aria-label", inst[lang]);
-    const img = document.createElement("img");
-    img.src = window.INSTRUMENT_PICTURES[inst.id];
-    img.alt = "";
-    const label = document.createElement("span");
-    label.className = "label";
-    b.append(img, label);
-    b.onclick = () => pick(inst, b);
+  shuffle([answer, ...others]).forEach(item => {
+    const b = card(item);
+    b.onclick = () => pick(item, b);
     box.appendChild(b);
   });
   $("promptText").textContent = promptText();
   ask();
 }
 
-// "la flûte à bec" -> "Flûte à bec", for the written name on a card
-function shortName(inst) {
-  const n = inst[lang].replace(/^(le |la |les |l')/, "");
-  return n.charAt(0).toUpperCase() + n.slice(1);
-}
-
-function showName(btn, inst) {
-  btn.querySelector(".label").textContent = shortName(inst);
+function showName(btn, item) {
+  btn.querySelector(".label").textContent = shortName(item);
   btn.classList.add("named");
 }
 
-function pick(inst, btn) {
+function pick(item, btn) {
   if (locked) return;
   const q = questionId;
-  showName(btn, inst);
-  if (inst === answer) {
+  showName(btn, item);
+  if (item === answer) {
     locked = true;
     questionId++; // cancel any pending replay of the question
     btn.classList.add("right");
-    $("promptText").textContent = TEXT[lang].yes(inst[lang]);
+    $("promptText").textContent = TEXT[lang].yes(nameOf(item));
     cheer();
     if (firstTry) { stars++; renderStars(); }
     confetti(12);
     round++;
     const g = gameId;
     const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
-    if (mode === "name") {
-      // "Yes! The guitar!" and then let them hear it
-      say(TEXT[lang].yes(inst[lang]), () => { playInstrument(inst); setTimeout(next, 3000); });
-    } else {
-      say(TEXT[lang].yes(inst[lang]));
-      setTimeout(next, 2400);
-    }
+    const hear = isMusic() && mode === "name"; // found by name: now let them hear it
+    // "Yes! The cow! The cow says moo!", then the next question
+    say(`${TEXT[lang].yes(nameOf(item))} ${isMusic() ? "" : extra(item)}`, () => {
+      if (g !== gameId) return;
+      if (hear) playInstrument(item);
+      setTimeout(next, hear ? 3000 : 900);
+    });
   } else {
     firstTry = false;
     btn.classList.add("wrong");
     btn.disabled = true;
     boop();
-    if (mode === "listen") {
+    if (mode === "listen" && isMusic()) {
       // play the right sound again so they can compare
       setTimeout(() => { if (q === questionId) playInstrument(answer); }, 500);
     } else {
-      // say what they tapped, then gently repeat the question
-      say(`${inst[lang].replace(/^(le |la |les |l')/, "")}. ${TEXT[lang].no}`);
-      setTimeout(() => { if (q === questionId) say(TEXT[lang].where(answer[lang], answer.many)); }, 1800);
+      // say what they tapped ("The cat says meow!"), then gently ask again
+      const what = mode === "listen" && item.says ? extra(item) : `${shortName(item)}.`;
+      say(`${what} ${TEXT[lang].no}`, () => { if (q === questionId) setTimeout(() => { if (q === questionId) ask(); }, 400); });
     }
   }
 }
 
-// ---------- Play mode ----------
-let playing = null; // instrument on the stage
+// ---------- Play and explore ----------
+let playing = null; // item on the stage
 
-function selectInstrument(inst, speak = true) {
-  playing = inst;
-  $("bigPic").querySelector("img").src = window.INSTRUMENT_PICTURES[inst.id];
-  $("bigName").textContent = inst[lang].replace(/^(le |la |les |l')/, "");
-  document.querySelectorAll(".thumb").forEach(t => t.setAttribute("aria-pressed", t.dataset.id === inst.id));
-  recording(inst.id + "#0");
-  if (speak) {
-    const q = ++questionId;
-    say(inst[lang], () => { if (q === questionId) playTune(); });
-  }
+function selectItem(item, speak = true) {
+  playing = item;
+  $("bigPic").querySelector("img").src = window.INSTRUMENT_PICTURES[item.id];
+  $("bigPic").classList.toggle("poison", !!item.poison);
+  $("bigName").textContent = shortName(item);
+  document.querySelectorAll(".thumb").forEach(t => t.setAttribute("aria-pressed", t.dataset.id === item.id));
+  if (isMusic()) recording(item.id + "#0");
+  if (speak) sayItem();
 }
 
-function playTune() {
+// say the item's name, then play its tune or add its sound or warning
+function sayItem() {
+  const q = ++questionId;
+  bounce();
+  if (isMusic()) say(nameOf(playing), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
+  else say(`${cap(nameOf(playing))}. ${extra(playing)}`);
+}
+
+function bounce() {
   const big = $("bigPic");
   big.classList.remove("bounce"); void big.offsetWidth; big.classList.add("bounce");
-  playInstrument(playing);
 }
 
 function enterPlay() {
   const grid = $("grid");
   grid.innerHTML = "";
-  stylePool().forEach(inst => {
+  $("keys").classList.toggle("hidden", !isMusic());
+  groupPool().forEach(item => {
     const b = document.createElement("button");
-    b.className = "thumb";
-    b.dataset.id = inst.id;
-    b.setAttribute("aria-label", inst[lang]);
-    const img = document.createElement("img");
-    img.src = window.INSTRUMENT_PICTURES[inst.id];
-    img.alt = "";
-    b.appendChild(img);
-    b.onclick = () => selectInstrument(inst);
+    b.className = "thumb" + (item.poison ? " poison" : "");
+    b.dataset.id = item.id;
+    b.setAttribute("aria-label", nameOf(item));
+    b.appendChild(picture(item.id));
+    b.onclick = () => selectItem(item);
     grid.appendChild(b);
   });
-  selectInstrument(stylePool()[0], false);
+  selectItem(groupPool()[0], false);
 }
 
 // keys: press, or slide a finger across them
@@ -626,9 +666,10 @@ function release(e) {
   pressed.delete(e.pointerId);
 }
 
+// ---------- Screens ----------
 function goHome() {
   gameId++; questionId++; playToken++;
-  if (current) { try { current.stop(); } catch (e) {} current = null; }
+  stopSound();
   if ("speechSynthesis" in window) speechSynthesis.cancel();
   ["promptRow", "choices", "play", "homeBtn"].forEach(id => $(id).classList.add("hidden"));
   document.querySelector("main").classList.remove("playing");
@@ -648,26 +689,25 @@ function finish() {
 function start(m) {
   audio();
   gameId++;
-  mode = m;
+  mode = m === "play" && !isMusic() ? "explore" : m;
   $("homeBtn").classList.remove("hidden");
-  if (m === "play") {
-    $("home").classList.add("hidden");
+  $("home").classList.add("hidden");
+  stars = 0; renderStars();
+  if (mode === "play" || mode === "explore") {
     $("play").classList.remove("hidden");
     document.querySelector("main").classList.add("playing");
-    stars = 0; renderStars();
     enterPlay();
     return;
   }
-  round = 0; stars = 0; lastAnswer = null; deck = []; renderStars();
+  round = 0; lastAnswer = null; deck = [];
   $("speak").textContent = mode === "listen" ? "👂" : "🔊";
-  $("home").classList.add("hidden");
   $("promptRow").classList.remove("hidden");
   $("choices").classList.remove("hidden");
   askQuestion();
 }
 
 function confetti(n) {
-  const bits = ["🎵", "🎶", "⭐", "🎉", "✨"];
+  const bits = CONFETTI[topic.id];
   for (let i = 0; i < n; i++) {
     const s = document.createElement("span");
     s.className = "confetti";
@@ -682,49 +722,35 @@ function confetti(n) {
 
 function setLang(l) {
   lang = l;
-  try { localStorage.setItem("quiz-lang", l); } catch (e) {}
+  store.set("quiz-lang", l);
   $("lang").textContent = TEXT[l].flag;
   document.documentElement.lang = l;
-  renderStyles();
+  renderHome();
   if (answer && !$("choices").classList.contains("hidden")) {
     document.querySelectorAll(".choice").forEach(b => {
-      const inst = INSTRUMENTS.find(i => i.id === b.dataset.id);
-      if (inst) b.setAttribute("aria-label", inst[lang]);
-      if (inst && b.classList.contains("named")) b.querySelector(".label").textContent = shortName(inst);
+      const item = ITEMS.get(b.dataset.id);
+      b.setAttribute("aria-label", nameOf(item));
+      if (b.classList.contains("named")) b.querySelector(".label").textContent = shortName(item);
     });
-    $("promptText").textContent = locked ? TEXT[lang].yes(answer[lang]) : promptText();
+    $("promptText").textContent = locked ? TEXT[lang].yes(nameOf(answer)) : promptText();
     if (!locked) ask();
   }
   if (playing && !$("play").classList.contains("hidden")) {
-    document.querySelectorAll(".thumb").forEach(b => b.setAttribute("aria-label", INSTRUMENTS.find(i => i.id === b.dataset.id)[lang]));
-    selectInstrument(playing, false);
+    document.querySelectorAll(".thumb").forEach(b => b.setAttribute("aria-label", nameOf(ITEMS.get(b.dataset.id))));
+    selectItem(playing, false);
   }
 }
 
-document.querySelectorAll(".start").forEach(b => b.onclick = () => start(b.dataset.mode));
-STYLES.forEach(st => {
+TOPICS.forEach(t => {
   const b = document.createElement("button");
-  b.className = "style";
-  b.dataset.style = st.id;
-  const img = document.createElement("img");
-  img.src = window.INSTRUMENT_PICTURES[st.pic];
-  img.alt = "";
-  b.append(img, document.createElement("span"));
-  b.onclick = () => {
-    style = st.id;
-    try { localStorage.setItem("quiz-style", style); } catch (e) {}
-    renderStyles();
-    playInstrument(INSTRUMENTS.find(i => i.id === st.pic)); // a taste of the style
-  };
-  $("styles").appendChild(b);
+  b.className = "topic";
+  b.dataset.topic = t.id;
+  b.append(picture(t.pic), document.createElement("span"));
+  b.onclick = () => selectTopic(t);
+  $("topics").appendChild(b);
 });
+document.querySelectorAll(".start").forEach(b => b.onclick = () => start(b.dataset.mode));
 $("speak").onclick = () => { if (!locked) ask(); };
-document.querySelectorAll(".mini").forEach(el => el.dataset.pics.split(" ").forEach(id => {
-  const img = document.createElement("img");
-  img.src = window.INSTRUMENT_PICTURES[id];
-  img.alt = "";
-  el.appendChild(img);
-}));
 KEY_COLORS.forEach((c, k) => {
   const key = document.createElement("div");
   key.className = "key";
@@ -735,7 +761,7 @@ KEY_COLORS.forEach((c, k) => {
 $("keys").addEventListener("pointerdown", e => { e.preventDefault(); $("keys").releasePointerCapture?.(e.pointerId); press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 $("keys").addEventListener("pointermove", e => { if (pressed.has(e.pointerId)) press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 ["pointerup", "pointercancel", "pointerleave"].forEach(t => $("keys").addEventListener(t, release));
-$("bigPic").onclick = () => { questionId++; playTune(); };
+$("bigPic").onclick = sayItem;
 $("homeBtn").onclick = goHome;
 $("lang").onclick = () => setLang(lang === "en" ? "fr" : "en");
 setLang(lang);

@@ -2,14 +2,38 @@
 """Build pictures.js: instrument pictures as SVG data URIs.
 
 Usage: python3 tools/make_pictures.py <@iconify-json/noto icons.json>
-15 pictures are Noto Emoji (Apache-2.0); the others are drawn for this project in pictures/. Get icons.json with: npm pack @iconify-json/noto && tar xzf iconify-json-noto-*.tgz
+Pictures from Noto Emoji (Apache-2.0) per NOTO below; the others are drawn for this project in pictures/. Get icons.json with: npm pack @iconify-json/noto && tar xzf iconify-json-noto-*.tgz
 """
 import json, os, sys, urllib.parse
 
 NOTO = {
+    # instruments
     "violin": "violin", "harp": "harp", "flute": "flute", "horn": "postal-horn", "trumpet": "trumpet",
     "trombone": "trombone", "drum": "drum", "bell": "bell", "piano": "musical-keyboard", "saxophone": "saxophone",
     "electric-guitar": "guitar", "accordion": "accordion", "banjo": "banjo", "maracas": "maracas", "djembe": "long-drum",
+    # animals
+    "dog": "dog", "cat": "cat", "cow": "cow", "pig": "pig", "horse": "horse", "sheep": "ewe", "goat": "goat",
+    "hen": "chicken", "rooster": "rooster", "duck": "duck", "donkey": "donkey", "rabbit": "rabbit", "turkey": "turkey",
+    "lion": "lion", "tiger": "tiger", "elephant": "elephant", "monkey": "monkey", "gorilla": "gorilla", "giraffe": "giraffe",
+    "zebra": "zebra", "bear": "bear", "polar-bear": "polar-bear", "panda": "panda", "koala": "koala", "fox": "fox",
+    "wolf": "wolf", "deer": "deer", "camel": "camel", "hippo": "hippopotamus", "rhino": "rhinoceros", "kangaroo": "kangaroo",
+    "hedgehog": "hedgehog", "sloth": "sloth", "mouse": "mouse", "frog": "frog", "snake": "snake", "turtle": "turtle",
+    "crocodile": "crocodile", "bat": "bat", "dolphin": "dolphin", "whale": "spouting-whale", "shark": "shark",
+    "octopus": "octopus", "crab": "crab", "fish": "tropical-fish", "seal": "seal", "jellyfish": "jellyfish",
+    "owl": "owl", "eagle": "eagle", "parrot": "parrot", "flamingo": "flamingo", "peacock": "peacock", "penguin": "penguin",
+    "swan": "swan", "dove": "dove", "butterfly": "butterfly", "bee": "honeybee", "ladybug": "lady-beetle", "snail": "snail",
+    "ant": "ant", "spider": "spider", "caterpillar": "bug", "worm": "worm",
+    # flowers
+    "rose": "rose", "tulip": "tulip", "sunflower": "sunflower", "cherry-blossom": "cherry-blossom", "hibiscus": "hibiscus",
+    "lotus": "lotus", "hyacinth": "hyacinth",
+    # trees
+    "fir": "evergreen-tree", "christmas-tree": "christmas-tree", "palm-tree": "palm-tree",
+    # mushrooms
+    "fly-agaric": "mushroom", "porcini": "brown-mushroom",
+    # scenery
+    "mountain": "snow-capped-mountain", "beach": "beach-with-umbrella", "desert": "desert", "island": "desert-island",
+    "volcano": "volcano", "river": "national-park", "wave": "water-wave", "starry-sky": "milky-way", "city": "cityscape",
+    "rainbow": "rainbow", "sunset": "sunrise",
 }
 
 def data_uri(svg):

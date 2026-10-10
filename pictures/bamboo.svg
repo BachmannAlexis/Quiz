@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><g id="stalk"><rect x="0" y="0" width="12" height="124" rx="4" fill="#7cb342"/>
+    <g fill="#558b2f"><rect x="-1" y="20" width="14" height="4" rx="2"/><rect x="-1" y="50" width="14" height="4" rx="2"/><rect x="-1" y="80" width="14" height="4" rx="2"/><rect x="-1" y="108" width="14" height="4" rx="2"/></g>
+    <rect x="2" y="2" width="3" height="120" fill="#aed581"/></g></defs>
+  <use href="#stalk" transform="translate(36 4)"/><use href="#stalk" transform="translate(76 14) scale(1 .9)"/>
+  <g fill="#689f38">
+    <path d="M24 22 C34 16 40 20 44 24 C36 28 30 28 24 22 Z" transform="translate(0 0)"/><path d="M54 52 C64 44 72 46 76 50 C68 56 60 56 54 52 Z"/>
+    <path d="M46 82 C40 72 32 72 26 76 C32 84 40 86 46 82 Z"/><path d="M88 38 C98 30 108 32 112 36 C104 42 94 42 88 38 Z"/>
+    <path d="M86 70 C80 60 72 60 66 64 C72 72 80 74 86 70 Z"/><path d="M90 98 C100 92 108 94 112 98 C104 104 96 104 90 98 Z"/>
+  </g>
+</svg>

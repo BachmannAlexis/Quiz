@@ -1,18 +1,31 @@
-# Instrument Quiz
+# Picture Quiz
 
-A picture quiz about musical instruments for 4-year-olds. No reading needed: everything is spoken or played.
+A picture quiz for 4-year-olds about **music, animals, flowers, trees, mushrooms and landscapes**. No reading needed: everything is spoken.
 
 Open `index.html` in any browser (tablet or phone works great). No install, no internet required.
 
-## Three modes, four styles
+## Topics and games
 
-- 🗣️ **Hear the name**: the app says "Where is the cello?" and the child taps the right picture. When they find it, the instrument plays.
-- 👂 **Hear the sound**: the app plays an instrument and the child taps the one they hear. After a wrong tap, the right sound plays again so they can compare.
-- 👆 **Play**: tap any instrument to hear its name and its tune, then play it on 8 rainbow keys (slide a finger across them for a run). The keys follow a pentatonic scale, so everything sounds nice; on the drum kit and tabla each key is a different drum.
+Pick a topic at the top of the home screen, then a game:
 
-The 🏠 button goes back to the start from any mode.
+- 🗣️ **Hear the name**: the voice asks "Where is the cello?" and the child taps the right picture among three. After the answer, its name shows on the card.
+- 👂 **Hear the sound** (music and animals): an instrument plays and the child taps the one they hear; for animals the voice asks "Who says moo?".
+- 👆 **Tap and discover**: tap any picture to hear its name (and the animal's sound, or the mushroom warning). For music, the chosen instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice; on the drum kit and tabla each key is a different drum).
 
-Pick a style before starting (tapping a style plays a sample):
+| Topic | Items | Groups |
+|---|---|---|
+| 🎻 Music | 55 instruments | orchestra, jazz, rock & pop, world |
+| 🐄 Animals | 63 animals, 21 of them with a sound ("the cow says moo") | farm, wild, sea, birds, bugs |
+| 🌻 Flowers | 14 | |
+| 🌳 Trees | 12 | |
+| 🍄 Mushrooms | 9 | |
+| 🏔️ Landscapes | 16 | |
+
+The three pictures in a question always come from different families (never trumpet next to trombone, lion next to tiger, or button mushroom next to death cap), so a 4-year-old can tell them apart. Nothing repeats within a game of 10 rounds; a ⭐ for each first-try answer. 🔊 repeats the question, the flag switches between English and French, 🏠 goes back to the start.
+
+**Mushrooms, a note for parents:** the fly agaric and the death cap are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.
+
+### Instrument styles
 
 | Style | Instruments |
 |---|---|
@@ -20,20 +33,17 @@ Pick a style before starting (tapping a style plays a sample):
 | 🎷 Jazz | saxophone, clarinet, trumpet, trombone, tuba, double bass, piano, drum kit, banjo, harmonica |
 | 🎸 Rock & pop | electric guitar, bass guitar, guitar, drum kit, synthesizer, piano, harmonica, tambourine, cowbell |
 | 🌍 World | accordion, bagpipes, sitar, koto, shamisen, ukulele, banjo, guitar, kalimba, steel drum, music box, pan flute, ocarina, recorder, whistle, djembe, bongos, taiko, tabla, maracas, tambourine, castanets, claves, guiro, wood block, cowbell, jingle bells |
-| All | all 55 instruments |
 
 Each instrument plays a short tune in its style, for example the opening of Bach's Cello Suite on the cello, a walking bass on the double bass, Bach's Toccata on the pipe organ, *Sakura* on the koto, *Amazing Grace* on the bagpipes and *Twinkle Twinkle* on the music box.
 
-The three pictures in a question always come from different instrument families (never trumpet next to trombone, or clarinet next to oboe), so a 4-year-old can tell them apart. No instrument repeats within a game.
-
-10 rounds per game. A ⭐ for each first-try answer. The 🔊 / 👂 button repeats the question, and the flag switches between English and French.
+The topics and their items are in `topics.js`.
 
 ## Sounds and pictures
 
 Everything is bundled in the page, so it works offline:
 
 - `sounds.js`: for each instrument a short tune and the notes for the play mode, built by `tools/make_sounds.py`.
-- `pictures.js`: the pictures, built by `tools/make_pictures.py`.
+- `pictures.js`: all 169 pictures, built by `tools/make_pictures.py`.
 
 Where each instrument's sound comes from, best first:
 
@@ -72,4 +82,4 @@ cd .. && python3 tools/make_sounds.py build && python3 tools/make_pictures.py bu
 - MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so `sounds.js` is shared under the same license.
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
-- Pictures: 15 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (violin, harp, flute, French horn, trumpet, trombone, drum, bell, piano, saxophone, electric guitar, accordion, banjo, maracas, djembe). The other 40 are drawn for this project (`pictures/`).
+- Pictures: 101 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (all the animals, and the ones listed in `tools/make_pictures.py`). The other 68 are drawn for this project (`pictures/`).
