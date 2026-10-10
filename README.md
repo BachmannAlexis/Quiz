@@ -4,10 +4,13 @@ A picture quiz about musical instruments for 4-year-olds. No reading needed: eve
 
 Open `index.html` in any browser (tablet or phone works great). No install, no internet required.
 
-## Two games, four styles
+## Three modes, four styles
 
 - 🗣️ **Hear the name**: the app says "Where is the cello?" and the child taps the right picture. When they find it, the instrument plays.
 - 👂 **Hear the sound**: the app plays an instrument and the child taps the one they hear. After a wrong tap, the right sound plays again so they can compare.
+- 👆 **Play**: tap any instrument to hear its name and its tune, then play it on 8 rainbow keys (slide a finger across them for a run). The keys follow a pentatonic scale, so everything sounds nice; on the drum kit and tabla each key is a different drum.
+
+The 🏠 button goes back to the start from any mode.
 
 Pick a style before starting (tapping a style plays a sample):
 
@@ -29,31 +32,41 @@ The three pictures in a question always come from different instrument families 
 
 Everything is bundled in the page, so it works offline:
 
-- `sounds.js`: a short tune of real recordings for each instrument, built by `tools/make_sounds.py`.
+- `sounds.js`: for each instrument a short tune and the notes for the play mode, built by `tools/make_sounds.py`.
 - `pictures.js`: the pictures, built by `tools/make_pictures.py`.
 
-To rebuild them (needs Node, Python and ffmpeg):
+Where each instrument's sound comes from, best first:
+
+| Library | Instruments |
+|---|---|
+| [VSCO 2 Community Edition](https://github.com/sgossner/VSCO-2-CE), real orchestra recordings (via npm `tiny-orchestra`) | double bass, harp, flute, oboe, clarinet, bassoon, French horn, trumpet, trombone, tuba, timpani, glockenspiel, bass drum, drum, cymbals, triangle, claves, wood block |
+| [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments), real recordings | piano, violin, cello, guitar, bass guitar, saxophone, xylophone |
+| [Sonic Pi](https://sonic-pi.net/) samples, real recordings | drum kit, cowbell, tabla |
+| MusyngKite sound bank (via npm `web-music-score-samples`) | pipe organ, accordion, harmonica, bagpipes, sitar, koto, shamisen, kalimba, banjo, ukulele, electric guitar, synthesizer, recorder, pan flute, ocarina, music box, bell |
+| GeneralUser GS sound bank, rendered by `tools/render_gm.mjs` | steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle, jingle bells |
+
+To rebuild (needs Node, Python and ffmpeg):
 
 ```sh
-mkdir -p build/samples && cd build
-# recorded instruments
-for i in piano violin cello contrabass harp flute clarinet bassoon french-horn trumpet trombone tuba xylophone saxophone guitar-acoustic bass-electric; do
-  (cd samples && npm pack tonejs-instrument-$i-mp3 && mkdir $i && tar xzf tonejs-instrument-$i-mp3-*.tgz -C $i)
+mkdir -p build/tonejs && cd build
+for i in piano violin cello guitar-acoustic bass-electric saxophone xylophone; do
+  (cd tonejs && npm pack tonejs-instrument-$i-mp3 && mkdir $i && tar xzf tonejs-instrument-$i-mp3-*.tgz -C $i)
 done
-# General MIDI sound bank for the other instruments
-npm pack generaluser && tar xzf generaluser-*.tgz && mv package generaluser
-npm init -y && npm i spessasynth_core && cp ../tools/render_gm.mjs . && node render_gm.mjs generaluser/GeneralUser.sf2 rendered
-# tabla recordings from Sonic Pi
-npm pack supersonic-scsynth-samples && mkdir sonicpi && tar xzf supersonic-scsynth-samples-*.tgz -C sonicpi
-# pictures
+npm pack tiny-orchestra && mkdir to && tar xzf tiny-orchestra-*.tgz -C to && ln -s to/package/samples vsco
+npm pack web-music-score-samples && mkdir wms && tar xzf web-music-score-samples-*.tgz -C wms && ln -s wms/package/samples musyngkite
+npm pack supersonic-scsynth-samples && mkdir sp && tar xzf supersonic-scsynth-samples-*.tgz -C sp && ln -s sp/package/samples sonicpi
+npm pack generaluser && mkdir gu && tar xzf generaluser-*.tgz -C gu
+npm init -y && npm i spessasynth_core && cp ../tools/render_gm.mjs . && node render_gm.mjs gu/package/GeneralUser.sf2 rendered
 npm pack @iconify-json/noto && mkdir noto && tar xzf iconify-json-noto-*.tgz -C noto
-cd .. && python3 tools/make_sounds.py build/samples build/rendered build/sonicpi/package/samples
-python3 tools/make_pictures.py build/noto/package/icons.json
+cd .. && python3 tools/make_sounds.py build && python3 tools/make_pictures.py build/noto/package/icons.json
 ```
 
 ## Credits
 
-- Recordings of piano, violin, cello, double bass, harp, flute, clarinet, bassoon, French horn, trumpet, trombone, tuba, xylophone, saxophone, guitar and bass guitar: [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments) by Nicholaus Brosowsky (npm packaging by Makefully Studios), licensed [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/). They have been trimmed, pitch-shifted and combined into short tunes.
-- The other instruments, except the tabla: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
-- Tabla: samples from [Sonic Pi](https://sonic-pi.net/) (npm `supersonic-scsynth-samples`), CC0.
+- Orchestra recordings: Versilian Studios Chamber Orchestra 2 Community Edition by Versilian Studios / Samuel Gossner, CC0, edited by tiny-orchestra (CC0).
+- Recordings of piano, violin, cello, guitar, bass guitar, saxophone and xylophone: [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments) by Nicholaus Brosowsky (npm packaging by Makefully Studios), licensed [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+- Drum kit, cowbell and tabla: samples from [Sonic Pi](https://sonic-pi.net/) (npm `supersonic-scsynth-samples`), CC0.
+- MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so `sounds.js` is shared under the same license.
+- Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
+- All recordings were trimmed, pitch-shifted and combined into short tunes.
 - Pictures: 15 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (violin, harp, flute, French horn, trumpet, trombone, drum, bell, piano, saxophone, electric guitar, accordion, banjo, maracas, djembe). The other 40 are drawn for this project (`pictures/`).

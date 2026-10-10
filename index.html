@@ -35,7 +35,8 @@
     padding: 12px 16px;
   }
   .stars { font-size: 2rem; min-height: 2.5rem; letter-spacing: 2px; }
-  .lang {
+  .tools { display: flex; gap: 10px; }
+  .round-btn {
     font-size: 1.6rem;
     border: none;
     background: var(--card);
@@ -152,6 +153,65 @@
   .start[data-mode="listen"] { animation-delay: .8s; }
   @keyframes pulse { 50% { transform: scale(1.08); } }
   .hidden { display: none !important; }
+  main.playing { justify-content: flex-start; overflow: hidden; }
+  .play { width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .stage { display: flex; align-items: center; gap: 16px; }
+  .big {
+    width: clamp(110px, 28vw, 180px);
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 32px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .big img { width: 78%; height: 78%; object-fit: contain; pointer-events: none; }
+  .big.bounce { animation: bounce .6s; }
+  .name { font-size: clamp(1.5rem, 5.5vw, 2.4rem); max-width: 45vw; }
+  .keys {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    max-width: 680px;
+    height: clamp(90px, 17vh, 160px);
+    touch-action: none;
+  }
+  .key {
+    flex: 1;
+    border-radius: 16px;
+    box-shadow: 0 6px 0 rgba(59, 42, 85, 0.2);
+    transition: transform .08s, filter .08s;
+  }
+  .key.on { transform: translateY(5px) scale(.97); box-shadow: 0 1px 0 rgba(59, 42, 85, 0.2); filter: brightness(1.2); }
+  .grid {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    align-content: start;
+    gap: 10px;
+    padding: 4px 4px 16px;
+  }
+  .thumb {
+    aspect-ratio: 1;
+    border: 3px solid transparent;
+    border-radius: 20px;
+    background: var(--card);
+    box-shadow: 0 4px 0 rgba(59, 42, 85, 0.15);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .thumb img { width: 76%; height: 76%; object-fit: contain; pointer-events: none; }
+  .thumb[aria-pressed="true"] { border-color: var(--accent); background: #fff1e6; }
   .confetti {
     position: fixed;
     top: -40px;
@@ -169,7 +229,10 @@
 <body>
 <header>
   <div class="stars" id="stars" aria-label="score"></div>
-  <button class="lang" id="lang" aria-label="language">🇬🇧</button>
+  <div class="tools">
+    <button class="round-btn hidden" id="homeBtn" aria-label="home">🏠</button>
+    <button class="round-btn" id="lang" aria-label="language">🇬🇧</button>
+  </div>
 </header>
 
 <main>
@@ -178,6 +241,7 @@
   <div class="modes">
     <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small class="mini" data-pics="guitar piano trumpet"></small></button>
     <button class="start" data-mode="listen" aria-label="find the picture from its sound"><span>👂</span><small>🎵🎶🎵</small></button>
+    <button class="start" data-mode="play" aria-label="play the instruments"><span>👆</span><small class="mini" data-pics="drum xylophone trumpet"></small></button>
   </div>
   </div>
 
@@ -186,6 +250,15 @@
     <span id="promptText"></span>
   </div>
   <div class="choices hidden" id="choices"></div>
+
+  <div class="play hidden" id="play">
+    <div class="stage">
+      <button class="big" id="bigPic" aria-label="play the tune"><img alt=""></button>
+      <span class="name" id="bigName"></span>
+    </div>
+    <div class="keys" id="keys" aria-label="notes"></div>
+    <div class="grid" id="grid"></div>
+  </div>
 </main>
 
 <script src="sounds.js"></script>
@@ -284,6 +357,7 @@ let style = "all";
 try { style = localStorage.getItem("quiz-style") || "all"; } catch (e) {}
 let deck = []; // instruments still to ask this game, so nothing repeats
 let mode = "name", round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
+let gameId = 0; // bumps when a game starts or ends, so its pending timers do nothing
 let questionId = 0; // bumps every question so stale timers/speech callbacks do nothing
 
 const $ = id => document.getElementById(id);
@@ -315,9 +389,11 @@ function audio() {
   return ctx;
 }
 // Decode an embedded recording the first time it is needed (data: URIs, so it also
-// works when the page is opened as a local file).
+// works when the page is opened as a local file). Tunes are keyed by instrument id,
+// play-mode sounds by "id#k".
 function recording(id) {
-  const uri = (window.INSTRUMENT_SOUNDS || {})[id];
+  const [iid, k] = id.split("#");
+  const uri = k === undefined ? (window.INSTRUMENT_SOUNDS || {})[iid] : ((window.INSTRUMENT_NOTES || {})[iid] || { samples: [] }).samples[k];
   if (!buffers[id] && uri) {
     const bin = atob(uri.split(",")[1]);
     const bytes = new Uint8Array(bin.length);
@@ -348,6 +424,23 @@ function playInstrument(inst) {
     src.connect(audio().destination);
     src.start();
     current = src;
+  }, () => {});
+}
+// Play-mode keys: a pentatonic scale, so every combination sounds nice.
+const KEY_STEPS = [-5, -3, 0, 2, 4, 7, 9, 12];
+const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#7cb342", "#26a69a", "#1e88e5", "#5e35b1", "#d81b60"];
+function playNote(inst, k) {
+  if (current) { try { current.stop(); } catch (e) {} current = null; playToken++; }
+  const info = window.INSTRUMENT_NOTES[inst.id];
+  // several sounds (drum kit, tabla): one per key; one sound: tuned up and down
+  const many = info.samples.length > 1;
+  const steps = many ? 0 : info.pitched ? KEY_STEPS[k] : KEY_STEPS[k] / 2;
+  recording(inst.id + "#" + (many ? k % info.samples.length : 0)).then(b => {
+    const src = audio().createBufferSource();
+    src.buffer = b;
+    src.playbackRate.value = Math.pow(2, steps / 12);
+    src.connect(audio().destination);
+    src.start();
   }, () => {});
 }
 function cheer() { [523, 659, 784, 1047].forEach((n, i) => tone(n, i * 0.09, 0.25, "triangle", 0.2)); }
@@ -426,7 +519,8 @@ function pick(inst, btn) {
     if (firstTry) { stars++; renderStars(); }
     confetti(12);
     round++;
-    const next = round >= ROUNDS ? finish : askQuestion;
+    const g = gameId;
+    const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
     if (mode === "name") {
       // "Yes! The guitar!" and then let them hear it
       say(TEXT[lang].yes(inst[lang]), () => { playInstrument(inst); setTimeout(next, 3000); });
@@ -450,17 +544,96 @@ function pick(inst, btn) {
   }
 }
 
+// ---------- Play mode ----------
+let playing = null; // instrument on the stage
+
+function selectInstrument(inst, speak = true) {
+  playing = inst;
+  $("bigPic").querySelector("img").src = window.INSTRUMENT_PICTURES[inst.id];
+  $("bigName").textContent = inst[lang].replace(/^(le |la |les |l')/, "");
+  document.querySelectorAll(".thumb").forEach(t => t.setAttribute("aria-pressed", t.dataset.id === inst.id));
+  recording(inst.id + "#0");
+  if (speak) {
+    const q = ++questionId;
+    say(inst[lang], () => { if (q === questionId) playTune(); });
+  }
+}
+
+function playTune() {
+  const big = $("bigPic");
+  big.classList.remove("bounce"); void big.offsetWidth; big.classList.add("bounce");
+  playInstrument(playing);
+}
+
+function enterPlay() {
+  const grid = $("grid");
+  grid.innerHTML = "";
+  stylePool().forEach(inst => {
+    const b = document.createElement("button");
+    b.className = "thumb";
+    b.dataset.id = inst.id;
+    b.setAttribute("aria-label", inst[lang]);
+    const img = document.createElement("img");
+    img.src = window.INSTRUMENT_PICTURES[inst.id];
+    img.alt = "";
+    b.appendChild(img);
+    b.onclick = () => selectInstrument(inst);
+    grid.appendChild(b);
+  });
+  selectInstrument(stylePool()[0], false);
+}
+
+// keys: press, or slide a finger across them
+const pressed = new Map(); // pointerId -> key index
+function keyAt(x, y) {
+  const el = document.elementFromPoint(x, y);
+  return el && el.classList.contains("key") ? +el.dataset.k : -1;
+}
+function press(pointerId, k) {
+  if (pressed.get(pointerId) === k) return;
+  const old = pressed.get(pointerId);
+  if (old !== undefined && old >= 0) $("keys").children[old].classList.remove("on");
+  pressed.set(pointerId, k);
+  if (k >= 0) { $("keys").children[k].classList.add("on"); playNote(playing, k); }
+}
+function release(e) {
+  const k = pressed.get(e.pointerId);
+  if (k !== undefined && k >= 0) $("keys").children[k].classList.remove("on");
+  pressed.delete(e.pointerId);
+}
+
+function goHome() {
+  gameId++; questionId++; playToken++;
+  if (current) { try { current.stop(); } catch (e) {} current = null; }
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  ["promptRow", "choices", "play", "homeBtn"].forEach(id => $(id).classList.add("hidden"));
+  document.querySelector("main").classList.remove("playing");
+  $("home").classList.remove("hidden");
+  stars = 0; renderStars();
+}
+
 function finish() {
   say(TEXT[lang].bravo);
   confetti(60);
   $("promptRow").classList.add("hidden");
   $("choices").classList.add("hidden");
   $("home").classList.remove("hidden");
+  $("homeBtn").classList.add("hidden");
 }
 
 function start(m) {
   audio();
+  gameId++;
   mode = m;
+  $("homeBtn").classList.remove("hidden");
+  if (m === "play") {
+    $("home").classList.add("hidden");
+    $("play").classList.remove("hidden");
+    document.querySelector("main").classList.add("playing");
+    stars = 0; renderStars();
+    enterPlay();
+    return;
+  }
   round = 0; stars = 0; lastAnswer = null; deck = []; renderStars();
   $("speak").textContent = mode === "listen" ? "👂" : "🔊";
   $("home").classList.add("hidden");
@@ -497,6 +670,10 @@ function setLang(l) {
     $("promptText").textContent = promptText();
     if (!locked) ask();
   }
+  if (playing && !$("play").classList.contains("hidden")) {
+    document.querySelectorAll(".thumb").forEach(b => b.setAttribute("aria-label", INSTRUMENTS.find(i => i.id === b.dataset.id)[lang]));
+    selectInstrument(playing, false);
+  }
 }
 
 document.querySelectorAll(".start").forEach(b => b.onclick = () => start(b.dataset.mode));
@@ -523,6 +700,18 @@ document.querySelectorAll(".mini").forEach(el => el.dataset.pics.split(" ").forE
   img.alt = "";
   el.appendChild(img);
 }));
+KEY_COLORS.forEach((c, k) => {
+  const key = document.createElement("div");
+  key.className = "key";
+  key.dataset.k = k;
+  key.style.background = c;
+  $("keys").appendChild(key);
+});
+$("keys").addEventListener("pointerdown", e => { e.preventDefault(); $("keys").releasePointerCapture?.(e.pointerId); press(e.pointerId, keyAt(e.clientX, e.clientY)); });
+$("keys").addEventListener("pointermove", e => { if (pressed.has(e.pointerId)) press(e.pointerId, keyAt(e.clientX, e.clientY)); });
+["pointerup", "pointercancel", "pointerleave"].forEach(t => $("keys").addEventListener(t, release));
+$("bigPic").onclick = () => { questionId++; playTune(); };
+$("homeBtn").onclick = goHome;
 $("lang").onclick = () => setLang(lang === "en" ? "fr" : "en");
 setLang(lang);
 </script>
