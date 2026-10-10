@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Instrument Quiz</title>
+<style>
+  :root {
+    --bg1: #fff6d6;
+    --bg2: #ffd9e8;
+    --card: #ffffff;
+    --ink: #3b2a55;
+    --accent: #ff7a59;
+    --good: #4cc38a;
+    --shadow: 0 8px 0 rgba(59, 42, 85, 0.15);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: "Comic Sans MS", "Chalkboard SE", "Baloo 2", system-ui, sans-serif;
+    color: var(--ink);
+    background: linear-gradient(160deg, var(--bg1), var(--bg2));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    overflow-x: hidden;
+  }
+  header {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+  }
+  .stars { font-size: 2rem; min-height: 2.5rem; letter-spacing: 2px; }
+  .lang {
+    font-size: 1.6rem;
+    border: none;
+    background: var(--card);
+    border-radius: 999px;
+    padding: 6px 14px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+  }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 0 16px 24px;
+  }
+  .prompt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    text-align: center;
+  }
+  .speak {
+    font-size: 2.4rem;
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: white;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .speak:active { transform: translateY(4px); box-shadow: 0 4px 0 rgba(59,42,85,.15); }
+  .choices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(12px, 3vw, 28px);
+    width: 100%;
+  }
+  .choice {
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 32px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    font-size: clamp(4rem, 18vw, 9rem);
+    line-height: 1;
+    cursor: pointer;
+    transition: transform .15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .choice:active { transform: scale(.95); }
+  .choice.right { background: var(--good); animation: bounce .6s; }
+  .choice.wrong { animation: shake .5s; opacity: .45; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%,60% { transform: translateX(-12px) rotate(-4deg); }
+    40%,80% { transform: translateX(12px) rotate(4deg); }
+  }
+  @keyframes bounce {
+    0%,100% { transform: scale(1); }
+    40% { transform: scale(1.15) rotate(-5deg); }
+    70% { transform: scale(.95) rotate(3deg); }
+  }
+  .modes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(20px, 6vw, 56px);
+  }
+  .start {
+    border: none;
+    background: var(--card);
+    border-radius: 40px;
+    width: clamp(150px, 38vw, 260px);
+    aspect-ratio: 1;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    animation: pulse 1.6s infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .start span { font-size: clamp(4rem, 18vw, 7.5rem); line-height: 1; }
+  .start small { font-size: clamp(1.4rem, 6vw, 2.4rem); }
+  .start[data-mode="listen"] { animation-delay: .8s; }
+  @keyframes pulse { 50% { transform: scale(1.08); } }
+  .hidden { display: none !important; }
+  .confetti {
+    position: fixed;
+    top: -40px;
+    font-size: 2rem;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+  @media (max-width: 480px) {
+    .choices { display: flex; flex-wrap: wrap; justify-content: center; }
+    .choice { width: calc(50% - 8px); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="stars" id="stars" aria-label="score"></div>
+  <button class="lang" id="lang" aria-label="language">🇬🇧</button>
+</header>
+
+<main>
+  <div class="modes" id="modes">
+    <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small>🎸🎹🎺</small></button>
+    <button class="start" data-mode="listen" aria-label="find the picture from its sound"><span>👂</span><small>🎵🎶🎵</small></button>
+  </div>
+
+  <div class="prompt hidden" id="promptRow">
+    <button class="speak" id="speak" aria-label="repeat">🔊</button>
+    <span id="promptText"></span>
+  </div>
+  <div class="choices hidden" id="choices"></div>
+</main>
+
+<script src="sounds.js"></script>
+<script>
+// Each instrument: emoji picture and names. Instruments with a real recording in sounds.js
+// play that; drum, maracas and bell are synthesized. `listen` = used in the sound game.
+const INSTRUMENTS = [
+  { id: "guitar",     pic: "🎸", en: "guitar",     fr: "la guitare",   listen: true },
+  { id: "piano",      pic: "🎹", en: "piano",      fr: "le piano",     listen: true },
+  { id: "trumpet",    pic: "🎺", en: "trumpet",    fr: "la trompette", listen: true },
+  { id: "violin",     pic: "🎻", en: "violin",     fr: "le violon",    listen: true },
+  { id: "drum",       pic: "🥁", en: "drum",       fr: "le tambour",   listen: true },
+  { id: "saxophone",  pic: "🎷", en: "saxophone",  fr: "le saxophone", listen: true },
+  { id: "accordion",  pic: "🪗", en: "accordion",  fr: "l'accordéon",  listen: true },
+  { id: "flute",      pic: "🪈", en: "flute",      fr: "la flûte",     listen: true },
+  { id: "maracas",    pic: "🪇", en: "maracas",    fr: "les maracas",  listen: true },
+  { id: "bell",       pic: "🔔", en: "bell",       fr: "la cloche",    listen: true },
+  { id: "banjo",      pic: "🪕", en: "banjo",      fr: "le banjo" },
+  { id: "microphone", pic: "🎤", en: "microphone", fr: "le micro" },
+];
+
+const TEXT = {
+  en: { where: n => `Where is the ${n}?`, listen: "Listen! Who is playing?", yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US" },
+  fr: { where: n => `Où est ${n} ?`, listen: "Écoute ! Qui joue ?", yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR" },
+};
+
+const ROUNDS = 10;
+const CHOICES = 3;
+
+let lang = "en";
+try { lang = localStorage.getItem("quiz-lang") || (navigator.language.startsWith("fr") ? "fr" : "en"); } catch (e) {}
+let mode = "name", round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
+let questionId = 0; // bumps every question so stale timers/speech callbacks do nothing
+
+const $ = id => document.getElementById(id);
+
+// ---------- Speech ----------
+function say(text, onDone) {
+  let done = false;
+  const finish = () => { if (!done) { done = true; onDone && onDone(); } };
+  if (!("speechSynthesis" in window)) { setTimeout(finish, 300); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = TEXT[lang].voice;
+  u.rate = 0.85;
+  u.pitch = 1.2;
+  const v = speechSynthesis.getVoices().find(v => v.lang.replace("_", "-").startsWith(lang));
+  if (v) u.voice = v;
+  u.onend = finish;
+  u.onerror = finish;
+  speechSynthesis.speak(u);
+  if (onDone) setTimeout(finish, 2500); // some browsers never fire onend
+}
+
+// ---------- Sounds ----------
+let ctx, current;
+const buffers = {};
+function audio() {
+  ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+  if (ctx.state === "suspended") ctx.resume();
+  return ctx;
+}
+// Decode the embedded recordings (data: URIs, so it also works when opened as a local file).
+function loadRecordings() {
+  const a = audio();
+  Object.entries(window.INSTRUMENT_SOUNDS || {}).forEach(([id, uri]) => {
+    if (buffers[id]) return;
+    const bin = atob(uri.split(",")[1]);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    buffers[id] = "loading";
+    a.decodeAudioData(bytes.buffer, b => { buffers[id] = b; }, () => { delete buffers[id]; });
+  });
+}
+function tone(freq, start, len, wave = "sine", vol = 0.25) {
+  const a = audio(), o = a.createOscillator(), g = a.createGain();
+  o.type = wave; o.frequency.value = freq;
+  const t = a.currentTime + start;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(vol, t + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.001, t + len);
+  o.connect(g).connect(a.destination);
+  o.start(t); o.stop(t + len + 0.05);
+}
+function noise(start, len, vol, filterFreq) {
+  const a = audio();
+  const buf = a.createBuffer(1, a.sampleRate * len, a.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+  const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+  src.buffer = buf; f.type = "bandpass"; f.frequency.value = filterFreq; g.gain.value = vol;
+  src.connect(f).connect(g).connect(a.destination);
+  src.start(a.currentTime + start);
+}
+const SYNTH = {
+  drum()    { [0, .3, .6, .75, .9].forEach(t => { tone(85, t, .35, "sine", .9); noise(t, .12, .5, 180); }); },
+  maracas() { [0, .2, .4, .5, .6, .8, 1.0].forEach(t => noise(t, .09, .9, 7000)); },
+  bell()    { [0, .9].forEach(t => [[880, .3], [1760, .15], [2410, .1], [3220, .06]].forEach(([f, v]) => tone(f, t, 1.6, "sine", v))); },
+};
+function playInstrument(inst) {
+  if (current) { try { current.stop(); } catch (e) {} current = null; }
+  const b = buffers[inst.id];
+  if (b && b !== "loading") {
+    const src = audio().createBufferSource();
+    src.buffer = b;
+    src.connect(audio().destination);
+    src.start();
+    current = src;
+  } else if (SYNTH[inst.id]) {
+    SYNTH[inst.id]();
+  }
+}
+function cheer() { [523, 659, 784, 1047].forEach((n, i) => tone(n, i * 0.09, 0.25, "triangle", 0.2)); }
+function boop() { tone(220, 0, 0.2, "sine", 0.2); tone(180, 0.12, 0.25, "sine", 0.2); }
+
+// ---------- Game ----------
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+function renderStars() { $("stars").textContent = "⭐".repeat(stars); }
+
+function promptText() { return mode === "listen" ? TEXT[lang].listen : TEXT[lang].where(answer[lang]); }
+
+// Ask (or re-ask) the current question: speak the name, or say "Listen!" then play the sound.
+function ask() {
+  const q = questionId;
+  if (mode === "listen") say(TEXT[lang].listen, () => { if (q === questionId) playInstrument(answer); });
+  else say(TEXT[lang].where(answer[lang]));
+}
+
+function askQuestion() {
+  locked = false; firstTry = true; questionId++;
+  const pool = INSTRUMENTS.filter(i => mode === "name" || i.listen);
+  // never ask the same instrument twice in a row
+  const candidates = pool.filter(i => i !== lastAnswer);
+  answer = candidates[Math.floor(Math.random() * candidates.length)];
+  lastAnswer = answer;
+  const others = shuffle(pool.filter(i => i !== answer)).slice(0, CHOICES - 1);
+  const options = shuffle([answer, ...others]);
+
+  const box = $("choices");
+  box.innerHTML = "";
+  options.forEach(inst => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = inst.pic;
+    b.setAttribute("aria-label", inst[lang]);
+    b.onclick = () => pick(inst, b);
+    box.appendChild(b);
+  });
+  $("promptText").textContent = promptText();
+  ask();
+}
+
+function pick(inst, btn) {
+  if (locked) return;
+  const q = questionId;
+  if (inst === answer) {
+    locked = true;
+    questionId++; // cancel any pending replay of the question
+    btn.classList.add("right");
+    cheer();
+    if (firstTry) { stars++; renderStars(); }
+    confetti(12);
+    round++;
+    const next = round >= ROUNDS ? finish : askQuestion;
+    if (mode === "name") {
+      // "Yes! The guitar!" and then let them hear it
+      say(TEXT[lang].yes(inst[lang]), () => { playInstrument(inst); setTimeout(next, 3000); });
+    } else {
+      say(TEXT[lang].yes(inst[lang]));
+      setTimeout(next, 2400);
+    }
+  } else {
+    firstTry = false;
+    btn.classList.add("wrong");
+    btn.disabled = true;
+    boop();
+    if (mode === "listen") {
+      // play the right sound again so they can compare
+      setTimeout(() => { if (q === questionId) playInstrument(answer); }, 500);
+    } else {
+      // say what they tapped, then gently repeat the question
+      say(`${inst[lang].replace(/^(le |la |les |l')/, "")}. ${TEXT[lang].no}`);
+      setTimeout(() => { if (q === questionId) say(TEXT[lang].where(answer[lang])); }, 1800);
+    }
+  }
+}
+
+function finish() {
+  say(TEXT[lang].bravo);
+  confetti(60);
+  $("promptRow").classList.add("hidden");
+  $("choices").classList.add("hidden");
+  $("modes").classList.remove("hidden");
+}
+
+function start(m) {
+  audio();
+  loadRecordings();
+  mode = m;
+  round = 0; stars = 0; lastAnswer = null; renderStars();
+  $("speak").textContent = mode === "listen" ? "👂" : "🔊";
+  $("modes").classList.add("hidden");
+  $("promptRow").classList.remove("hidden");
+  $("choices").classList.remove("hidden");
+  // give the recordings a moment to decode before the first sound question
+  setTimeout(askQuestion, mode === "listen" ? 400 : 0);
+}
+
+function confetti(n) {
+  const bits = ["🎵", "🎶", "⭐", "🎉", "✨"];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement("span");
+    s.className = "confetti";
+    s.textContent = bits[i % bits.length];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = 1.5 + Math.random() * 1.5 + "s";
+    s.style.animationDelay = Math.random() * 0.5 + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 3600);
+  }
+}
+
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem("quiz-lang", l); } catch (e) {}
+  $("lang").textContent = TEXT[l].flag;
+  document.documentElement.lang = l;
+  if (answer && !$("choices").classList.contains("hidden")) {
+    document.querySelectorAll(".choice").forEach(b => {
+      const inst = INSTRUMENTS.find(i => i.pic === b.textContent);
+      if (inst) b.setAttribute("aria-label", inst[lang]);
+    });
+    $("promptText").textContent = promptText();
+    if (!locked) ask();
+  }
+}
+
+document.querySelectorAll(".start").forEach(b => b.onclick = () => start(b.dataset.mode));
+$("speak").onclick = () => { if (!locked) ask(); };
+$("lang").onclick = () => setLang(lang === "en" ? "fr" : "en");
+setLang(lang);
+</script>
+</body>
+</html>
