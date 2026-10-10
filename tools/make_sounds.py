@@ -7,6 +7,7 @@ The build dir holds the sample libraries (see README for how to fetch them):
   tonejs/<package>/package/<Note>.mp3   tonejs-instrument-*-mp3 packages
   vsco/<folder>/<file>.mp3              tiny-orchestra samples (VSCO 2 Community Edition)
   musyngkite/<folder>/<Note>.mp3        web-music-score-samples (MusyngKite sound bank)
+  salamander/<Note>v10.mp3              @audio-samples/piano-mp3-velocity10 (Salamander Grand Piano)
   sonicpi/<name>.flac                   supersonic-scsynth-samples
   rendered/<id>.wav, <id>.note.wav      GeneralUser GS renders from tools/render_gm.mjs
 Requires ffmpeg. Writes sounds.js next to index.html.
@@ -29,8 +30,9 @@ def at(notes_times, length):
 # Pitched instruments: id -> (library, folder, tune, root note for the play mode).
 # Notes a library lacks are pitch-shifted from the nearest recorded one.
 PITCHED = {
+    # Salamander Grand Piano
+    "piano":           ("salamander", "", S("C4 E4 G4", .4, .5) + chord("C3 C4 E4 G4 C5", 1.2, 1.8, .02), "C4"),
     # tonejs-instruments
-    "piano":           ("tonejs", "piano", S("C4 E4 G4 C5", .4, .5, last=1.6), "C4"),
     "violin":          ("tonejs", "violin", S("G4 C5 E5 G5", .55, .6, last=1.4), "C5"),
     # Bach, Cello Suite No. 1, opening
     "cello":           ("tonejs", "cello", S("G2 D3 B3 A3 B3 D3 B3 D3 G2 E3 C4 B3 C4 E3 C4 E3", .18, .3, last=.6), "C3"),
@@ -105,7 +107,7 @@ NOTE_LEN = 1.6  # seconds of each play-mode note
 NAMES = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 
 def midi(note):
-    m = re.fullmatch(r"([A-G])(#|s|b)?(-?\d)", note)
+    m = re.fullmatch(r"([A-G])(#|s|b)?(-?\d)(v\d+)?", note)  # "C4", "Cs4", "C#4v10"
     if not m: return None
     acc = {"#": 1, "s": 1, "b": -1}.get(m.group(2), 0)
     return NAMES[m.group(1)] + acc + 12 * (int(m.group(3)) + 1)
@@ -118,8 +120,11 @@ def nearest(folder, note):
 def ffmpeg(inputs, parts, out, loud=True):
     """Mix inputs; parts[k] is the filter chain for input k (trim, pitch, delay)."""
     filters = [f"[{k}:a]{p}[n{k}]" for k, p in enumerate(parts)]
-    norm = ",loudnorm=I=-16:TP=-1.5" if loud else ",volume=0dB"
-    filters.append("".join(f"[n{k}]" for k in range(len(parts))) + f"amix=inputs={len(parts)}:normalize=0{norm},aresample=44100[out]")
+    # loudnorm in one pass can overshoot, and MP3 encoding adds a little on sharp plucks,
+    # so a final limiter keeps peaks 3 dB under full scale
+    norm = ",loudnorm=I=-16:TP=-2" if loud else ""
+    filters.append("".join(f"[n{k}]" for k in range(len(parts))) + f"amix=inputs={len(parts)}:normalize=0{norm},"
+                   "aresample=44100,alimiter=limit=0.71:level=false[out]")
     args = [a for f in inputs for a in ("-i", f)]
     subprocess.run(["ffmpeg", "-v", "error", "-y", *args, "-filter_complex", ";".join(filters),
                     "-map", "[out]", "-ac", "1", "-b:a", "64k", out], check=True)
