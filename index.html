@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Instrument Quiz</title>
+<style>
+  :root {
+    --bg1: #fff6d6;
+    --bg2: #ffd9e8;
+    --card: #ffffff;
+    --ink: #3b2a55;
+    --accent: #ff7a59;
+    --good: #4cc38a;
+    --shadow: 0 8px 0 rgba(59, 42, 85, 0.15);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: "Comic Sans MS", "Chalkboard SE", "Baloo 2", system-ui, sans-serif;
+    color: var(--ink);
+    background: linear-gradient(160deg, var(--bg1), var(--bg2));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    overflow-x: hidden;
+  }
+  header {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+  }
+  .stars { font-size: 2rem; min-height: 2.5rem; letter-spacing: 2px; }
+  .lang {
+    font-size: 1.6rem;
+    border: none;
+    background: var(--card);
+    border-radius: 999px;
+    padding: 6px 14px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+  }
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 0 16px 24px;
+  }
+  .prompt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    text-align: center;
+  }
+  .speak {
+    font-size: 2.4rem;
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: white;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .speak:active { transform: translateY(4px); box-shadow: 0 4px 0 rgba(59,42,85,.15); }
+  .choices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(12px, 3vw, 28px);
+    width: 100%;
+  }
+  .choice {
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 32px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    font-size: clamp(4rem, 18vw, 9rem);
+    line-height: 1;
+    cursor: pointer;
+    transition: transform .15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .choice:active { transform: scale(.95); }
+  .choice.right { background: var(--good); animation: bounce .6s; }
+  .choice.wrong { animation: shake .5s; opacity: .45; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%,60% { transform: translateX(-12px) rotate(-4deg); }
+    40%,80% { transform: translateX(12px) rotate(4deg); }
+  }
+  @keyframes bounce {
+    0%,100% { transform: scale(1); }
+    40% { transform: scale(1.15) rotate(-5deg); }
+    70% { transform: scale(.95) rotate(3deg); }
+  }
+  .start {
+    font-size: clamp(5rem, 25vw, 10rem);
+    border: none;
+    background: var(--card);
+    border-radius: 50%;
+    width: 1.6em; height: 1.6em;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse { 50% { transform: scale(1.08); } }
+  .hidden { display: none !important; }
+  .confetti {
+    position: fixed;
+    top: -40px;
+    font-size: 2rem;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+  @media (max-width: 480px) {
+    .choices { display: flex; flex-wrap: wrap; justify-content: center; }
+    .choice { width: calc(50% - 8px); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="stars" id="stars" aria-label="score"></div>
+  <button class="lang" id="lang" aria-label="language">🇬🇧</button>
+</header>
+
+<main>
+  <button class="start" id="start" aria-label="start">▶️</button>
+
+  <div class="prompt hidden" id="promptRow">
+    <button class="speak" id="speak" aria-label="repeat">🔊</button>
+    <span id="promptText"></span>
+  </div>
+  <div class="choices hidden" id="choices"></div>
+</main>
+
+<script>
+// Each instrument: emoji picture, names, and a simple synth "voice" for its sound.
+const INSTRUMENTS = [
+  { id: "guitar",    pic: "🎸", en: "guitar",    fr: "la guitare",    sound: { wave: "triangle", notes: [196, 247, 294, 392], step: 0.12, len: 0.6 } },
+  { id: "piano",     pic: "🎹", en: "piano",     fr: "le piano",      sound: { wave: "sine",     notes: [262, 330, 392, 523], step: 0.18, len: 0.5 } },
+  { id: "trumpet",   pic: "🎺", en: "trumpet",   fr: "la trompette",  sound: { wave: "sawtooth", notes: [392, 392, 523], step: 0.2, len: 0.18 } },
+  { id: "violin",    pic: "🎻", en: "violin",    fr: "le violon",     sound: { wave: "sawtooth", notes: [440, 494], step: 0.45, len: 0.45, soft: true } },
+  { id: "drum",      pic: "🥁", en: "drum",      fr: "le tambour",    sound: { drum: true } },
+  { id: "saxophone", pic: "🎷", en: "saxophone", fr: "le saxophone",  sound: { wave: "square",   notes: [233, 277, 311], step: 0.22, len: 0.22, soft: true } },
+  { id: "accordion", pic: "🪗", en: "accordion", fr: "l'accordéon",   sound: { wave: "square",   notes: [349, 440], step: 0.3, len: 0.3, soft: true } },
+  { id: "banjo",     pic: "🪕", en: "banjo",     fr: "le banjo",      sound: { wave: "triangle", notes: [392, 494, 587, 494, 392], step: 0.08, len: 0.15 } },
+  { id: "flute",     pic: "🪈", en: "flute",     fr: "la flûte",      sound: { wave: "sine",     notes: [784, 880, 988], step: 0.25, len: 0.25 } },
+  { id: "maracas",   pic: "🪇", en: "maracas",   fr: "les maracas",   sound: { shaker: true } },
+  { id: "bell",      pic: "🔔", en: "bell",      fr: "la cloche",     sound: { wave: "sine",     notes: [1047, 1047], step: 0.5, len: 1.0 } },
+  { id: "microphone",pic: "🎤", en: "microphone",fr: "le micro",      sound: { wave: "sine",     notes: [523, 587, 659, 523], step: 0.18, len: 0.18 } },
+];
+
+const TEXT = {
+  en: { where: n => `Where is the ${n}?`, yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US" },
+  fr: { where: n => `Où est ${n} ?`,      yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR" },
+};
+
+const ROUNDS = 10;
+const CHOICES = 3;
+
+let lang = "en";
+try { lang = localStorage.getItem("quiz-lang") || (navigator.language.startsWith("fr") ? "fr" : "en"); } catch (e) {}
+let round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
+
+const $ = id => document.getElementById(id);
+
+// ---------- Speech ----------
+function say(text) {
+  if (!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = TEXT[lang].voice;
+  u.rate = 0.85;
+  u.pitch = 1.2;
+  const v = speechSynthesis.getVoices().find(v => v.lang.replace("_", "-").startsWith(lang));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+// ---------- Sounds (Web Audio, no files needed) ----------
+let ctx;
+function audio() {
+  ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+  if (ctx.state === "suspended") ctx.resume();
+  return ctx;
+}
+function tone(freq, start, len, wave = "sine", vol = 0.25) {
+  const a = audio(), o = a.createOscillator(), g = a.createGain();
+  o.type = wave; o.frequency.value = freq;
+  const t = a.currentTime + start;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(vol, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.001, t + len);
+  o.connect(g).connect(a.destination);
+  o.start(t); o.stop(t + len + 0.05);
+}
+function noise(start, len, vol, filterFreq) {
+  const a = audio();
+  const buf = a.createBuffer(1, a.sampleRate * len, a.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+  const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+  src.buffer = buf; f.type = "bandpass"; f.frequency.value = filterFreq; g.gain.value = vol;
+  src.connect(f).connect(g).connect(a.destination);
+  src.start(a.currentTime + start);
+}
+function playInstrument(inst) {
+  const s = inst.sound;
+  if (s.drum) {
+    [0, 0.25, 0.5].forEach(t => { tone(90, t, 0.3, "sine", 0.6); noise(t, 0.1, 0.3, 200); });
+    return;
+  }
+  if (s.shaker) {
+    [0, 0.15, 0.3, 0.45].forEach(t => noise(t, 0.1, 0.5, 6000));
+    return;
+  }
+  s.notes.forEach((n, i) => tone(n, i * s.step, s.len, s.wave, s.soft ? 0.1 : 0.2));
+}
+function cheer() { [523, 659, 784, 1047].forEach((n, i) => tone(n, i * 0.09, 0.25, "triangle", 0.2)); }
+function boop() { tone(220, 0, 0.2, "sine", 0.2); tone(180, 0.12, 0.25, "sine", 0.2); }
+
+// ---------- Game ----------
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+function renderStars() { $("stars").textContent = "⭐".repeat(stars); }
+
+function askQuestion() {
+  locked = false; firstTry = true;
+  // never ask the same instrument twice in a row
+  const pool = INSTRUMENTS.filter(i => i !== lastAnswer);
+  answer = pool[Math.floor(Math.random() * pool.length)];
+  lastAnswer = answer;
+  const others = shuffle(INSTRUMENTS.filter(i => i !== answer)).slice(0, CHOICES - 1);
+  const options = shuffle([answer, ...others]);
+
+  const box = $("choices");
+  box.innerHTML = "";
+  options.forEach(inst => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = inst.pic;
+    b.setAttribute("aria-label", inst[lang]);
+    b.onclick = () => pick(inst, b);
+    box.appendChild(b);
+  });
+  $("promptText").textContent = TEXT[lang].where(answer[lang]);
+  say(TEXT[lang].where(answer[lang]));
+}
+
+function pick(inst, btn) {
+  if (locked) return;
+  if (inst === answer) {
+    locked = true;
+    btn.classList.add("right");
+    cheer();
+    setTimeout(() => playInstrument(inst), 450);
+    say(TEXT[lang].yes(inst[lang]));
+    if (firstTry) { stars++; renderStars(); }
+    confetti(12);
+    round++;
+    setTimeout(round >= ROUNDS ? finish : askQuestion, 2600);
+  } else {
+    firstTry = false;
+    btn.classList.add("wrong");
+    btn.disabled = true;
+    boop();
+    playInstrument(inst);
+    // say what they tapped, then gently repeat the question
+    say(`${inst[lang].replace(/^(le |la |les |l')/, "")}. ${TEXT[lang].no}`);
+    setTimeout(() => say(TEXT[lang].where(answer[lang])), 1800);
+  }
+}
+
+function finish() {
+  say(TEXT[lang].bravo);
+  confetti(60);
+  $("promptRow").classList.add("hidden");
+  $("choices").classList.add("hidden");
+  $("start").textContent = "🔁";
+  $("start").classList.remove("hidden");
+}
+
+function start() {
+  audio();
+  round = 0; stars = 0; renderStars();
+  $("start").classList.add("hidden");
+  $("promptRow").classList.remove("hidden");
+  $("choices").classList.remove("hidden");
+  askQuestion();
+}
+
+function confetti(n) {
+  const bits = ["🎵", "🎶", "⭐", "🎉", "✨"];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement("span");
+    s.className = "confetti";
+    s.textContent = bits[i % bits.length];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = 1.5 + Math.random() * 1.5 + "s";
+    s.style.animationDelay = Math.random() * 0.5 + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 3600);
+  }
+}
+
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem("quiz-lang", l); } catch (e) {}
+  $("lang").textContent = TEXT[l].flag;
+  document.documentElement.lang = l;
+  if (answer && !$("choices").classList.contains("hidden")) {
+    $("promptText").textContent = TEXT[lang].where(answer[lang]);
+    say(TEXT[lang].where(answer[lang]));
+  }
+}
+
+$("start").onclick = start;
+$("speak").onclick = () => say(TEXT[lang].where(answer[lang]));
+$("lang").onclick = () => setLang(lang === "en" ? "fr" : "en");
+if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = () => {};
+setLang(lang);
+</script>
+</body>
+</html>
