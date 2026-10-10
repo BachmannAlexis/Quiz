@@ -86,14 +86,14 @@
     border-radius: 32px;
     background: var(--card);
     box-shadow: var(--shadow);
-    font-size: clamp(4rem, 18vw, 9rem);
-    line-height: 1;
+    padding: 0;
     cursor: pointer;
     transition: transform .15s;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  .choice img { width: 72%; height: 72%; object-fit: contain; pointer-events: none; }
   .choice:active { transform: scale(.95); }
   .choice.right { background: var(--good); animation: bounce .6s; }
   .choice.wrong { animation: shake .5s; opacity: .45; }
@@ -129,7 +129,8 @@
     gap: 4px;
   }
   .start span { font-size: clamp(4rem, 18vw, 7.5rem); line-height: 1; }
-  .start small { font-size: clamp(1.4rem, 6vw, 2.4rem); }
+  .start small { font-size: clamp(1.4rem, 6vw, 2.4rem); display: flex; gap: 4px; }
+  .start small img { width: 1em; height: 1em; }
   .start[data-mode="listen"] { animation-delay: .8s; }
   @keyframes pulse { 50% { transform: scale(1.08); } }
   .hidden { display: none !important; }
@@ -155,7 +156,7 @@
 
 <main>
   <div class="modes" id="modes">
-    <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small>🎸🎹🎺</small></button>
+    <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small class="mini" data-pics="guitar piano trumpet"></small></button>
     <button class="start" data-mode="listen" aria-label="find the picture from its sound"><span>👂</span><small>🎵🎶🎵</small></button>
   </div>
 
@@ -167,22 +168,28 @@
 </main>
 
 <script src="sounds.js"></script>
+<script src="pictures.js"></script>
 <script>
-// Each instrument: emoji picture and names. Instruments with a real recording in sounds.js
-// play that; drum, maracas and bell are synthesized. `listen` = used in the sound game.
+// Each instrument: names, and a family so the sound game never shows two look-alike
+// sounds (trumpet + trombone) together. Pictures are in pictures.js, sounds in sounds.js.
 const INSTRUMENTS = [
-  { id: "guitar",     pic: "🎸", en: "guitar",     fr: "la guitare",   listen: true },
-  { id: "piano",      pic: "🎹", en: "piano",      fr: "le piano",     listen: true },
-  { id: "trumpet",    pic: "🎺", en: "trumpet",    fr: "la trompette", listen: true },
-  { id: "violin",     pic: "🎻", en: "violin",     fr: "le violon",    listen: true },
-  { id: "drum",       pic: "🥁", en: "drum",       fr: "le tambour",   listen: true },
-  { id: "saxophone",  pic: "🎷", en: "saxophone",  fr: "le saxophone", listen: true },
-  { id: "accordion",  pic: "🪗", en: "accordion",  fr: "l'accordéon",  listen: true },
-  { id: "flute",      pic: "🪈", en: "flute",      fr: "la flûte",     listen: true },
-  { id: "maracas",    pic: "🪇", en: "maracas",    fr: "les maracas",  listen: true },
-  { id: "bell",       pic: "🔔", en: "bell",       fr: "la cloche",    listen: true },
-  { id: "banjo",      pic: "🪕", en: "banjo",      fr: "le banjo" },
-  { id: "microphone", pic: "🎤", en: "microphone", fr: "le micro" },
+  { id: "guitar",     en: "guitar",     fr: "la guitare",   family: "plucked" },
+  { id: "banjo",      en: "banjo",      fr: "le banjo",     family: "plucked" },
+  { id: "harp",       en: "harp",       fr: "la harpe",     family: "plucked" },
+  { id: "violin",     en: "violin",     fr: "le violon",    family: "bowed" },
+  { id: "piano",      en: "piano",      fr: "le piano",     family: "keys" },
+  { id: "accordion",  en: "accordion",  fr: "l'accordéon",  family: "keys" },
+  { id: "trumpet",    en: "trumpet",    fr: "la trompette", family: "brass" },
+  { id: "trombone",   en: "trombone",   fr: "le trombone",  family: "brass" },
+  { id: "horn",       en: "horn",       fr: "le cor",       family: "brass" },
+  { id: "saxophone",  en: "saxophone",  fr: "le saxophone", family: "brass" },
+  { id: "flute",      en: "flute",      fr: "la flûte",     family: "wind" },
+  { id: "drum",       en: "drum",       fr: "le tambour",   family: "drum" },
+  { id: "maracas",    en: "maracas",    fr: "les maracas",  family: "shaker" },
+  { id: "tambourine", en: "tambourine", fr: "le tambourin", family: "shaker" },
+  { id: "triangle",   en: "triangle",   fr: "le triangle",  family: "ring" },
+  { id: "bell",       en: "bell",       fr: "la cloche",    family: "ring" },
+  { id: "xylophone",  en: "xylophone",  fr: "le xylophone", family: "ring" },
 ];
 
 const TEXT = {
@@ -219,8 +226,8 @@ function say(text, onDone) {
 }
 
 // ---------- Sounds ----------
-let ctx, current;
-const buffers = {};
+let ctx, current, playToken = 0;
+const buffers = {}; // id -> Promise<AudioBuffer>
 function audio() {
   ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
   if (ctx.state === "suspended") ctx.resume();
@@ -234,8 +241,8 @@ function loadRecordings() {
     const bin = atob(uri.split(",")[1]);
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    buffers[id] = "loading";
-    a.decodeAudioData(bytes.buffer, b => { buffers[id] = b; }, () => { delete buffers[id]; });
+    buffers[id] = new Promise((ok, fail) => a.decodeAudioData(bytes.buffer, ok, fail));
+    buffers[id].catch(() => { delete buffers[id]; });
   });
 }
 function tone(freq, start, len, wave = "sine", vol = 0.25) {
@@ -248,33 +255,18 @@ function tone(freq, start, len, wave = "sine", vol = 0.25) {
   o.connect(g).connect(a.destination);
   o.start(t); o.stop(t + len + 0.05);
 }
-function noise(start, len, vol, filterFreq) {
-  const a = audio();
-  const buf = a.createBuffer(1, a.sampleRate * len, a.sampleRate);
-  const d = buf.getChannelData(0);
-  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
-  const src = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
-  src.buffer = buf; f.type = "bandpass"; f.frequency.value = filterFreq; g.gain.value = vol;
-  src.connect(f).connect(g).connect(a.destination);
-  src.start(a.currentTime + start);
-}
-const SYNTH = {
-  drum()    { [0, .3, .6, .75, .9].forEach(t => { tone(85, t, .35, "sine", .9); noise(t, .12, .5, 180); }); },
-  maracas() { [0, .2, .4, .5, .6, .8, 1.0].forEach(t => noise(t, .09, .9, 7000)); },
-  bell()    { [0, .9].forEach(t => [[880, .3], [1760, .15], [2410, .1], [3220, .06]].forEach(([f, v]) => tone(f, t, 1.6, "sine", v))); },
-};
 function playInstrument(inst) {
   if (current) { try { current.stop(); } catch (e) {} current = null; }
-  const b = buffers[inst.id];
-  if (b && b !== "loading") {
+  const token = ++playToken;
+  // waits for the recording if it is still decoding; a newer play request wins
+  (buffers[inst.id] || Promise.reject()).then(b => {
+    if (token !== playToken) return;
     const src = audio().createBufferSource();
     src.buffer = b;
     src.connect(audio().destination);
     src.start();
     current = src;
-  } else if (SYNTH[inst.id]) {
-    SYNTH[inst.id]();
-  }
+  }, () => {});
 }
 function cheer() { [523, 659, 784, 1047].forEach((n, i) => tone(n, i * 0.09, 0.25, "triangle", 0.2)); }
 function boop() { tone(220, 0, 0.2, "sine", 0.2); tone(180, 0.12, 0.25, "sine", 0.2); }
@@ -299,12 +291,15 @@ function ask() {
 
 function askQuestion() {
   locked = false; firstTry = true; questionId++;
-  const pool = INSTRUMENTS.filter(i => mode === "name" || i.listen);
   // never ask the same instrument twice in a row
-  const candidates = pool.filter(i => i !== lastAnswer);
+  const candidates = INSTRUMENTS.filter(i => i !== lastAnswer);
   answer = candidates[Math.floor(Math.random() * candidates.length)];
   lastAnswer = answer;
-  const others = shuffle(pool.filter(i => i !== answer)).slice(0, CHOICES - 1);
+  // wrong choices come from different families, so the sounds are easy to tell apart
+  const others = [];
+  for (const i of shuffle(INSTRUMENTS)) {
+    if (others.length < CHOICES - 1 && i.family !== answer.family && !others.some(o => o.family === i.family)) others.push(i);
+  }
   const options = shuffle([answer, ...others]);
 
   const box = $("choices");
@@ -312,8 +307,12 @@ function askQuestion() {
   options.forEach(inst => {
     const b = document.createElement("button");
     b.className = "choice";
-    b.textContent = inst.pic;
+    b.dataset.id = inst.id;
     b.setAttribute("aria-label", inst[lang]);
+    const img = document.createElement("img");
+    img.src = window.INSTRUMENT_PICTURES[inst.id];
+    img.alt = "";
+    b.appendChild(img);
     b.onclick = () => pick(inst, b);
     box.appendChild(b);
   });
@@ -373,8 +372,7 @@ function start(m) {
   $("modes").classList.add("hidden");
   $("promptRow").classList.remove("hidden");
   $("choices").classList.remove("hidden");
-  // give the recordings a moment to decode before the first sound question
-  setTimeout(askQuestion, mode === "listen" ? 400 : 0);
+  askQuestion();
 }
 
 function confetti(n) {
@@ -398,7 +396,7 @@ function setLang(l) {
   document.documentElement.lang = l;
   if (answer && !$("choices").classList.contains("hidden")) {
     document.querySelectorAll(".choice").forEach(b => {
-      const inst = INSTRUMENTS.find(i => i.pic === b.textContent);
+      const inst = INSTRUMENTS.find(i => i.id === b.dataset.id);
       if (inst) b.setAttribute("aria-label", inst[lang]);
     });
     $("promptText").textContent = promptText();
@@ -408,6 +406,12 @@ function setLang(l) {
 
 document.querySelectorAll(".start").forEach(b => b.onclick = () => start(b.dataset.mode));
 $("speak").onclick = () => { if (!locked) ask(); };
+document.querySelectorAll(".mini").forEach(el => el.dataset.pics.split(" ").forEach(id => {
+  const img = document.createElement("img");
+  img.src = window.INSTRUMENT_PICTURES[id];
+  img.alt = "";
+  el.appendChild(img);
+}));
 $("lang").onclick = () => setLang(lang === "en" ? "fr" : "en");
 setLang(lang);
 </script>
