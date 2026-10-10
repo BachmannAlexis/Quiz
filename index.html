@@ -91,10 +91,19 @@
     cursor: pointer;
     transition: transform .15s;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 4%;
+    font: inherit;
+    color: var(--ink);
   }
-  .choice img { width: 72%; height: 72%; object-fit: contain; pointer-events: none; }
+  .choice img { width: 72%; height: 72%; object-fit: contain; pointer-events: none; transition: height .2s; }
+  /* the instrument's name appears once the card is chosen */
+  .choice .label { display: none; font-size: clamp(1rem, 3.6vw, 1.6rem); line-height: 1.1; padding: 0 6px; text-align: center; }
+  .choice.named img { height: 56%; }
+  .choice.named .label { display: block; }
+  .choice.right .label { color: #fff; font-weight: bold; }
   .choice:active { transform: scale(.95); }
   .choice.right { background: var(--good); animation: bounce .6s; }
   .choice.wrong { animation: shake .5s; opacity: .45; }
@@ -500,7 +509,9 @@ function askQuestion() {
     const img = document.createElement("img");
     img.src = window.INSTRUMENT_PICTURES[inst.id];
     img.alt = "";
-    b.appendChild(img);
+    const label = document.createElement("span");
+    label.className = "label";
+    b.append(img, label);
     b.onclick = () => pick(inst, b);
     box.appendChild(b);
   });
@@ -508,13 +519,26 @@ function askQuestion() {
   ask();
 }
 
+// "la flûte à bec" -> "Flûte à bec", for the written name on a card
+function shortName(inst) {
+  const n = inst[lang].replace(/^(le |la |les |l')/, "");
+  return n.charAt(0).toUpperCase() + n.slice(1);
+}
+
+function showName(btn, inst) {
+  btn.querySelector(".label").textContent = shortName(inst);
+  btn.classList.add("named");
+}
+
 function pick(inst, btn) {
   if (locked) return;
   const q = questionId;
+  showName(btn, inst);
   if (inst === answer) {
     locked = true;
     questionId++; // cancel any pending replay of the question
     btn.classList.add("right");
+    $("promptText").textContent = TEXT[lang].yes(inst[lang]);
     cheer();
     if (firstTry) { stars++; renderStars(); }
     confetti(12);
@@ -666,8 +690,9 @@ function setLang(l) {
     document.querySelectorAll(".choice").forEach(b => {
       const inst = INSTRUMENTS.find(i => i.id === b.dataset.id);
       if (inst) b.setAttribute("aria-label", inst[lang]);
+      if (inst && b.classList.contains("named")) b.querySelector(".label").textContent = shortName(inst);
     });
-    $("promptText").textContent = promptText();
+    $("promptText").textContent = locked ? TEXT[lang].yes(answer[lang]) : promptText();
     if (!locked) ask();
   }
   if (playing && !$("play").classList.contains("hidden")) {
