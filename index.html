@@ -107,16 +107,30 @@
     40% { transform: scale(1.15) rotate(-5deg); }
     70% { transform: scale(.95) rotate(3deg); }
   }
+  .modes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(20px, 6vw, 56px);
+  }
   .start {
-    font-size: clamp(5rem, 25vw, 10rem);
     border: none;
     background: var(--card);
-    border-radius: 50%;
-    width: 1.6em; height: 1.6em;
+    border-radius: 40px;
+    width: clamp(150px, 38vw, 260px);
+    aspect-ratio: 1;
     box-shadow: var(--shadow);
     cursor: pointer;
     animation: pulse 1.6s infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
   }
+  .start span { font-size: clamp(4rem, 18vw, 7.5rem); line-height: 1; }
+  .start small { font-size: clamp(1.4rem, 6vw, 2.4rem); }
+  .start[data-mode="listen"] { animation-delay: .8s; }
   @keyframes pulse { 50% { transform: scale(1.08); } }
   .hidden { display: none !important; }
   .confetti {
@@ -140,7 +154,10 @@
 </header>
 
 <main>
-  <button class="start" id="start" aria-label="start">▶️</button>
+  <div class="modes" id="modes">
+    <button class="start" data-mode="name" aria-label="find the picture from its name"><span>🗣️</span><small>🎸🎹🎺</small></button>
+    <button class="start" data-mode="listen" aria-label="find the picture from its sound"><span>👂</span><small>🎵🎶🎵</small></button>
+  </div>
 
   <div class="prompt hidden" id="promptRow">
     <button class="speak" id="speak" aria-label="repeat">🔊</button>
@@ -149,26 +166,28 @@
   <div class="choices hidden" id="choices"></div>
 </main>
 
+<script src="sounds.js"></script>
 <script>
-// Each instrument: emoji picture, names, and a simple synth "voice" for its sound.
+// Each instrument: emoji picture and names. Instruments with a real recording in sounds.js
+// play that; drum, maracas and bell are synthesized. `listen` = used in the sound game.
 const INSTRUMENTS = [
-  { id: "guitar",    pic: "🎸", en: "guitar",    fr: "la guitare",    sound: { wave: "triangle", notes: [196, 247, 294, 392], step: 0.12, len: 0.6 } },
-  { id: "piano",     pic: "🎹", en: "piano",     fr: "le piano",      sound: { wave: "sine",     notes: [262, 330, 392, 523], step: 0.18, len: 0.5 } },
-  { id: "trumpet",   pic: "🎺", en: "trumpet",   fr: "la trompette",  sound: { wave: "sawtooth", notes: [392, 392, 523], step: 0.2, len: 0.18 } },
-  { id: "violin",    pic: "🎻", en: "violin",    fr: "le violon",     sound: { wave: "sawtooth", notes: [440, 494], step: 0.45, len: 0.45, soft: true } },
-  { id: "drum",      pic: "🥁", en: "drum",      fr: "le tambour",    sound: { drum: true } },
-  { id: "saxophone", pic: "🎷", en: "saxophone", fr: "le saxophone",  sound: { wave: "square",   notes: [233, 277, 311], step: 0.22, len: 0.22, soft: true } },
-  { id: "accordion", pic: "🪗", en: "accordion", fr: "l'accordéon",   sound: { wave: "square",   notes: [349, 440], step: 0.3, len: 0.3, soft: true } },
-  { id: "banjo",     pic: "🪕", en: "banjo",     fr: "le banjo",      sound: { wave: "triangle", notes: [392, 494, 587, 494, 392], step: 0.08, len: 0.15 } },
-  { id: "flute",     pic: "🪈", en: "flute",     fr: "la flûte",      sound: { wave: "sine",     notes: [784, 880, 988], step: 0.25, len: 0.25 } },
-  { id: "maracas",   pic: "🪇", en: "maracas",   fr: "les maracas",   sound: { shaker: true } },
-  { id: "bell",      pic: "🔔", en: "bell",      fr: "la cloche",     sound: { wave: "sine",     notes: [1047, 1047], step: 0.5, len: 1.0 } },
-  { id: "microphone",pic: "🎤", en: "microphone",fr: "le micro",      sound: { wave: "sine",     notes: [523, 587, 659, 523], step: 0.18, len: 0.18 } },
+  { id: "guitar",     pic: "🎸", en: "guitar",     fr: "la guitare",   listen: true },
+  { id: "piano",      pic: "🎹", en: "piano",      fr: "le piano",     listen: true },
+  { id: "trumpet",    pic: "🎺", en: "trumpet",    fr: "la trompette", listen: true },
+  { id: "violin",     pic: "🎻", en: "violin",     fr: "le violon",    listen: true },
+  { id: "drum",       pic: "🥁", en: "drum",       fr: "le tambour",   listen: true },
+  { id: "saxophone",  pic: "🎷", en: "saxophone",  fr: "le saxophone", listen: true },
+  { id: "accordion",  pic: "🪗", en: "accordion",  fr: "l'accordéon",  listen: true },
+  { id: "flute",      pic: "🪈", en: "flute",      fr: "la flûte",     listen: true },
+  { id: "maracas",    pic: "🪇", en: "maracas",    fr: "les maracas",  listen: true },
+  { id: "bell",       pic: "🔔", en: "bell",       fr: "la cloche",    listen: true },
+  { id: "banjo",      pic: "🪕", en: "banjo",      fr: "le banjo" },
+  { id: "microphone", pic: "🎤", en: "microphone", fr: "le micro" },
 ];
 
 const TEXT = {
-  en: { where: n => `Where is the ${n}?`, yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US" },
-  fr: { where: n => `Où est ${n} ?`,      yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR" },
+  en: { where: n => `Where is the ${n}?`, listen: "Listen! Who is playing?", yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo! You did it!", flag: "🇬🇧", voice: "en-US" },
+  fr: { where: n => `Où est ${n} ?`, listen: "Écoute ! Qui joue ?", yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo ! Tu as réussi !", flag: "🇫🇷", voice: "fr-FR" },
 };
 
 const ROUNDS = 10;
@@ -176,13 +195,16 @@ const CHOICES = 3;
 
 let lang = "en";
 try { lang = localStorage.getItem("quiz-lang") || (navigator.language.startsWith("fr") ? "fr" : "en"); } catch (e) {}
-let round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
+let mode = "name", round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
+let questionId = 0; // bumps every question so stale timers/speech callbacks do nothing
 
 const $ = id => document.getElementById(id);
 
 // ---------- Speech ----------
-function say(text) {
-  if (!("speechSynthesis" in window)) return;
+function say(text, onDone) {
+  let done = false;
+  const finish = () => { if (!done) { done = true; onDone && onDone(); } };
+  if (!("speechSynthesis" in window)) { setTimeout(finish, 300); return; }
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = TEXT[lang].voice;
@@ -190,22 +212,38 @@ function say(text) {
   u.pitch = 1.2;
   const v = speechSynthesis.getVoices().find(v => v.lang.replace("_", "-").startsWith(lang));
   if (v) u.voice = v;
+  u.onend = finish;
+  u.onerror = finish;
   speechSynthesis.speak(u);
+  if (onDone) setTimeout(finish, 2500); // some browsers never fire onend
 }
 
-// ---------- Sounds (Web Audio, no files needed) ----------
-let ctx;
+// ---------- Sounds ----------
+let ctx, current;
+const buffers = {};
 function audio() {
   ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
   if (ctx.state === "suspended") ctx.resume();
   return ctx;
+}
+// Decode the embedded recordings (data: URIs, so it also works when opened as a local file).
+function loadRecordings() {
+  const a = audio();
+  Object.entries(window.INSTRUMENT_SOUNDS || {}).forEach(([id, uri]) => {
+    if (buffers[id]) return;
+    const bin = atob(uri.split(",")[1]);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    buffers[id] = "loading";
+    a.decodeAudioData(bytes.buffer, b => { buffers[id] = b; }, () => { delete buffers[id]; });
+  });
 }
 function tone(freq, start, len, wave = "sine", vol = 0.25) {
   const a = audio(), o = a.createOscillator(), g = a.createGain();
   o.type = wave; o.frequency.value = freq;
   const t = a.currentTime + start;
   g.gain.setValueAtTime(0, t);
-  g.gain.linearRampToValueAtTime(vol, t + 0.02);
+  g.gain.linearRampToValueAtTime(vol, t + 0.01);
   g.gain.exponentialRampToValueAtTime(0.001, t + len);
   o.connect(g).connect(a.destination);
   o.start(t); o.stop(t + len + 0.05);
@@ -220,17 +258,23 @@ function noise(start, len, vol, filterFreq) {
   src.connect(f).connect(g).connect(a.destination);
   src.start(a.currentTime + start);
 }
+const SYNTH = {
+  drum()    { [0, .3, .6, .75, .9].forEach(t => { tone(85, t, .35, "sine", .9); noise(t, .12, .5, 180); }); },
+  maracas() { [0, .2, .4, .5, .6, .8, 1.0].forEach(t => noise(t, .09, .9, 7000)); },
+  bell()    { [0, .9].forEach(t => [[880, .3], [1760, .15], [2410, .1], [3220, .06]].forEach(([f, v]) => tone(f, t, 1.6, "sine", v))); },
+};
 function playInstrument(inst) {
-  const s = inst.sound;
-  if (s.drum) {
-    [0, 0.25, 0.5].forEach(t => { tone(90, t, 0.3, "sine", 0.6); noise(t, 0.1, 0.3, 200); });
-    return;
+  if (current) { try { current.stop(); } catch (e) {} current = null; }
+  const b = buffers[inst.id];
+  if (b && b !== "loading") {
+    const src = audio().createBufferSource();
+    src.buffer = b;
+    src.connect(audio().destination);
+    src.start();
+    current = src;
+  } else if (SYNTH[inst.id]) {
+    SYNTH[inst.id]();
   }
-  if (s.shaker) {
-    [0, 0.15, 0.3, 0.45].forEach(t => noise(t, 0.1, 0.5, 6000));
-    return;
-  }
-  s.notes.forEach((n, i) => tone(n, i * s.step, s.len, s.wave, s.soft ? 0.1 : 0.2));
 }
 function cheer() { [523, 659, 784, 1047].forEach((n, i) => tone(n, i * 0.09, 0.25, "triangle", 0.2)); }
 function boop() { tone(220, 0, 0.2, "sine", 0.2); tone(180, 0.12, 0.25, "sine", 0.2); }
@@ -244,13 +288,23 @@ function shuffle(arr) {
 
 function renderStars() { $("stars").textContent = "⭐".repeat(stars); }
 
+function promptText() { return mode === "listen" ? TEXT[lang].listen : TEXT[lang].where(answer[lang]); }
+
+// Ask (or re-ask) the current question: speak the name, or say "Listen!" then play the sound.
+function ask() {
+  const q = questionId;
+  if (mode === "listen") say(TEXT[lang].listen, () => { if (q === questionId) playInstrument(answer); });
+  else say(TEXT[lang].where(answer[lang]));
+}
+
 function askQuestion() {
-  locked = false; firstTry = true;
+  locked = false; firstTry = true; questionId++;
+  const pool = INSTRUMENTS.filter(i => mode === "name" || i.listen);
   // never ask the same instrument twice in a row
-  const pool = INSTRUMENTS.filter(i => i !== lastAnswer);
-  answer = pool[Math.floor(Math.random() * pool.length)];
+  const candidates = pool.filter(i => i !== lastAnswer);
+  answer = candidates[Math.floor(Math.random() * candidates.length)];
   lastAnswer = answer;
-  const others = shuffle(INSTRUMENTS.filter(i => i !== answer)).slice(0, CHOICES - 1);
+  const others = shuffle(pool.filter(i => i !== answer)).slice(0, CHOICES - 1);
   const options = shuffle([answer, ...others]);
 
   const box = $("choices");
@@ -263,31 +317,42 @@ function askQuestion() {
     b.onclick = () => pick(inst, b);
     box.appendChild(b);
   });
-  $("promptText").textContent = TEXT[lang].where(answer[lang]);
-  say(TEXT[lang].where(answer[lang]));
+  $("promptText").textContent = promptText();
+  ask();
 }
 
 function pick(inst, btn) {
   if (locked) return;
+  const q = questionId;
   if (inst === answer) {
     locked = true;
+    questionId++; // cancel any pending replay of the question
     btn.classList.add("right");
     cheer();
-    setTimeout(() => playInstrument(inst), 450);
-    say(TEXT[lang].yes(inst[lang]));
     if (firstTry) { stars++; renderStars(); }
     confetti(12);
     round++;
-    setTimeout(round >= ROUNDS ? finish : askQuestion, 2600);
+    const next = round >= ROUNDS ? finish : askQuestion;
+    if (mode === "name") {
+      // "Yes! The guitar!" and then let them hear it
+      say(TEXT[lang].yes(inst[lang]), () => { playInstrument(inst); setTimeout(next, 3000); });
+    } else {
+      say(TEXT[lang].yes(inst[lang]));
+      setTimeout(next, 2400);
+    }
   } else {
     firstTry = false;
     btn.classList.add("wrong");
     btn.disabled = true;
     boop();
-    playInstrument(inst);
-    // say what they tapped, then gently repeat the question
-    say(`${inst[lang].replace(/^(le |la |les |l')/, "")}. ${TEXT[lang].no}`);
-    setTimeout(() => say(TEXT[lang].where(answer[lang])), 1800);
+    if (mode === "listen") {
+      // play the right sound again so they can compare
+      setTimeout(() => { if (q === questionId) playInstrument(answer); }, 500);
+    } else {
+      // say what they tapped, then gently repeat the question
+      say(`${inst[lang].replace(/^(le |la |les |l')/, "")}. ${TEXT[lang].no}`);
+      setTimeout(() => { if (q === questionId) say(TEXT[lang].where(answer[lang])); }, 1800);
+    }
   }
 }
 
@@ -296,17 +361,20 @@ function finish() {
   confetti(60);
   $("promptRow").classList.add("hidden");
   $("choices").classList.add("hidden");
-  $("start").textContent = "🔁";
-  $("start").classList.remove("hidden");
+  $("modes").classList.remove("hidden");
 }
 
-function start() {
+function start(m) {
   audio();
-  round = 0; stars = 0; renderStars();
-  $("start").classList.add("hidden");
+  loadRecordings();
+  mode = m;
+  round = 0; stars = 0; lastAnswer = null; renderStars();
+  $("speak").textContent = mode === "listen" ? "👂" : "🔊";
+  $("modes").classList.add("hidden");
   $("promptRow").classList.remove("hidden");
   $("choices").classList.remove("hidden");
-  askQuestion();
+  // give the recordings a moment to decode before the first sound question
+  setTimeout(askQuestion, mode === "listen" ? 400 : 0);
 }
 
 function confetti(n) {
@@ -329,15 +397,18 @@ function setLang(l) {
   $("lang").textContent = TEXT[l].flag;
   document.documentElement.lang = l;
   if (answer && !$("choices").classList.contains("hidden")) {
-    $("promptText").textContent = TEXT[lang].where(answer[lang]);
-    say(TEXT[lang].where(answer[lang]));
+    document.querySelectorAll(".choice").forEach(b => {
+      const inst = INSTRUMENTS.find(i => i.pic === b.textContent);
+      if (inst) b.setAttribute("aria-label", inst[lang]);
+    });
+    $("promptText").textContent = promptText();
+    if (!locked) ask();
   }
 }
 
-$("start").onclick = start;
-$("speak").onclick = () => say(TEXT[lang].where(answer[lang]));
+document.querySelectorAll(".start").forEach(b => b.onclick = () => start(b.dataset.mode));
+$("speak").onclick = () => { if (!locked) ask(); };
 $("lang").onclick = () => setLang(lang === "en" ? "fr" : "en");
-if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = () => {};
 setLang(lang);
 </script>
 </body>
