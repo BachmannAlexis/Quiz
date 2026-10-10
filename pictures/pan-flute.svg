@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g transform="rotate(-8 64 64)">
+    <g fill="#d4b06a" stroke="#a67c38" stroke-width="1.5">
+      <rect x="10" y="14" width="13" height="100" rx="5"/><rect x="24" y="14" width="13" height="88" rx="5"/><rect x="38" y="14" width="13" height="77" rx="5"/><rect x="52" y="14" width="13" height="67" rx="5"/>
+      <rect x="66" y="14" width="13" height="58" rx="5"/><rect x="80" y="14" width="13" height="50" rx="5"/><rect x="94" y="14" width="13" height="43" rx="5"/><rect x="108" y="14" width="12" height="37" rx="5"/>
+    </g>
+    <g fill="#6d4c1d"><ellipse cx="16.5" cy="17" rx="4" ry="2"/><ellipse cx="30.5" cy="17" rx="4" ry="2"/><ellipse cx="44.5" cy="17" rx="4" ry="2"/><ellipse cx="58.5" cy="17" rx="4" ry="2"/><ellipse cx="72.5" cy="17" rx="4" ry="2"/><ellipse cx="86.5" cy="17" rx="4" ry="2"/><ellipse cx="100.5" cy="17" rx="4" ry="2"/><ellipse cx="114" cy="17" rx="3.5" ry="2"/></g>
+    <rect x="6" y="30" width="118" height="7" rx="2" fill="#e53935"/>
+    <rect x="6" y="40" width="118" height="4" rx="2" fill="#fdd835"/>
+  </g>
+</svg>
