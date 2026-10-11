@@ -4,7 +4,7 @@
 
 **A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English or French.
 
-- 397 pictures in 14 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
+- 397 pictures in 20 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
 - A recorded voice in English and French, the same on every device
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
@@ -38,6 +38,12 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 🔢 Numbers | 1 to 10: the digit with as many dots to count | |
 | 🖐️ My body | 22 (head, hair, eye, nose, hand, knee, toes, heart…) | |
 | ⚽ Sports | 30, with ball games, winter, water and more | ball games, winter, water, more |
+| 🚗 Transport | 25, 17 with real sounds (sirens, horns, train, plane, helicopter…) and a listening game | road, rails, air, water |
+| ⛅ Weather | 15, with rain, storm, thunder and wind sounds and a listening game | |
+| 🎨 Colours | 11 paint splashes | |
+| 🔷 Shapes | 10 | |
+| 👕 Clothes | 26 | |
+| 👷 Jobs | 15 | |
 | 🏔️ Landscapes | 24, 16 of them with real sounds (waves, stream, wind, birds, rain, thunder, bubbles, a city) | |
 
 **Mushrooms, a note for parents:** the fly agaric, the death cap, the panther cap and Satan's bolete are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.
@@ -137,8 +143,8 @@ cd ../.. && build/tts/bin/python tools/make_voice.py build --check
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
 - Photos (photo mode): freely licensed photos (CC0, CC BY, CC BY-SA) from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://openverse.org), cropped and resized; each photo and its author is listed in `PHOTO-CREDITS.md` (built by `tools/fetch_photos.py` and `tools/make_photos.py`, choices in `tools/photo_picks.json`).
-- Letters and numbers: drawn from the Fredoka font by `tools/make_letters.py`.
-- Animal and kitchen recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
+- Letters, numbers, colours and shapes: drawn by `tools/make_letters.py` (letters and digits from the Fredoka font).
+- Animal, kitchen, transport and weather recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
 - Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Font: [Fredoka](https://github.com/hafontia/Fredoka) by Milena Brandão, SIL Open Font License 1.1 (embedded in `app/font.css`).
 - Drawings: 180 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (most animals, fruits and vegetables, and the ones listed in `tools/make_pictures.py`). The other 217 are drawn for this project (`pictures/`).

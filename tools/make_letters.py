@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Draw the ABC pictures (pictures/letter-a.svg … letter-z.svg, a big capital and its small letter)
-and the numbers (pictures/number-1.svg … number-10.svg, the digits above as many dots to count).
+the numbers (pictures/number-1.svg … number-10.svg, the digits above as many dots to count),
+the colours (pictures/color-*.svg, a paint splash) and the shapes (pictures/shape-*.svg).
 
 Usage: python3 tools/make_letters.py
 Needs fonttools and brotli (pip install fonttools brotli). The letters are Fredoka, the app's font
@@ -80,6 +81,57 @@ def main():
                f'  <g fill="{color}" opacity=".7">{"".join(dots)}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
     print("10 numbers")
+    colors()
+    shapes()
+
+COLOR_SWATCHES = {"red": "#e53935", "blue": "#1e88e5", "yellow": "#fdd835", "green": "#43a047", "orange": "#fb8c00",
+                  "purple": "#8e24aa", "pink": "#f06292", "brown": "#8d6e63", "black": "#263238", "white": "#ffffff",
+                  "grey": "#9e9e9e"}
+
+def colors():
+    """A round paint splash with drops, in the colour (white gets an outline to show on the white card)."""
+    import math, random
+    for name, fill in COLOR_SWATCHES.items():
+        rnd = random.Random(name)
+        pts = []
+        for k in range(12):  # a soft, wobbly blob: a smooth curve through uneven points
+            a = k / 12 * 2 * math.pi
+            r = 46 + rnd.uniform(-5, 5)
+            pts.append((64 + r * math.cos(a), 62 + r * math.sin(a)))
+        mid = [((x1 + x2) / 2, (y1 + y2) / 2) for (x1, y1), (x2, y2) in zip(pts, pts[1:] + pts[:1])]
+        d = f"M{mid[-1][0]:.1f},{mid[-1][1]:.1f}" + "".join(
+            f" Q{x:.1f},{y:.1f} {mx:.1f},{my:.1f}" for (x, y), (mx, my) in zip(pts, mid)) + "Z"
+        drops = "".join(f'<circle cx="{x}" cy="{y}" r="{r}"/>' for x, y, r in [(18, 108, 6), (110, 20, 5), (114, 104, 7), (16, 26, 4)])
+        stroke = ' stroke="#b0bec5" stroke-width="2.5"' if name == "white" else ""
+        shine = "#ffffff" if name != "white" else "#eceff1"
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+               f'  <g fill="{fill}"{stroke} stroke-linejoin="round"><path d="{d}"/>{drops}</g>\n'
+               f'  <ellipse cx="48" cy="44" rx="12" ry="7" fill="{shine}" opacity=".35" transform="rotate(-30 48 44)"/>\n</svg>\n')
+        open(os.path.join(ROOT, "pictures", f"color-{name}.svg"), "w").write(svg)
+    print(len(COLOR_SWATCHES), "colours")
+
+def shapes():
+    import math
+    def poly(n, r, rot=-90, cx=64, cy=64):
+        return " ".join(f"{cx + r * math.cos(math.radians(rot + 360 * k / n)):.1f},{cy + r * math.sin(math.radians(rot + 360 * k / n)):.1f}" for k in range(n))
+    star = " ".join(f"{64 + (50 if k % 2 == 0 else 21) * math.cos(math.radians(-90 + 36 * k)):.1f},{66 + (50 if k % 2 == 0 else 21) * math.sin(math.radians(-90 + 36 * k)):.1f}" for k in range(10))
+    SHAPES = {
+        "circle": ('<circle cx="64" cy="64" r="50"/>', "#e53935"),
+        "square": ('<rect x="18" y="18" width="92" height="92" rx="6"/>', "#1e88e5"),
+        "triangle": (f'<polygon points="{poly(3, 56, -90, 64, 72)}"/>', "#43a047"),
+        "rectangle": ('<rect x="8" y="34" width="112" height="60" rx="6"/>', "#fb8c00"),
+        "star": (f'<polygon points="{star}"/>', "#fdd835"),
+        "heart": ('<path d="M64 112 C 20 82 6 58 18 36 C 30 14 56 18 64 38 C 72 18 98 14 110 36 C 122 58 108 82 64 112 Z"/>', "#ec407a"),
+        "oval": ('<ellipse cx="64" cy="64" rx="56" ry="36"/>', "#8e24aa"),
+        "diamond": ('<polygon points="64,8 112,64 64,120 16,64"/>', "#00897b"),
+        "hexagon": (f'<polygon points="{poly(6, 54, 0)}"/>', "#5c6bc0"),
+        "crescent": ('<path d="M84 14 A 52 52 0 1 0 84 114 A 42 42 0 1 1 84 14 Z"/>', "#ffb300"),
+    }
+    for name, (shape, fill) in SHAPES.items():
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+               f'  <g fill="{fill}" stroke="#00000022" stroke-width="3" stroke-linejoin="round">{shape}</g>\n</svg>\n')
+        open(os.path.join(ROOT, "pictures", f"shape-{name}.svg"), "w").write(svg)
+    print(len(SHAPES), "shapes")
 
 if __name__ == "__main__":
     main()

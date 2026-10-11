@@ -376,6 +376,57 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Sports | fencing | [link](https://www.rawpixel.com/image/6038249/photo-image-public-domain-arts-mask) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Sports | archery | [link](https://www.flickr.com/photos/34859133@N06/7245527662) | jrladia | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Sports | skateboarding | [link](https://www.flickr.com/photos/7972895@N02/4187240316) | rafael-castillo | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | car | [link](https://www.flickr.com/photos/64097751@N00/2997546664) | Dominic's pics | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | racing car | [link](https://www.flickr.com/photos/57350999@N08/54183471392) | sikarklub | [Public domain](https://creativecommons.org/publicdomain/mark/1.0/) |
+| Transport | taxi | [link](https://www.flickr.com/photos/41018892@N00/4329581204) | TriggerHappyDave | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | police car | [link](https://www.flickr.com/photos/9763931@N04/4807495652) | Lee Cannon | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Transport | ambulance | [link](https://www.flickr.com/photos/161233402@N07/46550648815) | WrS.tm.pl | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Transport | fire engine | [link](https://www.flickr.com/photos/40824284@N02/48748506396) | karol.cc | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Transport | bus | [link](https://www.flickr.com/photos/77742560@N06/7169537339) | shankar s. | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | truck | [link](https://www.flickr.com/photos/28179929@N08/8640311917) | sludgegulper | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Transport | tractor | [link](https://www.flickr.com/photos/38943802@N06/3657092895) | jack berry | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | motorbike | [link](https://www.flickr.com/photos/12734746@N00/432332907) | hyku | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | scooter | [link](https://www.flickr.com/photos/27506472@N04/15079985797) | Nick Page Photos | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | bicycle | [link](https://www.flickr.com/photos/75083336@N00/14909247947) | Conal Gallagher | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | kick scooter | [link](https://www.flickr.com/photos/46573365@N07/6186039462) | uclatransportation | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | steam train | [link](https://www.flickr.com/photos/25554263@N04/8539345885) | Peer.Gynt | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Transport | high-speed train | [link](https://www.rawpixel.com/image/6113803/photo-image-public-domain-free) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Transport | tram | [link](https://www.flickr.com/photos/77742560@N06/15766181320) | shankar s. | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | subway | [link](https://www.flickr.com/photos/33088287@N00/2058599430) | anantal | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | cable car | [link](https://www.flickr.com/photos/22768390@N00/168473022) | nikoretro | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Transport | airplane | [link](https://www.flickr.com/photos/59800091@N04/6652901277) | Kitty Terwolbeck | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | helicopter | [link](https://www.flickr.com/photos/22083482@N03/4071663770) | George M. Groutas | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | rocket | [link](https://www.flickr.com/photos/24662369@N07/5863572647) | NASA Goddard Photo and Video | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | ship | [link](https://www.flickr.com/photos/79721788@N00/4899628966) | D-Stanley | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | sailboat | [link](https://www.flickr.com/photos/36494823@N03/3367861409) | dejablu916 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Transport | speedboat | [link](https://www.flickr.com/photos/30346812@N07/45936860325) | Orange County Archives | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Weather | sun | [link](https://www.flickr.com/photos/7661492@N06/9334236085) | SoulRiser | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Weather | clouds and sun | [link](https://www.flickr.com/photos/198268261@N07/55197516779) | M. Cristian-Ioan | [Public domain](https://creativecommons.org/publicdomain/mark/1.0/) |
+| Weather | cloud | [link](https://www.flickr.com/photos/53313745@N00/4603066990) | cdsessums | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Weather | rain | [link](https://www.flickr.com/photos/16405999@N00/79368705) | Bruno Girin | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Weather | umbrella | [link](https://www.flickr.com/photos/84697131@N00/3155844396) | Robert Swier | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Weather | storm | [link](https://www.flickr.com/photos/42658343@N07/4139971667) | Nathan150 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Weather | lightning | [link](https://www.flickr.com/photos/79116153@N00/12879631) | l∞senut | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Weather | snow | [link](https://www.flickr.com/photos/132717081@N06/23895977723) | konstantin.tilberg | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Weather | snowman | [link](https://www.flickr.com/photos/35619877@N05/4339410126) | jasonbolonski | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Weather | fog | [link](https://www.flickr.com/photos/30818542@N04/50528816097) | fveronesi1 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Weather | thermometer | [link](https://www.flickr.com/photos/58748148@N08/6862587427) | Emilio_13 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Weather | moon | [link](https://www.flickr.com/photos/106648653@N05/29468701335) | upsidedown astronomer | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Weather | star | [link](https://www.flickr.com/photos/110548908@N06/28719170240) | UnknownNet Photography | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Clothes | T-shirt | [link](https://www.flickr.com/photos/31386874@N00/2906026575) | New Internationalist | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | kimono | [link](https://www.flickr.com/photos/29803018@N05/5765974913) | santapaws4xmas | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Clothes | scarf | [link](https://www.flickr.com/photos/90358286@N00/2607946078) | PurpleCar | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | socks | [link](https://www.flickr.com/photos/10787737@N02/5636699821) | osseous | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | cap | [link](https://www.flickr.com/photos/85546319@N04/15600797831) | Menswear Market | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | crown | [link](https://www.flickr.com/photos/98004108@N03/9195944224) | trainjason | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | glasses | [link](https://www.flickr.com/photos/79234916@N00/4387139169) | Nadya Peek | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | tie | [link](https://www.flickr.com/photos/23243094@N00/5947832571) | Bekathwia | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Clothes | sneakers | [link](https://www.flickr.com/photos/50113019@N00/2711778184) | Birdies100 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Clothes | shoes | [link](https://www.flickr.com/photos/39603331@N06/3637656103) | 38 Parrots | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | boots | [link](https://www.flickr.com/photos/28481088@N00/2641816595) | tanakawho | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | hiking boots | [link](https://www.flickr.com/photos/28786233@N03/8285008948) | breki74 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Clothes | ballet shoes | [link](https://www.flickr.com/photos/27869035@N00/2305528652) | Megyarsh | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Clothes | handbag | [link](https://www.flickr.com/photos/95267793@N00/3371006146) | Denna Jones | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | mountain | [link](https://www.flickr.com/photos/132795455@N08/16662196134) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Landscapes | volcano | [link](https://www.flickr.com/photos/12568296@N06/2589960481) | threefingeredlord | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Landscapes | beach | [link](https://www.flickr.com/photos/132795455@N08/22261293288) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |

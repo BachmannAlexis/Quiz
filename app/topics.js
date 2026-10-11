@@ -557,6 +557,123 @@ const SPORT_GROUPS = [
   { id: MORE,   pic: "cycling",  en: "More",         fr: "Et aussi" },
 ];
 
+// ---------- Transport (`sound`: a real recording, see tools/fetch_animals.py)
+const ROAD = "road", RAIL = "rail", AIR = "air", SEAWAY = "water";
+const TRANSPORT = [
+  { id: "car",              en: "car",              fr: "la voiture",             family: "car",    styles: [ROAD], sound: true },
+  { id: "racing-car",       en: "racing car",       fr: "la voiture de course",   family: "car",    styles: [ROAD] },
+  { id: "taxi",             en: "taxi",             fr: "le taxi",                family: "car",    styles: [ROAD] },
+  { id: "police-car",       en: "police car",       fr: "la voiture de police",   family: "siren",  styles: [ROAD], sound: true, hears: "siren" },
+  { id: "ambulance",        en: "ambulance",        fr: "l'ambulance",            family: "siren",  styles: [ROAD], sound: true, hears: "siren" },
+  { id: "fire-engine",      en: "fire engine",      fr: "le camion de pompiers",  family: "truck",  styles: [ROAD], sound: true, hears: "siren" },
+  { id: "bus",              en: "bus",              fr: "le bus",                 family: "bus",    styles: [ROAD], sound: true },
+  { id: "truck",            en: "truck",            fr: "le camion",              family: "truck",  styles: [ROAD], sound: true },
+  { id: "tractor",          en: "tractor",          fr: "le tracteur",            family: "tractor", styles: [ROAD], sound: true },
+  { id: "motorcycle",       en: "motorbike",        fr: "la moto",                family: "bike",   styles: [ROAD], sound: true, hears: "engine" },
+  { id: "scooter",          en: "scooter",          fr: "le scooter",             family: "bike",   styles: [ROAD], sound: true, hears: "engine" },
+  { id: "bicycle",          en: "bicycle",          fr: "la bicyclette",          family: "bicycle", styles: [ROAD], sound: true },
+  { id: "kick-scooter",     en: "kick scooter",     fr: "la trottinette",         family: "bicycle", styles: [ROAD] },
+  { id: "train",            en: "steam train",      fr: "le train à vapeur",      family: "train",  styles: [RAIL], sound: true },
+  { id: "high-speed-train", en: "high-speed train", fr: "le TGV",                 family: "train",  styles: [RAIL], sound: true },
+  { id: "tram",             en: "tram",             fr: "le tramway",             family: "tram",   styles: [RAIL], sound: true },
+  { id: "metro",            en: "subway",           fr: "le métro",               family: "tram",   styles: [RAIL], sound: true },
+  { id: "cable-car",        en: "cable car",        fr: "le téléphérique",        family: "cable",  styles: [AIR, RAIL] },
+  { id: "airplane",         en: "airplane",         fr: "l'avion",                family: "plane",  styles: [AIR], sound: true },
+  { id: "helicopter",       en: "helicopter",       fr: "l'hélicoptère",          family: "heli",   styles: [AIR], sound: true },
+  { id: "rocket",           en: "rocket",           fr: "la fusée",               family: "rocket", styles: [AIR] },
+  { id: "flying-saucer",    en: "flying saucer",    fr: "la soucoupe volante",    family: "rocket", styles: [AIR] },
+  { id: "ship",             en: "ship",             fr: "le paquebot",            family: "ship",   styles: [SEAWAY], sound: true },
+  { id: "sailboat",         en: "sailboat",         fr: "le voilier",             family: "boat",   styles: [SEAWAY] },
+  { id: "speedboat",        en: "speedboat",        fr: "le hors-bord",           family: "boat",   styles: [SEAWAY] },
+];
+const TRANSPORT_GROUPS = [
+  { id: "all",  pic: "car",      en: "All",   fr: "Tous" },
+  { id: ROAD,   pic: "bus",      en: "Road",  fr: "La route" },
+  { id: RAIL,   pic: "train",    en: "Rails", fr: "Les rails" },
+  { id: AIR,    pic: "airplane", en: "Air",   fr: "Le ciel" },
+  { id: SEAWAY, pic: "ship",     en: "Water", fr: "L'eau" },
+];
+
+// ---------- Weather
+const WEATHER = [
+  { id: "sun",         en: "sun",          fr: "le soleil",            family: "sun" },
+  { id: "cloudy",      en: "clouds and sun", fr: "le temps nuageux",   family: "cloud", many: true },
+  { id: "cloud",       en: "cloud",        fr: "le nuage",             family: "cloud" },
+  { id: "rain",        en: "rain",         fr: "la pluie",             family: "rain", sound: true },
+  { id: "umbrella",    en: "umbrella",     fr: "le parapluie",         family: "umbrella", sound: true, hears: "rain" },
+  { id: "storm",       en: "storm",        fr: "l'orage",              family: "storm", sound: true },
+  { id: "lightning",   en: "lightning",    fr: "l'éclair",             family: "storm", sound: true, hears: "storm" },
+  { id: "wind",        en: "wind",         fr: "le vent",              family: "wind", sound: true },
+  { id: "tornado",     en: "tornado",      fr: "la tornade",           family: "wind" },
+  { id: "snowing",     en: "snow",         fr: "la neige",             family: "snow" },
+  { id: "snowman",     en: "snowman",      fr: "le bonhomme de neige", family: "snow" },
+  { id: "fog",         en: "fog",          fr: "le brouillard",        family: "fog" },
+  { id: "thermometer", en: "thermometer",  fr: "le thermomètre",       family: "thermo" },
+  { id: "moon",        en: "moon",         fr: "la lune",              family: "night" },
+  { id: "star",        en: "star",         fr: "l'étoile",             family: "night" },
+];
+
+// ---------- Colours (English names without "the": the topic is `bare`) and shapes, drawn by tools/make_letters.py
+const COLORS = [
+  ["red", "le rouge"], ["blue", "le bleu"], ["yellow", "le jaune"], ["green", "le vert"], ["orange", "l'orange"],
+  ["purple", "le violet"], ["pink", "le rose"], ["brown", "le marron"], ["black", "le noir"], ["white", "le blanc"],
+  ["grey", "le gris"],
+].map(([en, fr]) => ({ id: "color-" + en, en, fr, family: { orange: "ry", red: "ry", pink: "pv", purple: "pv", black: "bg", grey: "bg" }[en] || en }));
+const SHAPES = [
+  ["circle", "le rond", "round"], ["oval", "l'ovale", "round"], ["square", "le carré", "box"], ["rectangle", "le rectangle", "box"],
+  ["triangle", "le triangle", "tri"], ["diamond", "le losange", "tri"], ["star", "l'étoile", "star"], ["heart", "le cœur", "heart"],
+  ["hexagon", "l'hexagone", "hex"], ["crescent", "le croissant", "moon"],
+].map(([en, fr, family]) => ({ id: "shape-" + en, en, fr, family }));
+
+// ---------- Clothes
+const CLOTHES = [
+  { id: "t-shirt",      en: "T-shirt",      fr: "le tee-shirt",       family: "top" },
+  { id: "blouse",       en: "blouse",       fr: "le chemisier",       family: "top" },
+  { id: "dress",        en: "dress",        fr: "la robe",            family: "dress" },
+  { id: "kimono",       en: "kimono",       fr: "le kimono",          family: "dress" },
+  { id: "jeans",        en: "jeans",        fr: "le jean",            family: "legs", many: true },
+  { id: "shorts",       en: "shorts",       fr: "le short",           family: "legs", many: true },
+  { id: "coat",         en: "coat",         fr: "le manteau",         family: "coat" },
+  { id: "scarf",        en: "scarf",        fr: "l'écharpe",          family: "warm" },
+  { id: "gloves",       en: "gloves",       fr: "les gants",          family: "warm", many: true },
+  { id: "socks",        en: "socks",        fr: "les chaussettes",    family: "socks", many: true },
+  { id: "swimsuit",     en: "swimsuit",     fr: "le maillot de bain", family: "swim" },
+  { id: "cap",          en: "cap",          fr: "la casquette",       family: "hat" },
+  { id: "top-hat",      en: "top hat",      fr: "le chapeau",         family: "hat" },
+  { id: "sun-hat",      en: "sun hat",      fr: "le chapeau de paille", family: "hat" },
+  { id: "crown",        en: "crown",        fr: "la couronne",        family: "crown" },
+  { id: "glasses",      en: "glasses",      fr: "les lunettes",       family: "glasses", many: true },
+  { id: "tie",          en: "tie",          fr: "la cravate",         family: "tie" },
+  { id: "sneakers",     en: "sneakers",     fr: "les baskets",        family: "shoe", many: true },
+  { id: "shoes",        en: "shoes",        fr: "les chaussures",     family: "shoe", many: true },
+  { id: "boots",        en: "boots",        fr: "les bottes",         family: "boot", many: true },
+  { id: "hiking-boots", en: "hiking boots", fr: "les chaussures de marche", family: "boot", many: true },
+  { id: "sandals",      en: "sandals",      fr: "les sandales",       family: "sandal", many: true },
+  { id: "flip-flops",   en: "flip-flops",   fr: "les tongs",          family: "sandal", many: true },
+  { id: "ballet-shoes", en: "ballet shoes", fr: "les chaussons de danse", family: "flat", many: true },
+  { id: "backpack",     en: "backpack",     fr: "le sac à dos",       family: "bag" },
+  { id: "handbag",      en: "handbag",      fr: "le sac à main",      family: "bag" },
+];
+
+// ---------- Jobs
+const JOBS = [
+  { id: "firefighter",   en: "firefighter",       fr: "le pompier",         family: "helmet" },
+  { id: "police-officer", en: "police officer",   fr: "le policier",        family: "uniform" },
+  { id: "doctor",        en: "doctor",            fr: "le médecin",         family: "doctor" },
+  { id: "cook",          en: "cook",              fr: "le cuisinier",       family: "cook" },
+  { id: "farmer",        en: "farmer",            fr: "le fermier",         family: "farmer" },
+  { id: "teacher",       en: "teacher",           fr: "le professeur",      family: "teacher" },
+  { id: "astronaut",     en: "astronaut",         fr: "l'astronaute",       family: "helmet" },
+  { id: "pilot",         en: "pilot",             fr: "le pilote",          family: "uniform" },
+  { id: "mechanic",      en: "mechanic",          fr: "le mécanicien",      family: "worker" },
+  { id: "builder",       en: "builder",           fr: "l'ouvrier",          family: "worker" },
+  { id: "painter",       en: "painter",           fr: "le peintre",         family: "artist" },
+  { id: "singer",        en: "singer",            fr: "le chanteur",        family: "artist" },
+  { id: "scientist",     en: "scientist",         fr: "le scientifique",    family: "doctor" },
+  { id: "judge",         en: "judge",             fr: "le juge",            family: "judge" },
+  { id: "detective",     en: "detective",         fr: "le détective",       family: "detective" },
+];
+
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
 // name (hear the name), listen (hear the sound), play (instrument keys) or explore (tap to hear names).
 // `color` and `tint` theme the topic's screens; `unit` names its items ("87 animals").
@@ -574,5 +691,11 @@ const TOPICS = [
   { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS,     modes: ["name", "explore"] },
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY,  modes: ["name", "explore"] },
   { id: "sports",      pic: "soccer",     en: "Sports",     fr: "Les sports",  unit: ["sports", "sports"],           color: "#2b7de9", tint: "#e3effd", items: SPORTS, groups: SPORT_GROUPS, bare: true, modes: ["name", "explore"] },
+  { id: "transport",   pic: "car",        en: "Transport",  fr: "Les transports", unit: ["vehicles", "véhicules"],      color: "#e53935", tint: "#fdecea", items: TRANSPORT, groups: TRANSPORT_GROUPS, modes: ["name", "listen", "explore"] },
+  { id: "weather",     pic: "cloudy",     en: "Weather",    fr: "La météo",    unit: ["kinds of weather", "temps"],   color: "#0288d1", tint: "#e1f3fc", items: WEATHER,     modes: ["name", "listen", "explore"] },
+  { id: "colors",      pic: "color-red",  en: "Colours",    fr: "Les couleurs", unit: ["colours", "couleurs"],        color: "#8e24aa", tint: "#f5e6fa", items: COLORS,      bare: true, modes: ["name", "explore"] },
+  { id: "shapes",      pic: "shape-star", en: "Shapes",     fr: "Les formes",  unit: ["shapes", "formes"],            color: "#3949ab", tint: "#e8eaf8", items: SHAPES,      modes: ["name", "explore"] },
+  { id: "clothes",     pic: "t-shirt",    en: "Clothes",    fr: "Les vêtements", unit: ["clothes", "vêtements"],      color: "#00897b", tint: "#e0f4f1", items: CLOTHES,     modes: ["name", "explore"] },
+  { id: "jobs",        pic: "firefighter", en: "Jobs",      fr: "Les métiers", unit: ["jobs", "métiers"],             color: "#6d4c41", tint: "#f3ebe7", items: JOBS,        modes: ["name", "explore"] },
   { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "listen", "explore"] },
 ];

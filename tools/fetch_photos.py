@@ -24,6 +24,7 @@ SOURCES = {
     "instruments": ("openverse", "musical instrument"), "kitchen": ("openverse", "kitchen"),
     "food": ("openverse", ""), "scenery": ("openverse", "landscape"), "dinosaurs": ("openverse", "dinosaur model"),
     "spices": ("openverse", ""), "sports": ("openverse", ""),
+    "transport": ("openverse", ""), "weather": ("openverse", ""), "clothes": ("openverse", ""),
 }
 # better searches for some items (iNaturalist: scientific names; Openverse: clearer words)
 QUERY = {
@@ -89,6 +90,23 @@ QUERY = {
     "cycling": "cyclist bicycle road", "running": "runner race", "horse-riding": "horse riding rider",
     "gymnastics": "gymnast", "climbing": "rock climbing", "boxing": "boxing gloves", "judo": "judo match",
     "fencing": "fencing sport", "archery": "archery bow target", "skateboarding": "skateboarder", "roller-skating": "roller skates",
+    # transport, weather, clothes (Openverse)
+    "car": "red car", "racing-car": "formula racing car", "taxi": "yellow taxi cab", "police-car": "police car",
+    "ambulance": "ambulance vehicle", "fire-engine": "fire engine truck", "bus": "city bus", "truck": "lorry truck",
+    "tractor": "farm tractor", "motorcycle": "motorcycle", "scooter": "vespa scooter", "bicycle": "bicycle",
+    "kick-scooter": "kick scooter", "train": "steam locomotive", "high-speed-train": "TGV high speed train", "tram": "tram streetcar",
+    "metro": "metro train station", "cable-car": "cable car gondola mountain", "airplane": "airliner airplane sky",
+    "helicopter": "helicopter flying", "rocket": "rocket launch", "flying-saucer": "flying saucer", "ship": "cruise ship",
+    "sailboat": "sailboat", "speedboat": "speedboat",
+    "sun": "sun sky", "cloudy": "clouds sun sky", "cloud": "white cloud blue sky", "rain": "rain drops", "umbrella": "umbrella rain",
+    "storm": "thunderstorm clouds", "lightning": "lightning bolt", "wind": "wind trees blowing", "tornado": "tornado",
+    "snowing": "snowfall", "snowman": "snowman", "fog": "fog landscape", "thermometer": "thermometer", "moon": "crescent moon",
+    "star": "stars night sky",
+    "t-shirt": "t-shirt", "blouse": "blouse", "dress": "dress", "kimono": "kimono", "jeans": "jeans", "shorts": "shorts",
+    "coat": "winter coat", "scarf": "knitted scarf", "gloves": "wool gloves", "socks": "colorful socks", "swimsuit": "swimsuit",
+    "cap": "baseball cap", "top-hat": "top hat", "sun-hat": "straw hat", "crown": "crown", "glasses": "eyeglasses",
+    "tie": "necktie", "sneakers": "sneakers", "shoes": "leather shoes", "boots": "rain boots", "hiking-boots": "hiking boots",
+    "sandals": "sandals", "flip-flops": "flip flops", "ballet-shoes": "ballet shoes", "backpack": "backpack", "handbag": "handbag",
     # Openverse words
     "drum-kit": "drum kit", "bell-pepper": "bell pepper vegetable", "corn": "corn on the cob", "peas": "green peas pod",
     "beans": "green beans", "lettuce": "lettuce head", "orange": "orange fruit", "lime": "lime fruit", "kiwi": "kiwi fruit",

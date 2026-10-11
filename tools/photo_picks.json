@@ -351,6 +351,22 @@
    0.5
   ]
  },
+ "clothes": {
+  "ballet-shoes": 1,
+  "boots": 0,
+  "cap": 2,
+  "crown": 1,
+  "glasses": 1,
+  "handbag": 5,
+  "hiking-boots": 5,
+  "kimono": 0,
+  "scarf": 5,
+  "shoes": 0,
+  "sneakers": 2,
+  "socks": 5,
+  "t-shirt": 2,
+  "tie": 1
+ },
  "dinosaurs": {
   "ankylosaurus": [
    1,
@@ -922,6 +938,32 @@
   "tennis": 4,
   "volleyball": 4
  },
+ "transport": {
+  "airplane": 1,
+  "ambulance": 2,
+  "bicycle": 0,
+  "bus": 2,
+  "cable-car": 5,
+  "car": 1,
+  "fire-engine": 3,
+  "helicopter": 0,
+  "high-speed-train": 0,
+  "kick-scooter": 2,
+  "metro": 1,
+  "motorcycle": 5,
+  "police-car": 2,
+  "racing-car": 2,
+  "rocket": 3,
+  "sailboat": 0,
+  "scooter": 0,
+  "ship": 5,
+  "speedboat": 3,
+  "taxi": 1,
+  "tractor": 0,
+  "train": 4,
+  "tram": 0,
+  "truck": 4
+ },
  "trees": {
   "apple-tree": 3,
   "bamboo": 4,
@@ -966,5 +1008,20 @@
    0.5,
    0.45
   ]
+ },
+ "weather": {
+  "cloud": 4,
+  "cloudy": 5,
+  "fog": 5,
+  "lightning": 1,
+  "moon": 2,
+  "rain": 3,
+  "snowing": 5,
+  "snowman": 5,
+  "star": 2,
+  "storm": 1,
+  "sun": 3,
+  "thermometer": 4,
+  "umbrella": 0
  }
 }

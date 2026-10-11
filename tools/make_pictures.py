@@ -52,6 +52,30 @@ NOTO = {
     "running": "person-running", "horse-riding": "horse-racing", "gymnastics": "person-cartwheeling",
     "climbing": "person-climbing", "boxing": "boxing-glove", "judo": "martial-arts-uniform", "fencing": "person-fencing",
     "archery": "bow-and-arrow", "skateboarding": "skateboard", "roller-skating": "roller-skate",
+    # transport
+    "car": "automobile", "racing-car": "racing-car", "taxi": "taxi", "police-car": "police-car", "ambulance": "ambulance",
+    "fire-engine": "fire-engine", "bus": "bus", "truck": "delivery-truck", "tractor": "tractor", "motorcycle": "motorcycle",
+    "scooter": "motor-scooter", "bicycle": "bicycle", "kick-scooter": "kick-scooter", "train": "locomotive",
+    "high-speed-train": "high-speed-train", "tram": "tram", "metro": "metro", "cable-car": "aerial-tramway",
+    "airplane": "airplane", "helicopter": "helicopter", "rocket": "rocket", "flying-saucer": "flying-saucer",
+    "ship": "ship", "sailboat": "sailboat", "speedboat": "speedboat",
+    # weather
+    "sun": "sun", "cloudy": "sun-behind-cloud", "cloud": "cloud", "rain": "cloud-with-rain", "umbrella": "umbrella-with-rain-drops",
+    "storm": "cloud-with-lightning-and-rain", "lightning": "high-voltage", "wind": "wind-face", "tornado": "tornado",
+    "snowing": "cloud-with-snow", "snowman": "snowman", "fog": "fog", "thermometer": "thermometer", "moon": "crescent-moon",
+    "star": "star",
+    # clothes
+    "t-shirt": "t-shirt", "blouse": "womans-clothes", "dress": "dress", "kimono": "kimono", "jeans": "jeans", "shorts": "shorts",
+    "coat": "coat", "scarf": "scarf", "gloves": "gloves", "socks": "socks", "swimsuit": "one-piece-swimsuit", "cap": "billed-cap",
+    "top-hat": "top-hat", "sun-hat": "womans-hat", "crown": "crown", "glasses": "glasses", "tie": "necktie",
+    "sneakers": "running-shoe", "shoes": "mans-shoe", "boots": "womans-boot", "hiking-boots": "hiking-boot",
+    "sandals": "womans-sandal", "flip-flops": "thong-sandal", "ballet-shoes": "ballet-shoes", "backpack": "backpack",
+    "handbag": "handbag",
+    # jobs
+    "firefighter": "firefighter", "police-officer": "police-officer", "doctor": "health-worker", "cook": "cook",
+    "farmer": "farmer", "teacher": "teacher", "astronaut": "astronaut", "pilot": "pilot", "mechanic": "mechanic",
+    "builder": "construction-worker", "painter": "artist", "singer": "singer", "scientist": "scientist", "judge": "judge",
+    "detective": "detective",
     # kitchen
     "teapot": "teapot", "spoon": "spoon", "knife": "kitchen-knife", "bowl": "bowl-with-spoon", "jar": "jar",
     # flowers

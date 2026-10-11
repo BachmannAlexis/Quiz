@@ -49,6 +49,16 @@ BIGSOUNDBANK = {
     "dishwasher": "dishwasher-s1002",
     "hood": "kitchen-extractor-hood-s0309",
     "frying-pan": "frying-pan-2-s0144",
+    # transport
+    "car": "car-horn-4-s0260", "train": "steam-locomotive-1-s3016", "high-speed-train": "high-speed-train-passage-1-s0120",
+    "airplane": "airplane-pass-1-s3004", "helicopter": "helicopter-1-s0263", "motorcycle": "motorcycle-s0281",
+    "ship": "horn-of-a-ship-1-s0261", "police-car": "siren-french-gendarmerie-s0886", "ambulance": "ambulance-siren-1-s1463",
+    "fire-engine": "2-tons-siren-passage-s2030", "tractor": "tractor-1-s0132", "bicycle": "bell-bike-1-s0028",
+    "bus": "bus-horn-s3594", "truck": "truck-horn-s2721", "scooter": "scooter-passage-s0533", "tram": "tram-passing-1-s3539",
+    "metro": "metro-stopping-and-starting-1-s3039",
+    # weather
+    "rain": "rain-on-puddle-s1290", "umbrella": "rain-under-an-umbrella-s2679", "storm": "rain-and-storm-s0124",
+    "lightning": "thunder-s2718", "wind": "strong-wind-1-s0146",
 }
 BSB = "https://bigsoundbank.com"
 

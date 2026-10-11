@@ -10,7 +10,8 @@ const CONFETTI = {
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
   dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"],
   kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"],
-  numbers: ["🔢", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
+  numbers: ["🔢", "⭐", "🎉", "✨"], transport: ["🚗", "⭐", "🎉", "✨"], weather: ["☀️", "🌈", "⭐", "✨"],
+  colors: ["🎨", "🌈", "⭐", "✨"], shapes: ["🔷", "⭐", "🎉", "✨"], clothes: ["👕", "⭐", "🎉", "✨"], jobs: ["👷", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
 };
 const MODE_ICONS = { name: "🗣️", listen: "👂", play: "🎹", explore: "👆" };
 
@@ -458,7 +459,7 @@ function renderTopic() {
   const modes = $("modes");
   modes.innerHTML = "";
   topic.modes.forEach(m => {
-    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters" }[topic.id] || "listenAnimals" : m;
+    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters", transport: "listenTransport", weather: "listenWeather" }[topic.id] || "listenAnimals" : m;
     const [title, sub] = T().modes[key];
     const b = document.createElement("button");
     b.type = "button";
@@ -506,7 +507,7 @@ let results = []; // per round: true if found on the first try
 function promptText() {
   if (mode !== "listen") return T().where(nameOf(answer), answer.many, topic.bare);
   if (isMusic()) return T().listen;
-  if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt }[topic.id] || T().whoIsIt;
+  if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt, transport: T().whatIsIt, weather: T().whatWeather }[topic.id] || T().whoIsIt;
   return topic.id === "letters" ? T().whichLetter(soundOf(answer)) : T().who(soundOf(answer));
 }
 
