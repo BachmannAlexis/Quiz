@@ -36,7 +36,7 @@ QUERY = {
     "gorilla": "Gorilla", "giraffe": "Giraffa", "zebra": "Equus quagga", "bear": "Ursus arctos", "polar-bear": "Ursus maritimus",
     "panda": "Ailuropoda melanoleuca", "koala": "Phascolarctos cinereus", "fox": "Vulpes vulpes", "wolf": "Canis lupus",
     "deer": "Cervus elaphus", "camel": "Camelus dromedarius", "hippo": "Hippopotamus amphibius", "rhino": "Ceratotherium simum",
-    "kangaroo": "Macropus", "hedgehog": "Erinaceus europaeus", "sloth": "Bradypus", "bat": "Pipistrellus", "frog": "Rana",
+    "kangaroo": "Macropus", "hedgehog": "Erinaceus europaeus", "sloth": "Bradypus", "bat": "Pipistrellus", "frog": "Pelophylax ridibundus",
     "toad": "Bufo bufo", "snake": "Serpentes", "crocodile": "Crocodylus", "turtle": "Testudines", "dolphin": "Tursiops truncatus",
     "whale": "Megaptera novaeangliae", "shark": "Carcharodon carcharias", "octopus": "Octopus vulgaris", "jellyfish": "Aurelia aurita",
     "crab": "Carcinus maenas", "fish": "Amphiprion ocellaris", "seal": "Phoca vitulina", "penguin": "Spheniscus demersus",
