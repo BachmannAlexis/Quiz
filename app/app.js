@@ -742,13 +742,20 @@ $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
 $("voiceTest").onclick = () => {
   const status = $("voiceStatus");
-  const all = "speechSynthesis" in window ? speechSynthesis.getVoices() : [];
-  const mine = all.filter(v => v.lang.replace("_", "-").toLowerCase().startsWith(lang));
-  const lines = [`${T().voicesFound}: ${mine.length} / ${all.length}`];
+  const lines = [];
   const show = () => { status.textContent = lines.join(" · "); };
-  show();
-  say(T().voiceSample, null, m => { lines.push(m); show(); });
-  setTimeout(() => { if (!lines.includes("start")) { lines.push(T().voiceSilent); show(); } }, 5000);
+  status.textContent = "…";
+  say(T().voiceSample, null, m => {
+    if (m === "recorded voice") return;
+    if (m === "start" && !lines.length) lines.push("✓ " + T().voiceRecorded);
+    else if (m === "device voice") { // no recording (offline from a file): the device's own voice
+      const all = "speechSynthesis" in window ? speechSynthesis.getVoices() : [];
+      const mine = all.filter(v => v.lang.replace("_", "-").toLowerCase().startsWith(lang));
+      lines.push(`${T().voicesFound}: ${mine.length} / ${all.length}`, m);
+    } else if (m !== "end" || lines.length > 1) lines.push(m);
+    show();
+  });
+  setTimeout(() => { if (!/start|✓/.test(status.textContent)) { lines.push(T().voiceSilent); show(); } }, 5000);
 };
 $("topicBack").onclick = goHome;
 $("gameClose").onclick = backToTopic;

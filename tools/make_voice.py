@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Record Pikolo's voice: every sentence the app says, in English and French.
 
-Usage: python3 tools/make_voice.py <build dir> [--check]
+Usage: python3 tools/make_voice.py <build dir> [--check] [en|fr]
   node tools/phrases.mjs must be runnable (it lists the sentences).
   <build dir>/voices holds the Piper voices (see README):
     en_US-ljspeech-high.onnx(.json)  US English, LJ Speech dataset, public domain
     fr_FR-siwis-medium.onnx(.json)   French, SIWIS dataset, CC BY 4.0
+  A language code records only that language (run one per language in parallel).
   --check transcribes every clip with Whisper (faster-whisper) and lists the ones that
-  do not match their sentence, in <build dir>/voice-check.txt.
+  do not match their sentence, in <build dir>/voice-check[-<lang>].txt.
 Needs piper-tts and ffmpeg (and faster-whisper for --check). Writes app/voice/<lang>/<pack>.json:
 {sentence: MP3 data URI}. Clips are cached in <build dir>/voice-cache, so reruns only record
 new or changed sentences.
@@ -43,7 +44,7 @@ def norm(s):
     s = "".join(c for c in s if not unicodedata.combining(c))
     return re.sub(r"[^a-z0-9 ]+", " ", s).split()
 
-def main(build, check):
+def main(build, check, only):
     from piper import PiperVoice
     phrases = json.loads(subprocess.run(["node", os.path.join(ROOT, "tools", "phrases.mjs")],
                                         capture_output=True, check=True, text=True).stdout)
@@ -56,6 +57,8 @@ def main(build, check):
         from faster_whisper import WhisperModel
         asr = WhisperModel("small", device="cpu", compute_type="int8")
     for lang, packs in phrases.items():
+        if only and lang not in only:
+            continue
         voice = PiperVoice.load(os.path.join(build, "voices", VOICES[lang] + ".onnx"))
         out_dir = os.path.join(ROOT, "app", "voice", lang)
         os.makedirs(out_dir, exist_ok=True)
@@ -81,10 +84,10 @@ def main(build, check):
             print(lang, pack, len(data), "sentences", flush=True)
     if asr:
         report.sort()
-        with open(os.path.join(build, "voice-check.txt"), "w") as f:
+        with open(os.path.join(build, "voice-check%s.txt" % "".join("-" + l for l in only)), "w") as f:
             for score, lang, pack, text, heard in report:
                 f.write(f"{score:.2f}\t{lang}\t{pack}\t{text}\t{heard}\n")
         print("checked", len(report), "clips; below 0.5:", sum(1 for r in report if r[0] < 0.5))
 
 if __name__ == "__main__":
-    main(sys.argv[1], "--check" in sys.argv)
+    main(sys.argv[1], "--check" in sys.argv, [a for a in sys.argv[2:] if a in VOICES])
