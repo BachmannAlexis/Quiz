@@ -290,12 +290,13 @@ const DINOSAURS = [
 
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
 // name (hear the name), listen (hear the sound), play (instrument keys) or explore (tap to hear names).
+// `color` and `tint` theme the topic's screens; `unit` names its items ("87 animals").
 const TOPICS = [
-  { id: "instruments", pic: "violin",     en: "Music",     fr: "Musique",       items: INSTRUMENTS, groups: STYLES,        modes: ["name", "listen", "play"] },
-  { id: "animals",     pic: "cow",        en: "Animals",   fr: "Animaux",       items: ANIMALS,     groups: ANIMAL_GROUPS, modes: ["name", "listen", "explore"] },
-  { id: "flowers",     pic: "sunflower",  en: "Flowers",   fr: "Fleurs",        items: FLOWERS,     modes: ["name", "explore"] },
-  { id: "trees",       pic: "oak",        en: "Trees",     fr: "Arbres",        items: TREES,       modes: ["name", "explore"] },
-  { id: "mushrooms",   pic: "fly-agaric", en: "Mushrooms", fr: "Champignons",   items: MUSHROOMS,   modes: ["name", "explore"] },
-  { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",     items: SCENERY,     modes: ["name", "explore"] },
-  { id: "dinosaurs",   pic: "t-rex",      en: "Dinosaurs", fr: "Dinosaures",    items: DINOSAURS,   modes: ["name", "explore"] },
+  { id: "animals",     pic: "cow",        en: "Animals",    fr: "Animaux",     unit: ["animals", "animaux"],         color: "#e8620c", tint: "#fff0e2", items: ANIMALS,     groups: ANIMAL_GROUPS, modes: ["name", "listen", "explore"] },
+  { id: "instruments", pic: "violin",     en: "Music",      fr: "Musique",     unit: ["instruments", "instruments"], color: "#6c47ff", tint: "#efe9ff", items: INSTRUMENTS, groups: STYLES,        modes: ["name", "listen", "play"] },
+  { id: "dinosaurs",   pic: "t-rex",      en: "Dinosaurs",  fr: "Dinosaures",  unit: ["dinosaurs", "dinosaures"],    color: "#0b8f7e", tint: "#e0f5f1", items: DINOSAURS,   modes: ["name", "explore"] },
+  { id: "flowers",     pic: "sunflower",  en: "Flowers",    fr: "Fleurs",      unit: ["flowers", "fleurs"],          color: "#d63a7c", tint: "#fde8f1", items: FLOWERS,     modes: ["name", "explore"] },
+  { id: "trees",       pic: "oak",        en: "Trees",      fr: "Arbres",      unit: ["trees", "arbres"],            color: "#3f8a1f", tint: "#eaf5e2", items: TREES,       modes: ["name", "explore"] },
+  { id: "mushrooms",   pic: "fly-agaric", en: "Mushrooms",  fr: "Champignons", unit: ["mushrooms", "champignons"],   color: "#c9302c", tint: "#fde9e7", items: MUSHROOMS,   modes: ["name", "explore"] },
+  { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "explore"] },
 ];
