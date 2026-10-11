@@ -123,27 +123,46 @@ const unitOf = t => t.unit[lang === "en" ? 0 : 1];
 // ---------- Speech ----------
 let voices = [];
 function loadVoices() { if ("speechSynthesis" in window) voices = speechSynthesis.getVoices(); }
-// the most natural voice the device offers for the language
-function bestVoice() {
-  const mine = voices.filter(v => v.lang.replace("_", "-").toLowerCase().startsWith(lang));
-  const score = v => (/natural|neural|premium|enhanced/i.test(v.name) ? 4 : 0) + (/google|siri|samantha|amélie|thomas|audrey/i.test(v.name) ? 2 : 0) + (v.localService ? 1 : 0);
+// A voice installed on the device for the language. Online voices (many "Google" or "Natural"
+// ones) can stay silent, especially in embedded previews, so they are never picked here; when
+// there is no local voice, the browser chooses from the language alone.
+function localVoice() {
+  const mine = voices.filter(v => v.localService && v.lang.replace("_", "-").toLowerCase().startsWith(lang));
+  const score = v => (v.default ? 2 : 0) + (/premium|enhanced|siri|samantha|amélie|thomas|audrey/i.test(v.name) ? 1 : 0);
   return mine.sort((a, b) => score(b) - score(a))[0];
 }
+let sayId = 0;
 function say(text, onDone) {
   let done = false;
   const finish = () => { if (!done) { done = true; onDone && onDone(); } };
   if (!("speechSynthesis" in window)) { setTimeout(finish, 300); return; }
+  const id = ++sayId;
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = T().voice;
-  u.rate = 0.85;
-  u.pitch = 1.15;
-  const v = bestVoice();
-  if (v) u.voice = v;
-  u.onend = finish;
-  u.onerror = finish;
-  speechSynthesis.speak(u);
-  if (onDone) setTimeout(finish, 1500 + text.length * 90); // some browsers never fire onend
+  speechSynthesis.resume(); // Chrome can stay paused after a cancel
+  const speak = voice => {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = T().voice;
+    u.rate = 0.85;
+    u.pitch = 1.15;
+    if (voice) u.voice = voice;
+    let started = false, replaced = false;
+    const retry = () => { replaced = true; speak(null); };
+    u.onstart = () => { started = true; };
+    u.onend = () => { if (!replaced) finish(); };
+    u.onerror = e => {
+      if (replaced) return;
+      // a chosen voice that fails: try once more with the browser's own choice
+      if (voice && id === sayId && e.error !== "interrupted" && e.error !== "canceled") retry();
+      else finish();
+    };
+    speechSynthesis.speak(u);
+    // a chosen voice that never starts: same retry
+    if (voice) setTimeout(() => {
+      if (!started && !done && id === sayId) { replaced = true; speechSynthesis.cancel(); speak(null); }
+    }, 1500);
+  };
+  speak(localVoice());
+  if (onDone) setTimeout(finish, 2500 + text.length * 90); // some browsers never fire onend
 }
 function hush() { if ("speechSynthesis" in window) speechSynthesis.cancel(); }
 
