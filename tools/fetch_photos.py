@@ -109,7 +109,8 @@ def inat(item):
     q = QUERY.get(item["id"], item["en"])
     d = json.loads(get("https://api.inaturalist.org/v1/taxa?" + urllib.parse.urlencode({"q": q, "per_page": 5, "is_active": "true"})))
     if not d["results"]: return []
-    taxon = d["results"][0]
+    exact = [t for t in d["results"] if t["name"].lower() == q.lower()]
+    taxon = (exact or d["results"])[0]
     time.sleep(1)
     full = json.loads(get(f"https://api.inaturalist.org/v1/taxa/{taxon['id']}"))["results"][0]
     out = []
