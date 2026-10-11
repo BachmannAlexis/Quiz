@@ -149,6 +149,30 @@ const ANIMALS = [
   { id: "snail",      en: "snail",        fr: "l'escargot",        family: "crawler", styles: [BUG] },
   { id: "caterpillar", en: "caterpillar", fr: "la chenille",       family: "crawler", styles: [BUG] },
   { id: "worm",       en: "worm",         fr: "le ver de terre",   family: "crawler", styles: [BUG] },
+  { id: "chick",      en: "chick",        fr: "le poussin",        family: "poultry", styles: [FARM], says: ["peep peep", "piou piou"] },
+  { id: "goose",      en: "goose",        fr: "l'oie",             family: "water",   styles: [FARM, BIRD] },
+  { id: "llama",      en: "llama",        fr: "le lama",           family: "camel",   styles: [FARM] },
+  { id: "hamster",    en: "hamster",      fr: "le hamster",        family: "rodent",  styles: [FARM] },
+  { id: "leopard",    en: "leopard",      fr: "le léopard",        family: "bigcat",  styles: [WILD] },
+  { id: "orangutan",  en: "orangutan",    fr: "l'orang-outan",     family: "ape",     styles: [WILD] },
+  { id: "bison",      en: "bison",        fr: "le bison",          family: "cow",     styles: [WILD] },
+  { id: "moose",      en: "moose",        fr: "l'élan",            family: "deer",    styles: [WILD] },
+  { id: "boar",       en: "wild boar",    fr: "le sanglier",       family: "pig",     styles: [WILD] },
+  { id: "raccoon",    en: "raccoon",      fr: "le raton laveur",   family: "raccoon", styles: [WILD] },
+  { id: "beaver",     en: "beaver",       fr: "le castor",         family: "beaver",  styles: [WILD] },
+  { id: "otter",      en: "otter",        fr: "la loutre",         family: "otter",   styles: [WILD] },
+  { id: "skunk",      en: "skunk",        fr: "la mouffette",      family: "skunk",   styles: [WILD] },
+  { id: "badger",     en: "badger",       fr: "le blaireau",       family: "badger",  styles: [WILD] },
+  { id: "lizard",     en: "lizard",       fr: "le lézard",         family: "reptile", styles: [WILD] },
+  { id: "lobster",    en: "lobster",      fr: "le homard",         family: "crab",    styles: [SEA] },
+  { id: "shrimp",     en: "shrimp",       fr: "la crevette",       family: "crab",    styles: [SEA] },
+  { id: "squid",      en: "squid",        fr: "le calmar",         family: "octopus", styles: [SEA] },
+  { id: "pufferfish", en: "pufferfish",   fr: "le poisson-globe",  family: "fish",    styles: [SEA] },
+  { id: "coral",      en: "coral",        fr: "le corail",         family: "coral",   styles: [SEA] },
+  { id: "crow",       en: "crow",         fr: "le corbeau",        family: "crow",    styles: [BIRD] },
+  { id: "grasshopper", en: "grasshopper", fr: "la sauterelle",     family: "grasshopper", styles: [BUG], says: ["chirp chirp", "cri cri"] },
+  { id: "beetle",     en: "beetle",       fr: "le scarabée",       family: "beetle",  styles: [BUG] },
+  { id: "fly",        en: "fly",          fr: "la mouche",         family: "bee",     styles: [BUG] },
 ];
 const ANIMAL_GROUPS = [
   { id: "all", pic: "lion",      en: "All",   fr: "Tous" },
@@ -175,6 +199,14 @@ const FLOWERS = [
   { id: "hyacinth",       en: "hyacinth",       fr: "la jacinthe",          family: "spike" },
   { id: "bluebell",       en: "bluebell",       fr: "la jacinthe des bois", family: "spike" },
   { id: "pansy",          en: "pansy",          fr: "la pensée",            family: "pansy" },
+  { id: "carnation",      en: "carnation",      fr: "l'œillet",             family: "red" },
+  { id: "water-lily",     en: "water lily",     fr: "le nénuphar",          family: "star" },
+  { id: "orchid",         en: "orchid",         fr: "l'orchidée",           family: "fancy" },
+  { id: "iris",           en: "iris",           fr: "l'iris",               family: "fancy" },
+  { id: "daffodil",       en: "daffodil",       fr: "la jonquille",         family: "daffodil" },
+  { id: "cornflower",     en: "cornflower",     fr: "le bleuet",            family: "blue" },
+  { id: "forget-me-not",  en: "forget-me-not",  fr: "le myosotis",          family: "blue" },
+  { id: "snowdrop",       en: "snowdrop",       fr: "le perce-neige",       family: "snowdrop" },
 ];
 const TREES = [
   { id: "fir",            en: "fir tree",       fr: "le sapin",             family: "conifer" },
@@ -189,6 +221,13 @@ const TREES = [
   { id: "baobab",         en: "baobab",         fr: "le baobab",            family: "baobab" },
   { id: "olive-tree",     en: "olive tree",     fr: "l'olivier",            family: "olive" },
   { id: "bamboo",         en: "bamboo",         fr: "le bambou",            family: "bamboo" },
+  { id: "pine",           en: "pine tree",      fr: "le pin",               family: "conifer" },
+  { id: "cypress",        en: "cypress",        fr: "le cyprès",            family: "cypress" },
+  { id: "sequoia",        en: "sequoia",        fr: "le séquoia",           family: "sequoia" },
+  { id: "chestnut-tree",  en: "chestnut tree",  fr: "le marronnier",        family: "green" },
+  { id: "orange-tree",    en: "orange tree",    fr: "l'oranger",            family: "green" },
+  { id: "banana-tree",    en: "banana tree",    fr: "le bananier",          family: "palm" },
+  { id: "cactus",         en: "cactus",         fr: "le cactus",            family: "cactus" },
 ];
 const MUSHROOMS = [
   { id: "fly-agaric",       en: "fly agaric",       fr: "l'amanite tue-mouches", family: "red",   poison: true },
@@ -200,6 +239,11 @@ const MUSHROOMS = [
   { id: "morel",            en: "morel",            fr: "la morille",            family: "morel" },
   { id: "oyster-mushroom",  en: "oyster mushroom",  fr: "le pleurote",           family: "oyster" },
   { id: "puffball",         en: "puffball",         fr: "la vesse-de-loup",      family: "puffball" },
+  { id: "shaggy-ink-cap",    en: "shaggy ink cap",   fr: "le coprin chevelu",     family: "inkcap" },
+  { id: "black-trumpet",     en: "black trumpet",    fr: "la trompette de la mort", family: "trumpet" },
+  { id: "hedgehog-mushroom", en: "hedgehog mushroom", fr: "le pied-de-mouton",    family: "pale" },
+  { id: "saffron-milk-cap",  en: "saffron milk cap", fr: "le lactaire délicieux", family: "chanterelle" },
+  { id: "bracket-fungus",    en: "bracket fungus",   fr: "le polypore",           family: "oyster" },
 ];
 const SCENERY = [
   { id: "mountain",   en: "mountain",    fr: "la montagne",      family: "mountain" },
@@ -218,6 +262,30 @@ const SCENERY = [
   { id: "starry-sky", en: "starry sky",  fr: "le ciel étoilé",   family: "sky" },
   { id: "sunset",     en: "sunset",      fr: "le coucher de soleil", family: "sky" },
   { id: "rainbow",    en: "rainbow",     fr: "l'arc-en-ciel",    family: "sky" },
+  { id: "jungle",     en: "jungle",      fr: "la jungle",        family: "jungle" },
+  { id: "savanna",    en: "savanna",     fr: "la savane",        family: "savanna" },
+  { id: "lake",       en: "lake",        fr: "le lac",           family: "river" },
+  { id: "coral-reef", en: "coral reef",  fr: "le récif de corail", family: "reef" },
+  { id: "canyon",     en: "canyon",      fr: "le canyon",        family: "canyon" },
+  { id: "countryside", en: "countryside", fr: "la campagne",     family: "meadow" },
+  { id: "snow",       en: "snow",        fr: "la neige",         family: "ice" },
+  { id: "campsite",   en: "campsite",    fr: "le camping",       family: "forest" },
+];
+
+// ---------- Dinosaurs (and two other prehistoric favourites)
+const DINOSAURS = [
+  { id: "t-rex",           en: "T. rex",          fr: "le tyrannosaure",    family: "theropod", says: ["roar", "groaaar"] },
+  { id: "velociraptor",    en: "velociraptor",    fr: "le vélociraptor",    family: "theropod" },
+  { id: "spinosaurus",     en: "spinosaurus",     fr: "le spinosaure",      family: "spino" },
+  { id: "diplodocus",      en: "diplodocus",      fr: "le diplodocus",      family: "longneck" },
+  { id: "triceratops",     en: "triceratops",     fr: "le tricératops",     family: "horns" },
+  { id: "stegosaurus",     en: "stegosaurus",     fr: "le stégosaure",      family: "plates" },
+  { id: "ankylosaurus",    en: "ankylosaurus",    fr: "l'ankylosaure",      family: "armor" },
+  { id: "parasaurolophus", en: "parasaurolophus", fr: "le parasaurolophus", family: "crest" },
+  { id: "pterodactyl",     en: "pterodactyl",     fr: "le ptérodactyle",    family: "flyer" },
+  { id: "plesiosaurus",    en: "plesiosaurus",    fr: "le plésiosaure",     family: "swimmer" },
+  { id: "mammoth",         en: "mammoth",         fr: "le mammouth",        family: "mammoth" },
+  { id: "dinosaur-egg",    en: "dinosaur egg",    fr: "l'œuf de dinosaure", family: "egg" },
 ];
 
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
@@ -229,4 +297,5 @@ const TOPICS = [
   { id: "trees",       pic: "oak",        en: "Trees",     fr: "Arbres",        items: TREES,       modes: ["name", "explore"] },
   { id: "mushrooms",   pic: "fly-agaric", en: "Mushrooms", fr: "Champignons",   items: MUSHROOMS,   modes: ["name", "explore"] },
   { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",     items: SCENERY,     modes: ["name", "explore"] },
+  { id: "dinosaurs",   pic: "t-rex",      en: "Dinosaurs", fr: "Dinosaures",    items: DINOSAURS,   modes: ["name", "explore"] },
 ];

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M64 124 C62 100 60 80 50 60 M62 100 C70 84 80 74 94 66 M60 84 C50 76 34 74 24 78" stroke="#7cb342" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M62 124 C48 116 42 106 44 98 C52 104 58 112 62 124 Z" fill="#8bc34a"/>
+  <defs><g id="fm"><g fill="#64b5f6"><circle cy="-8" r="7"/><circle cx="7.6" cy="-2.5" r="7"/><circle cx="4.7" cy="6.5" r="7"/><circle cx="-4.7" cy="6.5" r="7"/><circle cx="-7.6" cy="-2.5" r="7"/></g><circle r="4" fill="#fff59d"/><circle r="2" fill="#fbc02d"/></g></defs>
+  <use href="#fm" transform="translate(50 48)"/><use href="#fm" transform="translate(70 34) scale(.9)"/><use href="#fm" transform="translate(94 58)"/><use href="#fm" transform="translate(30 66) scale(.85)"/><use href="#fm" transform="translate(76 66) scale(.8)"/><use href="#fm" transform="translate(38 36) scale(.7)"/><use href="#fm" transform="translate(104 38) scale(.7)"/>
+</svg>

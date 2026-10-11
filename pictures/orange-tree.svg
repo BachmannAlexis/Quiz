@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M56 124 C58 108 58 98 54 88 L74 88 C70 98 70 108 72 124 Z" fill="#8d6e63"/>
+  <g fill="#2e7d32"><circle cx="64" cy="46" r="36"/><circle cx="34" cy="64" r="20"/><circle cx="94" cy="64" r="20"/></g>
+  <g fill="#388e3c"><circle cx="50" cy="32" r="14"/><circle cx="84" cy="40" r="10"/></g>
+  <g fill="#fb8c00"><circle cx="44" cy="52" r="7"/><circle cx="72" cy="28" r="7"/><circle cx="88" cy="58" r="7"/><circle cx="60" cy="70" r="7"/><circle cx="30" cy="68" r="6"/><circle cx="100" cy="74" r="6"/><circle cx="56" cy="40" r="6"/><circle cx="80" cy="78" r="6"/></g>
+  <g fill="#ffcc80"><circle cx="42" cy="50" r="2"/><circle cx="70" cy="26" r="2"/><circle cx="86" cy="56" r="2"/><circle cx="58" cy="68" r="2"/></g>
+  <circle cx="100" cy="118" r="7" fill="#fb8c00"/><path d="M100 111 l2 -4" stroke="#33691e" stroke-width="2"/><ellipse cx="104" cy="108" rx="4" ry="2" fill="#43a047"/>
+  <path d="M20 124 h88" stroke="#c0a16b" stroke-width="4" stroke-linecap="round"/>
+</svg>

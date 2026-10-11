@@ -1,6 +1,6 @@
 # Picture Quiz
 
-A picture quiz for 4-year-olds about **music, animals, flowers, trees, mushrooms and landscapes**. No reading needed: everything is spoken.
+A picture quiz for 4-year-olds about **music, animals, dinosaurs, flowers, trees, mushrooms and landscapes**. No reading needed: everything is spoken.
 
 Open `index.html` in any browser (tablet or phone works great). No install, no internet required.
 
@@ -15,11 +15,12 @@ Pick a topic at the top of the home screen, then a game:
 | Topic | Items | Groups |
 |---|---|---|
 | 🎻 Music | 55 instruments | orchestra, jazz, rock & pop, world |
-| 🐄 Animals | 63 animals, 21 of them with a sound ("the cow says moo") | farm, wild, sea, birds, bugs |
-| 🌻 Flowers | 14 | |
-| 🌳 Trees | 12 | |
-| 🍄 Mushrooms | 9 | |
-| 🏔️ Landscapes | 16 | |
+| 🐄 Animals | 87 animals, 23 of them with a sound ("the cow says moo") | farm, wild, sea, birds, bugs |
+| 🌻 Flowers | 22 | |
+| 🌳 Trees | 19 | |
+| 🍄 Mushrooms | 14 | |
+| 🏔️ Landscapes | 24 | |
+| 🦖 Dinosaurs | 12 (with the mammoth, the plesiosaurus and a dinosaur egg) | |
 
 The three pictures in a question always come from different families (never trumpet next to trombone, lion next to tiger, or button mushroom next to death cap), so a 4-year-old can tell them apart. Nothing repeats within a game of 10 rounds; a ⭐ for each first-try answer. 🔊 repeats the question, the flag switches between English and French, 🏠 goes back to the start.
 
@@ -43,7 +44,7 @@ The topics and their items are in `topics.js`.
 Everything is bundled in the page, so it works offline:
 
 - `sounds.js`: for each instrument a short tune and the notes for the play mode, built by `tools/make_sounds.py`.
-- `pictures.js`: all 169 pictures, built by `tools/make_pictures.py`.
+- `pictures.js`: all 233 pictures, built by `tools/make_pictures.py`.
 
 Where each instrument's sound comes from, best first:
 
@@ -82,4 +83,4 @@ cd .. && python3 tools/make_sounds.py build && python3 tools/make_pictures.py bu
 - MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so `sounds.js` is shared under the same license.
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
-- Pictures: 101 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (all the animals, and the ones listed in `tools/make_pictures.py`). The other 68 are drawn for this project (`pictures/`).
+- Pictures: 130 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (all the animals, and the ones listed in `tools/make_pictures.py`). The other 103 are drawn for this project (`pictures/`).

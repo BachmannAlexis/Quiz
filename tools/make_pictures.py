@@ -23,17 +23,24 @@ NOTO = {
     "owl": "owl", "eagle": "eagle", "parrot": "parrot", "flamingo": "flamingo", "peacock": "peacock", "penguin": "penguin",
     "swan": "swan", "dove": "dove", "butterfly": "butterfly", "bee": "honeybee", "ladybug": "lady-beetle", "snail": "snail",
     "ant": "ant", "spider": "spider", "caterpillar": "bug", "worm": "worm",
+    "chick": "baby-chick", "goose": "goose", "llama": "llama", "hamster": "hamster", "leopard": "leopard",
+    "orangutan": "orangutan", "bison": "bison", "moose": "moose", "boar": "boar", "raccoon": "raccoon", "beaver": "beaver",
+    "otter": "otter", "skunk": "skunk", "badger": "badger", "lizard": "lizard", "lobster": "lobster", "shrimp": "shrimp",
+    "squid": "squid", "pufferfish": "blowfish", "coral": "coral", "crow": "black-bird", "grasshopper": "cricket",
+    "beetle": "beetle", "fly": "fly",
     # flowers
     "rose": "rose", "tulip": "tulip", "sunflower": "sunflower", "cherry-blossom": "cherry-blossom", "hibiscus": "hibiscus",
     "lotus": "lotus", "hyacinth": "hyacinth",
     # trees
-    "fir": "evergreen-tree", "christmas-tree": "christmas-tree", "palm-tree": "palm-tree",
+    "fir": "evergreen-tree", "christmas-tree": "christmas-tree", "palm-tree": "palm-tree", "cactus": "cactus",
     # mushrooms
     "fly-agaric": "mushroom", "porcini": "brown-mushroom",
     # scenery
     "mountain": "snow-capped-mountain", "beach": "beach-with-umbrella", "desert": "desert", "island": "desert-island",
     "volcano": "volcano", "river": "national-park", "wave": "water-wave", "starry-sky": "milky-way", "city": "cityscape",
-    "rainbow": "rainbow", "sunset": "sunrise",
+    "rainbow": "rainbow", "sunset": "sunrise", "campsite": "camping",
+    # dinosaurs
+    "t-rex": "t-rex", "diplodocus": "sauropod", "mammoth": "mammoth",
 }
 
 def data_uri(svg):

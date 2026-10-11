@@ -122,24 +122,24 @@
     70% { transform: scale(.95) rotate(3deg); }
   }
   .home { display: flex; flex-direction: column; align-items: center; gap: clamp(18px, 4vh, 40px); }
-  .topics { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .topics { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
   .topic {
     border: 3px solid transparent;
     background: var(--card);
     border-radius: 22px;
-    padding: 8px 10px 6px;
+    padding: 6px 4px 4px;
     box-shadow: var(--shadow);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    width: clamp(96px, 27vw, 128px);
+    width: clamp(78px, 21vw, 120px);
     font: inherit;
-    font-size: 1rem;
+    font-size: clamp(.78rem, 3.2vw, 1rem);
     color: var(--ink);
   }
-  .topic img { width: 56px; height: 56px; }
+  .topic img { width: clamp(40px, 11vw, 56px); height: clamp(40px, 11vw, 56px); }
   .topic[aria-pressed="true"] { border-color: var(--accent); background: #fff1e6; }
   .styles { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .style {
@@ -315,6 +315,7 @@ const TEXT = {
 const CONFETTI = {
   instruments: ["🎵", "🎶", "⭐", "🎉", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
+  dinosaurs: ["🦖", "🦕", "⭐", "✨"],
 };
 
 const ROUNDS = 10;
