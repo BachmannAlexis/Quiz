@@ -3,91 +3,8 @@
 "use strict";
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
-const SOURCE_URL = "https://github.com/BachmannAlexis/Quiz";
-const ROUNDS = 10;
 const CHOICES = 3;
 
-// ---------- Words ----------
-const TEXT = {
-  en: {
-    where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?",
-    who: sound => `Who says ${sound}?`, says: (n, sound) => `The ${n} says ${sound}!`,
-    whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?",
-    poison: "Careful! This mushroom is poisonous. Never eat it!",
-    yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo!", bravoSaid: "Bravo! You did it!",
-    flag: "🇬🇧 EN", voice: "en-US",
-    tagline: "Learn words with pictures and sounds",
-    count: (n, unit) => `${n} ${unit}`,
-    modes: {
-      name: ["Find the picture", "Hear a name, tap the right picture"],
-      listenMusic: ["Who is playing?", "Hear an instrument, find it"],
-      listenAnimals: ["Who says that?", "Hear a sound, find the animal"],
-      listenDinosaurs: ["Who says that?", "Hear a roar, find the dinosaur"],
-      listenScenery: ["Where are we?", "Hear the waves, the wind or the rain, find the place"],
-      play: ["Play music", "Tap an instrument, play the rainbow keys"],
-      explore: ["Discover", "Tap a picture to hear its name and its sound"],
-    },
-    found: n => `${n} stars out of ${ROUNDS}`, record: "New record!",
-    again: "Play again", otherGame: "Other games", share: "Share", copied: "Link copied",
-    parents: "For parents", back: "Back", close: "Close", repeat: "Hear it again", hearAgain: "Hear it again",
-    parentsTitle: "For parents",
-    parentsIntro: "Pikolo is a free picture quiz for children from 3 years old. No reading needed: everything is spoken.",
-    howTitle: "How to play",
-    howName: "Find the picture: the voice says a name, your child taps the right picture among three.",
-    howListen: "Listening games: find the instrument that plays, the animal or dinosaur that makes a sound, or the place you hear (waves, wind, rain, a city…).",
-    howPlay: "Discover: tap any picture to hear its name, and its sound when it has one (flowers, trees and mushrooms just say their name). In Music, play the instrument on the rainbow keys.",
-    howStars: "A star for each first-try answer. Look-alikes (lion and tiger, trumpet and trombone) never appear together.",
-    shareTitle: "Share Pikolo",
-    shareText: "Send this link to family and friends. It opens in any browser on a phone, tablet or computer.",
-    installTip: "Tip: in your browser menu, choose “Add to Home Screen” to use Pikolo like an app, even offline.",
-    privacyTitle: "Privacy",
-    privacyText: "No ads, no account, nothing collected. Pikolo runs entirely on your device and works offline.",
-    voiceTitle: "The voice", voiceTest: "Test the voice", voiceSample: "Hello! I am the Pikolo voice.",
-    voicesFound: "voices for this language", voiceSilent: "the voice did not start",
-    voiceHelp: "No voice? Turn up the media volume. On Android, check Settings → Text-to-speech output: a speech engine (Google or Samsung) with the English or French voice installed. On iPhone and iPad, turn off Silent mode.",
-    creditsTitle: "Pictures and sounds",
-    creditsText: `Pictures from <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) and drawn for Pikolo. Animal recordings from <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (authors listed in <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Instruments from VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, and the MusyngKite and GeneralUser GS sound banks. Font: Fredoka. Full credits and source on <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
-  },
-  fr: {
-    where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
-    who: sound => `Qui fait ${sound} ?`, says: (n, sound) => `${cap(n)} fait ${sound} !`,
-    whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?",
-    poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
-    yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo !", bravoSaid: "Bravo ! Tu as réussi !",
-    flag: "🇫🇷 FR", voice: "fr-FR",
-    tagline: "Apprendre des mots en images et en sons",
-    count: (n, unit) => `${n} ${unit}`,
-    modes: {
-      name: ["Trouve l'image", "Écoute un nom, touche la bonne image"],
-      listenMusic: ["Qui joue ?", "Écoute un instrument, trouve-le"],
-      listenAnimals: ["Qui fait ce bruit ?", "Écoute un cri, trouve l'animal"],
-      listenDinosaurs: ["Qui fait ce bruit ?", "Écoute un cri, trouve le dinosaure"],
-      listenScenery: ["Où sommes-nous ?", "Écoute les vagues, le vent ou la pluie, trouve le lieu"],
-      play: ["Joue de la musique", "Choisis un instrument, joue sur l'arc-en-ciel"],
-      explore: ["Découvre", "Touche une image pour entendre son nom et son bruit"],
-    },
-    found: n => `${n} étoiles sur ${ROUNDS}`, record: "Nouveau record !",
-    again: "Rejouer", otherGame: "Autres jeux", share: "Partager", copied: "Lien copié",
-    parents: "Pour les parents", back: "Retour", close: "Fermer", repeat: "Réécouter", hearAgain: "Réécouter",
-    parentsTitle: "Pour les parents",
-    parentsIntro: "Pikolo est un quiz en images gratuit pour les enfants dès 3 ans. Pas besoin de savoir lire : tout est dit à voix haute.",
-    howTitle: "Comment jouer",
-    howName: "Trouve l'image : la voix dit un nom, votre enfant touche la bonne image parmi trois.",
-    howListen: "Jeux d'écoute : trouvez l'instrument qui joue, l'animal ou le dinosaure qui fait un bruit, ou le lieu qu'on entend (vagues, vent, pluie, ville…).",
-    howPlay: "Découvre : touchez une image pour entendre son nom, et son bruit quand elle en a un (fleurs, arbres et champignons disent juste leur nom). En musique, jouez de l'instrument sur les touches arc-en-ciel.",
-    howStars: "Une étoile pour chaque bonne réponse du premier coup. Les images qui se ressemblent (lion et tigre, trompette et trombone) ne sont jamais ensemble.",
-    shareTitle: "Partager Pikolo",
-    shareText: "Envoyez ce lien à la famille et aux amis. Il s'ouvre dans n'importe quel navigateur, sur téléphone, tablette ou ordinateur.",
-    installTip: "Astuce : dans le menu du navigateur, choisissez « Ajouter à l'écran d'accueil » pour utiliser Pikolo comme une appli, même hors connexion.",
-    privacyTitle: "Vie privée",
-    privacyText: "Pas de publicité, pas de compte, aucune donnée collectée. Pikolo fonctionne entièrement sur votre appareil, même hors connexion.",
-    voiceTitle: "La voix", voiceTest: "Tester la voix", voiceSample: "Bonjour ! Je suis la voix de Pikolo.",
-    voicesFound: "voix pour cette langue", voiceSilent: "la voix n'a pas démarré",
-    voiceHelp: "Pas de voix ? Montez le volume multimédia. Sur Android, vérifiez Paramètres → Synthèse vocale : un moteur (Google ou Samsung) avec la voix française ou anglaise installée. Sur iPhone et iPad, désactivez le mode Silencieux.",
-    creditsTitle: "Images et sons",
-    creditsText: `Images de <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) et dessinées pour Pikolo. Cris d'animaux de <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (auteurs dans <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Instruments : VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, banques de sons MusyngKite et GeneralUser GS. Police : Fredoka. Crédits complets et code source sur <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
-  },
-};
 const CONFETTI = {
   instruments: ["🎵", "🎶", "⭐", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
@@ -97,7 +14,6 @@ const MODE_ICONS = { name: "🗣️", listen: "👂", play: "🎹", explore: "�
 
 // ---------- State ----------
 const $ = id => document.getElementById(id);
-const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const store = {
   get(k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
@@ -148,17 +64,102 @@ function voiceFor() {
 
 const keep = []; // Chrome can drop the events of utterances it no longer references
 let sayId = 0;
-// Speak a sentence; onDone runs once when it ends (or fails, or seems stuck). `report`, if
-// given, hears what happens (used by the voice test in the parents' sheet).
-function say(text, onDone, report) {
+// ---------- Recorded voice ----------
+// Every sentence is recorded in advance (tools/make_voice.py) so the voice sounds the same
+// on every device, even without any text-to-speech installed. Packs per language and topic
+// (app/voice/<lang>/<pack>.json: sentence -> MP3) load when needed; a sentence without a
+// recording falls back to the device's own voice.
+const clips = { en: {}, fr: {} };   // sentence -> data URI, from the packs loaded so far
+const packs = {};                   // "fr/animals" -> Promise
+function loadPack(l, name) {
+  const key = l + "/" + name;
+  if (!packs[key]) {
+    loading[key] = packs[key] = fetch(`app/voice/${key}.json`)
+      .then(r => (r.ok ? r.json() : {}))
+      .then(map => Object.assign(clips[l], map))
+      .catch(() => {}) // offline from a file, or no pack: the device voice speaks instead
+      .then(() => { delete loading[key]; });
+  }
+  return packs[key];
+}
+const loading = {};                 // packs still downloading
+// Resolves when the packs of the language have arrived (or after `ms`, not to keep a child waiting).
+function packsReady(l, ms) {
+  const waiting = Object.keys(loading).filter(k => k.startsWith(l + "/")).map(k => loading[k]);
+  return waiting.length ? Promise.race([Promise.all(waiting), new Promise(ok => setTimeout(ok, ms))]) : null;
+}
+function loadVoice() { loadPack(lang, "common"); loadPack(lang, topic.id); }
+const clipAudio = {}; // data URI -> Promise<AudioBuffer>
+function decodeClip(uri) {
+  if (!clipAudio[uri]) {
+    const bin = atob(uri.split(",")[1]);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    clipAudio[uri] = new Promise((ok, fail) => audio().decodeAudioData(bytes.buffer, ok, fail));
+    clipAudio[uri].catch(() => { delete clipAudio[uri]; });
+  }
+  return clipAudio[uri];
+}
+let voiceSrc = null;
+function stopVoice() { if (voiceSrc) { try { voiceSrc.stop(); } catch (e) {} voiceSrc = null; } }
+
+// Speak a sentence, given as one string or as parts ("Yes! The cow!", "The cow says moo!").
+// onDone runs once when it ends (or fails, or seems stuck). `report`, if given, hears what
+// happens (used by the voice test in the parents' sheet).
+function say(parts, onDone, report) {
+  parts = [].concat(parts).filter(Boolean);
+  const text = parts.join(" ");
   let done = false;
   const finish = () => { if (!done) { done = true; onDone && onDone(); } };
   const note = m => report && report(m);
-  if (!("speechSynthesis" in window)) { note("unsupported"); setTimeout(finish, 300); return; }
   const id = ++sayId;
-  const busy = speechSynthesis.speaking || speechSynthesis.pending;
+  stopVoice();
+  const busy = "speechSynthesis" in window && (speechSynthesis.speaking || speechSynthesis.pending);
   if (busy) speechSynthesis.cancel();
+  // a pack still downloading (first sentences of a topic): wait for it a moment
+  if (!parts.every(p => clips[lang][p])) {
+    const ready = packsReady(lang, 2500);
+    if (ready) {
+      ready.then(() => { if (id === sayId) speakParts(parts, id, finish, note, busy); });
+      if (onDone) setTimeout(finish, 6500 + text.length * 110);
+      return;
+    }
+  }
+  speakParts(parts, id, finish, note, busy);
+  if (onDone) setTimeout(finish, 4000 + text.length * 110); // never leave a game waiting
+}
+
+function speakParts(parts, id, finish, note, busy) {
+  // recorded clips, one after another
+  const uris = parts.map(p => clips[lang][p]);
+  if (uris.length && uris.every(Boolean)) {
+    note("recorded voice");
+    let i = 0;
+    const next = () => {
+      if (id !== sayId) return;
+      if (i >= uris.length) { note("end"); return finish(); }
+      decodeClip(uris[i++]).then(buf => {
+        if (id !== sayId) return;
+        const src = audio().createBufferSource();
+        src.buffer = buf;
+        src.connect(audio().destination);
+        src.onended = () => { if (voiceSrc === src) voiceSrc = null; next(); };
+        voiceSrc = src;
+        src.start();
+        if (i === 1) note("start");
+      }, () => { if (id === sayId) speakDevice(parts.slice(i - 1).join(" "), id, finish, note, false); });
+    };
+    next();
+    return;
+  }
+  speakDevice(parts.join(" "), id, finish, note, busy);
+}
+
+// The device's own text-to-speech. `busy`: a sentence was just cancelled.
+function speakDevice(text, id, finish, note, busy) {
+  if (!("speechSynthesis" in window)) { note("unsupported"); setTimeout(finish, 300); return; }
   if (speechSynthesis.paused) speechSynthesis.resume();
+  note("device voice");
   const speak = voice => {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = T().voice;
@@ -166,15 +167,16 @@ function say(text, onDone, report) {
     u.pitch = 1.15;
     if (voice) u.voice = voice;
     keep.push(u); if (keep.length > 6) keep.shift();
-    let started = false, replaced = false;
+    let started = false, replaced = false, over = false;
     const retry = () => {
       replaced = true;
       speechSynthesis.cancel();
       setTimeout(() => { if (id === sayId) speak(null); }, 150);
     };
     u.onstart = () => { started = true; note("start"); };
-    u.onend = () => { note("end"); if (!replaced) finish(); };
+    u.onend = () => { over = true; note("end"); if (!replaced) finish(); };
     u.onerror = e => {
+      over = true;
       note("error: " + e.error);
       if (replaced) return;
       // a chosen voice that fails: try once more with the browser's own choice
@@ -183,25 +185,39 @@ function say(text, onDone, report) {
     };
     speechSynthesis.speak(u);
     // a chosen voice that never starts: same retry (engines can be slow to wake up, so be patient)
-    if (voice) setTimeout(() => { if (!started && !done && id === sayId) { note("no start, retrying"); retry(); } }, 4000);
+    if (voice) setTimeout(() => { if (!started && !over && id === sayId) { note("no start, retrying"); retry(); } }, 4000);
   };
   const voice = voiceFor();
   note("voice: " + (voice ? voice.name : "device default"));
   // Android Chrome drops a sentence spoken right after cancel(), so wait a moment after one
   if (busy) setTimeout(() => { if (id === sayId) speak(voice); }, 150);
   else speak(voice);
-  if (onDone) setTimeout(finish, 3000 + text.length * 90); // some browsers never fire onend
 }
-function hush() { if ("speechSynthesis" in window) speechSynthesis.cancel(); }
+function hush() { sayId++; stopVoice(); if ("speechSynthesis" in window) speechSynthesis.cancel(); }
 
 // ---------- Sounds ----------
 let ctx, current, playToken = 0, soundsLoading = null;
 const buffers = {}; // id -> Promise<AudioBuffer>
 function audio() {
-  ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
-  if (ctx.state === "suspended") ctx.resume();
+  if (!ctx) {
+    // iPhone and iPad: play even when the ring/silent switch is on silent
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {}
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (ctx.state !== "running") ctx.resume().catch(() => {});
   return ctx;
 }
+// Browsers only allow sound after a touch: wake the audio on the first one, with a
+// silent sound for older iPhones.
+function unlockAudio() {
+  const c = audio();
+  const src = c.createBufferSource();
+  src.buffer = c.createBuffer(1, 1, 22050);
+  src.connect(c.destination);
+  src.start(0);
+  if (c.state === "running") ["pointerdown", "touchend", "keydown"].forEach(e => removeEventListener(e, unlockAudio, true));
+}
+["pointerdown", "touchend", "keydown"].forEach(e => addEventListener(e, unlockAudio, true));
 // sounds.js is big (2.6 MB), so the page loads it in the background (an async script tag
 // in index.html; scripts added from JavaScript are blocked in some embedded previews).
 // Sounds wait for it here.
@@ -356,6 +372,7 @@ function renderHome() {
 function openTopic(t) {
   topic = t;
   store.set("quiz-topic", t.id);
+  loadVoice();
   if (t.items.some(hasRecording)) loadSounds().catch(() => {});
   theme();
   renderTopic();
@@ -526,7 +543,7 @@ function pick(item, btn) {
     const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
     const hear = hasRecording(item) && mode === "name"; // found by name: now let them hear it
     // "Yes! The cow! The cow says moo!", then the next question
-    say(`${T().yes(nameOf(item))} ${hasRecording(item) ? "" : extra(item)}`, () => {
+    say([T().yes(nameOf(item)), hasRecording(item) ? "" : extra(item)], () => {
       if (g !== gameId) return;
       if (hear) playInstrument(item);
       setTimeout(next, hear ? 3000 : 900);
@@ -541,8 +558,8 @@ function pick(item, btn) {
       setTimeout(() => { if (q === questionId) playInstrument(answer); }, 500);
     } else {
       // say what they tapped ("The cat says meow!"), then gently ask again
-      const what = mode === "listen" && item.says ? extra(item) : `${shortName(item)}.`;
-      say(`${what} ${T().no}`, () => { if (q === questionId) setTimeout(() => { if (q === questionId) ask(); }, 400); });
+      const what = mode === "listen" && item.says ? extra(item) : cap(nameOf(item));
+      say([what, T().no], () => { if (q === questionId) setTimeout(() => { if (q === questionId) ask(); }, 400); });
     }
   }
 }
@@ -597,7 +614,7 @@ function sayItem() {
   const q = ++questionId;
   bounce();
   if (hasRecording(playing)) say(cap(nameOf(playing)), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
-  else say(`${cap(nameOf(playing))}. ${extra(playing)}`);
+  else say([cap(nameOf(playing)), extra(playing)]);
 }
 
 function bounce() {
@@ -655,6 +672,7 @@ function translate() {
 function setLang(l) {
   lang = l;
   store.set("quiz-lang", l);
+  loadVoice();
   translate();
   if (screen === "home") renderHome();
   if (screen === "topic") renderTopic();
@@ -763,3 +781,4 @@ if ("serviceWorker" in navigator && location.protocol === "https:") navigator.se
 translate();
 renderHome();
 theme();
+loadVoice();

@@ -54,12 +54,14 @@ The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages 
 |---|---|
 | `index.html` | The page: home, topic, game, end and play screens, parents' sheet |
 | `app/app.js` | The app logic |
+| `app/words.js` | Everything the app says and shows, in English and French |
+| `app/voice/` | The recorded voice: every sentence in English and French (`<lang>/<topic>.json`, loaded when a topic opens) |
 | `app/style.css`, `app/font.css` | Design (one bright theme; each topic recolors its screens) and the embedded Fredoka font |
 | `app/topics.js` | Topics and items: names in English and French, families, groups, animal sounds |
 | `app/pictures.js`, `app/sounds.js` | Generated pictures and sounds (sounds load only when music is opened) |
 | `pictures/` | The pictures drawn for the app (SVG) |
 | `icons/` | App icon, home-screen icons and the link preview image |
-| `tools/` | Scripts that build `pictures.js` and `sounds.js` |
+| `tools/` | Scripts that build `pictures.js`, `sounds.js` and the voice |
 
 ## Sounds and pictures
 
@@ -96,6 +98,24 @@ npm pack @iconify-json/noto && mkdir noto && tar xzf iconify-json-noto-*.tgz -C 
 cd .. && python3 tools/make_sounds.py build && python3 tools/make_pictures.py build/noto/package/icons.json
 ```
 
+## Voice
+
+Every sentence is recorded in advance, so the voice sounds the same on every phone, tablet and computer, works offline, and does not depend on the voices installed on the device. The recordings are made with the [Piper](https://github.com/OHF-Voice/piper1-gpl) speech synthesizer, a little slower than normal for small children. If a sentence has no recording (for example after the text was changed and not recorded again), the app falls back to the device's own voice.
+
+To record the voice again after changing `app/words.js` or `app/topics.js` (needs Node, Python and ffmpeg):
+
+```sh
+python3 -m venv build/tts && build/tts/bin/pip install piper-tts faster-whisper
+mkdir -p build/voices && cd build/voices
+for v in en/en_US/ljspeech/high/en_US-ljspeech-high fr/fr_FR/siwis/medium/fr_FR-siwis-medium; do
+  curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/$v.onnx
+  curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/$v.onnx.json
+done
+cd ../.. && build/tts/bin/python tools/make_voice.py build --check
+```
+
+`tools/phrases.mjs` lists the sentences, recordings are cached in `build/voice-cache`, and `--check` transcribes each clip with Whisper and lists the doubtful ones in `build/voice-check.txt`. Words the synthesizer mispronounces can be respelled in `spoken_form()` in `tools/make_voice.py`.
+
 ## Credits
 
 - Orchestra recordings: Versilian Studios Chamber Orchestra 2 Community Edition by Versilian Studios / Samuel Gossner, CC0, edited by tiny-orchestra (CC0).
@@ -105,5 +125,6 @@ cd .. && python3 tools/make_sounds.py build && python3 tools/make_pictures.py bu
 - MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so `app/sounds.js` is shared under the same license.
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
+- Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Font: [Fredoka](https://github.com/hafontia/Fredoka) by Milena Brandão, SIL Open Font License 1.1 (embedded in `app/font.css`).
 - Pictures: 130 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (all the animals, and the ones listed in `tools/make_pictures.py`). The other 103 are drawn for this project (`pictures/`).
