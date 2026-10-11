@@ -1,0 +1,858 @@
+{
+ "animals": {
+  "ant": 0,
+  "badger": 1,
+  "bat": 1,
+  "bear": [
+   2,
+   0.6,
+   0.5
+  ],
+  "beaver": 0,
+  "bee": [
+   1,
+   0.6,
+   0.45
+  ],
+  "beetle": 3,
+  "blackbird": [
+   0,
+   0.55,
+   0.5
+  ],
+  "boar": [
+   0,
+   0.45,
+   0.5
+  ],
+  "butterfly": 0,
+  "camel": 5,
+  "cat": 0,
+  "caterpillar": [
+   1,
+   0.45,
+   0.6
+  ],
+  "cheetah": [
+   1,
+   0.55,
+   0.5
+  ],
+  "chick": [
+   2,
+   0.48,
+   0.5
+  ],
+  "coral": 2,
+  "cow": 3,
+  "crab": [
+   2,
+   0.47,
+   0.55
+  ],
+  "crocodile": [
+   3,
+   0.52,
+   0.5
+  ],
+  "crow": [
+   0,
+   0.42,
+   0.5
+  ],
+  "cuckoo": 0,
+  "deer": 3,
+  "dog": 0,
+  "dolphin": 5,
+  "donkey": [
+   0,
+   0.45,
+   0.5
+  ],
+  "dove": [
+   1,
+   0.42,
+   0.5
+  ],
+  "duck": 2,
+  "eagle": 3,
+  "elephant": [
+   0,
+   0.42,
+   0.5
+  ],
+  "fish": 5,
+  "flamingo": [
+   0,
+   0.52,
+   0.5
+  ],
+  "fly": [
+   0,
+   0.45,
+   0.5
+  ],
+  "fox": [
+   2,
+   0.65,
+   0.5
+  ],
+  "frog": [
+   0,
+   0.4,
+   0.5
+  ],
+  "giraffe": [
+   2,
+   0.43,
+   0.5
+  ],
+  "goat": [
+   2,
+   0.54,
+   0.5
+  ],
+  "goose": [
+   5,
+   0.4,
+   0.5
+  ],
+  "gorilla": 0,
+  "grasshopper": [
+   4,
+   0.45,
+   0.5
+  ],
+  "hamster": [
+   1,
+   0.55,
+   0.5
+  ],
+  "hedgehog": [
+   0,
+   0.45,
+   0.5
+  ],
+  "hen": [
+   3,
+   0.62,
+   0.5
+  ],
+  "hippo": [
+   1,
+   0.45,
+   0.5
+  ],
+  "horse": 5,
+  "hummingbird": [
+   4,
+   0.62,
+   0.5
+  ],
+  "jellyfish": 3,
+  "kangaroo": 5,
+  "koala": [
+   0,
+   0.47,
+   0.5
+  ],
+  "ladybug": [
+   0,
+   0.55,
+   0.5
+  ],
+  "leopard": [
+   0,
+   0.6,
+   0.5
+  ],
+  "lion": [
+   1,
+   0.6,
+   0.5
+  ],
+  "lizard": [
+   2,
+   0.5,
+   0.4
+  ],
+  "llama": 2,
+  "lobster": 0,
+  "mole": [
+   4,
+   0.55,
+   0.5
+  ],
+  "monkey": [
+   0,
+   0.45,
+   0.5
+  ],
+  "moose": 2,
+  "mosquito": 5,
+  "mouse": [
+   5,
+   0.55,
+   0.5
+  ],
+  "octopus": [
+   0,
+   0.45,
+   0.45
+  ],
+  "ostrich": [
+   0,
+   0.38,
+   0.5
+  ],
+  "otter": [
+   0,
+   0.55,
+   0.5
+  ],
+  "owl": 0,
+  "ox": [
+   0,
+   0.55,
+   0.5
+  ],
+  "panda": 0,
+  "parrot": [
+   2,
+   0.5,
+   0.4
+  ],
+  "peacock": [
+   2,
+   0.55,
+   0.5
+  ],
+  "penguin": [
+   4,
+   0.5,
+   0.42
+  ],
+  "pig": [
+   2,
+   0.6,
+   0.5
+  ],
+  "polar-bear": [
+   1,
+   0.37,
+   0.5
+  ],
+  "pufferfish": 1,
+  "rabbit": 1,
+  "raccoon": 0,
+  "ram": 2,
+  "rat": [
+   0,
+   0.62,
+   0.5
+  ],
+  "rhino": [
+   4,
+   0.55,
+   0.5
+  ],
+  "robin": [
+   2,
+   0.45,
+   0.5
+  ],
+  "rooster": 1,
+  "scorpion": 5,
+  "seagull": 0,
+  "seal": 2,
+  "shark": 3,
+  "sheep": [
+   0,
+   0.45,
+   0.5
+  ],
+  "shrimp": 1,
+  "skunk": [
+   3,
+   0.42,
+   0.5
+  ],
+  "sloth": [
+   1,
+   0.55,
+   0.5
+  ],
+  "snail": 0,
+  "snake": 2,
+  "spider": 0,
+  "squid": 4,
+  "squirrel": [
+   2,
+   0.45,
+   0.5
+  ],
+  "swan": [
+   1,
+   0.5,
+   0.55
+  ],
+  "tiger": [
+   1,
+   0.6,
+   0.5
+  ],
+  "toad": [
+   1,
+   0.4,
+   0.5
+  ],
+  "toucan": [
+   2,
+   0.6,
+   0.5
+  ],
+  "turkey": 0,
+  "turtle": [
+   3,
+   0.58,
+   0.5
+  ],
+  "water-buffalo": [
+   0,
+   0.45,
+   0.5
+  ],
+  "whale": [
+   1,
+   0.45,
+   0.5
+  ],
+  "wolf": [
+   3,
+   0.4,
+   0.5
+  ],
+  "woodpecker": [
+   4,
+   0.4,
+   0.5
+  ],
+  "worm": 0,
+  "zebra": [
+   3,
+   0.45,
+   0.5
+  ]
+ },
+ "dinosaurs": {
+  "ankylosaurus": [
+   1,
+   0.45,
+   0.55
+  ],
+  "dinosaur-egg": [
+   0,
+   0.38,
+   0.5
+  ],
+  "diplodocus": 5,
+  "parasaurolophus": [
+   1,
+   0.55,
+   0.5
+  ],
+  "stegosaurus": [
+   5,
+   0.55,
+   0.5
+  ],
+  "t-rex": [
+   1,
+   0.4,
+   0.5
+  ],
+  "triceratops": [
+   3,
+   0.5,
+   0.62
+  ]
+ },
+ "flowers": {
+  "bluebell": 3,
+  "buttercup": 2,
+  "carnation": 5,
+  "cherry-blossom": 2,
+  "chrysanthemum": 0,
+  "cornflower": 3,
+  "crocus": 2,
+  "daffodil": 2,
+  "dahlia": 0,
+  "daisy": 0,
+  "dandelion": 5,
+  "edelweiss": 5,
+  "forget-me-not": 0,
+  "geranium": 5,
+  "hibiscus": 5,
+  "hyacinth": 5,
+  "hydrangea": 2,
+  "iris": 0,
+  "jasmine": 4,
+  "lavender": [
+   1,
+   0.4,
+   0.45
+  ],
+  "lilac": 0,
+  "lily": 0,
+  "lily-of-the-valley": [
+   4,
+   0.34,
+   0.5
+  ],
+  "lotus": 1,
+  "magnolia": [
+   4,
+   0.375,
+   0.5
+  ],
+  "orchid": 0,
+  "pansy": 4,
+  "peony": [
+   5,
+   0.48,
+   0.55
+  ],
+  "poppy": [
+   4,
+   0.5,
+   0.58
+  ],
+  "snowdrop": 2,
+  "sunflower": 4,
+  "tulip": 4,
+  "violet": 1,
+  "water-lily": 0,
+  "wisteria": 5
+ },
+ "food": {
+  "apple": 2,
+  "artichoke": 1,
+  "asparagus": 3,
+  "avocado": 1,
+  "banana": 1,
+  "beans": 0,
+  "blueberries": 1,
+  "broccoli": 5,
+  "carrot": 0,
+  "cauliflower": [
+   1,
+   0.72,
+   0.5
+  ],
+  "cherries": 1,
+  "coconut": 5,
+  "corn": 0,
+  "cucumber": 0,
+  "garlic": 2,
+  "grapes": [
+   4,
+   0.7,
+   0.5
+  ],
+  "kiwi": 1,
+  "lemon": 1,
+  "lettuce": 5,
+  "mango": 4,
+  "olive": 3,
+  "onion": 2,
+  "orange": 0,
+  "peach": 2,
+  "pear": 3,
+  "peas": 0,
+  "pineapple": 2,
+  "plum": 3,
+  "potato": 5,
+  "pumpkin": [
+   5,
+   0.5,
+   0.65
+  ],
+  "radish": 5,
+  "raspberry": 1,
+  "strawberry": 0,
+  "tomato": 0,
+  "watermelon": 2
+ },
+ "instruments": {
+  "accordion": 3,
+  "bagpipes": [
+   3,
+   0.42,
+   0.5
+  ],
+  "bass-guitar": 0,
+  "bassoon": 5,
+  "bell": [
+   0,
+   0.5,
+   0.34
+  ],
+  "bongos": 0,
+  "cello": [
+   2,
+   0.45,
+   0.5
+  ],
+  "clarinet": 0,
+  "djembe": 4,
+  "double-bass": [
+   3,
+   0.34,
+   0.5
+  ],
+  "drum": 1,
+  "drum-kit": [
+   2,
+   0.6,
+   0.5
+  ],
+  "electric-guitar": [
+   2,
+   0.42,
+   0.5
+  ],
+  "flute": 2,
+  "glockenspiel": [
+   0,
+   0.55,
+   0.5
+  ],
+  "guiro": 2,
+  "guitar": [
+   2,
+   0.62,
+   0.5
+  ],
+  "harmonica": 0,
+  "harp": 3,
+  "jingle-bells": 5,
+  "kalimba": [
+   2,
+   0.55,
+   0.5
+  ],
+  "koto": 5,
+  "maracas": [
+   4,
+   0.5,
+   0.55
+  ],
+  "music-box": 3,
+  "pan-flute": 5,
+  "piano": 3,
+  "pipe-organ": 3,
+  "recorder": 0,
+  "saxophone": 4,
+  "shamisen": 2,
+  "sitar": [
+   2,
+   0.5,
+   0.6
+  ],
+  "steel-drum": [
+   0,
+   0.5,
+   0.6
+  ],
+  "tabla": [
+   0,
+   0.5,
+   0.62
+  ],
+  "taiko": [
+   0,
+   0.34,
+   0.5
+  ],
+  "timpani": [
+   4,
+   0.55,
+   0.55
+  ],
+  "trombone": [
+   1,
+   0.45,
+   0.5
+  ],
+  "ukulele": 0,
+  "violin": 0,
+  "woodblock": 5
+ },
+ "kitchen": {
+  "blender": 0,
+  "bowl": 4,
+  "coffee-machine": [
+   4,
+   0.5,
+   0.57
+  ],
+  "colander": [
+   3,
+   0.38,
+   0.5
+  ],
+  "cooktop": 0,
+  "fridge": 5,
+  "frying-pan": [
+   4,
+   0.4,
+   0.5
+  ],
+  "grater": 4,
+  "hood": [
+   1,
+   0.42,
+   0.5
+  ],
+  "juicer": 4,
+  "kettle": [
+   1,
+   0.45,
+   0.5
+  ],
+  "kitchen-scale": [
+   5,
+   0.45,
+   0.5
+  ],
+  "knife": 0,
+  "microwave": [
+   2,
+   0.4,
+   0.5
+  ],
+  "mixer": 1,
+  "oven": [
+   2,
+   0.5,
+   0.62
+  ],
+  "rolling-pin": 3,
+  "saucepan": [
+   3,
+   0.55,
+   0.5
+  ],
+  "spoon": 5,
+  "toaster": 0,
+  "waffle-iron": 2,
+  "whisk": [
+   5,
+   0.45,
+   0.5
+  ]
+ },
+ "mushrooms": {
+  "bay-bolete": 0,
+  "black-trumpet": [
+   5,
+   0.5,
+   0.45
+  ],
+  "bracket-fungus": [
+   1,
+   0.5,
+   0.62
+  ],
+  "button-mushroom": 4,
+  "cauliflower-fungus": [
+   4,
+   0.5,
+   0.55
+  ],
+  "chanterelle": 1,
+  "chicken-of-the-woods": 3,
+  "death-cap": 2,
+  "field-mushroom": 0,
+  "fly-agaric": [
+   0,
+   0.54,
+   0.5
+  ],
+  "hedgehog-mushroom": 5,
+  "morel": 0,
+  "orange-bolete": 0,
+  "oyster-mushroom": [
+   0,
+   0.45,
+   0.45
+  ],
+  "panther-cap": [
+   0,
+   0.42,
+   0.5
+  ],
+  "parasol-mushroom": [
+   3,
+   0.4,
+   0.5
+  ],
+  "porcini": 5,
+  "puffball": [
+   5,
+   0.4,
+   0.55
+  ],
+  "saffron-milk-cap": [
+   2,
+   0.6,
+   0.5
+  ],
+  "satans-bolete": 1,
+  "shaggy-ink-cap": [
+   5,
+   0.5,
+   0.42
+  ],
+  "shiitake": [
+   1,
+   0.42,
+   0.5
+  ],
+  "trumpet-chanterelle": 4,
+  "wood-blewit": [
+   1,
+   0.45,
+   0.45
+  ]
+ },
+ "scenery": {
+  "beach": 1,
+  "campsite": 3,
+  "canyon": [
+   2,
+   0.5,
+   0.6
+  ],
+  "cave": 3,
+  "city": [
+   4,
+   0.62,
+   0.5
+  ],
+  "coral-reef": 1,
+  "countryside": 2,
+  "desert": [
+   3,
+   0.5,
+   0.42
+  ],
+  "forest": 2,
+  "iceberg": 2,
+  "jungle": 5,
+  "lake": [
+   5,
+   0.55,
+   0.5
+  ],
+  "meadow": 1,
+  "mountain": [
+   5,
+   0.55,
+   0.5
+  ],
+  "rainbow": [
+   0,
+   0.62,
+   0.5
+  ],
+  "river": 2,
+  "snow": 1,
+  "starry-sky": [
+   2,
+   0.55,
+   0.5
+  ],
+  "sunset": 5,
+  "volcano": 5,
+  "waterfall": [
+   3,
+   0.55,
+   0.5
+  ],
+  "wave": [
+   5,
+   0.45,
+   0.5
+  ]
+ },
+ "spices": {
+  "basil": 1,
+  "bay-leaf": 4,
+  "chili": 0,
+  "chives": 3,
+  "cinnamon": 0,
+  "coriander": 0,
+  "cumin": 0,
+  "ginger": 0,
+  "mint": 0,
+  "nutmeg": 2,
+  "parsley": [
+   2,
+   0.55,
+   0.5
+  ],
+  "pepper": 3,
+  "rosemary": 1,
+  "sage": 0,
+  "salt": 0,
+  "star-anise": 0,
+  "tarragon": 3,
+  "thyme": 2,
+  "vanilla": 4
+ },
+ "trees": {
+  "apple-tree": 3,
+  "bamboo": 4,
+  "baobab": [
+   4,
+   0.42,
+   0.5
+  ],
+  "birch": [
+   3,
+   0.6,
+   0.5
+  ],
+  "cactus": 1,
+  "cherry-tree": 0,
+  "chestnut-tree": 3,
+  "christmas-tree": [
+   3,
+   0.375,
+   0.5
+  ],
+  "cypress": 4,
+  "fir": 3,
+  "maple": 0,
+  "oak": 1,
+  "olive-tree": 0,
+  "orange-tree": 2,
+  "palm-tree": [
+   2,
+   0.5,
+   0.4
+  ],
+  "pine": [
+   2,
+   0.5,
+   0.6
+  ],
+  "sequoia": 4,
+  "willow": [
+   4,
+   0.5,
+   0.45
+  ]
+ }
+}

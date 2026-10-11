@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Download candidate photos for the photo mode, with their licences.
 
-Usage: python3 tools/fetch_photos.py <build dir> [topic ...]
+Usage: python3 tools/fetch_photos.py <build dir> [topic ...] [--retry]
+--retry searches again with the words in RETRY and adds those candidates after the first ones.
 For each item it saves a few freely licensed candidates in <build>/photos/<topic>/<id>/<n>.jpg
 and their credits in <build>/photos/<topic>/candidates.json. Someone then picks the best one
 per item (tools/photo_picks.json) and tools/make_photos.py builds app/photos/<topic>.json.
@@ -93,6 +94,31 @@ QUERY = {
     "pipe-organ": "pipe organ", "music-box": "music box", "steel-drum": "steel pan drum", "jingle-bells": "sleigh bells",
 }
 
+# second searches, for items whose first candidates were all unusable: (source, query)
+RETRY = {
+    "animals": {"dog": ("openverse", "golden retriever dog"), "peacock": ("openverse", "peacock displaying tail feathers"),
+                "orangutan": ("inat", "Pongo pygmaeus"), "bison": ("inat", "Bison bison bison"), "poodle": ("openverse", "poodle dog")},
+    "flowers": {"rose": ("openverse", "red rose flower")},
+    "kitchen": {"dishwasher": ("openverse", "open dishwasher dishes"), "teapot": ("openverse", "teapot"),
+                "ladle": ("openverse", "soup ladle"), "jar": ("openverse", "glass jar")},
+    "scenery": {"island": ("openverse", "tropical island aerial"), "savanna": ("openverse", "african savanna acacia")},
+    "trees": {"banana-tree": ("inat", "Musa acuminata"), "christmas-tree": ("openverse", "decorated christmas tree")},
+    "food": {"lime": ("openverse", "limes citrus fruit"), "melon": ("openverse", "cantaloupe melon"),
+             "chestnut": ("openverse", "roasted chestnuts"), "eggplant": ("openverse", "aubergine eggplant vegetable"),
+             "zucchini": ("openverse", "zucchini courgette vegetable"), "sweet-potato": ("openverse", "sweet potatoes raw"),
+             "leek": ("openverse", "leeks vegetable"), "bell-pepper": ("openverse", "red bell peppers"),
+             "beetroot": ("openverse", "beetroot vegetable")},
+    "spices": {"oregano": ("openverse", "oregano plant"), "dill": ("openverse", "fresh dill"),
+               "cloves": ("openverse", "whole cloves spice"), "saffron": ("openverse", "saffron spice"),
+               "paprika": ("openverse", "paprika spice"), "turmeric": ("openverse", "turmeric powder"),
+               "pepper": ("openverse", "black pepper peppercorns")},
+    "instruments": {k: ("openverse", q) for k, q in {
+        "banjo": "banjo", "synthesizer": "synthesizer keyboard", "whistle": "tin whistle", "triangle": "triangle percussion",
+        "cowbell": "cowbell", "oboe": "oboe", "bass-drum": "bass drum", "cymbals": "crash cymbal", "tambourine": "tambourine",
+        "castanets": "castanets", "trumpet": "trumpet", "horn": "french horn", "tuba": "tuba", "xylophone": "xylophone",
+        "ocarina": "ocarina", "claves": "claves percussion"}.items()},
+}
+
 def get(url, tries=6):
     for attempt in range(tries):
         try:
@@ -105,8 +131,8 @@ def get(url, tries=6):
             time.sleep(wait)
     raise RuntimeError("gave up: " + url)
 
-def inat(item):
-    q = QUERY.get(item["id"], item["en"])
+def inat(item, q=None):
+    q = q or QUERY.get(item["id"], item["en"])
     d = json.loads(get("https://api.inaturalist.org/v1/taxa?" + urllib.parse.urlencode({"q": q, "per_page": 5, "is_active": "true"})))
     if not d["results"]: return []
     exact = [t for t in d["results"] if t["name"].lower() == q.lower()]
@@ -135,8 +161,8 @@ def inat(item):
                             "page": f"https://www.inaturalist.org/photos/{p['id']}", "title": full.get("name", "")})
     return out
 
-def openverse(item, words):
-    q = QUERY.get(item["id"]) or (item["en"] + (" " + words if words else ""))
+def openverse(item, words, q=None):
+    q = q or QUERY.get(item["id"]) or (item["en"] + (" " + words if words else ""))
     d = json.loads(get("https://api.openverse.org/v1/images/?" + urllib.parse.urlencode(
         {"q": q, "license": "cc0,pdm,by,by-sa", "page_size": 12, "mature": "false"})))
     out = []
@@ -160,26 +186,32 @@ console.log(JSON.stringify(T_.map(t=>({id:t.id,items:t.items.map(i=>({id:i.id,en
         cand_path = os.path.join(base, "candidates.json")
         cands = json.load(open(cand_path)) if os.path.exists(cand_path) else {}
         for item in t["items"]:
-            if cands.get(item["id"]): continue
+            retry = RETRY.get(t["id"], {}).get(item["id"]) if "--retry" in sys.argv else None
+            if retry and any(c.get("retry") for c in cands.get(item["id"], [])): continue  # done already
+            if cands.get(item["id"]) and not retry: continue
             try:
-                found = inat(item) if kind == "inat" else openverse(item, words)
+                if retry:
+                    found = inat(item, retry[1]) if retry[0] == "inat" else openverse(item, "", retry[1])
+                else:
+                    found = inat(item) if kind == "inat" else openverse(item, words)
             except Exception as e:
                 print("  search failed:", item["id"], e, flush=True); continue
+            old = cands.get(item["id"], []) if retry else []
             kept = []
             for c in found:
                 if len(kept) >= PER_ITEM: break
-                path = os.path.join(base, item["id"], f"{len(kept)}.jpg")
+                path = os.path.join(base, item["id"], f"{len(old) + len(kept)}.jpg")
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 try:
                     data = get(c["url"], tries=2)
                 except Exception as e:
                     continue
                 open(path, "wb").write(data)
-                kept.append({**c, "file": os.path.relpath(path, base)})
-            cands[item["id"]] = kept
+                kept.append({**c, "file": os.path.relpath(path, base), **({"retry": True} if retry else {})})
+            cands[item["id"]] = old + kept
             json.dump(cands, open(cand_path, "w"), indent=1, ensure_ascii=False)
             print(f"{t['id']:10s} {item['id']:22s} {len(kept)}", flush=True)
             time.sleep(1 if kind == "inat" else 3.2)
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2:])
+    main(sys.argv[1], [a for a in sys.argv[2:] if not a.startswith("--")])
