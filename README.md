@@ -15,8 +15,8 @@
 Pick a topic, then a game:
 
 - 🗣️ **Find the picture**: the voice asks "Where is the cello?" and the child taps the right picture among three. Its name then appears on the card.
-- 👂 **Who is playing? / Who says that?** (music and animals): an instrument plays, or the voice asks "Who says moo?", and the child finds it.
-- 👆 **Discover**: tap any picture to hear its name (and the animal's sound, or the mushroom warning). In music, the instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice).
+- 👂 **Listening games** (music, animals, dinosaurs, landscapes): an instrument plays, the voice asks "Who says moo?" or "Who says roar?", or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
+- 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice).
 
 A game has 10 rounds, shown as a progress bar; each first-try answer earns a star, and the best score is kept on the topic card. Pictures that look or sound alike (lion and tiger, trumpet and trombone, button mushroom and death cap) never appear together, and nothing repeats within a game. The **?** button opens a page for parents with how to play, sharing and privacy.
 
@@ -24,11 +24,11 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 |---|---|---|
 | 🐄 Animals | 87, 23 of them with a sound ("the cow says moo") | farm, wild, sea, birds, bugs |
 | 🎻 Music | 55 instruments, each with a short tune in its style | orchestra, jazz, rock & pop, world |
-| 🦖 Dinosaurs | 12 (with the mammoth, the plesiosaurus and a dinosaur egg) | |
+| 🦖 Dinosaurs | 12 (with the mammoth, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
 | 🌻 Flowers | 22 | |
 | 🌳 Trees | 19 | |
 | 🍄 Mushrooms | 14 | |
-| 🏔️ Landscapes | 24 | |
+| 🏔️ Landscapes | 24, 16 of them with real sounds (waves, stream, wind, birds, rain, thunder, bubbles, a city) | |
 
 **Mushrooms, a note for parents:** the fly agaric and the death cap are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.
 
@@ -77,7 +77,7 @@ Where each instrument's sound comes from, best first:
 | [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments), real recordings | violin, cello, guitar, bass guitar, saxophone, xylophone |
 | [Sonic Pi](https://sonic-pi.net/) samples, real recordings | drum kit, cowbell, tabla |
 | MusyngKite sound bank (via npm `web-music-score-samples`) | pipe organ, accordion, harmonica, bagpipes, sitar, koto, shamisen, kalimba, banjo, ukulele, electric guitar, synthesizer, recorder, pan flute, ocarina, music box, bell |
-| GeneralUser GS sound bank, rendered by `tools/render_gm.mjs` | steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle, jingle bells |
+| GeneralUser GS sound bank, rendered by `tools/render_gm.mjs` | steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle, jingle bells, and the landscape sounds (its sound-effects kit) |
 
 To rebuild (needs Node, Python and ffmpeg):
 

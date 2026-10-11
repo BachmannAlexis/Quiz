@@ -12,6 +12,7 @@ const TEXT = {
   en: {
     where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?",
     who: sound => `Who says ${sound}?`, says: (n, sound) => `The ${n} says ${sound}!`,
+    whereAreWe: "Listen! Where are we?",
     poison: "Careful! This mushroom is poisonous. Never eat it!",
     yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo!", bravoSaid: "Bravo! You did it!",
     flag: "🇬🇧 EN", voice: "en-US",
@@ -21,8 +22,10 @@ const TEXT = {
       name: ["Find the picture", "Hear a name, tap the right picture"],
       listenMusic: ["Who is playing?", "Hear an instrument, find it"],
       listenAnimals: ["Who says that?", "Hear a sound, find the animal"],
+      listenDinosaurs: ["Who says that?", "Hear a roar, find the dinosaur"],
+      listenScenery: ["Where are we?", "Hear the waves, the wind or the rain, find the place"],
       play: ["Play music", "Tap an instrument, play the rainbow keys"],
-      explore: ["Discover", "Tap a picture to hear its name"],
+      explore: ["Discover", "Tap a picture to hear its name and its sound"],
     },
     found: n => `${n} stars out of ${ROUNDS}`, record: "New record!",
     again: "Play again", otherGame: "Other games", share: "Share", copied: "Link copied",
@@ -31,8 +34,8 @@ const TEXT = {
     parentsIntro: "Pikolo is a free picture quiz for children from 3 years old. No reading needed: everything is spoken.",
     howTitle: "How to play",
     howName: "Find the picture: the voice says a name, your child taps the right picture among three.",
-    howListen: "Who is playing? / Who says that?: the same with an instrument or an animal sound.",
-    howPlay: "Discover: tap any picture to hear its name. In Music, play the instrument on the rainbow keys.",
+    howListen: "Listening games: find the instrument that plays, the animal or dinosaur that makes a sound, or the place you hear (waves, wind, rain, a city…).",
+    howPlay: "Discover: tap any picture to hear its name, and its sound when it has one (flowers, trees and mushrooms just say their name). In Music, play the instrument on the rainbow keys.",
     howStars: "A star for each first-try answer. Look-alikes (lion and tiger, trumpet and trombone) never appear together.",
     shareTitle: "Share Pikolo",
     shareText: "Send this link to family and friends. It opens in any browser on a phone, tablet or computer.",
@@ -45,6 +48,7 @@ const TEXT = {
   fr: {
     where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
     who: sound => `Qui fait ${sound} ?`, says: (n, sound) => `${cap(n)} fait ${sound} !`,
+    whereAreWe: "Écoute ! Où sommes-nous ?",
     poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
     yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo !", bravoSaid: "Bravo ! Tu as réussi !",
     flag: "🇫🇷 FR", voice: "fr-FR",
@@ -54,8 +58,10 @@ const TEXT = {
       name: ["Trouve l'image", "Écoute un nom, touche la bonne image"],
       listenMusic: ["Qui joue ?", "Écoute un instrument, trouve-le"],
       listenAnimals: ["Qui fait ce bruit ?", "Écoute un cri, trouve l'animal"],
+      listenDinosaurs: ["Qui fait ce bruit ?", "Écoute un cri, trouve le dinosaure"],
+      listenScenery: ["Où sommes-nous ?", "Écoute les vagues, le vent ou la pluie, trouve le lieu"],
       play: ["Joue de la musique", "Choisis un instrument, joue sur l'arc-en-ciel"],
-      explore: ["Découvre", "Touche une image pour entendre son nom"],
+      explore: ["Découvre", "Touche une image pour entendre son nom et son bruit"],
     },
     found: n => `${n} étoiles sur ${ROUNDS}`, record: "Nouveau record !",
     again: "Rejouer", otherGame: "Autres jeux", share: "Partager", copied: "Lien copié",
@@ -64,8 +70,8 @@ const TEXT = {
     parentsIntro: "Pikolo est un quiz en images gratuit pour les enfants dès 3 ans. Pas besoin de savoir lire : tout est dit à voix haute.",
     howTitle: "Comment jouer",
     howName: "Trouve l'image : la voix dit un nom, votre enfant touche la bonne image parmi trois.",
-    howListen: "Qui joue ? / Qui fait ce bruit ? : pareil avec un instrument ou un cri d'animal.",
-    howPlay: "Découvre : touchez une image pour entendre son nom. En musique, jouez de l'instrument sur les touches arc-en-ciel.",
+    howListen: "Jeux d'écoute : trouvez l'instrument qui joue, l'animal ou le dinosaure qui fait un bruit, ou le lieu qu'on entend (vagues, vent, pluie, ville…).",
+    howPlay: "Découvre : touchez une image pour entendre son nom, et son bruit quand elle en a un (fleurs, arbres et champignons disent juste leur nom). En musique, jouez de l'instrument sur les touches arc-en-ciel.",
     howStars: "Une étoile pour chaque bonne réponse du premier coup. Les images qui se ressemblent (lion et tigre, trompette et trombone) ne sont jamais ensemble.",
     shareTitle: "Partager Pikolo",
     shareText: "Envoyez ce lien à la famille et aux amis. Il s'ouvre dans n'importe quel navigateur, sur téléphone, tablette ou ordinateur.",
@@ -104,6 +110,11 @@ let questionId = 0; // bumps every question, so stale timers and speech callback
 
 const T = () => TEXT[lang];
 const isMusic = () => topic.id === "instruments";
+// a recording to play (instruments and landscapes), or a sound the voice makes (animals, dinosaurs)
+const hasRecording = item => isMusic() || !!item.sound;
+const hasSound = item => hasRecording(item) || !!item.says;
+// how an item sounds, so the listening game never offers two that sound alike
+const soundFamily = item => item.hears || item.family;
 const nameOf = item => item[lang];
 const shortName = item => cap(item[lang].replace(/^(le |la |les |l')/, "")); // "la flûte à bec" -> "Flûte à bec"
 const soundOf = item => item.says && item.says[lang === "en" ? 0 : 1];
@@ -230,14 +241,14 @@ function groupPool() {
   const g = groupOf[topic.id];
   return g === "all" || !topic.groups ? topic.items : topic.items.filter(i => i.styles.includes(g));
 }
-// what a game asks about: in the animal sound game, only animals with a sound; if the
-// chosen group has too few, all of them
+// what a game asks about: in the listening game, only items with a sound; if the chosen
+// group has too few, all of the topic's
 function gamePool() {
-  if (mode !== "listen" || isMusic()) return groupPool();
-  const pool = groupPool().filter(i => i.says);
-  return families(pool) >= CHOICES ? pool : topic.items.filter(i => i.says);
+  if (mode !== "listen") return groupPool();
+  const pool = groupPool().filter(hasSound);
+  return new Set(pool.map(soundFamily)).size >= CHOICES ? pool : topic.items.filter(hasSound);
 }
-// what the voice adds after naming an item: an animal's sound or a mushroom warning
+// what the voice adds after naming an item: an animal's or dinosaur's sound, or a mushroom warning
 function extra(item) {
   if (item.says) return T().says(nameOf(item), soundOf(item));
   if (item.poison) return T().poison;
@@ -295,7 +306,7 @@ function renderHome() {
 function openTopic(t) {
   topic = t;
   store.set("quiz-topic", t.id);
-  if (isMusic()) loadSounds().catch(() => {});
+  if (t.items.some(hasRecording)) loadSounds().catch(() => {});
   theme();
   renderTopic();
   show("topic");
@@ -308,7 +319,15 @@ function renderTopic() {
   // three pictures of different kinds, the first one in the middle
   const picks = [];
   for (const i of groupPool()) if (picks.length < 3 && !picks.some(p => p.family === i.family)) picks.push(i);
-  [picks[1], picks[0], picks[2]].filter(Boolean).forEach(i => hero.appendChild(picture(i.id)));
+  [picks[1], picks[0], picks[2]].filter(Boolean).forEach(i => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "hero-pic";
+    b.setAttribute("aria-label", nameOf(i));
+    b.appendChild(picture(i.id));
+    b.onclick = () => { playing = i; sayItem(); };
+    hero.appendChild(b);
+  });
   const groups = $("groups");
   groups.innerHTML = "";
   groups.hidden = !topic.groups;
@@ -332,7 +351,7 @@ function renderTopic() {
   const modes = $("modes");
   modes.innerHTML = "";
   topic.modes.forEach(m => {
-    const key = m === "listen" ? (isMusic() ? "listenMusic" : "listenAnimals") : m;
+    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs" }[topic.id] || "listenAnimals" : m;
     const [title, sub] = T().modes[key];
     const b = document.createElement("button");
     b.type = "button";
@@ -379,7 +398,8 @@ let results = []; // per round: true if found on the first try
 
 function promptText() {
   if (mode !== "listen") return T().where(nameOf(answer), answer.many);
-  return isMusic() ? T().listen : T().who(soundOf(answer));
+  if (isMusic()) return T().listen;
+  return answer.sound ? T().whereAreWe : T().who(soundOf(answer));
 }
 
 // Ask (or ask again): say the name, say "Listen!" then play the instrument, or ask "Who says moo?".
@@ -387,7 +407,7 @@ function ask() {
   const q = questionId;
   const btn = $("speak");
   btn.classList.remove("pulse"); void btn.offsetWidth; btn.classList.add("pulse");
-  if (mode === "listen" && isMusic()) say(T().listen, () => { if (q === questionId) playInstrument(answer); });
+  if (mode === "listen" && hasRecording(answer)) say(promptText(), () => { if (q === questionId) playInstrument(answer); });
   else say(promptText());
 }
 
@@ -411,13 +431,14 @@ function askQuestion() {
   if (!deck.length) deck = shuffle(pool.filter(i => i !== lastAnswer));
   answer = deck.pop();
   lastAnswer = answer;
-  if (isMusic()) recording(answer.id).catch(() => {}); // start decoding now so the sound is ready
+  if (hasRecording(answer)) recording(answer.id).catch(() => {}); // start decoding now so the sound is ready
   // wrong choices come from other families, so pictures and sounds are easy to tell
   // apart; prefer the same group, and in the animal sound game animals with a sound
-  const fallback = mode === "listen" && !isMusic() ? topic.items.filter(i => i.says) : topic.items;
+  const fallback = mode === "listen" ? topic.items.filter(hasSound) : topic.items;
+  const kind = mode === "listen" ? soundFamily : i => i.family;
   const others = [];
   for (const i of [...shuffle(pool), ...shuffle(fallback)]) {
-    if (others.length < CHOICES - 1 && i.family !== answer.family && !others.some(o => o.family === i.family)) others.push(i);
+    if (others.length < CHOICES - 1 && i.family !== answer.family && kind(i) !== kind(answer) && !others.some(o => o.family === i.family || kind(o) === kind(i))) others.push(i);
   }
   const box = $("choices");
   box.innerHTML = "";
@@ -452,9 +473,9 @@ function pick(item, btn) {
     round++;
     const g = gameId;
     const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
-    const hear = isMusic() && mode === "name"; // found by name: now let them hear it
+    const hear = hasRecording(item) && mode === "name"; // found by name: now let them hear it
     // "Yes! The cow! The cow says moo!", then the next question
-    say(`${T().yes(nameOf(item))} ${isMusic() ? "" : extra(item)}`, () => {
+    say(`${T().yes(nameOf(item))} ${hasRecording(item) ? "" : extra(item)}`, () => {
       if (g !== gameId) return;
       if (hear) playInstrument(item);
       setTimeout(next, hear ? 3000 : 900);
@@ -464,7 +485,7 @@ function pick(item, btn) {
     btn.classList.add("wrong");
     btn.disabled = true;
     boop();
-    if (mode === "listen" && isMusic()) {
+    if (mode === "listen" && hasRecording(answer)) {
       // play the right sound again so they can compare
       setTimeout(() => { if (q === questionId) playInstrument(answer); }, 500);
     } else {
@@ -516,6 +537,7 @@ function selectItem(item, speak = true) {
   $("bigName").textContent = shortName(item);
   document.querySelectorAll(".thumb").forEach(t => t.setAttribute("aria-pressed", t.dataset.id === item.id));
   if (isMusic()) recording(item.id + "#0").catch(() => {});
+  else if (item.sound) recording(item.id).catch(() => {});
   if (speak) sayItem();
 }
 
@@ -523,7 +545,7 @@ function selectItem(item, speak = true) {
 function sayItem() {
   const q = ++questionId;
   bounce();
-  if (isMusic()) say(nameOf(playing), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
+  if (hasRecording(playing)) say(cap(nameOf(playing)), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
   else say(`${cap(nameOf(playing))}. ${extra(playing)}`);
 }
 

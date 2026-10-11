@@ -1,5 +1,5 @@
-// Render short tunes for instruments that tonejs-instruments lacks, using the
-// GeneralUser GS General MIDI sound bank (npm: generaluser) and spessasynth_core.
+// Render short tunes for instruments that the recorded libraries lack, and the landscape sounds,
+// using the GeneralUser GS General MIDI sound bank (npm: generaluser) and spessasynth_core.
 // Usage: node tools/render_gm.mjs <GeneralUser.sf2> <out dir>
 // (spessasynth_core must be resolvable, e.g. run from a folder where it is installed.)
 import fs from "node:fs";
@@ -29,6 +29,29 @@ const TUNES = {
   guiro: { kit: STANDARD, len: 2.2, events: [[0, 74, 115, .4], [.45, 73, 110, .1], [.6, 73, 110, .1], [.75, 74, 120, .4], [1.2, 73, 110, .1], [1.35, 73, 110, .1], [1.5, 74, 125, .5]] },
   whistle: { kit: STANDARD, len: 2.4, events: [[0, 71, 115, .2], [.35, 71, 115, .2], [.7, 72, 127, 1.0]] },
   "jingle-bells": { kit: STANDARD, len: 2.2, events: at(83, [0, .25, .5, .62, .75, 1.0, 1.25, 1.37, 1.5], i => i % 2 ? 95 : 125, .2) },
+};
+
+// Landscape soundscapes from the GeneralUser GS "SFX" drum kit: [time, effect, velocity, length]
+const SFX = 56;
+const FX = { footsteps: 56, windchime: 62, carEngine: 63, carPass: 65, siren: 67, explosion: 75, horse: 77,
+  birds: 78, rain: 79, thunder: 80, wind: 81, seashore: 82, stream: 83, bubble: 84 };
+const SCENES = {
+  beach:       [[0, FX.seashore, 100, 3.6], [1.2, FX.birds, 60, 1.5]],
+  island:      [[0, FX.seashore, 90, 3.6], [0.3, FX.birds, 90, 1.2], [1.8, FX.birds, 80, 1.2]],
+  wave:        [[0, FX.seashore, 127, 3.6], [0.1, FX.seashore, 127, 3.4]],
+  river:       [[0, FX.stream, 120, 3.6], [1.0, FX.birds, 55, 1.2]],
+  waterfall:   [[0, FX.stream, 127, 3.6], [0, FX.rain, 127, 3.6], [0.2, FX.stream, 127, 3.4]],
+  lake:        [[0, FX.stream, 70, 3.6], [0.6, FX.birds, 70, 1.0], [2.0, FX.birds, 60, 1.0]],
+  forest:      [[0, FX.birds, 110, 3.6], [0, FX.wind, 60, 3.6]],
+  jungle:      [[0, FX.rain, 80, 3.6], [0, FX.birds, 127, 3.6], [1.4, FX.birds, 120, 2.0]],
+  countryside: [[0, FX.horse, 110, 2.4], [0.5, FX.birds, 80, 2.0]],
+  mountain:    [[0, FX.wind, 127, 3.6]],
+  snow:        [[0, FX.wind, 90, 3.6], [0.4, FX.footsteps, 90, 0.6], [1.1, FX.footsteps, 90, 0.6], [1.8, FX.footsteps, 90, 0.6], [2.5, FX.footsteps, 90, 0.6]],
+  volcano:     [[0, FX.thunder, 100, 3.6], [0.3, FX.explosion, 127, 3.0], [1.6, FX.explosion, 110, 2.0]],
+  city:        [[0, FX.carEngine, 80, 3.6], [0.2, FX.carPass, 110, 1.6], [1.6, FX.siren, 90, 2.0]],
+  "coral-reef": [[0, FX.bubble, 110, 3.6], [0.8, FX.bubble, 100, 2.6], [1.7, FX.bubble, 110, 1.8]],
+  "starry-sky": [[0, FX.windchime, 90, 3.6], [1.5, FX.windchime, 70, 2.0]],
+  rainbow:     [[0, FX.rain, 110, 2.0], [0, FX.thunder, 50, 1.6], [2.0, FX.windchime, 110, 1.6]],
 };
 
 // One note or hit per instrument for the play mode: [midi note, velocity, length]
@@ -72,4 +95,5 @@ for (const [id, tune] of Object.entries(TUNES)) {
   const [note, vel, len] = NOTES[id];
   await render({ ...tune, len: len + .4, events: [[0, note, vel, len]] }, id + ".note.wav");
 }
-console.log(Object.keys(TUNES).length, "tunes rendered");
+for (const [id, events] of Object.entries(SCENES)) await render({ kit: SFX, len: 3.6, events }, id + ".wav");
+console.log(Object.keys(TUNES).length, "tunes and", Object.keys(SCENES).length, "landscape sounds rendered");

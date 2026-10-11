@@ -2,8 +2,9 @@
 // English and French names, and a family: items of the same family look or sound alike
 // (trumpet / trombone, lion / tiger), so a question never shows two of them together.
 // `styles` puts an item in groups of its topic, `many` makes it plural in English
-// ("Where are the…"). Animals can have `says` (what the voice says they say), and
-// poisonous mushrooms have `poison`.
+// ("Where are the…"). Animals and dinosaurs can have `says` (what the voice says they say),
+// landscapes `sound` (a recording in sounds.js) with `hears`, a family for how they sound,
+// and poisonous mushrooms have `poison`.
 
 // ---------- Instruments (sounds in sounds.js)
 const O = "orchestra", J = "jazz", R = "rock", W = "world";
@@ -246,46 +247,46 @@ const MUSHROOMS = [
   { id: "bracket-fungus",    en: "bracket fungus",   fr: "le polypore",           family: "oyster" },
 ];
 const SCENERY = [
-  { id: "mountain",   en: "mountain",    fr: "la montagne",      family: "mountain" },
-  { id: "volcano",    en: "volcano",     fr: "le volcan",        family: "mountain" },
-  { id: "beach",      en: "beach",       fr: "la plage",         family: "sea" },
-  { id: "island",     en: "island",      fr: "l'île",            family: "sea" },
-  { id: "wave",       en: "big wave",    fr: "la vague",         family: "sea" },
+  { id: "mountain",   en: "mountain",    fr: "la montagne",      family: "mountain", sound: true, hears: "wind" },
+  { id: "volcano",    en: "volcano",     fr: "le volcan",        family: "mountain", sound: true, hears: "boom" },
+  { id: "beach",      en: "beach",       fr: "la plage",         family: "sea", sound: true, hears: "sea" },
+  { id: "island",     en: "island",      fr: "l'île",            family: "sea", sound: true, hears: "sea" },
+  { id: "wave",       en: "big wave",    fr: "la vague",         family: "sea", sound: true, hears: "sea" },
   { id: "desert",     en: "desert",      fr: "le désert",        family: "desert" },
-  { id: "river",      en: "river",       fr: "la rivière",       family: "river" },
-  { id: "waterfall",  en: "waterfall",   fr: "la cascade",       family: "river" },
-  { id: "forest",     en: "forest",      fr: "la forêt",         family: "forest" },
+  { id: "river",      en: "river",       fr: "la rivière",       family: "river", sound: true, hears: "water" },
+  { id: "waterfall",  en: "waterfall",   fr: "la cascade",       family: "river", sound: true, hears: "water" },
+  { id: "forest",     en: "forest",      fr: "la forêt",         family: "forest", sound: true, hears: "birds" },
   { id: "meadow",     en: "meadow",      fr: "la prairie",       family: "meadow" },
   { id: "cave",       en: "cave",        fr: "la grotte",        family: "cave" },
   { id: "iceberg",    en: "iceberg",     fr: "l'iceberg",        family: "ice" },
-  { id: "city",       en: "city",        fr: "la ville",         family: "city" },
-  { id: "starry-sky", en: "starry sky",  fr: "le ciel étoilé",   family: "sky" },
+  { id: "city",       en: "city",        fr: "la ville",         family: "city", sound: true, hears: "city" },
+  { id: "starry-sky", en: "starry sky",  fr: "le ciel étoilé",   family: "sky", sound: true, hears: "chimes" },
   { id: "sunset",     en: "sunset",      fr: "le coucher de soleil", family: "sky" },
-  { id: "rainbow",    en: "rainbow",     fr: "l'arc-en-ciel",    family: "sky" },
-  { id: "jungle",     en: "jungle",      fr: "la jungle",        family: "jungle" },
+  { id: "rainbow",    en: "rainbow",     fr: "l'arc-en-ciel",    family: "sky", sound: true, hears: "chimes" },
+  { id: "jungle",     en: "jungle",      fr: "la jungle",        family: "jungle", sound: true, hears: "birds" },
   { id: "savanna",    en: "savanna",     fr: "la savane",        family: "savanna" },
-  { id: "lake",       en: "lake",        fr: "le lac",           family: "river" },
-  { id: "coral-reef", en: "coral reef",  fr: "le récif de corail", family: "reef" },
+  { id: "lake",       en: "lake",        fr: "le lac",           family: "river", sound: true, hears: "water" },
+  { id: "coral-reef", en: "coral reef",  fr: "le récif de corail", family: "reef", sound: true, hears: "bubbles" },
   { id: "canyon",     en: "canyon",      fr: "le canyon",        family: "canyon" },
-  { id: "countryside", en: "countryside", fr: "la campagne",     family: "meadow" },
-  { id: "snow",       en: "snow",        fr: "la neige",         family: "ice" },
+  { id: "countryside", en: "countryside", fr: "la campagne",     family: "meadow", sound: true, hears: "farm" },
+  { id: "snow",       en: "snow",        fr: "la neige",         family: "ice", sound: true, hears: "wind" },
   { id: "campsite",   en: "campsite",    fr: "le camping",       family: "forest" },
 ];
 
 // ---------- Dinosaurs (and two other prehistoric favourites)
 const DINOSAURS = [
   { id: "t-rex",           en: "T. rex",          fr: "le tyrannosaure",    family: "theropod", says: ["roar", "groaaar"] },
-  { id: "velociraptor",    en: "velociraptor",    fr: "le vélociraptor",    family: "theropod" },
-  { id: "spinosaurus",     en: "spinosaurus",     fr: "le spinosaure",      family: "spino" },
-  { id: "diplodocus",      en: "diplodocus",      fr: "le diplodocus",      family: "longneck" },
-  { id: "triceratops",     en: "triceratops",     fr: "le tricératops",     family: "horns" },
-  { id: "stegosaurus",     en: "stegosaurus",     fr: "le stégosaure",      family: "plates" },
-  { id: "ankylosaurus",    en: "ankylosaurus",    fr: "l'ankylosaure",      family: "armor" },
-  { id: "parasaurolophus", en: "parasaurolophus", fr: "le parasaurolophus", family: "crest" },
-  { id: "pterodactyl",     en: "pterodactyl",     fr: "le ptérodactyle",    family: "flyer" },
-  { id: "plesiosaurus",    en: "plesiosaurus",    fr: "le plésiosaure",     family: "swimmer" },
-  { id: "mammoth",         en: "mammoth",         fr: "le mammouth",        family: "mammoth" },
-  { id: "dinosaur-egg",    en: "dinosaur egg",    fr: "l'œuf de dinosaure", family: "egg" },
+  { id: "velociraptor",    en: "velociraptor",    fr: "le vélociraptor",    family: "theropod", says: ["screech screech", "kriii kriii"] },
+  { id: "spinosaurus",     en: "spinosaurus",     fr: "le spinosaure",      family: "spino", says: ["grrr grrr", "grrr grrr"] },
+  { id: "diplodocus",      en: "diplodocus",      fr: "le diplodocus",      family: "longneck", says: ["hooonk", "houuuu"] },
+  { id: "triceratops",     en: "triceratops",     fr: "le tricératops",     family: "horns", says: ["snort snort", "pfff pfff"] },
+  { id: "stegosaurus",     en: "stegosaurus",     fr: "le stégosaure",      family: "plates", says: ["stomp stomp", "boum boum"] },
+  { id: "ankylosaurus",    en: "ankylosaurus",    fr: "l'ankylosaure",      family: "armor", says: ["thump thump", "bam bam"] },
+  { id: "parasaurolophus", en: "parasaurolophus", fr: "le parasaurolophus", family: "crest", says: ["toot toot", "tuut tuut"] },
+  { id: "pterodactyl",     en: "pterodactyl",     fr: "le ptérodactyle",    family: "flyer", says: ["kraa kraa", "kraa kraa"] },
+  { id: "plesiosaurus",    en: "plesiosaurus",    fr: "le plésiosaure",     family: "swimmer", says: ["splash splash", "plouf plouf"] },
+  { id: "mammoth",         en: "mammoth",         fr: "le mammouth",        family: "mammoth", says: ["pawoo", "pouuuu"] },
+  { id: "dinosaur-egg",    en: "dinosaur egg",    fr: "l'œuf de dinosaure", family: "egg", says: ["crack crack", "crac crac"] },
 ];
 
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
@@ -294,9 +295,9 @@ const DINOSAURS = [
 const TOPICS = [
   { id: "animals",     pic: "cow",        en: "Animals",    fr: "Animaux",     unit: ["animals", "animaux"],         color: "#e8620c", tint: "#fff0e2", items: ANIMALS,     groups: ANIMAL_GROUPS, modes: ["name", "listen", "explore"] },
   { id: "instruments", pic: "violin",     en: "Music",      fr: "Musique",     unit: ["instruments", "instruments"], color: "#6c47ff", tint: "#efe9ff", items: INSTRUMENTS, groups: STYLES,        modes: ["name", "listen", "play"] },
-  { id: "dinosaurs",   pic: "t-rex",      en: "Dinosaurs",  fr: "Dinosaures",  unit: ["dinosaurs", "dinosaures"],    color: "#0b8f7e", tint: "#e0f5f1", items: DINOSAURS,   modes: ["name", "explore"] },
+  { id: "dinosaurs",   pic: "t-rex",      en: "Dinosaurs",  fr: "Dinosaures",  unit: ["dinosaurs", "dinosaures"],    color: "#0b8f7e", tint: "#e0f5f1", items: DINOSAURS,   modes: ["name", "listen", "explore"] },
   { id: "flowers",     pic: "sunflower",  en: "Flowers",    fr: "Fleurs",      unit: ["flowers", "fleurs"],          color: "#d63a7c", tint: "#fde8f1", items: FLOWERS,     modes: ["name", "explore"] },
   { id: "trees",       pic: "oak",        en: "Trees",      fr: "Arbres",      unit: ["trees", "arbres"],            color: "#3f8a1f", tint: "#eaf5e2", items: TREES,       modes: ["name", "explore"] },
   { id: "mushrooms",   pic: "fly-agaric", en: "Mushrooms",  fr: "Champignons", unit: ["mushrooms", "champignons"],   color: "#c9302c", tint: "#fde9e7", items: MUSHROOMS,   modes: ["name", "explore"] },
-  { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "explore"] },
+  { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "listen", "explore"] },
 ];

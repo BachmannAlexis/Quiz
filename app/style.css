@@ -130,8 +130,10 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
   background: var(--surface);
   box-shadow: var(--lift);
 }
-.hero img { width: clamp(72px, 24vw, 128px); height: clamp(72px, 24vw, 128px); }
-.hero img:nth-child(2) { transform: translateY(-6px) scale(1.12); }
+.hero-pic { border: 0; background: none; padding: 0; cursor: pointer; border-radius: 20px; }
+.hero-pic:active { transform: scale(.94); }
+.hero img { display: block; width: clamp(72px, 24vw, 128px); height: clamp(72px, 24vw, 128px); }
+.hero-pic:nth-child(2) img { transform: translateY(-6px) scale(1.12); }
 .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .chip {
   border: 3px solid transparent;
