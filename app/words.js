@@ -7,7 +7,8 @@ const SOURCE_URL = "https://github.com/BachmannAlexis/Quiz";
 const TEXT = {
   en: {
     where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?",
-    who: sound => `Who says ${sound}?`, says: (n, sound) => `The ${n} says ${sound}!`,
+    who: sound => `Who says ${sound}?`, says: (n, sound, like) => `The ${n} says ${sound}${like ? `, like ${like}` : ""}!`,
+    whichLetter: sound => `Listen! Which letter says ${sound}?`,
     whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?", whatIsIt: "Listen! What is it?",
     poison: "Careful! This mushroom is poisonous. Never eat it!",
     name: n => `The ${n}!`, // an item named on its own ("The cat!" is clearer than "Cat")
@@ -24,6 +25,7 @@ const TEXT = {
       listenDinosaurs: ["Who says that?", "Hear a roar, find the dinosaur"],
       listenScenery: ["Where are we?", "Hear the waves, the wind or the rain, find the place"],
       listenKitchen: ["What is that sound?", "Hear the toaster, the kettle or the microwave, find it"],
+      listenLetters: ["Letter sounds", "Hear a sound like sss or mmm, find the letter"],
       play: ["Play music", "Tap an instrument, play the rainbow keys"],
       explore: ["Discover", "Tap a picture to hear its name and its sound"],
     },
@@ -51,7 +53,8 @@ const TEXT = {
   },
   fr: {
     where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
-    who: sound => `Qui fait ${sound} ?`, says: (n, sound) => `${cap(n)} fait ${sound} !`,
+    who: sound => `Qui fait ${sound} ?`, says: (n, sound, like) => `${cap(n)} fait ${sound}${like ? `, comme ${like}` : ""} !`,
+    whichLetter: sound => `Écoute ! Quelle lettre fait ${sound} ?`,
     whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?", whatIsIt: "Écoute ! Qu'est-ce que c'est ?",
     poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
     name: n => cap(n),
@@ -68,6 +71,7 @@ const TEXT = {
       listenDinosaurs: ["Qui fait ce bruit ?", "Écoute un cri, trouve le dinosaure"],
       listenScenery: ["Où sommes-nous ?", "Écoute les vagues, le vent ou la pluie, trouve le lieu"],
       listenKitchen: ["Quel est ce bruit ?", "Écoute le grille-pain, la bouilloire ou le micro-ondes, trouve-le"],
+      listenLetters: ["Le son des lettres", "Écoute un son comme sss ou mmm, trouve la lettre"],
       play: ["Joue de la musique", "Choisis un instrument, joue sur l'arc-en-ciel"],
       explore: ["Découvre", "Touche une image pour entendre son nom et son bruit"],
     },

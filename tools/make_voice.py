@@ -21,16 +21,52 @@ ENCODING = 2         # bump when encode() changes: clips are encoded again from 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# The sounds letters make (app/topics.js LETTER_SOUNDS), as phonemes: written "sss" or "buh"
+# the synthesizer would spell them out or misread them.
+LETTER_PHONEMES = {
+    "en": {"ah": "æ", "buh": "bʌ", "kuh": "kʌ", "duh": "dʌ", "eh": "ɛ", "fff": "fːː", "guh": "ɡʌ", "huh": "hʌ",
+           "ih": "ɪ", "juh": "dʒʌ", "lll": "lːː", "mmm": "mːː", "nnn": "nːː", "aw": "ɑː", "puh": "pʌ", "kwuh": "kwʌ",
+           "ruh": "ɹʌ", "sss": "sːːː", "tuh": "tʌ", "uh": "ʌ", "vvv": "vːː", "wuh": "wʌ", "ks": "ks", "yuh": "jʌ", "zzz": "zːːː"},
+    "fr": {"a": "a", "beu": "bø", "keu": "kø", "deu": "dø", "eu": "ø", "fff": "fːː", "gueu": "ɡø", "i": "i",
+           "jeu": "ʒø", "lll": "lːː", "mmm": "mːː", "nnn": "nːː", "o": "o", "peu": "pø", "reu": "ʁø", "sss": "sːːː",
+           "teu": "tø", "u": "y", "vvv": "vːː", "oua": "wa", "ks": "ks", "zzz": "zːːː"},
+}
+
 def spoken_form(text, lang):
     """What the synthesizer reads, when the written sentence would be mispronounced."""
     if lang == "en":
         text = text.replace("T. rex", "T-Rex")
+    if "letter" in text or "lettre" in text:  # "The letter S says sss": the sound as phonemes
+        sounds = LETTER_PHONEMES[lang]
+        text = re.sub(r"\b(says|fait) (\S+?)(?=[ ,?!])",
+                      lambda m: f"{m.group(1)} [[ {sounds[m.group(2)]} ]] " if m.group(2) in sounds else m.group(0), text)
     return text
 
 def record(voice, text, wav_path):
+    """Synthesize text; a sound written as [[ phonemes ]] is recorded on its own, stretched (a
+    letter's sound, "sss", must last), and joined to the rest with short pauses."""
     from piper import SynthesisConfig
+    import io
+    frames, params = [], None
+    for k, piece in enumerate(re.split(r"\[\[(.*?)\]\]", text)):
+        piece = piece.strip()
+        if not piece or (k % 2 == 0 and not re.search(r"\w", piece)): continue  # lone punctuation
+        if k % 2:  # phonemes: continuants (s, z, f, v, m, n, l) held longer than b + vowel
+            scale = 3.0 if len(piece.replace("ː", "")) == 1 else 2.0
+            piece = f"[[ {piece.replace('ː', '')} ]]"
+        else:
+            scale = LENGTH_SCALE
+        buf = io.BytesIO()
+        with wave.open(buf, "wb") as w:
+            voice.synthesize_wav(piece, w, syn_config=SynthesisConfig(length_scale=scale))
+        buf.seek(0)
+        with wave.open(buf) as w:
+            params = w.getparams()
+            frames.append(w.readframes(w.getnframes()))
+            frames.append(b"\0\0" * int(w.getframerate() * 0.08))
     with wave.open(wav_path, "wb") as w:
-        voice.synthesize_wav(text, w, syn_config=SynthesisConfig(length_scale=LENGTH_SCALE))
+        w.setparams(params)
+        w.writeframes(b"".join(frames))
 
 def encode(wav_path, mp3_path):
     # trim silence at both ends, keep a short tail, level like the other sounds, small mono MP3
@@ -68,7 +104,8 @@ def main(build, check, only):
             data = {}
             for text in sentences:
                 spoken = spoken_form(text, lang)
-                h = hashlib.sha1(f"{VOICES[lang]}|{LENGTH_SCALE}|{spoken}".encode()).hexdigest()[:16]
+                key = f"{VOICES[lang]}|{LENGTH_SCALE}|{spoken}" + ("|stretched" if "[[" in spoken else "")
+                h = hashlib.sha1(key.encode()).hexdigest()[:16]
                 wav, mp3 = os.path.join(cache, h + ".wav"), os.path.join(cache, f"{h}.{ENCODING}.mp3")
                 if not os.path.exists(wav):
                     record(voice, spoken, wav + ".tmp")

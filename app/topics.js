@@ -457,11 +457,29 @@ const KITCHEN_GROUPS = [
   { id: UTENSIL,   pic: "whisk",   en: "Utensils",   fr: "Ustensiles" },
 ];
 
-// ---------- ABC: look-alike letters share a family, so they are never asked together
-const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => ({
-  id: "letter-" + c.toLowerCase(), en: "letter " + c, fr: "la lettre " + c,
-  family: ["BDPRQ", "MNW", "EF", "OCGQ", "IJLT", "UV", "KXY"].find(f => f.includes(c)) || c,
-}));
+// ---------- ABC: look-alike letters share a family, so they are never asked together.
+// `says`: the sound the letter makes, in English and French (for the listening game);
+// `like`: a word that starts with it. Letters that sound alike share `hears`.
+const LETTER_SOUNDS = {
+  A: ["ah", "a", "apple", "abeille"], B: ["buh", "beu", "banana", "banane"], C: ["kuh", "keu", "cat", "carotte"],
+  D: ["duh", "deu", "dog", "dauphin"], E: ["eh", "eu", "egg", ""], F: ["fff", "fff", "fish", "fraise"],
+  G: ["guh", "gueu", "goat", "gorille"], H: ["huh", "", "horse", ""], I: ["ih", "i", "", "igloo"],
+  J: ["juh", "jeu", "jellyfish", "jungle"], K: ["kuh", "keu", "kangaroo", "kangourou"], L: ["lll", "lll", "lion", "lion"],
+  M: ["mmm", "mmm", "mouse", "mouton"], N: ["nnn", "nnn", "nest", "nénuphar"], O: ["aw", "o", "octopus", "ours"],
+  P: ["puh", "peu", "pig", "pomme"], Q: ["kwuh", "keu", "queen", ""], R: ["ruh", "reu", "rabbit", "renard"],
+  S: ["sss", "sss", "snake", "serpent"], T: ["tuh", "teu", "tiger", "tortue"], U: ["uh", "u", "umbrella", ""],
+  V: ["vvv", "vvv", "violin", "vache"], W: ["wuh", "oua", "whale", ""], X: ["ks", "ks", "fox", "xylophone"],
+  Y: ["yuh", "i", "yellow", "yaourt"], Z: ["zzz", "zzz", "zebra", "zèbre"],
+};
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
+  const [en, fr, likeEn, likeFr] = LETTER_SOUNDS[c];
+  return {
+    id: "letter-" + c.toLowerCase(), en: "letter " + c, fr: "la lettre " + c,
+    family: ["BDPRQ", "MNW", "EF", "OCGQ", "IJLT", "UV", "KXY"].find(f => f.includes(c)) || c,
+    hears: "CKQ".includes(c) ? "k" : "IY".includes(c) ? "i" : c,
+    ...(en && fr ? { says: [en, fr], like: [likeEn, likeFr] } : {}),
+  };
+});
 
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
 // name (hear the name), listen (hear the sound), play (instrument keys) or explore (tap to hear names).
@@ -476,6 +494,6 @@ const TOPICS = [
   { id: "food",        pic: "strawberry", en: "Fruits & vegetables", fr: "Fruits et légumes", unit: ["fruits and vegetables", "fruits et légumes"], color: "#2e9e44", tint: "#e6f6e8", items: FOOD, groups: FOOD_GROUPS, modes: ["name", "explore"] },
   { id: "spices",      pic: "basil",      en: "Herbs & spices", fr: "Épices et herbes", unit: ["herbs and spices", "épices et herbes"], color: "#b5651d", tint: "#fbf0e4", items: SPICES, groups: SPICE_GROUPS, modes: ["name", "explore"] },
   { id: "kitchen",     pic: "toaster",    en: "Kitchen",    fr: "Cuisine",     unit: ["things", "objets"],          color: "#0e86a8", tint: "#e2f3f8", items: KITCHEN, groups: KITCHEN_GROUPS, modes: ["name", "listen", "explore"] },
-  { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS,     modes: ["name", "explore"] },
+  { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS,     modes: ["name", "listen", "explore"] },
   { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "listen", "explore"] },
 ];

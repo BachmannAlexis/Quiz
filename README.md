@@ -16,7 +16,7 @@
 Pick a topic, then a game:
 
 - 🗣️ **Find the picture**: the voice asks "Where is the cello?" and the child taps the right picture among three. Its name then appears on the card.
-- 👂 **Listening games** (music, animals, dinosaurs, kitchen, landscapes): an instrument plays, an animal calls, the voice asks "Who says roar?", a toaster pops or a kettle boils, or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
+- 👂 **Listening games** (music, animals, dinosaurs, kitchen, letters, landscapes): an instrument plays, an animal calls, the voice asks "Who says roar?", a toaster pops or a kettle boils, or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
 - 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, the animal's real call, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice).
 
 **Drawings or photos:** at the first start Pikolo asks whether to show drawings or real photos; the 🖼️ button on the home screen changes it. Letters always use drawings.
@@ -34,7 +34,7 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 🍓 Fruits & vegetables | 44 | fruits, vegetables |
 | 🌿 Herbs & spices | 25 | herbs, spices |
 | 🍞 Kitchen | 26, 10 of them with a real recording (toaster, kettle, microwave, mixer, frying pan…) | appliances, utensils |
-| 🔤 ABC | 26 letters: the voice says "the letter B"; letters that look alike (b, d, p) never appear together | |
+| 🔤 ABC | 26 letters: the voice says "the letter B"; letters that look alike (b, d, p) never appear together. Listening game: hear a letter's sound ("sss", "mmm", "buh") and find the letter; then "S says sss, like snake!" | |
 | 🏔️ Landscapes | 24, 16 of them with real sounds (waves, stream, wind, birds, rain, thunder, bubbles, a city) | |
 
 **Mushrooms, a note for parents:** the fly agaric, the death cap, the panther cap and Satan's bolete are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.

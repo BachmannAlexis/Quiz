@@ -8,7 +8,8 @@ const CHOICES = 3;
 const CONFETTI = {
   instruments: ["🎵", "🎶", "⭐", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
-  dinosaurs: ["🦖", "🦕", "⭐", "✨"],
+  dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"],
+  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"],
 };
 const MODE_ICONS = { name: "🗣️", listen: "👂", play: "🎹", explore: "👆" };
 
@@ -316,7 +317,7 @@ function gamePool() {
 }
 // what the voice adds after naming an item: an animal's or dinosaur's sound, or a mushroom warning
 function extra(item) {
-  if (item.says) return T().says(nameOf(item), soundOf(item));
+  if (item.says) return T().says(nameOf(item), soundOf(item), item.like && item.like[lang === "en" ? 0 : 1]);
   if (item.poison) return T().poison;
   return "";
 }
@@ -456,7 +457,7 @@ function renderTopic() {
   const modes = $("modes");
   modes.innerHTML = "";
   topic.modes.forEach(m => {
-    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen" }[topic.id] || "listenAnimals" : m;
+    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters" }[topic.id] || "listenAnimals" : m;
     const [title, sub] = T().modes[key];
     const b = document.createElement("button");
     b.type = "button";
@@ -505,7 +506,7 @@ function promptText() {
   if (mode !== "listen") return T().where(nameOf(answer), answer.many);
   if (isMusic()) return T().listen;
   if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt }[topic.id] || T().whoIsIt;
-  return T().who(soundOf(answer));
+  return topic.id === "letters" ? T().whichLetter(soundOf(answer)) : T().who(soundOf(answer));
 }
 
 // Ask (or ask again): say the name, say "Listen!" then play the instrument, or ask "Who says moo?".
@@ -760,7 +761,7 @@ async function share() {
 }
 
 function confetti(n) {
-  const bits = CONFETTI[topic.id];
+  const bits = CONFETTI[topic.id] || ["⭐", "🎉", "✨"];
   for (let i = 0; i < n; i++) {
     const s = document.createElement("span");
     s.className = "confetti";

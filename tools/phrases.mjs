@@ -17,7 +17,8 @@ for (const lang of ["en", "fr"]) {
   const T = TEXT[lang];
   const soundOf = item => item.says && item.says[lang === "en" ? 0 : 1];
   // same as extra() in app.js
-  const extra = item => item.says ? T.says(item[lang], soundOf(item)) : item.poison ? T.poison : "";
+  const likeOf = item => item.like && item.like[lang === "en" ? 0 : 1];
+  const extra = item => item.says ? T.says(item[lang], soundOf(item), likeOf(item)) : item.poison ? T.poison : "";
   const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.no, T.bravoSaid, T.voiceSample]);
   for (const t of TOPICS) {
     common.add(t[lang]);
@@ -31,7 +32,7 @@ for (const lang of ["en", "fr"]) {
       s.add(T.yes(item[lang]));
       s.add(T.name(item[lang]));
       if (extra(item)) s.add(extra(item));
-      if (item.says) s.add(T.who(soundOf(item)));
+      if (item.says) s.add(t.id === "letters" ? T.whichLetter(soundOf(item)) : T.who(soundOf(item)));
     }
     out[lang][t.id] = [...s];
   }
