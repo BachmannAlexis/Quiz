@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Draw the ABC pictures: pictures/letter-a.svg … letter-z.svg, a big capital and its small letter.
+"""Draw the ABC pictures (pictures/letter-a.svg … letter-z.svg, a big capital and its small letter)
+and the numbers (pictures/number-1.svg … number-10.svg, the digits above as many dots to count).
 
 Usage: python3 tools/make_letters.py
 Needs fonttools and brotli (pip install fonttools brotli). The letters are Fredoka, the app's font
@@ -56,6 +57,29 @@ def main():
                f'  <g fill="{color}" opacity=".6">{small}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"letter-{ch.lower()}.svg"), "w").write(svg)
     print("26 letters")
+    for n in range(1, 11):
+        color = COLORS[(n - 1) % len(COLORS)]
+        digits = [glyph(f, ch) for ch in str(n)]
+        h = 64
+        widths = [place(p, b, 0, 0, h, cap)[1] for p, b in digits]
+        gap = 3
+        x = (128 - sum(widths) - gap * (len(digits) - 1)) / 2
+        parts = []
+        for (p, b), w in zip(digits, widths):
+            parts.append(place(p, b, x, 70, h, cap)[0]); x += w + gap
+        # dots: one row up to 5, two rows of 5 for 6-10
+        rows = [n] if n <= 5 else [5, n - 5]
+        dots = []
+        for r, count in enumerate(rows):
+            y = 90 + r * 21 if len(rows) == 2 else 100
+            for k in range(count):
+                cx = 64 + (k - (count - 1) / 2) * 22
+                dots.append(f'<circle cx="{cx}" cy="{y}" r="9"/>')
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+               f'  <g fill="{color}">{"".join(parts)}</g>\n'
+               f'  <g fill="{color}" opacity=".7">{"".join(dots)}</g>\n</svg>\n')
+        open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
+    print("10 numbers")
 
 if __name__ == "__main__":
     main()

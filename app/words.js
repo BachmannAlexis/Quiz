@@ -6,13 +6,13 @@ const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const SOURCE_URL = "https://github.com/BachmannAlexis/Quiz";
 const TEXT = {
   en: {
-    where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?",
+    where: (n, many, bare) => `Where ${many ? "are" : "is"} ${bare ? "" : "the "}${n}?`, listen: "Listen! Who is playing?",
     who: sound => `Who says ${sound}?`, says: (n, sound, like) => `The ${n} says ${sound}${like ? `, like ${like}` : ""}!`,
     whichLetter: sound => `Listen! Which letter says ${sound}?`,
     whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?", whatIsIt: "Listen! What is it?",
     poison: "Careful! This mushroom is poisonous. Never eat it!",
-    name: n => `The ${n}!`, // an item named on its own ("The cat!" is clearer than "Cat")
-    yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo!", bravoSaid: "Bravo! You did it!",
+    name: (n, bare) => bare ? `${cap(n)}!` : `The ${n}!`, // an item named on its own ("The cat!" is clearer than "Cat")
+    yes: (n, bare) => `Yes! ${bare ? cap(n) : `The ${n}`}!`, no: "Try again!", bravo: "Bravo!", bravoSaid: "Bravo! You did it!",
     flag: "🇬🇧 EN", voice: "en-US",
     tagline: "Learn words with pictures and sounds",
     lookTitle: "Drawings or photos?", lookDrawings: "🎨 Drawings", lookPhotos: "📷 Photos",

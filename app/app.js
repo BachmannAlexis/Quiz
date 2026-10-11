@@ -10,6 +10,7 @@ const CONFETTI = {
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
   dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"],
   kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"],
+  numbers: ["🔢", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
 };
 const MODE_ICONS = { name: "🗣️", listen: "👂", play: "🎹", explore: "👆" };
 
@@ -503,7 +504,7 @@ function renderProgress() {
 let results = []; // per round: true if found on the first try
 
 function promptText() {
-  if (mode !== "listen") return T().where(nameOf(answer), answer.many);
+  if (mode !== "listen") return T().where(nameOf(answer), answer.many, topic.bare);
   if (isMusic()) return T().listen;
   if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt }[topic.id] || T().whoIsIt;
   return topic.id === "letters" ? T().whichLetter(soundOf(answer)) : T().who(soundOf(answer));
@@ -571,7 +572,7 @@ function pick(item, btn) {
     locked = true;
     questionId++; // cancel any pending replay of the question
     btn.classList.add("right");
-    $("promptText").textContent = T().yes(nameOf(item));
+    $("promptText").textContent = T().yes(nameOf(item), topic.bare);
     cheer();
     results.push(firstTry);
     if (firstTry) stars++;
@@ -582,7 +583,7 @@ function pick(item, btn) {
     const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
     const hear = hasRecording(item) && mode === "name"; // found by name: now let them hear it
     // "Yes! The cow! The cow says moo!", then the next question
-    say([T().yes(nameOf(item)), hasRecording(item) ? "" : extra(item)], () => {
+    say([T().yes(nameOf(item), topic.bare), hasRecording(item) ? "" : extra(item)], () => {
       if (g !== gameId) return;
       if (hear) playInstrument(item);
       setTimeout(next, hear ? 3000 : 900);
@@ -597,7 +598,7 @@ function pick(item, btn) {
       setTimeout(() => { if (q === questionId) playInstrument(answer); }, 500);
     } else {
       // say what they tapped ("The cat says meow!"), then gently ask again
-      const what = mode === "listen" && item.says ? extra(item) : T().name(nameOf(item));
+      const what = mode === "listen" && item.says ? extra(item) : T().name(nameOf(item), topic.bare);
       say([what, T().no], () => { if (q === questionId) setTimeout(() => { if (q === questionId) ask(); }, 400); });
     }
   }
@@ -652,8 +653,8 @@ function selectItem(item, speak = true) {
 function sayItem() {
   const q = ++questionId;
   bounce();
-  if (hasRecording(playing)) say(T().name(nameOf(playing)), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
-  else say([T().name(nameOf(playing)), extra(playing)]);
+  if (hasRecording(playing)) say(T().name(nameOf(playing), topic.bare), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
+  else say([T().name(nameOf(playing), topic.bare), extra(playing)]);
 }
 
 function bounce() {
@@ -721,7 +722,7 @@ function setLang(l) {
       b.setAttribute("aria-label", nameOf(item));
       if (b.classList.contains("named")) b.querySelector(".label").textContent = shortName(item);
     });
-    $("promptText").textContent = locked ? T().yes(nameOf(answer)) : promptText();
+    $("promptText").textContent = locked ? T().yes(nameOf(answer), topic.bare) : promptText();
     if (!locked) ask();
   }
   if (screen === "play" && playing) {

@@ -350,6 +350,32 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Kitchen | colander | [link](https://www.flickr.com/photos/31965484@N03/5932358553) | b0000per | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Kitchen | bowl | [link](https://collections.museumsvictoria.com.au/items/1732598) | Maker: Felicity Clemons,Photographer: Sandra Morrow | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Kitchen | jar | [link](https://www.flickr.com/photos/14529257@N03/5219784708) | Steve A Johnson | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | soccer | [link](https://www.flickr.com/photos/11704829@N00/7794221892) | pbkwee | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | basketball | [link](https://www.flickr.com/photos/20943407@N08/4128778346) | j9sk9s | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | tennis | [link](https://www.flickr.com/photos/75449583@N00/235443678) | upabreak.com | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | volleyball | [link](https://www.flickr.com/photos/30806435@N04/3879244286) | hectorir | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | baseball | [link](https://www.flickr.com/photos/45532942@N08/5577338146) | EaglebrookSchool | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | ping-pong | [link](https://www.flickr.com/photos/55608722@N06/8322410752) | Dusty J | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | badminton | [link](https://www.flickr.com/photos/26344495@N05/47541589452) | Ivan Radic | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | golf | [link](https://www.flickr.com/photos/82539647@N00/334487488) | eMaringolo | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | ice hockey | [link](https://www.flickr.com/photos/11020019@N04/46056348615) | Lorie Shaull | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Sports | skiing | [link](https://www.flickr.com/photos/35557234@N07/15252945587) | Zach Dischner | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | snowboarding | [link](https://www.flickr.com/photos/34608255@N08/12326404243) | The City of Toronto | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | ice skating | [link](https://www.flickr.com/photos/32051524@N08/6074606375) | -JvL- | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | sledding | [link](https://www.flickr.com/photos/22714323@N06/4372023970) | Tony Fischer Photography | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | swimming | [link](https://www.flickr.com/photos/38419041@N00/600388960) | Flying Cloud | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | diving | [link](https://www.flickr.com/photos/49329116@N08/4625643934) | TauchSport_Steininger | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | surfing | [link](https://stocksnap.io/photo/surfer-wave-VG0TG1V0XV) | Wyncliffe | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Sports | sailing | [link](https://www.rawpixel.com/image/6029233/photo-image-public-domain-person-summer) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Sports | canoeing | [link](https://www.flickr.com/photos/71481771@N00/65513385) | Hyougushi | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Sports | cycling | [link](https://www.flickr.com/photos/95549449@N00/193576548) | MoBikeFed | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | horse riding | [link](https://www.flickr.com/photos/79196871@N08/9243905272) | Christopher Combe Photography | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | climbing | [link](https://www.flickr.com/photos/34128007@N04/4468838996) | Prayitno / Thank you for (12 millions +) view | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | boxing | [link](https://www.flickr.com/photos/56087830@N00/917242384) | markhillary | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | judo | [link](https://www.flickr.com/photos/42438955@N05/7696360870) | KOREA.NET - Official page of the Republic of Korea | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Sports | fencing | [link](https://www.rawpixel.com/image/6038249/photo-image-public-domain-arts-mask) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Sports | archery | [link](https://www.flickr.com/photos/34859133@N06/7245527662) | jrladia | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Sports | skateboarding | [link](https://www.flickr.com/photos/7972895@N02/4187240316) | rafael-castillo | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | mountain | [link](https://www.flickr.com/photos/132795455@N08/16662196134) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Landscapes | volcano | [link](https://www.flickr.com/photos/12568296@N06/2589960481) | threefingeredlord | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Landscapes | beach | [link](https://www.flickr.com/photos/132795455@N08/22261293288) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |

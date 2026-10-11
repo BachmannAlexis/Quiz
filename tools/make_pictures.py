@@ -39,6 +39,19 @@ NOTO = {
     "sweet-potato": "roasted-sweet-potato", "onion": "onion", "garlic": "garlic", "peas": "pea-pod", "beans": "beans",
     # herbs and spices
     "salt": "salt", "chili": "hot-pepper", "ginger": "ginger-root",
+    # the body
+    "eye": "eye", "ear": "ear", "nose": "nose", "mouth": "mouth", "tongue": "tongue", "tooth": "tooth",
+    "arm": "flexed-biceps", "hand": "hand-with-fingers-splayed", "finger": "index-pointing-up", "thumb": "thumbs-up",
+    "leg": "leg", "foot": "foot", "heart": "anatomical-heart", "brain": "brain", "lungs": "lungs", "bone": "bone",
+    # sports
+    "soccer": "soccer-ball", "basketball": "basketball", "rugby": "rugby-football", "tennis": "tennis",
+    "volleyball": "volleyball", "baseball": "baseball", "ping-pong": "ping-pong", "badminton": "badminton",
+    "golf": "flag-in-hole", "hockey": "ice-hockey", "skiing": "skier", "snowboarding": "snowboarder",
+    "skating": "ice-skate", "sledding": "sled", "swimming": "person-swimming", "diving": "diving-mask",
+    "surfing": "person-surfing", "sailing": "sailboat", "canoeing": "canoe", "cycling": "person-biking",
+    "running": "person-running", "horse-riding": "horse-racing", "gymnastics": "person-cartwheeling",
+    "climbing": "person-climbing", "boxing": "boxing-glove", "judo": "martial-arts-uniform", "fencing": "person-fencing",
+    "archery": "bow-and-arrow", "skateboarding": "skateboard", "roller-skating": "roller-skate",
     # kitchen
     "teapot": "teapot", "spoon": "spoon", "knife": "kitchen-knife", "bowl": "bowl-with-spoon", "jar": "jar",
     # flowers

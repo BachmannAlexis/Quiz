@@ -481,6 +481,82 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
   };
 });
 
+// ---------- Numbers: the digit and as many dots (pictures/number-*.svg)
+const NUMBER_WORDS = [["one", "un"], ["two", "deux"], ["three", "trois"], ["four", "quatre"], ["five", "cinq"],
+  ["six", "six"], ["seven", "sept"], ["eight", "huit"], ["nine", "neuf"], ["ten", "dix"]];
+const NUMBERS = NUMBER_WORDS.map(([en, fr], k) => ({
+  id: "number-" + (k + 1), en: "number " + en, fr: "le " + fr,
+  family: { 6: "69", 9: "69", 1: "17", 7: "17" }[k + 1] || "n" + (k + 1),
+}));
+
+// ---------- The body
+const BODY = [
+  { id: "head",    en: "head",    fr: "la tête",      family: "head" },
+  { id: "hair",    en: "hair",    fr: "les cheveux",  family: "head", many: true },
+  { id: "eye",     en: "eye",     fr: "l'œil",        family: "eye" },
+  { id: "ear",     en: "ear",     fr: "l'oreille",    family: "ear" },
+  { id: "nose",    en: "nose",    fr: "le nez",       family: "nose" },
+  { id: "mouth",   en: "mouth",   fr: "la bouche",    family: "mouth" },
+  { id: "tongue",  en: "tongue",  fr: "la langue",    family: "mouth" },
+  { id: "tooth",   en: "tooth",   fr: "la dent",      family: "tooth" },
+  { id: "neck",    en: "neck",    fr: "le cou",       family: "neck" },
+  { id: "arm",     en: "arm",     fr: "le bras",      family: "arm" },
+  { id: "hand",    en: "hand",    fr: "la main",      family: "hand" },
+  { id: "finger",  en: "finger",  fr: "le doigt",     family: "hand" },
+  { id: "thumb",   en: "thumb",   fr: "le pouce",     family: "hand" },
+  { id: "belly",   en: "belly",   fr: "le ventre",    family: "belly" },
+  { id: "leg",     en: "leg",     fr: "la jambe",     family: "leg" },
+  { id: "knee",    en: "knee",    fr: "le genou",     family: "leg" },
+  { id: "foot",    en: "foot",    fr: "le pied",      family: "foot" },
+  { id: "toes",    en: "toes",    fr: "les orteils",  family: "foot", many: true },
+  { id: "heart",   en: "heart",   fr: "le cœur",      family: "organ" },
+  { id: "brain",   en: "brain",   fr: "le cerveau",   family: "organ" },
+  { id: "lungs",   en: "lungs",   fr: "les poumons",  family: "organ", many: true },
+  { id: "bone",    en: "bone",    fr: "l'os",         family: "bone" },
+];
+
+// ---------- Sports (English names without "the": the topic is `bare`)
+const BALL = "ball", WINTER = "winter", WATER = "water", MORE = "more";
+const SPORTS = [
+  { id: "soccer",       en: "soccer",         fr: "le football",      family: "ball",   styles: [BALL] },
+  { id: "basketball",   en: "basketball",     fr: "le basket",        family: "ball",   styles: [BALL] },
+  { id: "rugby",        en: "rugby",          fr: "le rugby",         family: "oval",   styles: [BALL] },
+  { id: "tennis",       en: "tennis",         fr: "le tennis",        family: "racket", styles: [BALL] },
+  { id: "volleyball",   en: "volleyball",     fr: "le volley",        family: "ball",   styles: [BALL] },
+  { id: "baseball",     en: "baseball",       fr: "le baseball",      family: "bat",    styles: [BALL] },
+  { id: "ping-pong",    en: "ping-pong",      fr: "le ping-pong",     family: "racket", styles: [BALL] },
+  { id: "badminton",    en: "badminton",      fr: "le badminton",     family: "racket", styles: [BALL] },
+  { id: "golf",         en: "golf",           fr: "le golf",          family: "bat",    styles: [BALL] },
+  { id: "hockey",       en: "ice hockey",     fr: "le hockey",        family: "ice",    styles: [WINTER, BALL] },
+  { id: "skiing",       en: "skiing",         fr: "le ski",           family: "snow",   styles: [WINTER] },
+  { id: "snowboarding", en: "snowboarding",   fr: "le snowboard",     family: "snow",   styles: [WINTER] },
+  { id: "skating",      en: "ice skating",    fr: "le patinage",      family: "ice",    styles: [WINTER] },
+  { id: "sledding",     en: "sledding",       fr: "la luge",          family: "snow",   styles: [WINTER] },
+  { id: "swimming",     en: "swimming",       fr: "la natation",      family: "swim",   styles: [WATER] },
+  { id: "diving",       en: "diving",         fr: "la plongée",       family: "swim",   styles: [WATER] },
+  { id: "surfing",      en: "surfing",        fr: "le surf",          family: "board",  styles: [WATER] },
+  { id: "sailing",      en: "sailing",        fr: "la voile",         family: "boat",   styles: [WATER] },
+  { id: "canoeing",     en: "canoeing",       fr: "le canoë",         family: "boat",   styles: [WATER] },
+  { id: "cycling",      en: "cycling",        fr: "le vélo",          family: "wheel",  styles: [MORE] },
+  { id: "running",      en: "running",        fr: "la course",        family: "run",    styles: [MORE] },
+  { id: "horse-riding", en: "horse riding",   fr: "l'équitation",     family: "horse",  styles: [MORE] },
+  { id: "gymnastics",   en: "gymnastics",     fr: "la gymnastique",   family: "gym",    styles: [MORE] },
+  { id: "climbing",     en: "climbing",       fr: "l'escalade",       family: "climb",  styles: [MORE] },
+  { id: "boxing",       en: "boxing",         fr: "la boxe",          family: "fight",  styles: [MORE] },
+  { id: "judo",         en: "judo",           fr: "le judo",          family: "fight",  styles: [MORE] },
+  { id: "fencing",      en: "fencing",        fr: "l'escrime",        family: "fight",  styles: [MORE] },
+  { id: "archery",      en: "archery",        fr: "le tir à l'arc",   family: "arrow",  styles: [MORE] },
+  { id: "skateboarding", en: "skateboarding", fr: "le skateboard",    family: "board",  styles: [MORE] },
+  { id: "roller-skating", en: "roller skating", fr: "le roller",      family: "wheel",  styles: [MORE] },
+];
+const SPORT_GROUPS = [
+  { id: "all",  pic: "soccer",   en: "All",          fr: "Tous" },
+  { id: BALL,   pic: "tennis",   en: "Ball games",   fr: "Jeux de balle" },
+  { id: WINTER, pic: "skiing",   en: "Winter",       fr: "L'hiver" },
+  { id: WATER,  pic: "swimming", en: "Water",        fr: "Dans l'eau" },
+  { id: MORE,   pic: "cycling",  en: "More",         fr: "Et aussi" },
+];
+
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
 // name (hear the name), listen (hear the sound), play (instrument keys) or explore (tap to hear names).
 // `color` and `tint` theme the topic's screens; `unit` names its items ("87 animals").
@@ -495,5 +571,8 @@ const TOPICS = [
   { id: "spices",      pic: "basil",      en: "Herbs & spices", fr: "Épices et herbes", unit: ["herbs and spices", "épices et herbes"], color: "#b5651d", tint: "#fbf0e4", items: SPICES, groups: SPICE_GROUPS, modes: ["name", "explore"] },
   { id: "kitchen",     pic: "toaster",    en: "Kitchen",    fr: "Cuisine",     unit: ["things", "objets"],          color: "#0e86a8", tint: "#e2f3f8", items: KITCHEN, groups: KITCHEN_GROUPS, modes: ["name", "listen", "explore"] },
   { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS,     modes: ["name", "listen", "explore"] },
+  { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS,     modes: ["name", "explore"] },
+  { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY,  modes: ["name", "explore"] },
+  { id: "sports",      pic: "soccer",     en: "Sports",     fr: "Les sports",  unit: ["sports", "sports"],           color: "#2b7de9", tint: "#e3effd", items: SPORTS, groups: SPORT_GROUPS, bare: true, modes: ["name", "explore"] },
   { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "listen", "explore"] },
 ];

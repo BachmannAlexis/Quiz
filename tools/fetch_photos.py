@@ -23,7 +23,7 @@ SOURCES = {
     "animals": ("inat", ""), "flowers": ("inat", ""), "trees": ("inat", ""), "mushrooms": ("inat", ""),
     "instruments": ("openverse", "musical instrument"), "kitchen": ("openverse", "kitchen"),
     "food": ("openverse", ""), "scenery": ("openverse", "landscape"), "dinosaurs": ("openverse", "dinosaur model"),
-    "spices": ("openverse", ""),
+    "spices": ("openverse", ""), "sports": ("openverse", ""),
 }
 # better searches for some items (iNaturalist: scientific names; Openverse: clearer words)
 QUERY = {
@@ -80,6 +80,15 @@ QUERY = {
     "orange-bolete": "Leccinum versipelle", "satans-bolete": "Rubroboletus satanas", "trumpet-chanterelle": "Craterellus tubaeformis",
     "field-mushroom": "Agaricus campestris", "panther-cap": "Amanita pantherina", "shiitake": "Lentinula edodes",
     "wood-blewit": "Lepista nuda", "chicken-of-the-woods": "Laetiporus sulphureus", "cauliflower-fungus": "Sparassis crispa",
+    # sports (Openverse): the sport in action, or its gear
+    "soccer": "soccer match ball", "basketball": "basketball game hoop", "rugby": "rugby match", "tennis": "tennis player court",
+    "volleyball": "volleyball game", "baseball": "baseball batter", "ping-pong": "table tennis", "badminton": "badminton shuttlecock",
+    "golf": "golf ball green flag", "hockey": "ice hockey game", "skiing": "skier slope", "snowboarding": "snowboarder",
+    "skating": "ice skating rink", "sledding": "children sledding snow", "swimming": "swimming pool swimmer",
+    "diving": "scuba diver coral", "surfing": "surfer wave", "sailing": "sailboat regatta", "canoeing": "canoe river",
+    "cycling": "cyclist bicycle road", "running": "runner race", "horse-riding": "horse riding rider",
+    "gymnastics": "gymnast", "climbing": "rock climbing", "boxing": "boxing gloves", "judo": "judo match",
+    "fencing": "fencing sport", "archery": "archery bow target", "skateboarding": "skateboarder", "roller-skating": "roller skates",
     # Openverse words
     "drum-kit": "drum kit", "bell-pepper": "bell pepper vegetable", "corn": "corn on the cob", "peas": "green peas pod",
     "beans": "green beans", "lettuce": "lettuce head", "orange": "orange fruit", "lime": "lime fruit", "kiwi": "kiwi fruit",

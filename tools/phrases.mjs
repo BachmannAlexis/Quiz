@@ -28,9 +28,9 @@ for (const lang of ["en", "fr"]) {
   for (const t of TOPICS) {
     const s = new Set();
     for (const item of t.items) {
-      s.add(T.where(item[lang], item.many));
-      s.add(T.yes(item[lang]));
-      s.add(T.name(item[lang]));
+      s.add(T.where(item[lang], item.many, t.bare));
+      s.add(T.yes(item[lang], t.bare));
+      s.add(T.name(item[lang], t.bare));
       if (extra(item)) s.add(extra(item));
       if (item.says) s.add(t.id === "letters" ? T.whichLetter(soundOf(item)) : T.who(soundOf(item)));
     }
