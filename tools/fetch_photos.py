@@ -96,28 +96,55 @@ QUERY = {
 
 # second searches, for items whose first candidates were all unusable: (source, query)
 RETRY = {
-    "animals": {"dog": ("openverse", "golden retriever dog"), "peacock": ("openverse", "peacock displaying tail feathers"),
-                "orangutan": ("inat", "Pongo pygmaeus"), "bison": ("inat", "Bison bison bison"), "poodle": ("openverse", "poodle dog")},
-    "flowers": {"rose": ("openverse", "red rose flower")},
-    "kitchen": {"dishwasher": ("openverse", "open dishwasher dishes"), "teapot": ("openverse", "teapot"),
-                "ladle": ("openverse", "soup ladle"), "jar": ("openverse", "glass jar")},
-    "scenery": {"island": ("openverse", "tropical island aerial"), "savanna": ("openverse", "african savanna acacia")},
-    "trees": {"banana-tree": ("inat", "Musa acuminata"), "christmas-tree": ("openverse", "decorated christmas tree")},
-    "food": {"lime": ("openverse", "limes citrus fruit"), "melon": ("openverse", "cantaloupe melon"),
-             "chestnut": ("openverse", "roasted chestnuts"), "eggplant": ("openverse", "aubergine eggplant vegetable"),
-             "zucchini": ("openverse", "zucchini courgette vegetable"), "sweet-potato": ("openverse", "sweet potatoes raw"),
-             "leek": ("openverse", "leeks vegetable"), "bell-pepper": ("openverse", "red bell peppers"),
-             "beetroot": ("openverse", "beetroot vegetable")},
-    "spices": {"oregano": ("openverse", "oregano plant"), "dill": ("openverse", "fresh dill"),
-               "cloves": ("openverse", "whole cloves spice"), "saffron": ("openverse", "saffron spice"),
-               "paprika": ("openverse", "paprika spice"), "turmeric": ("openverse", "turmeric powder"),
-               "pepper": ("openverse", "black pepper peppercorns")},
-    "instruments": {k: ("openverse", q) for k, q in {
-        "banjo": "banjo", "synthesizer": "synthesizer keyboard", "whistle": "tin whistle", "triangle": "triangle percussion",
-        "cowbell": "cowbell", "oboe": "oboe", "bass-drum": "bass drum", "cymbals": "crash cymbal", "tambourine": "tambourine",
-        "castanets": "castanets", "trumpet": "trumpet", "horn": "french horn", "tuba": "tuba", "xylophone": "xylophone",
-        "ocarina": "ocarina", "claves": "claves percussion"}.items()},
+    "animals": {
+        "cow": [("openverse", "holstein cow meadow"), ("openverse", "dairy cow grazing")],
+        "camel": [("openverse", "dromedary camel desert"), ("inat", "Camelus dromedarius")],
+        "goat": [("openverse", "goat farm animal"), ("openverse", "white goat")],
+        "goose": [("openverse", "domestic goose"), ("openverse", "greylag goose")],
+        "bison": [("inat", "Bison bison"), ("openverse", "american bison")],
+        "mole": [("openverse", "european mole animal"), ("openverse", "mole talpa")],
+    },
+    "dinosaurs": {
+        "velociraptor": [("openverse", "velociraptor model museum"), ("openverse", "velociraptor sculpture")],
+        "spinosaurus": [("openverse", "spinosaurus model"), ("openverse", "spinosaurus skeleton museum"), ("openverse", "spinosaurus")],
+        "pterodactyl": [("openverse", "pteranodon model museum"), ("openverse", "pterosaur skeleton")],
+        "plesiosaurus": [("openverse", "plesiosaur model"), ("openverse", "plesiosaurus skeleton")],
+        "mammoth": [("openverse", "woolly mammoth model"), ("openverse", "mammoth skeleton museum")],
+    },
+    "food": {
+        "banana": [("openverse", "bunch of yellow bananas"), ("openverse", "bananas fruit")],
+        "pear": [("openverse", "pear fruit"), ("openverse", "green pears")],
+        "pineapple": [("openverse", "pineapple fruit"), ("openverse", "whole pineapple")],
+        "eggplant": [("openverse", "eggplants"), ("inat", "Solanum melongena")],
+        "melon": [("openverse", "honeydew melon"), ("openverse", "melon fruit cut")],
+        "sweet-potato": [("openverse", "sweet potato tubers"), ("openverse", "raw sweet potatoes")],
+    },
+    "instruments": {k: [("openverse", a), ("openverse", b)] for k, (a, b) in {
+        "bass-drum": ("bass drum marching band", "concert bass drum"),
+        "castanets": ("castanets percussion instrument", "spanish castanets"),
+        "cymbals": ("cymbals instrument", "hand cymbals"),
+        "horn": ("french horn instrument", "horn player orchestra"),
+        "oboe": ("oboe instrument", "oboist"),
+        "tambourine": ("tambourine instrument", "tambourine jingles"),
+        "triangle": ("triangle musical instrument", "orchestral triangle"),
+        "tuba": ("tuba instrument", "tuba player"),
+        "whistle": ("tin whistle instrument", "penny whistle"),
+        "xylophone": ("xylophone instrument", "xylophone mallets"),
+    }.items()},
+    "kitchen": {"dishwasher": [("openverse", "dishwasher appliance"), ("openverse", "dishwasher open rack plates")]},
 }
+# last tries for the instruments still without a usable photo
+for _k, _q in {"horn": "french horn", "oboe": "oboe reed instrument", "triangle": "triangle percussion",
+               "tuba": "tuba brass", "whistle": "referee whistle"}.items():
+    RETRY["instruments"][_k].append(("openverse", _q))
+RETRY.update({
+    "spices": {
+        "cloves": [("openverse", "cloves spice whole"), ("openverse", "clove buds dried")],
+        "dill": [("inat", "Anethum graveolens"), ("openverse", "dill herb fresh")],
+        "oregano": [("inat", "Origanum vulgare"), ("openverse", "oregano leaves")],
+        "saffron": [("inat", "Crocus sativus"), ("openverse", "saffron threads")],
+    },
+})
 
 def get(url, tries=6):
     for attempt in range(tries):
@@ -186,32 +213,37 @@ console.log(JSON.stringify(T_.map(t=>({id:t.id,items:t.items.map(i=>({id:i.id,en
         cand_path = os.path.join(base, "candidates.json")
         cands = json.load(open(cand_path)) if os.path.exists(cand_path) else {}
         for item in t["items"]:
-            retry = RETRY.get(t["id"], {}).get(item["id"]) if "--retry" in sys.argv else None
-            if retry and any(c.get("retry") for c in cands.get(item["id"], [])): continue  # done already
-            if cands.get(item["id"]) and not retry: continue
-            try:
-                if retry:
-                    found = inat(item, retry[1]) if retry[0] == "inat" else openverse(item, "", retry[1])
-                else:
-                    found = inat(item) if kind == "inat" else openverse(item, words)
-            except Exception as e:
-                print("  search failed:", item["id"], e, flush=True); continue
-            old = cands.get(item["id"], []) if retry else []
-            kept = []
-            for c in found:
-                if len(kept) >= PER_ITEM: break
-                path = os.path.join(base, item["id"], f"{len(old) + len(kept)}.jpg")
-                os.makedirs(os.path.dirname(path), exist_ok=True)
+            searches = [(kind, None)]
+            if "--retry" in sys.argv:
+                r = RETRY.get(t["id"], {}).get(item["id"])
+                searches = [] if r is None else ([r] if isinstance(r, tuple) else r)
+            elif cands.get(item["id"]):
+                continue
+            for src, q in searches:
+                have = cands.get(item["id"], [])
+                if q and any(c.get("query") == q for c in have): continue  # this search was done already
                 try:
-                    data = get(c["url"], tries=2)
+                    found = inat(item, q) if src == "inat" else openverse(item, "" if q else words, q)
                 except Exception as e:
-                    continue
-                open(path, "wb").write(data)
-                kept.append({**c, "file": os.path.relpath(path, base), **({"retry": True} if retry else {})})
-            cands[item["id"]] = old + kept
-            json.dump(cands, open(cand_path, "w"), indent=1, ensure_ascii=False)
-            print(f"{t['id']:10s} {item['id']:22s} {len(kept)}", flush=True)
-            time.sleep(1 if kind == "inat" else 3.2)
+                    print("  search failed:", item["id"], e, flush=True); continue
+                old = have if q else []
+                seen = {c["url"] for c in old}
+                kept = []
+                for c in found:
+                    if len(kept) >= PER_ITEM: break
+                    if c["url"] in seen: continue
+                    path = os.path.join(base, item["id"], f"{len(old) + len(kept)}.jpg")
+                    os.makedirs(os.path.dirname(path), exist_ok=True)
+                    try:
+                        data = get(c["url"], tries=2)
+                    except Exception as e:
+                        continue
+                    open(path, "wb").write(data)
+                    kept.append({**c, "file": os.path.relpath(path, base), **({"retry": True, "query": q} if q else {})})
+                cands[item["id"]] = old + kept
+                json.dump(cands, open(cand_path, "w"), indent=1, ensure_ascii=False)
+                print(f"{t['id']:10s} {item['id']:22s} {len(kept)}  {q or ''}", flush=True)
+                time.sleep(1 if src == "inat" else 3.2)
 
 if __name__ == "__main__":
     main(sys.argv[1], [a for a in sys.argv[2:] if not a.startswith("--")])

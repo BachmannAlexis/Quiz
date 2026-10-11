@@ -15,6 +15,7 @@
    0.45
   ],
   "beetle": 3,
+  "bison": 15,
   "blackbird": [
    0,
    0.55,
@@ -26,7 +27,11 @@
    0.5
   ],
   "butterfly": 0,
-  "camel": 5,
+  "camel": [
+   14,
+   0.5,
+   0.55
+  ],
   "cat": 0,
   "caterpillar": [
    1,
@@ -44,7 +49,11 @@
    0.5
   ],
   "coral": 2,
-  "cow": 3,
+  "cow": [
+   6,
+   0.5,
+   0.75
+  ],
   "crab": [
    2,
    0.47,
@@ -112,15 +121,11 @@
    0.5
   ],
   "goat": [
-   2,
-   0.54,
-   0.5
-  ],
-  "goose": [
-   5,
+   7,
    0.4,
    0.5
   ],
+  "goose": 6,
   "gorilla": 0,
   "grasshopper": [
    4,
@@ -182,6 +187,7 @@
   ],
   "llama": 2,
   "lobster": 0,
+  "mole": 8,
   "monkey": [
    0,
    0.45,
@@ -353,11 +359,19 @@
    0.5
   ],
   "diplodocus": 5,
+  "mammoth": [
+   2,
+   0.65,
+   0.5
+  ],
   "parasaurolophus": [
    1,
    0.55,
    0.5
   ],
+  "plesiosaurus": 0,
+  "pterodactyl": 1,
+  "spinosaurus": 9,
   "stegosaurus": [
    5,
    0.55,
@@ -372,7 +386,8 @@
    3,
    0.5,
    0.62
-  ]
+  ],
+  "velociraptor": 6
  },
  "flowers": {
   "bluebell": 3,
@@ -441,7 +456,11 @@
   "artichoke": 1,
   "asparagus": 3,
   "avocado": 1,
-  "banana": 1,
+  "banana": [
+   9,
+   0.5,
+   0.4
+  ],
   "beans": 0,
   "beetroot": 6,
   "bell-pepper": 7,
@@ -458,6 +477,7 @@
   "coconut": 5,
   "corn": 0,
   "cucumber": 0,
+  "eggplant": 18,
   "garlic": 2,
   "grapes": [
    4,
@@ -470,13 +490,14 @@
   "lettuce": 5,
   "lime": 8,
   "mango": 4,
+  "melon": 18,
   "olive": 3,
   "onion": 2,
   "orange": 0,
   "peach": 2,
-  "pear": 3,
+  "pear": 12,
   "peas": 0,
-  "pineapple": 2,
+  "pineapple": 9,
   "plum": 3,
   "potato": 5,
   "pumpkin": [
@@ -487,6 +508,7 @@
   "radish": 5,
   "raspberry": 1,
   "strawberry": 0,
+  "sweet-potato": 12,
   "tomato": 0,
   "watermelon": 2,
   "zucchini": 10
@@ -499,6 +521,11 @@
    0.5
   ],
   "banjo": 10,
+  "bass-drum": [
+   15,
+   0.65,
+   0.4
+  ],
   "bass-guitar": 0,
   "bassoon": 5,
   "bell": [
@@ -507,6 +534,11 @@
    0.34
   ],
   "bongos": 0,
+  "castanets": [
+   13,
+   0.5,
+   0.55
+  ],
   "cello": [
    2,
    0.45,
@@ -515,6 +547,11 @@
   "clarinet": 0,
   "claves": 6,
   "cowbell": 11,
+  "cymbals": [
+   12,
+   0.5,
+   0.4
+  ],
   "djembe": 4,
   "double-bass": [
    3,
@@ -559,6 +596,7 @@
    0.55
   ],
   "music-box": 3,
+  "oboe": 28,
   "ocarina": 7,
   "pan-flute": 5,
   "piano": 3,
@@ -587,6 +625,7 @@
    0.34,
    0.5
   ],
+  "tambourine": 22,
   "timpani": [
    4,
    0.55,
@@ -598,9 +637,11 @@
    0.5
   ],
   "trumpet": 6,
+  "tuba": 25,
   "ukulele": 0,
   "violin": 0,
-  "woodblock": 5
+  "woodblock": 5,
+  "xylophone": 21
  },
  "kitchen": {
   "blender": 0,
@@ -616,6 +657,11 @@
    0.5
   ],
   "cooktop": 0,
+  "dishwasher": [
+   16,
+   0.5,
+   0.65
+  ],
   "fridge": 5,
   "frying-pan": [
    4,
@@ -815,11 +861,14 @@
   "chili": 0,
   "chives": 3,
   "cinnamon": 0,
+  "cloves": 17,
   "coriander": 0,
   "cumin": 0,
+  "dill": 20,
   "ginger": 0,
   "mint": 0,
   "nutmeg": 2,
+  "oregano": 13,
   "paprika": 7,
   "parsley": [
    2,
@@ -828,6 +877,7 @@
   ],
   "pepper": 6,
   "rosemary": 1,
+  "saffron": 12,
   "sage": 0,
   "salt": 0,
   "star-anise": 0,
