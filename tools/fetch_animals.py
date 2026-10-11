@@ -1,14 +1,44 @@
 #!/usr/bin/env python3
-"""Download the animal recordings used by Pikolo from Wikimedia Commons, with their licences.
+"""Download the animal recordings used by Pikolo, with their licences.
 
-Usage: python3 tools/fetch_animals.py <build dir>
+Usage: python3 tools/fetch_animals.py <build dir> [--no-commons]
 Writes <build>/commons/raw/<animal>.<ext> and <build>/commons/credits.json, which
 tools/make_sounds.py turns into short excerpts in app/sounds.js and SOUND-CREDITS.md.
-The Commons API rate-limits hard, so requests are batched and paced.
+Sources: BigSoundBank (CC0 recordings by Joseph Sardin) first, Wikimedia Commons for the
+animals it does not have. The Commons API rate-limits hard, so requests are batched and
+paced; --no-commons skips it (already downloaded files are kept).
 """
 import json, os, re, sys, time, urllib.parse, urllib.request, urllib.error
 
-# animal id -> Commons file. Chosen by hand: real animals (not people pronouncing words),
+# animal id -> BigSoundBank page (bigsoundbank.com/<page>.html). All CC0, recorded by Joseph Sardin.
+BIGSOUNDBANK = {
+    "dog": "barking-dog-s0916",
+    "cat": "meow-cat-1-s1889",
+    "cow": "cow-moos-s0546",
+    "pig": "grumpy-pig-1-s1658",
+    "horse": "horse-neighing-3-s0863",
+    "donkey": "donkey-braying-1-s1549",
+    "sheep": "sheep-1-s2343",
+    "goat": "bleating-goat-1-s0279",
+    "hen": "annoyed-hen-s0453",
+    "rooster": "song-of-a-rooster-s0474",
+    "duck": "ducks-s0276",
+    "chick": "chick-that-chirp-s0672",
+    "mouse": "mouse-screams-s0459",
+    "frog": "frogs-1-s0997",
+    "owl": "tawny-owl-1-s1763",
+    "parrot": "cockatiel-parakeet-1-s2769",
+    "crow": "crows-2-s0956",
+    "bee": "bumblebee-1-s1000",
+    "fly": "many-flies-s0822",
+    "grasshopper": "field-cricket-s1020",
+    "hedgehog": "cry-of-a-young-hedgehog-s0941",
+    "bat": "cries-of-bats-s0458",
+}
+BSB = "https://bigsoundbank.com"
+
+# animal id -> Commons file. Used for the animals missing from BIGSOUNDBANK.
+# Chosen by hand: real animals (not people pronouncing words),
 # freely licensed, short where possible.
 CHOSEN = {
     "dog": "Barking of a dog.ogg",
@@ -50,6 +80,7 @@ API = "https://commons.wikimedia.org/w/api.php"
 UA = {"User-Agent": "PikoloQuizBuilder/1.0 (https://github.com/BachmannAlexis/Quiz)"}
 
 def fetch(url):
+    """The body of url; waits and retries when rate limited."""
     for attempt in range(10):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=90) as r:
@@ -77,24 +108,49 @@ def metadata(titles):
                       "license_url": g("LicenseUrl"), "artist": g("Artist") or g("Credit")}
     return out
 
-def main(build):
-    base = os.path.join(build, "commons")
-    os.makedirs(os.path.join(base, "raw"), exist_ok=True)
-    meta = metadata(list(CHOSEN.values()))
-    credits = {}
-    for key, title in CHOSEN.items():
+def save(path, url):
+    if not (os.path.exists(path) and os.path.getsize(path)):
+        data = fetch(url)
+        open(path, "wb").write(data)  # only once complete
+        time.sleep(1)
+
+def bigsoundbank(base, credits):
+    for key, page in BIGSOUNDBANK.items():
+        num = page[-4:]
+        rel = f"raw/{key}.ogg"
+        save(os.path.join(base, rel), f"{BSB}/UPLOAD/ogg/{num}.ogg")
+        credits[key] = {"file": rel, "title": page[:-6].replace("-", " ").capitalize(), "page": f"{BSB}/{page}.html",
+                        "license": "CC0", "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+                        "artist": "Joseph Sardin (BigSoundBank)"}
+        print(f"{key:12s} BigSoundBank {num} {os.path.getsize(os.path.join(base, rel)):>9}", flush=True)
+
+def commons(base, credits):
+    todo = {k: t for k, t in CHOSEN.items() if k not in credits}
+    meta = metadata(list(todo.values()))
+    for key, title in todo.items():
         m = meta.get(title)
         if not m:
             print("not found on Commons:", key, title); continue
-        ext = os.path.splitext(urllib.parse.unquote(m["url"]))[1].lower()
+        url = m["url"].split("?")[0]
+        ext = os.path.splitext(urllib.parse.unquote(url))[1].lower()
         rel = f"raw/{key}{ext}"
-        path = os.path.join(base, rel)
-        if not os.path.exists(path):
-            open(path, "wb").write(fetch(m["url"]))
-            time.sleep(1)
-        credits[key] = {"file": rel, "title": title, **m}
-        print(f"{key:12s} {m['license'][:14]:14s} {os.path.getsize(path):>9}  {m['artist'][:50]}")
-    json.dump(credits, open(os.path.join(base, "credits.json"), "w"), indent=1, ensure_ascii=False)
+        save(os.path.join(base, rel), url)
+        credits[key] = {"file": rel, "title": title, **m, "url": url}
+        print(f"{key:12s} {m['license'][:14]:14s} {os.path.getsize(os.path.join(base, rel)):>9}  {m['artist'][:50]}", flush=True)
+
+def main(build, use_commons):
+    base = os.path.join(build, "commons")
+    os.makedirs(os.path.join(base, "raw"), exist_ok=True)
+    path = os.path.join(base, "credits.json")
+    credits = {}
+    bigsoundbank(base, credits)
+    if use_commons:
+        commons(base, credits)
+    elif os.path.exists(path):  # keep the Commons files downloaded before
+        credits = {**{k: c for k, c in json.load(open(path)).items()
+                      if "commons" in c.get("page", "") and os.path.exists(os.path.join(base, c["file"]))}, **credits}
+    json.dump(credits, open(path, "w"), indent=1, ensure_ascii=False)
+    print(len(credits), "animals")
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], "--no-commons" not in sys.argv)

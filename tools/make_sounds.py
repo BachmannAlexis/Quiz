@@ -9,7 +9,7 @@ The build dir holds the sample libraries (see README for how to fetch them):
   musyngkite/<folder>/<Note>.mp3        web-music-score-samples (MusyngKite sound bank)
   salamander/<Note>v10.mp3              @audio-samples/piano-mp3-velocity10 (Salamander Grand Piano)
   sonicpi/<name>.flac                   supersonic-scsynth-samples
-  commons/credits.json, commons/raw/*   animal recordings from Wikimedia Commons (tools/fetch_animals.py)
+  commons/credits.json, commons/raw/*   animal recordings, BigSoundBank and Wikimedia Commons (tools/fetch_animals.py)
   rendered/<id>.wav, <id>.note.wav      GeneralUser GS renders from tools/render_gm.mjs
                                         (instruments, and landscape sounds without notes)
 Requires ffmpeg and numpy. Writes app/sounds.js, and SOUND-CREDITS.md for the animal recordings.
@@ -167,8 +167,9 @@ def animal(src, out):
 
 def write_credits(root, credits):
     lines = ["# Animal sound credits", "",
-             "The animal recordings in `app/sounds.js` are excerpts (about 3 seconds, levelled) of these files from",
-             "[Wikimedia Commons](https://commons.wikimedia.org). Thank you to their authors.", "",
+             "The animal recordings in `app/sounds.js` are excerpts (about 3 seconds, levelled) of these real recordings",
+             "from [BigSoundBank](https://bigsoundbank.com) and [Wikimedia Commons](https://commons.wikimedia.org).",
+             "Thank you to their authors.", "",
              "| Animal | Recording | Author | Licence |", "|---|---|---|---|"]
     for key, c in sorted(credits.items()):
         lic = f"[{c['license']}]({c['license_url']})" if c.get("license_url") else c["license"]
@@ -199,7 +200,7 @@ def main(build):
             ffmpeg([find(build, f) for f, _, _ in tune], [part(st, ln) for _, st, ln in tune], out(iid))
             tunes[iid] = uri(out(iid))
             notes[iid] = {"pitched": False, "samples": [single(find(build, f), f"{iid}.note{k}", 0, 1.2) for k, f in enumerate(sounds)]}
-        # animal recordings from Wikimedia Commons
+        # animal recordings (BigSoundBank, Wikimedia Commons)
         commons = os.path.join(build, "commons", "credits.json")
         credits = json.load(open(commons)) if os.path.exists(commons) else {}
         for iid, c in credits.items():

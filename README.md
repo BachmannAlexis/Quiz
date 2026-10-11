@@ -4,7 +4,7 @@
 
 **A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms and landscapes, with pictures and sounds. No reading needed: everything is spoken, in English or French.
 
-- 233 pictures in 7 topics, real instrument recordings, animal sounds
+- 233 pictures in 7 topics, real instrument recordings, real animal recordings
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
 
@@ -16,13 +16,13 @@ Pick a topic, then a game:
 
 - 🗣️ **Find the picture**: the voice asks "Where is the cello?" and the child taps the right picture among three. Its name then appears on the card.
 - 👂 **Listening games** (music, animals, dinosaurs, landscapes): an instrument plays, the voice asks "Who says moo?" or "Who says roar?", or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
-- 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice).
+- 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, the animal's real call, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice).
 
 A game has 10 rounds, shown as a progress bar; each first-try answer earns a star, and the best score is kept on the topic card. Pictures that look or sound alike (lion and tiger, trumpet and trombone, button mushroom and death cap) never appear together, and nothing repeats within a game. The **?** button opens a page for parents with how to play, sharing and privacy.
 
 | Topic | Items | Groups |
 |---|---|---|
-| 🐄 Animals | 87, 23 of them with a sound ("the cow says moo") | farm, wild, sea, birds, bugs |
+| 🐄 Animals | 87, 22 of them with a real recording (cow, horse, rooster, owl, bee…) and 23 with what they say ("the cow says moo") | farm, wild, sea, birds, bugs |
 | 🎻 Music | 55 instruments, each with a short tune in its style | orchestra, jazz, rock & pop, world |
 | 🦖 Dinosaurs | 12 (with the mammoth, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
 | 🌻 Flowers | 22 | |
@@ -95,7 +95,7 @@ npm pack supersonic-scsynth-samples && mkdir sp && tar xzf supersonic-scsynth-sa
 npm pack generaluser && mkdir gu && tar xzf generaluser-*.tgz -C gu
 npm init -y && npm i spessasynth_core && cp ../tools/render_gm.mjs . && node render_gm.mjs gu/package/GeneralUser.sf2 rendered
 npm pack @iconify-json/noto && mkdir noto && tar xzf iconify-json-noto-*.tgz -C noto
-cd .. && python3 tools/make_sounds.py build && python3 tools/make_pictures.py build/noto/package/icons.json
+cd .. && python3 tools/fetch_animals.py build && python3 tools/make_sounds.py build && python3 tools/make_pictures.py build/noto/package/icons.json
 ```
 
 ## Voice
@@ -125,6 +125,7 @@ cd ../.. && build/tts/bin/python tools/make_voice.py build --check
 - MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so `app/sounds.js` is shared under the same license.
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
+- Animal recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
 - Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Font: [Fredoka](https://github.com/hafontia/Fredoka) by Milena Brandão, SIL Open Font License 1.1 (embedded in `app/font.css`).
 - Pictures: 130 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (all the animals, and the ones listed in `tools/make_pictures.py`). The other 103 are drawn for this project (`pictures/`).
