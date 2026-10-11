@@ -1,6 +1,6 @@
 // Offline support: keeps the app's files in the browser so Pikolo opens without a connection.
-// Bump VERSION whenever a file changes, so returning visitors get the new files.
-const VERSION = "pikolo-4";
+// Bump VERSION when the list of files changes.
+const VERSION = "pikolo-5";
 const FILES = [
   "./", "index.html", "manifest.webmanifest",
   "app/font.css", "app/style.css", "app/app.js", "app/topics.js", "app/pictures.js", "app/sounds.js",
@@ -17,8 +17,18 @@ self.addEventListener("activate", e => {
     .then(() => self.clients.claim()));
 });
 
-// cached copy first, network for anything else
+// Latest version first, so fixes reach everyone right away; the saved copy when offline.
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
-  e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(hit => hit || fetch(e.request)));
+  e.respondWith(
+    fetch(e.request)
+      .then(res => {
+        if (res.ok && new URL(e.request.url).origin === location.origin) {
+          const copy = res.clone();
+          caches.open(VERSION).then(c => c.put(e.request, copy));
+        }
+        return res;
+      })
+      .catch(() => caches.match(e.request, { ignoreSearch: true }))
+  );
 });

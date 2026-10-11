@@ -42,6 +42,9 @@ const TEXT = {
     installTip: "Tip: in your browser menu, choose “Add to Home Screen” to use Pikolo like an app, even offline.",
     privacyTitle: "Privacy",
     privacyText: "No ads, no account, nothing collected. Pikolo runs entirely on your device and works offline.",
+    voiceTitle: "The voice", voiceTest: "Test the voice", voiceSample: "Hello! I am the Pikolo voice.",
+    voicesFound: "voices for this language", voiceSilent: "the voice did not start",
+    voiceHelp: "No voice? Turn up the media volume. On Android, check Settings → Text-to-speech output: a speech engine (Google or Samsung) with the English or French voice installed. On iPhone and iPad, turn off Silent mode.",
     creditsTitle: "Pictures and sounds",
     creditsText: `Pictures from <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) and drawn for Pikolo. Animal recordings from <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (authors listed in <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Instruments from VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, and the MusyngKite and GeneralUser GS sound banks. Font: Fredoka. Full credits and source on <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
@@ -78,6 +81,9 @@ const TEXT = {
     installTip: "Astuce : dans le menu du navigateur, choisissez « Ajouter à l'écran d'accueil » pour utiliser Pikolo comme une appli, même hors connexion.",
     privacyTitle: "Vie privée",
     privacyText: "Pas de publicité, pas de compte, aucune donnée collectée. Pikolo fonctionne entièrement sur votre appareil, même hors connexion.",
+    voiceTitle: "La voix", voiceTest: "Tester la voix", voiceSample: "Bonjour ! Je suis la voix de Pikolo.",
+    voicesFound: "voix pour cette langue", voiceSilent: "la voix n'a pas démarré",
+    voiceHelp: "Pas de voix ? Montez le volume multimédia. Sur Android, vérifiez Paramètres → Synthèse vocale : un moteur (Google ou Samsung) avec la voix française ou anglaise installée. Sur iPhone et iPad, désactivez le mode Silencieux.",
     creditsTitle: "Images et sons",
     creditsText: `Images de <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) et dessinées pour Pikolo. Cris d'animaux de <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (auteurs dans <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Instruments : VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, banques de sons MusyngKite et GeneralUser GS. Police : Fredoka. Crédits complets et code source sur <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
@@ -132,38 +138,53 @@ function localVoice() {
   const score = v => (v.default ? 2 : 0) + (/premium|enhanced|siri|samantha|amélie|thomas|audrey/i.test(v.name) ? 1 : 0);
   return mine.sort((a, b) => score(b) - score(a))[0];
 }
+const isAndroid = /android/i.test(navigator.userAgent);
+const keep = []; // Chrome can drop the events of utterances it no longer references
 let sayId = 0;
-function say(text, onDone) {
+// Speak a sentence; onDone runs once when it ends (or fails, or seems stuck). `report`, if
+// given, hears what happens (used by the voice test in the parents' sheet).
+function say(text, onDone, report) {
   let done = false;
   const finish = () => { if (!done) { done = true; onDone && onDone(); } };
-  if (!("speechSynthesis" in window)) { setTimeout(finish, 300); return; }
+  const note = m => report && report(m);
+  if (!("speechSynthesis" in window)) { note("unsupported"); setTimeout(finish, 300); return; }
   const id = ++sayId;
-  speechSynthesis.cancel();
-  speechSynthesis.resume(); // Chrome can stay paused after a cancel
+  const busy = speechSynthesis.speaking || speechSynthesis.pending;
+  if (busy) speechSynthesis.cancel();
+  if (speechSynthesis.paused) speechSynthesis.resume();
   const speak = voice => {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = T().voice;
     u.rate = 0.85;
     u.pitch = 1.15;
     if (voice) u.voice = voice;
+    keep.push(u); if (keep.length > 6) keep.shift();
     let started = false, replaced = false;
-    const retry = () => { replaced = true; speak(null); };
-    u.onstart = () => { started = true; };
-    u.onend = () => { if (!replaced) finish(); };
+    const retry = () => {
+      replaced = true;
+      speechSynthesis.cancel();
+      setTimeout(() => { if (id === sayId) speak(null); }, 150);
+    };
+    u.onstart = () => { started = true; note("start"); };
+    u.onend = () => { note("end"); if (!replaced) finish(); };
     u.onerror = e => {
+      note("error: " + e.error);
       if (replaced) return;
       // a chosen voice that fails: try once more with the browser's own choice
       if (voice && id === sayId && e.error !== "interrupted" && e.error !== "canceled") retry();
       else finish();
     };
     speechSynthesis.speak(u);
-    // a chosen voice that never starts: same retry
-    if (voice) setTimeout(() => {
-      if (!started && !done && id === sayId) { replaced = true; speechSynthesis.cancel(); speak(null); }
-    }, 1500);
+    // a chosen voice that never starts: same retry (engines can be slow to wake up, so be patient)
+    if (voice) setTimeout(() => { if (!started && !done && id === sayId) { note("no start, retrying"); retry(); } }, 4000);
   };
-  speak(localVoice());
-  if (onDone) setTimeout(finish, 2500 + text.length * 90); // some browsers never fire onend
+  // Android: let the system pick its own voice for the language, which is the most reliable there
+  const voice = isAndroid ? null : localVoice();
+  note("voice: " + (voice ? voice.name : "device default"));
+  // Android Chrome drops a sentence spoken right after cancel(), so wait a moment after one
+  if (busy) setTimeout(() => { if (id === sayId) speak(voice); }, 150);
+  else speak(voice);
+  if (onDone) setTimeout(finish, 3000 + text.length * 90); // some browsers never fire onend
 }
 function hush() { if ("speechSynthesis" in window) speechSynthesis.cancel(); }
 
@@ -695,6 +716,16 @@ document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => setLang(la
 document.querySelector(".info-btn").onclick = () => $("about").showModal();
 $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
+$("voiceTest").onclick = () => {
+  const status = $("voiceStatus");
+  const all = "speechSynthesis" in window ? speechSynthesis.getVoices() : [];
+  const mine = all.filter(v => v.lang.replace("_", "-").toLowerCase().startsWith(lang));
+  const lines = [`${T().voicesFound}: ${mine.length} / ${all.length}`];
+  const show = () => { status.textContent = lines.join(" · "); };
+  show();
+  say(T().voiceSample, null, m => { lines.push(m); show(); });
+  setTimeout(() => { if (!lines.includes("start")) { lines.push(T().voiceSilent); show(); } }, 5000);
+};
 $("topicBack").onclick = goHome;
 $("gameClose").onclick = backToTopic;
 $("playClose").onclick = backToTopic;
