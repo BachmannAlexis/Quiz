@@ -12,7 +12,7 @@ const TEXT = {
   en: {
     where: (n, many) => `Where ${many ? "are" : "is"} the ${n}?`, listen: "Listen! Who is playing?",
     who: sound => `Who says ${sound}?`, says: (n, sound) => `The ${n} says ${sound}!`,
-    whereAreWe: "Listen! Where are we?",
+    whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?",
     poison: "Careful! This mushroom is poisonous. Never eat it!",
     yes: n => `Yes! The ${n}!`, no: "Try again!", bravo: "Bravo!", bravoSaid: "Bravo! You did it!",
     flag: "🇬🇧 EN", voice: "en-US",
@@ -43,12 +43,12 @@ const TEXT = {
     privacyTitle: "Privacy",
     privacyText: "No ads, no account, nothing collected. Pikolo runs entirely on your device and works offline.",
     creditsTitle: "Pictures and sounds",
-    creditsText: `Pictures from <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) and drawn for Pikolo. Recordings from VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, and the MusyngKite and GeneralUser GS sound banks. Font: Fredoka. Full credits and source on <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
+    creditsText: `Pictures from <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) and drawn for Pikolo. Animal recordings from <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (authors listed in <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Instruments from VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, and the MusyngKite and GeneralUser GS sound banks. Font: Fredoka. Full credits and source on <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
   fr: {
     where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
     who: sound => `Qui fait ${sound} ?`, says: (n, sound) => `${cap(n)} fait ${sound} !`,
-    whereAreWe: "Écoute ! Où sommes-nous ?",
+    whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?",
     poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
     yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo !", bravoSaid: "Bravo ! Tu as réussi !",
     flag: "🇫🇷 FR", voice: "fr-FR",
@@ -79,7 +79,7 @@ const TEXT = {
     privacyTitle: "Vie privée",
     privacyText: "Pas de publicité, pas de compte, aucune donnée collectée. Pikolo fonctionne entièrement sur votre appareil, même hors connexion.",
     creditsTitle: "Images et sons",
-    creditsText: `Images de <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) et dessinées pour Pikolo. Enregistrements : VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, banques de sons MusyngKite et GeneralUser GS. Police : Fredoka. Crédits complets et code source sur <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
+    creditsText: `Images de <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) et dessinées pour Pikolo. Cris d'animaux de <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (auteurs dans <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Instruments : VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, banques de sons MusyngKite et GeneralUser GS. Police : Fredoka. Crédits complets et code source sur <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
 };
 const CONFETTI = {
@@ -110,7 +110,8 @@ let questionId = 0; // bumps every question, so stale timers and speech callback
 
 const T = () => TEXT[lang];
 const isMusic = () => topic.id === "instruments";
-// a recording to play (instruments and landscapes), or a sound the voice makes (animals, dinosaurs)
+// a recording to play (instruments, landscapes, many animals), or a sound the voice makes
+// (the other animals, dinosaurs)
 const hasRecording = item => isMusic() || !!item.sound;
 const hasSound = item => hasRecording(item) || !!item.says;
 // how an item sounds, so the listening game never offers two that sound alike
@@ -226,7 +227,10 @@ function playInstrument(inst) {
     src.connect(audio().destination);
     src.start();
     current = src;
-  }, () => {});
+  }, () => {
+    // no recording (sounds.js could not load): an animal still says its sound with the voice
+    if (token === playToken && inst.says) say(extra(inst));
+  });
 }
 // Play-mode keys: a pentatonic scale, so every combination sounds nice.
 const KEY_STEPS = [-5, -3, 0, 2, 4, 7, 9, 12];
@@ -418,7 +422,8 @@ let results = []; // per round: true if found on the first try
 function promptText() {
   if (mode !== "listen") return T().where(nameOf(answer), answer.many);
   if (isMusic()) return T().listen;
-  return answer.sound ? T().whereAreWe : T().who(soundOf(answer));
+  if (answer.sound) return topic.id === "scenery" ? T().whereAreWe : T().whoIsIt;
+  return T().who(soundOf(answer));
 }
 
 // Ask (or ask again): say the name, say "Listen!" then play the instrument, or ask "Who says moo?".
