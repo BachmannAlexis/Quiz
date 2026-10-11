@@ -174,6 +174,25 @@ const ANIMALS = [
   { id: "grasshopper", en: "grasshopper", fr: "la sauterelle",     family: "grasshopper", styles: [BUG], says: ["chirp chirp", "cri cri"], sound: true },
   { id: "beetle",     en: "beetle",       fr: "le scarabée",       family: "beetle",  styles: [BUG] },
   { id: "fly",        en: "fly",          fr: "la mouche",         family: "bee",     styles: [BUG], sound: true },
+  { id: "squirrel",   en: "squirrel",     fr: "l'écureuil",        family: "rodent",  styles: [WILD] },
+  { id: "rat",        en: "rat",          fr: "le rat",            family: "rodent",  styles: [FARM] },
+  { id: "ox",         en: "ox",           fr: "le bœuf",           family: "cow",     styles: [FARM] },
+  { id: "water-buffalo", en: "water buffalo", fr: "le buffle",     family: "bison",   styles: [WILD] },
+  { id: "ram",        en: "ram",          fr: "le bélier",         family: "sheep",   styles: [FARM] },
+  { id: "poodle",     en: "poodle",       fr: "le caniche",        family: "canine",  styles: [FARM] },
+  { id: "cheetah",    en: "cheetah",      fr: "le guépard",        family: "bigcat",  styles: [WILD] },
+  { id: "mole",       en: "mole",         fr: "la taupe",          family: "mole",    styles: [WILD] },
+  { id: "toad",       en: "toad",         fr: "le crapaud",        family: "frog",    styles: [WILD], sound: true },
+  { id: "seagull",    en: "seagull",      fr: "la mouette",        family: "seabird", styles: [SEA, BIRD], sound: true },
+  { id: "robin",      en: "robin",        fr: "le rouge-gorge",    family: "songbird", styles: [BIRD], sound: true },
+  { id: "blackbird",  en: "blackbird",    fr: "le merle",          family: "songbird", styles: [BIRD], sound: true },
+  { id: "woodpecker", en: "woodpecker",   fr: "le pic-vert",       family: "woodpecker", styles: [BIRD] },
+  { id: "cuckoo",     en: "cuckoo",       fr: "le coucou",         family: "cuckoo",  styles: [BIRD], says: ["cuckoo", "coucou"] },
+  { id: "ostrich",    en: "ostrich",      fr: "l'autruche",        family: "ostrich", styles: [BIRD, WILD] },
+  { id: "toucan",     en: "toucan",       fr: "le toucan",         family: "parrot",  styles: [BIRD] },
+  { id: "hummingbird", en: "hummingbird", fr: "le colibri",        family: "hummingbird", styles: [BIRD] },
+  { id: "scorpion",   en: "scorpion",     fr: "le scorpion",       family: "spider",  styles: [BUG] },
+  { id: "mosquito",   en: "mosquito",     fr: "le moustique",      family: "bee",     styles: [BUG] },
 ];
 const ANIMAL_GROUPS = [
   { id: "all", pic: "lion",      en: "All",   fr: "Tous" },
@@ -208,6 +227,20 @@ const FLOWERS = [
   { id: "cornflower",     en: "cornflower",     fr: "le bleuet",            family: "blue" },
   { id: "forget-me-not",  en: "forget-me-not",  fr: "le myosotis",          family: "blue" },
   { id: "snowdrop",       en: "snowdrop",       fr: "le perce-neige",       family: "snowdrop" },
+  { id: "peony",          en: "peony",          fr: "la pivoine",           family: "pink" },
+  { id: "lilac",          en: "lilac",          fr: "le lilas",             family: "spike" },
+  { id: "hydrangea",      en: "hydrangea",      fr: "l'hortensia",          family: "ball" },
+  { id: "magnolia",       en: "magnolia",       fr: "le magnolia",          family: "pink" },
+  { id: "chrysanthemum",  en: "chrysanthemum",  fr: "le chrysanthème",      family: "ball" },
+  { id: "geranium",       en: "geranium",       fr: "le géranium",          family: "red" },
+  { id: "crocus",         en: "crocus",         fr: "le crocus",            family: "tulip" },
+  { id: "buttercup",      en: "buttercup",      fr: "le bouton d'or",       family: "yellow" },
+  { id: "violet",         en: "violet",         fr: "la violette",          family: "violet" },
+  { id: "jasmine",        en: "jasmine",        fr: "le jasmin",            family: "white" },
+  { id: "lily-of-the-valley", en: "lily of the valley", fr: "le muguet",   family: "bells" },
+  { id: "edelweiss",      en: "edelweiss",      fr: "l'edelweiss",          family: "white" },
+  { id: "dahlia",         en: "dahlia",         fr: "le dahlia",            family: "ball" },
+  { id: "wisteria",       en: "wisteria",       fr: "la glycine",           family: "spike" },
 ];
 const TREES = [
   { id: "fir",            en: "fir tree",       fr: "le sapin",             family: "conifer" },
@@ -245,6 +278,16 @@ const MUSHROOMS = [
   { id: "hedgehog-mushroom", en: "hedgehog mushroom", fr: "le pied-de-mouton",    family: "pale" },
   { id: "saffron-milk-cap",  en: "saffron milk cap", fr: "le lactaire délicieux", family: "chanterelle" },
   { id: "bracket-fungus",    en: "bracket fungus",   fr: "le polypore",           family: "oyster" },
+  { id: "bay-bolete",       en: "bay bolete",       fr: "le bolet bai",          family: "brown" },
+  { id: "orange-bolete",    en: "orange bolete",    fr: "le bolet orangé",       family: "orange" },
+  { id: "satans-bolete",    en: "Satan's bolete",   fr: "le bolet de Satan",     family: "pale", poison: true },
+  { id: "trumpet-chanterelle", en: "trumpet chanterelle", fr: "la chanterelle en tube", family: "trumpet" },
+  { id: "field-mushroom",   en: "field mushroom",   fr: "le rosé des prés",      family: "white" },
+  { id: "panther-cap",      en: "panther cap",      fr: "l'amanite panthère",    family: "red", poison: true },
+  { id: "shiitake",         en: "shiitake",         fr: "le shiitaké",           family: "brown" },
+  { id: "wood-blewit",      en: "wood blewit",      fr: "le pied bleu",          family: "blewit" },
+  { id: "chicken-of-the-woods", en: "chicken of the woods", fr: "le polypore soufré", family: "orange" },
+  { id: "cauliflower-fungus", en: "cauliflower fungus", fr: "la sparassis crépue", family: "puffball" },
 ];
 const SCENERY = [
   { id: "mountain",   en: "mountain",    fr: "la montagne",      family: "mountain", sound: true, hears: "wind" },
@@ -289,6 +332,137 @@ const DINOSAURS = [
   { id: "dinosaur-egg",    en: "dinosaur egg",    fr: "l'œuf de dinosaure", family: "egg", says: ["crack crack", "crac crac"] },
 ];
 
+// ---------- Fruits and vegetables
+const FRUIT = "fruits", VEG = "vegetables";
+const FOOD = [
+  { id: "apple",        en: "apple",        fr: "la pomme",           family: "red",    styles: [FRUIT] },
+  { id: "pear",         en: "pear",         fr: "la poire",           family: "pear",   styles: [FRUIT] },
+  { id: "orange",       en: "orange",       fr: "l'orange",           family: "citrus", styles: [FRUIT] },
+  { id: "lemon",        en: "lemon",        fr: "le citron",          family: "citrus", styles: [FRUIT] },
+  { id: "lime",         en: "lime",         fr: "le citron vert",     family: "citrus", styles: [FRUIT] },
+  { id: "banana",       en: "banana",       fr: "la banane",          family: "banana", styles: [FRUIT] },
+  { id: "watermelon",   en: "watermelon",   fr: "la pastèque",        family: "melon",  styles: [FRUIT] },
+  { id: "melon",        en: "melon",        fr: "le melon",           family: "melon",  styles: [FRUIT] },
+  { id: "grapes",       en: "grapes",       fr: "le raisin",          family: "berry",  styles: [FRUIT], many: true },
+  { id: "strawberry",   en: "strawberry",   fr: "la fraise",          family: "berry",  styles: [FRUIT] },
+  { id: "raspberry",    en: "raspberry",    fr: "la framboise",       family: "berry",  styles: [FRUIT] },
+  { id: "blueberries",  en: "blueberries",  fr: "les myrtilles",      family: "berry",  styles: [FRUIT], many: true },
+  { id: "cherries",     en: "cherries",     fr: "les cerises",        family: "red",    styles: [FRUIT], many: true },
+  { id: "peach",        en: "peach",        fr: "la pêche",           family: "peach",  styles: [FRUIT] },
+  { id: "plum",         en: "plum",         fr: "la prune",           family: "peach",  styles: [FRUIT] },
+  { id: "mango",        en: "mango",        fr: "la mangue",          family: "peach",  styles: [FRUIT] },
+  { id: "pineapple",    en: "pineapple",    fr: "l'ananas",           family: "pineapple", styles: [FRUIT] },
+  { id: "coconut",      en: "coconut",      fr: "la noix de coco",    family: "nut",    styles: [FRUIT] },
+  { id: "kiwi",         en: "kiwi",         fr: "le kiwi",            family: "kiwi",   styles: [FRUIT] },
+  { id: "chestnut",     en: "chestnut",     fr: "la châtaigne",       family: "nut",    styles: [FRUIT] },
+  { id: "olive",        en: "olive",        fr: "l'olive",            family: "olive",  styles: [FRUIT, VEG] },
+  { id: "tomato",       en: "tomato",       fr: "la tomate",          family: "red",    styles: [VEG] },
+  { id: "eggplant",     en: "eggplant",     fr: "l'aubergine",        family: "long",   styles: [VEG] },
+  { id: "zucchini",     en: "zucchini",     fr: "la courgette",       family: "long",   styles: [VEG] },
+  { id: "cucumber",     en: "cucumber",     fr: "le concombre",       family: "long",   styles: [VEG] },
+  { id: "avocado",      en: "avocado",      fr: "l'avocat",           family: "avocado", styles: [VEG] },
+  { id: "broccoli",     en: "broccoli",     fr: "le brocoli",         family: "cabbage", styles: [VEG] },
+  { id: "cauliflower",  en: "cauliflower",  fr: "le chou-fleur",      family: "cabbage", styles: [VEG] },
+  { id: "lettuce",      en: "lettuce",      fr: "la salade",          family: "leaf",   styles: [VEG] },
+  { id: "bell-pepper",  en: "pepper",       fr: "le poivron",         family: "pepper", styles: [VEG] },
+  { id: "corn",         en: "corn",         fr: "le maïs",            family: "corn",   styles: [VEG] },
+  { id: "carrot",       en: "carrot",       fr: "la carotte",         family: "root",   styles: [VEG] },
+  { id: "radish",       en: "radish",       fr: "le radis",           family: "root",   styles: [VEG] },
+  { id: "beetroot",     en: "beetroot",     fr: "la betterave",       family: "root",   styles: [VEG] },
+  { id: "potato",       en: "potato",       fr: "la pomme de terre",  family: "potato", styles: [VEG] },
+  { id: "sweet-potato", en: "sweet potato", fr: "la patate douce",    family: "potato", styles: [VEG] },
+  { id: "onion",        en: "onion",        fr: "l'oignon",           family: "onion",  styles: [VEG] },
+  { id: "garlic",       en: "garlic",       fr: "l'ail",              family: "onion",  styles: [VEG] },
+  { id: "leek",         en: "leek",         fr: "le poireau",         family: "leek",   styles: [VEG] },
+  { id: "peas",         en: "peas",         fr: "les petits pois",    family: "pod",    styles: [VEG], many: true },
+  { id: "beans",        en: "beans",        fr: "les haricots",       family: "pod",    styles: [VEG], many: true },
+  { id: "pumpkin",      en: "pumpkin",      fr: "la citrouille",      family: "pumpkin", styles: [VEG] },
+  { id: "artichoke",    en: "artichoke",    fr: "l'artichaut",        family: "artichoke", styles: [VEG] },
+  { id: "asparagus",    en: "asparagus",    fr: "les asperges",       family: "leek",   styles: [VEG] },
+];
+const FOOD_GROUPS = [
+  { id: "all", pic: "strawberry", en: "All",        fr: "Tous" },
+  { id: FRUIT, pic: "banana",     en: "Fruits",     fr: "Fruits" },
+  { id: VEG,   pic: "carrot",     en: "Vegetables", fr: "Légumes" },
+];
+
+// ---------- Herbs and spices
+const HERB = "herbs", SPICE = "spices";
+const SPICES = [
+  { id: "basil",       en: "basil",       fr: "le basilic",          family: "soft",   styles: [HERB] },
+  { id: "parsley",     en: "parsley",     fr: "le persil",           family: "cut",    styles: [HERB] },
+  { id: "coriander",   en: "coriander",   fr: "la coriandre",        family: "cut",    styles: [HERB] },
+  { id: "mint",        en: "mint",        fr: "la menthe",           family: "soft",   styles: [HERB] },
+  { id: "sage",        en: "sage",        fr: "la sauge",            family: "grey",   styles: [HERB] },
+  { id: "thyme",       en: "thyme",       fr: "le thym",             family: "tiny",   styles: [HERB] },
+  { id: "oregano",     en: "oregano",     fr: "l'origan",            family: "tiny",   styles: [HERB] },
+  { id: "rosemary",    en: "rosemary",    fr: "le romarin",          family: "needle", styles: [HERB] },
+  { id: "tarragon",    en: "tarragon",    fr: "l'estragon",          family: "needle", styles: [HERB] },
+  { id: "dill",        en: "dill",        fr: "l'aneth",             family: "feather", styles: [HERB] },
+  { id: "chives",      en: "chives",      fr: "la ciboulette",       family: "stalk",  styles: [HERB], many: true },
+  { id: "bay-leaf",    en: "bay leaf",    fr: "le laurier",          family: "grey",   styles: [HERB] },
+  { id: "pepper",      en: "pepper",      fr: "le poivre",           family: "seed",   styles: [SPICE] },
+  { id: "salt",        en: "salt",        fr: "le sel",              family: "salt",   styles: [SPICE] },
+  { id: "cinnamon",    en: "cinnamon",    fr: "la cannelle",         family: "stick",  styles: [SPICE] },
+  { id: "vanilla",     en: "vanilla",     fr: "la vanille",          family: "stick",  styles: [SPICE] },
+  { id: "nutmeg",      en: "nutmeg",      fr: "la noix de muscade",  family: "nutmeg", styles: [SPICE] },
+  { id: "cloves",      en: "cloves",      fr: "les clous de girofle", family: "seed",  styles: [SPICE], many: true },
+  { id: "star-anise",  en: "star anise",  fr: "l'anis étoilé",       family: "star",   styles: [SPICE] },
+  { id: "saffron",     en: "saffron",     fr: "le safran",           family: "saffron", styles: [SPICE] },
+  { id: "paprika",     en: "paprika",     fr: "le paprika",          family: "powder", styles: [SPICE] },
+  { id: "cumin",       en: "cumin",       fr: "le cumin",            family: "seed",   styles: [SPICE] },
+  { id: "turmeric",    en: "turmeric",    fr: "le curcuma",          family: "powder", styles: [SPICE] },
+  { id: "chili",       en: "chili",       fr: "le piment",           family: "chili",  styles: [SPICE] },
+  { id: "ginger",      en: "ginger",      fr: "le gingembre",        family: "root",   styles: [SPICE] },
+];
+const SPICE_GROUPS = [
+  { id: "all", pic: "basil",    en: "All",    fr: "Tous" },
+  { id: HERB,  pic: "parsley",  en: "Herbs",  fr: "Herbes" },
+  { id: SPICE, pic: "cinnamon", en: "Spices", fr: "Épices" },
+];
+
+// ---------- Kitchen (`sound`: a real recording of the appliance)
+const APPLIANCE = "appliances", UTENSIL = "utensils";
+const KITCHEN = [
+  { id: "fridge",         en: "fridge",         fr: "le frigo",              family: "box",    styles: [APPLIANCE], sound: true },
+  { id: "oven",           en: "oven",           fr: "le four",               family: "oven",   styles: [APPLIANCE], sound: true },
+  { id: "microwave",      en: "microwave",      fr: "le micro-ondes",        family: "oven",   styles: [APPLIANCE], sound: true },
+  { id: "toaster",        en: "toaster",        fr: "le grille-pain",        family: "toaster", styles: [APPLIANCE], sound: true },
+  { id: "kettle",         en: "kettle",         fr: "la bouilloire",         family: "kettle", styles: [APPLIANCE], sound: true },
+  { id: "blender",        en: "blender",        fr: "le blender",            family: "mixer",  styles: [APPLIANCE] },
+  { id: "mixer",          en: "mixer",          fr: "le robot pâtissier",    family: "mixer",  styles: [APPLIANCE], sound: true },
+  { id: "coffee-machine", en: "coffee machine", fr: "la machine à café",     family: "kettle", styles: [APPLIANCE], sound: true },
+  { id: "dishwasher",     en: "dishwasher",     fr: "le lave-vaisselle",     family: "box",    styles: [APPLIANCE], sound: true },
+  { id: "cooktop",        en: "stove",          fr: "la plaque de cuisson",  family: "stove",  styles: [APPLIANCE] },
+  { id: "hood",           en: "cooker hood",    fr: "la hotte",              family: "hood",   styles: [APPLIANCE], sound: true },
+  { id: "kitchen-scale",  en: "kitchen scale",  fr: "la balance",            family: "scale",  styles: [APPLIANCE] },
+  { id: "juicer",         en: "juicer",         fr: "le presse-agrumes",     family: "juicer", styles: [APPLIANCE] },
+  { id: "waffle-iron",    en: "waffle maker",   fr: "le gaufrier",           family: "toaster", styles: [APPLIANCE] },
+  { id: "frying-pan",     en: "frying pan",     fr: "la poêle",              family: "pan",    styles: [UTENSIL], sound: true },
+  { id: "saucepan",       en: "saucepan",       fr: "la casserole",          family: "pan",    styles: [UTENSIL] },
+  { id: "teapot",         en: "teapot",         fr: "la théière",            family: "kettle", styles: [UTENSIL] },
+  { id: "whisk",          en: "whisk",          fr: "le fouet",              family: "whisk",  styles: [UTENSIL] },
+  { id: "rolling-pin",    en: "rolling pin",    fr: "le rouleau à pâtisserie", family: "pin",  styles: [UTENSIL] },
+  { id: "ladle",          en: "ladle",          fr: "la louche",             family: "spoon",  styles: [UTENSIL] },
+  { id: "spoon",          en: "spoon",          fr: "la cuillère",           family: "spoon",  styles: [UTENSIL] },
+  { id: "knife",          en: "knife",          fr: "le couteau",            family: "knife",  styles: [UTENSIL] },
+  { id: "grater",         en: "grater",         fr: "la râpe",               family: "grater", styles: [UTENSIL] },
+  { id: "colander",       en: "colander",       fr: "la passoire",           family: "bowl",   styles: [UTENSIL] },
+  { id: "bowl",           en: "bowl",           fr: "le bol",                family: "bowl",   styles: [UTENSIL] },
+  { id: "jar",            en: "jar",            fr: "le bocal",              family: "jar",    styles: [UTENSIL] },
+];
+const KITCHEN_GROUPS = [
+  { id: "all",     pic: "toaster", en: "All",        fr: "Tous" },
+  { id: APPLIANCE, pic: "fridge",  en: "Appliances", fr: "Appareils" },
+  { id: UTENSIL,   pic: "whisk",   en: "Utensils",   fr: "Ustensiles" },
+];
+
+// ---------- ABC: look-alike letters share a family, so they are never asked together
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => ({
+  id: "letter-" + c.toLowerCase(), en: "letter " + c, fr: "la lettre " + c,
+  family: ["BDPRQ", "MNW", "EF", "OCGQ", "IJLT", "UV", "KXY"].find(f => f.includes(c)) || c,
+}));
+
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
 // name (hear the name), listen (hear the sound), play (instrument keys) or explore (tap to hear names).
 // `color` and `tint` theme the topic's screens; `unit` names its items ("87 animals").
@@ -299,5 +473,9 @@ const TOPICS = [
   { id: "flowers",     pic: "sunflower",  en: "Flowers",    fr: "Fleurs",      unit: ["flowers", "fleurs"],          color: "#d63a7c", tint: "#fde8f1", items: FLOWERS,     modes: ["name", "explore"] },
   { id: "trees",       pic: "oak",        en: "Trees",      fr: "Arbres",      unit: ["trees", "arbres"],            color: "#3f8a1f", tint: "#eaf5e2", items: TREES,       modes: ["name", "explore"] },
   { id: "mushrooms",   pic: "fly-agaric", en: "Mushrooms",  fr: "Champignons", unit: ["mushrooms", "champignons"],   color: "#c9302c", tint: "#fde9e7", items: MUSHROOMS,   modes: ["name", "explore"] },
+  { id: "food",        pic: "strawberry", en: "Fruits & vegetables", fr: "Fruits et légumes", unit: ["fruits and vegetables", "fruits et légumes"], color: "#2e9e44", tint: "#e6f6e8", items: FOOD, groups: FOOD_GROUPS, modes: ["name", "explore"] },
+  { id: "spices",      pic: "basil",      en: "Herbs & spices", fr: "Épices et herbes", unit: ["herbs and spices", "épices et herbes"], color: "#b5651d", tint: "#fbf0e4", items: SPICES, groups: SPICE_GROUPS, modes: ["name", "explore"] },
+  { id: "kitchen",     pic: "toaster",    en: "Kitchen",    fr: "Cuisine",     unit: ["things", "objets"],          color: "#0e86a8", tint: "#e2f3f8", items: KITCHEN, groups: KITCHEN_GROUPS, modes: ["name", "listen", "explore"] },
+  { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS,     modes: ["name", "explore"] },
   { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "listen", "explore"] },
 ];

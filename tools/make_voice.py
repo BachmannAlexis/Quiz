@@ -17,6 +17,7 @@ import base64, difflib, hashlib, json, os, re, subprocess, sys, unicodedata, wav
 
 VOICES = {"en": "en_US-ljspeech-high", "fr": "fr_FR-siwis-medium"}
 LENGTH_SCALE = 1.15  # a little slower than normal, for small children
+ENCODING = 2         # bump when encode() changes: clips are encoded again from the cached recordings
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,8 +34,9 @@ def record(voice, text, wav_path):
 
 def encode(wav_path, mp3_path):
     # trim silence at both ends, keep a short tail, level like the other sounds, small mono MP3
-    chain = ("silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
-             "silenceremove=start_periods=1:start_threshold=-45dB,areverse,"
+    # (keeps 50 ms before the first sound, so soft first consonants like the k of "qui" stay whole)
+    chain = ("silenceremove=start_periods=1:start_threshold=-55dB:start_silence=0.05,areverse,"
+             "silenceremove=start_periods=1:start_threshold=-55dB:start_silence=0.05,areverse,"
              "apad=pad_dur=0.12,loudnorm=I=-16:TP=-2,aresample=22050,alimiter=limit=0.71:level=false")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", wav_path, "-af", chain, "-ac", "1",
                     "-b:a", "40k", mp3_path], check=True)
@@ -67,15 +69,21 @@ def main(build, check, only):
             for text in sentences:
                 spoken = spoken_form(text, lang)
                 h = hashlib.sha1(f"{VOICES[lang]}|{LENGTH_SCALE}|{spoken}".encode()).hexdigest()[:16]
-                wav, mp3 = os.path.join(cache, h + ".wav"), os.path.join(cache, h + ".mp3")
+                wav, mp3 = os.path.join(cache, h + ".wav"), os.path.join(cache, f"{h}.{ENCODING}.mp3")
+                if not os.path.exists(wav):
+                    record(voice, spoken, wav + ".tmp")
+                    os.replace(wav + ".tmp", wav)
                 if not os.path.exists(mp3):
-                    record(voice, spoken, wav)
-                    encode(wav, mp3)
+                    encode(wav, mp3 + ".tmp.mp3")
+                    os.replace(mp3 + ".tmp.mp3", mp3)
                 data[text] = "data:audio/mpeg;base64," + base64.b64encode(open(mp3, "rb").read()).decode()
                 if asr:
-                    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", mp3, "-ac", "1", "-ar", "16000", "-f", "f32le", "-"],
+                    # half a second of silence around the clip: Whisper invents words on very short audio
+                    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", mp3, "-af", "adelay=500,apad=pad_dur=0.5",
+                                          "-ac", "1", "-ar", "16000", "-f", "f32le", "-"],
                                          capture_output=True, check=True).stdout
-                    segs, _ = asr.transcribe(np.frombuffer(raw, np.float32), language=lang, beam_size=1)
+                    segs, _ = asr.transcribe(np.frombuffer(raw, np.float32), language=lang, beam_size=5,
+                                             condition_on_previous_text=False)
                     heard = " ".join(s.text.strip() for s in segs)
                     score = difflib.SequenceMatcher(None, norm(text), norm(heard)).ratio()
                     report.append((score, lang, pack, text, heard))

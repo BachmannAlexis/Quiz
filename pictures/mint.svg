@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<defs><g id="m"><path d="M0 0 5.2 -3.8 6.2 -4.5 10.1 -8.3 9.5 -9 13 -12.8 11.3 -13.5 14 -17.3 11.6 -18 13.3 -21.8 10.5 -22.5 11.2 -26.3 8.3 -27 7.8 -30.8 5 -31.5 3 -35.3 0 -36 -3 -35.3 -5 -31.5 -7.8 -30.8 -8.3 -27 -11.2 -26.3 -10.5 -22.5 -13.3 -21.8 -11.6 -18 -14 -17.3 -11.3 -13.5 -13 -12.8 -9.5 -9 -10.1 -8.3 -6.2 -4.5 -5.2 -3.8Z" fill="#5cc160"/><path d="M0 0V-32" stroke="#2e8b3a" stroke-width="2" stroke-linecap="round"/><path d="M0 -6C-5 -9 -8 -12 -10 -16M0 -14C-4 -17 -7 -20 -9 -24M0 -22C-3 -25 -5 -27 -6 -30M0 -6C5 -9 8 -12 10 -16M0 -14C4 -17 7 -20 9 -24M0 -22C3 -25 5 -27 6 -30" stroke="#2e8b3a" stroke-width="1.4" fill="none" stroke-linecap="round"/></g></defs>
+<path d="M64 125V30" stroke="#6d8f2f" stroke-width="7" stroke-linecap="square"/><path d="M62 125V30" stroke="#8cb84a" stroke-width="2.5"/>
+<use href="#m" transform="translate(62 108) rotate(-78) scale(1.4)"/><use href="#m" transform="translate(66 108) rotate(78) scale(1.4)"/>
+<use href="#m" transform="translate(62 80) rotate(-62) scale(1.2)"/><use href="#m" transform="translate(66 80) rotate(62) scale(1.2)"/>
+<use href="#m" transform="translate(62 54) rotate(-44)"/><use href="#m" transform="translate(66 54) rotate(44)"/>
+<use href="#m" transform="translate(63 34) rotate(-16) scale(0.8)"/><use href="#m" transform="translate(65 34) rotate(16) scale(0.8)"/>
+</svg>

@@ -2,9 +2,10 @@
 
 # Pikolo
 
-**A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms and landscapes, with pictures and sounds. No reading needed: everything is spoken, in English or French.
+**A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English or French.
 
-- 233 pictures in 7 topics, real instrument recordings, real animal recordings
+- 397 pictures in 11 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
+- A recorded voice in English and French, the same on every device
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
 
@@ -15,22 +16,28 @@
 Pick a topic, then a game:
 
 - 🗣️ **Find the picture**: the voice asks "Where is the cello?" and the child taps the right picture among three. Its name then appears on the card.
-- 👂 **Listening games** (music, animals, dinosaurs, landscapes): an instrument plays, the voice asks "Who says moo?" or "Who says roar?", or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
+- 👂 **Listening games** (music, animals, dinosaurs, kitchen, landscapes): an instrument plays, an animal calls, the voice asks "Who says roar?", a toaster pops or a kettle boils, or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
 - 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, the animal's real call, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice).
+
+**Drawings or photos:** at the first start Pikolo asks whether to show drawings or real photos; the 🖼️ button on the home screen changes it. Letters always use drawings.
 
 A game has 10 rounds, shown as a progress bar; each first-try answer earns a star, and the best score is kept on the topic card. Pictures that look or sound alike (lion and tiger, trumpet and trombone, button mushroom and death cap) never appear together, and nothing repeats within a game. The **?** button opens a page for parents with how to play, sharing and privacy.
 
 | Topic | Items | Groups |
 |---|---|---|
-| 🐄 Animals | 87, 22 of them with a real recording (cow, horse, rooster, owl, bee…) and 23 with what they say ("the cow says moo") | farm, wild, sea, birds, bugs |
+| 🐄 Animals | 106, 26 of them with a real recording (cow, horse, rooster, owl, robin, bee…) and 24 with what they say ("the cow says moo") | farm, wild, sea, birds, bugs |
 | 🎻 Music | 55 instruments, each with a short tune in its style | orchestra, jazz, rock & pop, world |
 | 🦖 Dinosaurs | 12 (with the mammoth, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
-| 🌻 Flowers | 22 | |
+| 🌻 Flowers | 36 | |
 | 🌳 Trees | 19 | |
-| 🍄 Mushrooms | 14 | |
+| 🍄 Mushrooms | 24, including the chanterelle and four boletes | |
+| 🍓 Fruits & vegetables | 44 | fruits, vegetables |
+| 🌿 Herbs & spices | 25 | herbs, spices |
+| 🍞 Kitchen | 26, 10 of them with a real recording (toaster, kettle, microwave, mixer, frying pan…) | appliances, utensils |
+| 🔤 ABC | 26 letters: the voice says "the letter B"; letters that look alike (b, d, p) never appear together | |
 | 🏔️ Landscapes | 24, 16 of them with real sounds (waves, stream, wind, birds, rain, thunder, bubbles, a city) | |
 
-**Mushrooms, a note for parents:** the fly agaric and the death cap are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.
+**Mushrooms, a note for parents:** the fly agaric, the death cap, the panther cap and Satan's bolete are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.
 
 ### Instrument styles
 
@@ -58,7 +65,8 @@ The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages 
 | `app/voice/` | The recorded voice: every sentence in English and French (`<lang>/<topic>.json`, loaded when a topic opens) |
 | `app/style.css`, `app/font.css` | Design (one bright theme; each topic recolors its screens) and the embedded Fredoka font |
 | `app/topics.js` | Topics and items: names in English and French, families, groups, animal sounds |
-| `app/pictures.js`, `app/sounds.js` | Generated pictures and sounds (sounds load only when music is opened) |
+| `app/pictures.js`, `app/sounds.js` | Generated drawings and sounds (sounds load in the background) |
+| `app/photos/` | The photo mode: real photos per topic (`<topic>.json`) and for the home screen (`covers.json`), loaded when needed |
 | `pictures/` | The pictures drawn for the app (SVG) |
 | `icons/` | App icon, home-screen icons and the link preview image |
 | `tools/` | Scripts that build `pictures.js`, `sounds.js` and the voice |
@@ -125,7 +133,9 @@ cd ../.. && build/tts/bin/python tools/make_voice.py build --check
 - MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so `app/sounds.js` is shared under the same license.
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
-- Animal recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
+- Photos (photo mode): freely licensed photos (CC0, CC BY, CC BY-SA) from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://openverse.org), cropped and resized; each photo and its author is listed in `PHOTO-CREDITS.md` (built by `tools/fetch_photos.py` and `tools/make_photos.py`, choices in `tools/photo_picks.json`).
+- Letters: drawn from the Fredoka font by `tools/make_letters.py`.
+- Animal and kitchen recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
 - Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Font: [Fredoka](https://github.com/hafontia/Fredoka) by Milena Brandão, SIL Open Font License 1.1 (embedded in `app/font.css`).
-- Pictures: 130 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (all the animals, and the ones listed in `tools/make_pictures.py`). The other 103 are drawn for this project (`pictures/`).
+- Drawings: 180 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (most animals, fruits and vegetables, and the ones listed in `tools/make_pictures.py`). The other 217 are drawn for this project (`pictures/`).

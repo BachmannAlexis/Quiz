@@ -18,7 +18,7 @@ for (const lang of ["en", "fr"]) {
   const soundOf = item => item.says && item.says[lang === "en" ? 0 : 1];
   // same as extra() in app.js
   const extra = item => item.says ? T.says(item[lang], soundOf(item)) : item.poison ? T.poison : "";
-  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.no, T.bravoSaid, T.voiceSample]);
+  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.no, T.bravoSaid, T.voiceSample]);
   for (const t of TOPICS) {
     common.add(t[lang]);
     for (const g of t.groups || []) common.add(g[lang]);
@@ -29,7 +29,7 @@ for (const lang of ["en", "fr"]) {
     for (const item of t.items) {
       s.add(T.where(item[lang], item.many));
       s.add(T.yes(item[lang]));
-      s.add(cap(item[lang]));
+      s.add(T.name(item[lang]));
       if (extra(item)) s.add(extra(item));
       if (item.says) s.add(T.who(soundOf(item)));
     }

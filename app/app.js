@@ -322,17 +322,54 @@ function extra(item) {
 }
 
 // ---------- Screens ----------
+// ---------- Pictures: drawings, or real photos (chosen at the first start) ----------
+// Photos come in packs per topic (app/photos/<topic>.json: id -> image, built by
+// tools/make_photos.py), plus "covers" for the home screen. Items without a photo (letters)
+// keep their drawing.
+let look = store.get("pikolo-look");          // "drawings" or "photos"; null until chosen
+const photos = {}, photoPacks = {}, photoLoading = new Set();
+function loadPhotos(name, always) {
+  if ((look !== "photos" && !always) || photoPacks[name]) return photoPacks[name];
+  photoLoading.add(name);
+  return photoPacks[name] = fetch(`app/photos/${name}.json`)
+    .then(r => (r.ok ? r.json() : {}))
+    .then(map => Object.assign(photos, map))
+    .catch(() => {}) // offline from a file: drawings instead
+    .then(() => { photoLoading.delete(name); refreshPictures(); });
+}
+function srcOf(id) {
+  if (look === "photos" && photos[id]) return photos[id];
+  if (look === "photos" && photoLoading.size) return ""; // its photo may be on the way
+  return window.INSTRUMENT_PICTURES[id];
+}
+function setPicture(img, id) {
+  img.dataset.pic = id;
+  const src = srcOf(id);
+  if (src) img.src = src; else img.removeAttribute("src");
+  img.classList.toggle("photo", look === "photos" && !!photos[id]);
+}
+function refreshPictures() {
+  document.querySelectorAll("img[data-pic]").forEach(img => setPicture(img, img.dataset.pic));
+}
 function picture(id, cls) {
   const img = document.createElement("img");
-  img.src = window.INSTRUMENT_PICTURES[id];
   img.alt = "";
   if (cls) img.className = cls;
+  setPicture(img, id);
   return img;
+}
+function setLook(l) {
+  look = l;
+  store.set("pikolo-look", l);
+  document.body.classList.toggle("photos", l === "photos");
+  loadPhotos("covers");
+  if (screen !== "look") loadPhotos(topic.id);
+  refreshPictures();
 }
 function show(name) {
   screen = name;
   document.querySelectorAll(".screen").forEach(s => { s.hidden = s.id !== name; });
-  document.body.classList.toggle("themed", name !== "home");
+  document.body.classList.toggle("themed", name !== "home" && name !== "look");
   window.scrollTo(0, 0);
 }
 function theme() {
@@ -373,6 +410,7 @@ function openTopic(t) {
   topic = t;
   store.set("quiz-topic", t.id);
   loadVoice();
+  loadPhotos(t.id);
   if (t.items.some(hasRecording)) loadSounds().catch(() => {});
   theme();
   renderTopic();
@@ -418,7 +456,7 @@ function renderTopic() {
   const modes = $("modes");
   modes.innerHTML = "";
   topic.modes.forEach(m => {
-    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs" }[topic.id] || "listenAnimals" : m;
+    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen" }[topic.id] || "listenAnimals" : m;
     const [title, sub] = T().modes[key];
     const b = document.createElement("button");
     b.type = "button";
@@ -466,7 +504,7 @@ let results = []; // per round: true if found on the first try
 function promptText() {
   if (mode !== "listen") return T().where(nameOf(answer), answer.many);
   if (isMusic()) return T().listen;
-  if (answer.sound) return topic.id === "scenery" ? T().whereAreWe : T().whoIsIt;
+  if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt }[topic.id] || T().whoIsIt;
   return T().who(soundOf(answer));
 }
 
@@ -558,7 +596,7 @@ function pick(item, btn) {
       setTimeout(() => { if (q === questionId) playInstrument(answer); }, 500);
     } else {
       // say what they tapped ("The cat says meow!"), then gently ask again
-      const what = mode === "listen" && item.says ? extra(item) : cap(nameOf(item));
+      const what = mode === "listen" && item.says ? extra(item) : T().name(nameOf(item));
       say([what, T().no], () => { if (q === questionId) setTimeout(() => { if (q === questionId) ask(); }, 400); });
     }
   }
@@ -600,7 +638,7 @@ let playing = null; // item on the stage
 
 function selectItem(item, speak = true) {
   playing = item;
-  $("bigPic").querySelector("img").src = window.INSTRUMENT_PICTURES[item.id];
+  setPicture($("bigPic").querySelector("img"), item.id);
   $("bigPic").classList.toggle("poison", !!item.poison);
   $("bigName").textContent = shortName(item);
   document.querySelectorAll(".thumb").forEach(t => t.setAttribute("aria-pressed", t.dataset.id === item.id));
@@ -613,8 +651,8 @@ function selectItem(item, speak = true) {
 function sayItem() {
   const q = ++questionId;
   bounce();
-  if (hasRecording(playing)) say(cap(nameOf(playing)), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
-  else say([cap(nameOf(playing)), extra(playing)]);
+  if (hasRecording(playing)) say(T().name(nameOf(playing)), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
+  else say([T().name(nameOf(playing)), extra(playing)]);
 }
 
 function bounce() {
@@ -774,6 +812,32 @@ KEY_COLORS.forEach((c, k) => {
 $("keys").addEventListener("pointerdown", e => { e.preventDefault(); $("keys").releasePointerCapture?.(e.pointerId); press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 $("keys").addEventListener("pointermove", e => { if (pressed.has(e.pointerId)) press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 ["pointerup", "pointercancel", "pointerleave"].forEach(t => $("keys").addEventListener(t, release));
+const LOOK_SAMPLES = ["lion", "sunflower", "strawberry"];
+function openLook() {
+  ["drawings", "photos"].forEach(l => {
+    const b = $("look-" + l);
+    b.setAttribute("aria-pressed", look === l);
+    const row = b.querySelector(".look-pics");
+    row.innerHTML = "";
+    LOOK_SAMPLES.forEach(id => {
+      const img = document.createElement("img");
+      img.alt = "";
+      img.dataset.sample = id;
+      if (l === "drawings") img.src = window.INSTRUMENT_PICTURES[id];
+      else img.className = "photo";
+      row.appendChild(img);
+    });
+  });
+  const fill = () => document.querySelectorAll("#look-photos img").forEach(img => {
+    img.src = photos[img.dataset.sample] || window.INSTRUMENT_PICTURES[img.dataset.sample];
+  });
+  (loadPhotos("covers", true) || Promise.resolve()).then(fill);
+  show("look");
+}
+["drawings", "photos"].forEach(l => {
+  $("look-" + l).onclick = () => { audio(); setLook(l); goHome(); };
+});
+$("lookBtn").onclick = openLook;
 // keyboard: 1-3 pick a picture, space repeats the question, Escape goes back
 document.addEventListener("keydown", e => {
   if ($("about").open) return;
@@ -789,3 +853,5 @@ translate();
 renderHome();
 theme();
 loadVoice();
+// first start: drawings or photos?
+if (look) setLook(look); else openLook();

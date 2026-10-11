@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<defs><g id="y"><path d="M0 0C-26 -12.6 -18.2 -71.4 0 -84C18.2 -71.4 26 -12.6 0 0Z" fill="#7f8a2e"/><path d="M0 0C26 -12.6 18.2 -71.4 0 -84Z" fill="#9aa63f"/><path d="M0 0V-78" stroke="#d4d58c" stroke-width="2.2" stroke-linecap="round"/><path d="M0 -12Q-4.2 -16 -7 -22M0 -12Q4.2 -16 7 -22M0 -23Q-7.3 -27 -12.2 -33M0 -23Q7.3 -27 12.2 -33M0 -34Q-9.2 -38 -15.4 -44M0 -34Q9.2 -38 15.4 -44M0 -45Q-9.6 -49 -16 -55M0 -45Q9.6 -49 16 -55M0 -56Q-8.4 -60 -14 -66M0 -56Q8.4 -60 14 -66M0 -67Q-5.7 -71 -9.6 -77M0 -67Q5.7 -71 9.6 -77" stroke="#c7ca7a" stroke-width="1.1" fill="none" opacity=".75"/><path d="M8 -20C11 -34 11 -50 7 -62" stroke="#e6ecb0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/></g></defs>
+<path d="M64 124Q62 116 64 108" stroke="#6d4c41" stroke-width="4" fill="none" stroke-linecap="round"/>
+<use href="#y" transform="translate(62 112) rotate(-32) scale(1.1)"/><use href="#y" transform="translate(66 112) rotate(34) scale(1.1)"/><use href="#y" transform="translate(64 110) scale(1.2)"/>
+</svg>

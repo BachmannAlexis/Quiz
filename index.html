@@ -24,6 +24,29 @@
 <div class="app">
 
   <!-- Home: pick a topic -->
+  <section class="screen" id="look" hidden>
+    <header class="bar">
+      <div class="brand">
+        <img class="logo" src="icons/icon.svg" alt="">
+        <span class="wordmark">Pik<span>o</span>l<span>o</span></span>
+      </div>
+      <div class="bar-tools">
+        <button class="pill lang-btn" type="button"></button>
+      </div>
+    </header>
+    <h1 class="look-title" data-t="lookTitle"></h1>
+    <div class="look-choices">
+      <button class="look-card" type="button" id="look-drawings">
+        <span class="look-pics"></span>
+        <strong data-t="lookDrawings"></strong>
+      </button>
+      <button class="look-card" type="button" id="look-photos">
+        <span class="look-pics"></span>
+        <strong data-t="lookPhotos"></strong>
+      </button>
+    </div>
+    <p class="tagline" data-t="lookHint"></p>
+  </section>
   <section class="screen" id="home">
     <header class="bar">
       <div class="brand">
@@ -32,6 +55,7 @@
       </div>
       <div class="bar-tools">
         <button class="pill lang-btn" type="button"></button>
+        <button class="icon-btn" type="button" id="lookBtn" data-t-label="lookTitle">🖼️</button>
         <button class="icon-btn info-btn" type="button" data-t-label="parents">?</button>
       </div>
     </header>

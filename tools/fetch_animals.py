@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download the animal recordings used by Pikolo, with their licences.
+"""Download the real recordings used by Pikolo (animals, kitchen), with their licences.
 
 Usage: python3 tools/fetch_animals.py <build dir> [--no-commons]
 Writes <build>/commons/raw/<animal>.<ext> and <build>/commons/credits.json, which
@@ -34,6 +34,21 @@ BIGSOUNDBANK = {
     "grasshopper": "field-cricket-s1020",
     "hedgehog": "cry-of-a-young-hedgehog-s0941",
     "bat": "cries-of-bats-s0458",
+    "toad": "song-of-the-common-midwife-toad-1-s1053",
+    "seagull": "gulls-on-the-harbor-s2573",
+    "robin": "robin-1-s1667",
+    "blackbird": "common-blackbird-2-s3474",
+    # kitchen
+    "fridge": "fridge-door-s1158",
+    "oven": "electric-oven-s0102",
+    "microwave": "microwave-bell-s1631",
+    "toaster": "toaster-s0055",
+    "kettle": "electric-kettle-2-s1154",
+    "mixer": "electric-hand-mixer-1-s1752",
+    "coffee-machine": "nespresso-coffee-maker-1-s3047",
+    "dishwasher": "dishwasher-s1002",
+    "hood": "kitchen-extractor-hood-s0309",
+    "frying-pan": "frying-pan-2-s0144",
 }
 BSB = "https://bigsoundbank.com"
 

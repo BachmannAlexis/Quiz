@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <g id="bf">
+      <g fill="#fdd000"><ellipse rx="9" ry="10.5" transform="rotate(0) translate(0 -9)"/><ellipse rx="9" ry="10.5" transform="rotate(72) translate(0 -9)"/><ellipse rx="9" ry="10.5" transform="rotate(144) translate(0 -9)"/><ellipse rx="9" ry="10.5" transform="rotate(216) translate(0 -9)"/><ellipse rx="9" ry="10.5" transform="rotate(288) translate(0 -9)"/></g>
+      <g fill="#fff59d"><ellipse rx="3.5" ry="3" transform="rotate(0) translate(-2 -12)"/><ellipse rx="3.5" ry="3" transform="rotate(72) translate(-2 -12)"/><ellipse rx="3.5" ry="3" transform="rotate(144) translate(-2 -12)"/><ellipse rx="3.5" ry="3" transform="rotate(216) translate(-2 -12)"/><ellipse rx="3.5" ry="3" transform="rotate(288) translate(-2 -12)"/></g>
+      <circle r="5" fill="#9ccc65"/><g fill="#f9a825"><circle r="1.6" transform="rotate(0) translate(0 -5.5)"/><circle r="1.6" transform="rotate(40) translate(0 -5.5)"/><circle r="1.6" transform="rotate(80) translate(0 -5.5)"/><circle r="1.6" transform="rotate(120) translate(0 -5.5)"/><circle r="1.6" transform="rotate(160) translate(0 -5.5)"/><circle r="1.6" transform="rotate(200) translate(0 -5.5)"/><circle r="1.6" transform="rotate(240) translate(0 -5.5)"/><circle r="1.6" transform="rotate(280) translate(0 -5.5)"/><circle r="1.6" transform="rotate(320) translate(0 -5.5)"/></g>
+    </g>
+    <g id="bc">
+      <path d="M-14 -6 C-14 8 -6 14 0 14 C6 14 14 8 14 -6 C10 -4 6 -8 0 -8 C-6 -8 -10 -4 -14 -6 Z" fill="#fbc400"/>
+      <path d="M-6 -6 C-8 4 -4 12 0 14 C4 12 8 4 6 -6 C4 -8 -4 -8 -6 -6 Z" fill="#fdd835"/>
+      <ellipse cy="-7" rx="13" ry="4" fill="#ffe57f"/>
+      <path d="M-10 0 C-10 6 -6 10 -3 11" stroke="#fff9c4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M-4 14 C-2 18 2 18 4 14 Z" fill="#7cb342"/>
+    </g>
+    <path id="bl" d="M0 0 C-8 -6 -16 -4 -18 -12 C-12 -16 -6 -12 -4 -16 C-8 -22 -4 -28 0 -30 C4 -28 8 -22 4 -16 C6 -12 12 -16 18 -12 C16 -4 8 -6 0 0 Z" fill="#5b9a35"/>
+  </defs>
+  <g stroke="#689f38" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M64 124 C64 100 62 70 60 46"/><path d="M63 92 C70 80 82 72 92 68"/><path d="M62 80 C54 74 40 74 30 74"/>
+  </g>
+  <use href="#bl" transform="translate(52 122) rotate(-40)"/>
+  <use href="#bl" transform="translate(74 122) rotate(40)"/>
+  <use href="#bl" transform="translate(64 124) scale(.8)"/>
+  <use href="#bf" transform="translate(60 36) scale(1.45)"/>
+  <use href="#bc" transform="translate(94 56) scale(1.1) rotate(14)"/>
+  <use href="#bc" transform="translate(28 64) scale(1.05) rotate(-12)"/>
+</svg>

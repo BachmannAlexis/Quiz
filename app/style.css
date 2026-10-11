@@ -392,3 +392,33 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .confetti { display: none; }
 }
+
+/* ---------- Photos (the photo look) and the drawings-or-photos chooser ---------- */
+img.photo { object-fit: cover; border-radius: 18px; background: var(--tint, #eee); }
+.topic-card img.photo { border-radius: 22px; box-shadow: 0 2px 8px rgba(0, 0, 0, .12); }
+.hero img.photo { border-radius: 26px; box-shadow: 0 4px 14px rgba(0, 0, 0, .15); }
+.chip img.photo { border-radius: 50%; }
+.choice img.photo { width: 88%; height: 88%; border-radius: 16px; }
+.choice.named img.photo { height: 62%; }
+.big img.photo { width: 88%; height: 88%; border-radius: 24px; }
+.thumb img.photo { width: 92%; height: 92%; border-radius: 14px; }
+img:not([src]) { visibility: hidden; }
+
+#look:not([hidden]) { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.look-title { margin: 8px 0 0; font-size: clamp(1.6rem, 6vw, 2.4rem); font-weight: 600; text-align: center; color: var(--brand); }
+.look-choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; width: 100%; max-width: 760px; }
+.look-card {
+  flex: 1 1 260px; max-width: 360px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 18px 14px 16px; border: 3px solid transparent; border-radius: 28px;
+  background: var(--card, #fff); box-shadow: 0 6px 20px rgba(40, 20, 90, .1);
+  font: inherit; color: var(--ink); cursor: pointer; transition: transform .15s, border-color .2s;
+}
+.look-card:active { transform: scale(.97); }
+.look-card[aria-pressed="true"] { border-color: var(--brand); }
+.look-card strong { font-size: 1.5rem; font-weight: 600; }
+.look-pics { display: flex; gap: 8px; justify-content: center; }
+.look-pics img { width: clamp(64px, 22vw, 96px); height: clamp(64px, 22vw, 96px); object-fit: contain; }
+.look-pics img.photo { object-fit: cover; border-radius: 16px; }
+#look .bar { align-self: stretch; }
+#look .tagline { text-align: center; }

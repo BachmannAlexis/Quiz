@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><g id="gf">
+    <g fill="#e53935"><ellipse rx="6" ry="7.5" transform="rotate(0) translate(0 -7)"/><ellipse rx="6" ry="7.5" transform="rotate(72) translate(0 -7)"/><ellipse rx="6" ry="7.5" transform="rotate(144) translate(0 -7)"/><ellipse rx="6" ry="7.5" transform="rotate(216) translate(0 -7)"/><ellipse rx="6" ry="7.5" transform="rotate(288) translate(0 -7)"/></g>
+    <g fill="#ef5350"><ellipse rx="3.5" ry="4.5" transform="rotate(0) translate(-1 -7)"/><ellipse rx="3.5" ry="4.5" transform="rotate(72) translate(-1 -7)"/><ellipse rx="3.5" ry="4.5" transform="rotate(144) translate(-1 -7)"/><ellipse rx="3.5" ry="4.5" transform="rotate(216) translate(-1 -7)"/><ellipse rx="3.5" ry="4.5" transform="rotate(288) translate(-1 -7)"/></g>
+    <circle r="3" fill="#b71c1c"/><circle r="1.3" fill="#ffeb3b"/>
+  </g></defs>
+  <path d="M64 50 C64 76 62 100 64 112 M64 56 L54 44 M64 56 L74 44 M64 56 L64 40" stroke="#689f38" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M64 104 L40 96 M64 104 L88 96" stroke="#689f38" stroke-width="4" stroke-linecap="round"/>
+  <path d="M30 80 Q36.9 76.6 40.8 83.2 Q48.4 84 48.2 91.7 Q54.2 96.5 49.8 102.8 Q52.2 110.1 45.1 113.1 Q43.2 120.5 35.6 119.2 Q30 124.4 24.4 119.2 Q16.8 120.5 14.9 113.1 Q7.8 110.1 10.2 102.8 Q5.8 96.5 11.8 91.7 Q11.6 84 19.2 83.2 Q23.1 76.6 30 80 Z" fill="#5b9a35"/>
+  <path d="M98 80 Q104.9 76.6 108.8 83.2 Q116.4 84 116.2 91.7 Q122.2 96.5 117.8 102.8 Q120.2 110.1 113.1 113.1 Q111.2 120.5 103.6 119.2 Q98 124.4 92.4 119.2 Q84.8 120.5 82.9 113.1 Q75.8 110.1 78.2 102.8 Q73.8 96.5 79.8 91.7 Q79.6 84 87.2 83.2 Q91.1 76.6 98 80 Z" fill="#5b9a35"/>
+  <circle cx="30" cy="100" r="11" fill="none" stroke="#6b5a2a" stroke-width="3" opacity=".55"/>
+  <circle cx="98" cy="100" r="11" fill="none" stroke="#6b5a2a" stroke-width="3" opacity=".55"/>
+  <path d="M64 98 Q69.8 96 73 101.3 Q78.8 103.5 77.8 109.6 Q80.8 115 76.1 119 Q75 125.1 68.8 125.2 Q64 129.1 59.2 125.2 Q53 125.1 51.9 119 Q47.2 115 50.2 109.6 Q49.2 103.5 55 101.3 Q58.2 96 64 98 Z" fill="#6aa83e"/>
+  <circle cx="64" cy="112" r="7" fill="none" stroke="#6b5a2a" stroke-width="2.5" opacity=".55"/>
+  <use href="#gf" transform="translate(64 18) scale(0.85) rotate(16)"/><use href="#gf" transform="translate(48 22) scale(0.8) rotate(48)"/><use href="#gf" transform="translate(80 22) scale(0.8) rotate(56)"/><use href="#gf" transform="translate(64 30) scale(1) rotate(16)"/><use href="#gf" transform="translate(46 38) scale(0.95) rotate(34)"/><use href="#gf" transform="translate(82 38) scale(0.95) rotate(70)"/><use href="#gf" transform="translate(64 40) scale(0.9) rotate(16)"/><use href="#gf" transform="translate(54 50) scale(1) rotate(18)"/><use href="#gf" transform="translate(74 50) scale(1) rotate(14)"/><use href="#gf" transform="translate(38 54) scale(0.85) rotate(50)"/><use href="#gf" transform="translate(90 54) scale(0.85) rotate(54)"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M4 92 C36 86 80 90 124 82" stroke="#795548" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M96 88 L106 80" stroke="#795548" stroke-width="5" stroke-linecap="round"/>
+  <path d="M84 70 L124 106 L114 118 L74 84 Z" fill="#455a64"/>
+  <g fill="#fafafa"><circle cx="98" cy="88" r="2"/><circle cx="108" cy="97" r="2"/><circle cx="118" cy="106" r="2"/><circle cx="90" cy="93" r="2"/><circle cx="100" cy="102" r="2"/><circle cx="110" cy="111" r="2"/></g>
+  <path d="M22 44 C22 34 32 28 40 30 C48 32 52 40 56 46 C70 50 84 60 92 74 C84 86 66 90 50 86 C34 80 28 64 26 56 C23 52 22 48 22 44 Z" fill="#90a4ae"/>
+  <path d="M30 58 C34 74 46 86 62 88 C74 89 84 84 90 78 C80 70 62 66 46 62 C40 60 34 58 30 58 Z" fill="#fafafa"/>
+  <path d="M36 62 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M46 66 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M42 72 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M52 72 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M48 78 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M58 78 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M56 84 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M66 84 q4 2 8 0" stroke="#546e7a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M46 48 C62 46 82 56 98 80 C84 76 64 72 52 64 C46 60 44 52 46 48 Z" fill="#607d8b"/>
+  <path d="M56 56 C68 58 80 66 88 74" stroke="#78909c" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <g stroke="#fbc02d" stroke-width="3" stroke-linecap="round"><path d="M60 86 L58 92"/><path d="M68 86 L68 92"/></g>
+  <path d="M24 40 C18 40 12 42 8 46 C14 45 20 45 25 46 Z" fill="#37474f"/>
+  <path d="M25 40 L20 41 L20 45 L25 46Z" fill="#fbc02d"/>
+  <circle cx="33" cy="39" r="5" fill="#fbc02d"/><circle cx="33" cy="39" r="3" fill="#212121"/><circle cx="31.9" cy="38.0" r="1.0" fill="#fff"/>
+</svg>

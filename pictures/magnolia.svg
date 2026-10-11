@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="mg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#c2185b"/><stop offset=".45" stop-color="#f48fb1"/><stop offset="1" stop-color="#fff5f8"/></linearGradient>
+    <path id="mp" d="M0 0 C-12 -6 -14 -34 -2 -46 C10 -36 10 -8 0 0 Z" fill="url(#mg)"/>
+  </defs>
+  <path d="M14 122 C30 104 46 94 60 88 C78 80 96 64 114 40" stroke="#6d4c41" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M86 70 C94 70 102 74 106 80" stroke="#6d4c41" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M38 102 C30 96 22 96 16 100 C22 106 32 106 38 102 Z" fill="#7cb342"/>
+  <path d="M100 56 C104 48 112 46 118 48 C114 56 106 58 100 56 Z" fill="#7cb342"/>
+  <path d="M106 80 C104 70 108 62 114 58 C120 64 118 74 110 80 Z" fill="#9e9e7a"/>
+  <path d="M110 66 C112 64 114 62 115 60" stroke="#cfcfb0" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <g transform="translate(58 90) scale(1.3)">
+    <use href="#mp" transform="rotate(-44) scale(.95)"/>
+    <use href="#mp" transform="rotate(44) scale(.95)"/>
+    <use href="#mp" transform="rotate(-22) scale(1.08)"/>
+    <use href="#mp" transform="rotate(22) scale(1.08)"/>
+    <use href="#mp" transform="rotate(-6) scale(1.2)"/>
+    <use href="#mp" transform="rotate(8) scale(1.16)"/>
+    <path d="M-2 -40 C2 -30 2 -16 0 -6" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+    <path d="M-6 2 C-4 -4 4 -4 6 2 Z" fill="#6d4c41"/>
+  </g>
+</svg>

@@ -166,8 +166,8 @@ def animal(src, out):
     ffmpeg([src], [chain], out)
 
 def write_credits(root, credits):
-    lines = ["# Animal sound credits", "",
-             "The animal recordings in `app/sounds.js` are excerpts (about 3 seconds, levelled) of these real recordings",
+    lines = ["# Sound credits", "",
+             "The animal and kitchen recordings in `app/sounds.js` are excerpts (about 3 seconds, levelled) of these real recordings",
              "from [BigSoundBank](https://bigsoundbank.com) and [Wikimedia Commons](https://commons.wikimedia.org).",
              "Thank you to their authors.", "",
              "| Animal | Recording | Author | Licence |", "|---|---|---|---|"]

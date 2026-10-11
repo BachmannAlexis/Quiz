@@ -27,7 +27,20 @@ NOTO = {
     "orangutan": "orangutan", "bison": "bison", "moose": "moose", "boar": "boar", "raccoon": "raccoon", "beaver": "beaver",
     "otter": "otter", "skunk": "skunk", "badger": "badger", "lizard": "lizard", "lobster": "lobster", "shrimp": "shrimp",
     "squid": "squid", "pufferfish": "blowfish", "coral": "coral", "crow": "black-bird", "grasshopper": "cricket",
-    "beetle": "beetle", "fly": "fly",
+    "beetle": "beetle", "fly": "fly", "squirrel": "chipmunk", "rat": "rat", "ox": "ox", "water-buffalo": "water-buffalo",
+    "ram": "ram", "poodle": "poodle", "scorpion": "scorpion", "mosquito": "mosquito",
+    # fruits and vegetables
+    "apple": "red-apple", "pear": "pear", "orange": "tangerine", "lemon": "lemon", "lime": "lime", "banana": "banana",
+    "watermelon": "watermelon", "melon": "melon", "grapes": "grapes", "strawberry": "strawberry",
+    "blueberries": "blueberries", "cherries": "cherries", "peach": "peach", "mango": "mango", "pineapple": "pineapple",
+    "coconut": "coconut", "kiwi": "kiwi-fruit", "chestnut": "chestnut", "olive": "olive", "tomato": "tomato",
+    "eggplant": "eggplant", "cucumber": "cucumber", "avocado": "avocado", "broccoli": "broccoli", "lettuce": "leafy-green",
+    "bell-pepper": "bell-pepper", "corn": "ear-of-corn", "carrot": "carrot", "potato": "potato",
+    "sweet-potato": "roasted-sweet-potato", "onion": "onion", "garlic": "garlic", "peas": "pea-pod", "beans": "beans",
+    # herbs and spices
+    "salt": "salt", "chili": "hot-pepper", "ginger": "ginger-root",
+    # kitchen
+    "teapot": "teapot", "spoon": "spoon", "knife": "kitchen-knife", "bowl": "bowl-with-spoon", "jar": "jar",
     # flowers
     "rose": "rose", "tulip": "tulip", "sunflower": "sunflower", "cherry-blossom": "cherry-blossom", "hibiscus": "hibiscus",
     "lotus": "lotus", "hyacinth": "hyacinth",

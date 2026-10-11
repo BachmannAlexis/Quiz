@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M2 126 C6 104 30 94 64 94 C98 94 122 104 126 126 Z" fill="#8d6e63"/>
+  <g fill="#6d4c41"><circle cx="22" cy="114" r="5"/><circle cx="104" cy="112" r="6"/><circle cx="64" cy="118" r="4"/><circle cx="42" cy="122" r="3.5"/><circle cx="88" cy="122" r="4"/></g>
+  <g fill="#a1887f"><circle cx="34" cy="108" r="3"/><circle cx="92" cy="104" r="3"/><circle cx="76" cy="112" r="2.5"/><circle cx="50" cy="112" r="2.5"/></g>
+  <path d="M26 104 C22 66 36 26 64 26 C92 26 106 66 102 104 Z" fill="#3e3f4a"/>
+  <path d="M38 52 C42 38 52 32 60 32 C50 38 44 50 42 66 Z" fill="#5c5d6b"/>
+  <path d="M48 84 C52 76 76 76 80 84 C80 96 48 96 48 84 Z" fill="#33343d"/>
+  <path d="M56 56 C58 64 58 68 57 72 L71 72 C70 68 70 64 72 56 Z" fill="#4a4b57"/>
+  <ellipse cx="64" cy="72" rx="9" ry="6.5" fill="#f48fb1"/>
+  <ellipse cx="62" cy="70" rx="3.5" ry="2" fill="#f8bbd0"/>
+  <circle cx="60.5" cy="73" r="1.5" fill="#ad1457"/><circle cx="67.5" cy="73" r="1.5" fill="#ad1457"/>
+  <g stroke="#9e9fab" stroke-width="1.2" stroke-linecap="round" fill="none"><path d="M54 72 L38 68 M54 75 L38 77"/><path d="M74 72 L90 68 M74 75 L90 77"/></g>
+  <circle cx="50" cy="52" r="2.6" fill="#111"/><circle cx="49.3" cy="51.2" r=".9" fill="#fff"/>
+  <circle cx="78" cy="52" r="2.6" fill="#111"/><circle cx="77.3" cy="51.2" r=".9" fill="#fff"/>
+  <g id="paw">
+    <ellipse cx="26" cy="96" rx="17" ry="13" fill="#f48fb1" transform="rotate(-20 26 96)"/>
+    <ellipse cx="28" cy="98" rx="9" ry="6" fill="#f8bbd0" transform="rotate(-20 28 98)"/>
+    <g fill="#fff3e0"><ellipse cx="8" cy="98" rx="4" ry="2.4" transform="rotate(10 8 98)"/><ellipse cx="9" cy="89" rx="4" ry="2.4" transform="rotate(-10 9 89)"/><ellipse cx="13" cy="81" rx="4" ry="2.4" transform="rotate(-30 13 81)"/><ellipse cx="21" cy="76" rx="4" ry="2.4" transform="rotate(-55 21 76)"/><ellipse cx="12" cy="106" rx="4" ry="2.4" transform="rotate(30 12 106)"/></g>
+  </g>
+  <use href="#paw" transform="translate(128 0) scale(-1 1)"/>
+</svg>
