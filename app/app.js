@@ -128,17 +128,24 @@ const soundOf = item => item.says && item.says[lang === "en" ? 0 : 1];
 const unitOf = t => t.unit[lang === "en" ? 0 : 1];
 
 // ---------- Speech ----------
+const isAndroid = /android/i.test(navigator.userAgent);
 let voices = [];
 function loadVoices() { if ("speechSynthesis" in window) voices = speechSynthesis.getVoices(); }
-// A voice installed on the device for the language. Online voices (many "Google" or "Natural"
-// ones) can stay silent, especially in embedded previews, so they are never picked here; when
-// there is no local voice, the browser chooses from the language alone.
-function localVoice() {
-  const mine = voices.filter(v => v.localService && v.lang.replace("_", "-").toLowerCase().startsWith(lang));
-  const score = v => (v.default ? 2 : 0) + (/premium|enhanced|siri|samantha|amélie|thomas|audrey/i.test(v.name) ? 1 : 0);
-  return mine.sort((a, b) => score(b) - score(a))[0];
+// The voice for the current language. Elsewhere only voices installed on the device are
+// used: online ones (many "Google" or "Natural" voices) can stay silent in embedded previews.
+// Android often ignores the language unless a voice is chosen, so there any voice of the
+// language is fine (its voices are not always marked as installed). Without a match, the
+// browser chooses from the language alone.
+const langOf = v => v.lang.replace("_", "-").toLowerCase();
+function voiceFor() {
+  if (!voices.length) loadVoices();
+  const mine = voices.filter(v => langOf(v).startsWith(lang) && (isAndroid || v.localService));
+  const main = lang === "fr" ? "fr-fr" : "en-us";
+  const score = v => (v.localService ? 4 : 0) + (langOf(v) === main ? 2 : 0) + (v.default ? 1 : 0) +
+    (/premium|enhanced|siri|samantha|amélie|thomas|audrey/i.test(v.name) ? 1 : 0);
+  return mine.sort((a, b) => score(b) - score(a))[0] || null;
 }
-const isAndroid = /android/i.test(navigator.userAgent);
+
 const keep = []; // Chrome can drop the events of utterances it no longer references
 let sayId = 0;
 // Speak a sentence; onDone runs once when it ends (or fails, or seems stuck). `report`, if
@@ -178,8 +185,7 @@ function say(text, onDone, report) {
     // a chosen voice that never starts: same retry (engines can be slow to wake up, so be patient)
     if (voice) setTimeout(() => { if (!started && !done && id === sayId) { note("no start, retrying"); retry(); } }, 4000);
   };
-  // Android: let the system pick its own voice for the language, which is the most reliable there
-  const voice = isAndroid ? null : localVoice();
+  const voice = voiceFor();
   note("voice: " + (voice ? voice.name : "device default"));
   // Android Chrome drops a sentence spoken right after cancel(), so wait a moment after one
   if (busy) setTimeout(() => { if (id === sayId) speak(voice); }, 150);
