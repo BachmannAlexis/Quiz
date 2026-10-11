@@ -62,7 +62,11 @@
   ],
   "cuckoo": 0,
   "deer": 3,
-  "dog": 0,
+  "dog": [
+   9,
+   0.5,
+   0.4
+  ],
   "dolphin": 5,
   "donkey": [
    0,
@@ -178,11 +182,6 @@
   ],
   "llama": 2,
   "lobster": 0,
-  "mole": [
-   4,
-   0.55,
-   0.5
-  ],
   "monkey": [
    0,
    0.45,
@@ -200,6 +199,7 @@
    0.45,
    0.45
   ],
+  "orangutan": 6,
   "ostrich": [
    0,
    0.38,
@@ -222,11 +222,7 @@
    0.5,
    0.4
   ],
-  "peacock": [
-   2,
-   0.55,
-   0.5
-  ],
+  "peacock": 11,
   "penguin": [
    4,
    0.5,
@@ -242,6 +238,7 @@
    0.37,
    0.5
   ],
+  "poodle": 8,
   "pufferfish": 1,
   "rabbit": 1,
   "raccoon": 0,
@@ -427,6 +424,11 @@
    0.5,
    0.58
   ],
+  "rose": [
+   7,
+   0.68,
+   0.5
+  ],
   "snowdrop": 2,
   "sunflower": 4,
   "tulip": 4,
@@ -441,6 +443,8 @@
   "avocado": 1,
   "banana": 1,
   "beans": 0,
+  "beetroot": 6,
+  "bell-pepper": 7,
   "blueberries": 1,
   "broccoli": 5,
   "carrot": 0,
@@ -450,6 +454,7 @@
    0.5
   ],
   "cherries": 1,
+  "chestnut": 6,
   "coconut": 5,
   "corn": 0,
   "cucumber": 0,
@@ -460,8 +465,10 @@
    0.5
   ],
   "kiwi": 1,
+  "leek": 8,
   "lemon": 1,
   "lettuce": 5,
+  "lime": 8,
   "mango": 4,
   "olive": 3,
   "onion": 2,
@@ -481,7 +488,8 @@
   "raspberry": 1,
   "strawberry": 0,
   "tomato": 0,
-  "watermelon": 2
+  "watermelon": 2,
+  "zucchini": 10
  },
  "instruments": {
   "accordion": 3,
@@ -490,6 +498,7 @@
    0.42,
    0.5
   ],
+  "banjo": 10,
   "bass-guitar": 0,
   "bassoon": 5,
   "bell": [
@@ -504,6 +513,8 @@
    0.5
   ],
   "clarinet": 0,
+  "claves": 6,
+  "cowbell": 11,
   "djembe": 4,
   "double-bass": [
    3,
@@ -548,6 +559,7 @@
    0.55
   ],
   "music-box": 3,
+  "ocarina": 7,
   "pan-flute": 5,
   "piano": 3,
   "pipe-organ": 3,
@@ -564,6 +576,7 @@
    0.5,
    0.6
   ],
+  "synthesizer": 9,
   "tabla": [
    0,
    0.5,
@@ -584,6 +597,7 @@
    0.45,
    0.5
   ],
+  "trumpet": 6,
   "ukulele": 0,
   "violin": 0,
   "woodblock": 5
@@ -614,6 +628,7 @@
    0.42,
    0.5
   ],
+  "jar": 7,
   "juicer": 4,
   "kettle": [
    1,
@@ -626,6 +641,11 @@
    0.5
   ],
   "knife": 0,
+  "ladle": [
+   10,
+   0.6,
+   0.5
+  ],
   "microwave": [
    2,
    0.4,
@@ -644,6 +664,7 @@
    0.5
   ],
   "spoon": 5,
+  "teapot": 11,
   "toaster": 0,
   "waffle-iron": 2,
   "whisk": [
@@ -749,6 +770,7 @@
   ],
   "forest": 2,
   "iceberg": 2,
+  "island": 11,
   "jungle": 5,
   "lake": [
    5,
@@ -767,6 +789,7 @@
    0.5
   ],
   "river": 2,
+  "savanna": 3,
   "snow": 1,
   "starry-sky": [
    2,
@@ -797,23 +820,26 @@
   "ginger": 0,
   "mint": 0,
   "nutmeg": 2,
+  "paprika": 7,
   "parsley": [
    2,
    0.55,
    0.5
   ],
-  "pepper": 3,
+  "pepper": 6,
   "rosemary": 1,
   "sage": 0,
   "salt": 0,
   "star-anise": 0,
   "tarragon": 3,
   "thyme": 2,
+  "turmeric": 8,
   "vanilla": 4
  },
  "trees": {
   "apple-tree": 3,
   "bamboo": 4,
+  "banana-tree": 11,
   "baobab": [
    4,
    0.42,
@@ -828,9 +854,9 @@
   "cherry-tree": 0,
   "chestnut-tree": 3,
   "christmas-tree": [
-   3,
-   0.375,
-   0.5
+   9,
+   0.5,
+   0.4
   ],
   "cypress": 4,
   "fir": 3,

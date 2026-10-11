@@ -6,7 +6,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 
 | Topic | Item | Photo | Author | Licence |
 |---|---|---|---|---|
-| Animals | dog | [link](https://www.inaturalist.org/photos/215940095) | Afsar Nayakkan | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Animals | dog | [link](https://www.rawpixel.com/image/5925521/photo-image-background-public-domain-dog) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Animals | cat | [link](https://www.inaturalist.org/photos/129658776) | Von.grzanka | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | cow | [link](https://www.inaturalist.org/photos/273302691) | Verum | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | pig | [link](https://www.inaturalist.org/photos/267632608) | Rictor Norton & David Allen | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -58,7 +58,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Animals | eagle | [link](https://www.inaturalist.org/photos/631265943) | Brooke J. | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | parrot | [link](https://www.inaturalist.org/photos/395848909) | Cricket Raspet | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | flamingo | [link](https://www.inaturalist.org/photos/346681268) | Pierre-Marie Epiney | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Animals | peacock | [link](https://www.inaturalist.org/photos/70910408) | Becky Matsubara | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Animals | peacock | [link](https://www.flickr.com/photos/97235261@N00/8779612030) | Koshyk | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | swan | [link](https://www.inaturalist.org/photos/113908808) | Codrin Bucur | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | dove | [link](https://www.inaturalist.org/photos/168148070) | Dhaval Vargiya | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | butterfly | [link](https://www.inaturalist.org/photos/30565267) | lugachev_vitaly | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -74,6 +74,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Animals | llama | [link](https://www.inaturalist.org/photos/11023551) | Peter O'Connor aka anemoneprojectors | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | hamster | [link](https://www.inaturalist.org/photos/198779458) | TetraHydroCannabinol | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | leopard | [link](https://www.inaturalist.org/photos/90399697) | Raja bandi | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Animals | orangutan | [link](https://www.inaturalist.org/photos/62662319) | Pirataber | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | moose | [link](https://www.inaturalist.org/photos/458933375) | Dan Vickers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | wild boar | [link](https://www.inaturalist.org/photos/34825790) | Cullen Hanks | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | raccoon | [link](https://www.inaturalist.org/photos/38408348) |  | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
@@ -96,8 +97,8 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Animals | ox | [link](https://www.inaturalist.org/photos/29102489) | Paulius Rupšas | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | water buffalo | [link](https://www.inaturalist.org/photos/458110498) | Alex Stach | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | ram | [link](https://www.inaturalist.org/photos/519257754) | Huey | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Animals | poodle | [link](https://www.flickr.com/photos/74824249@N03/52486148862) | Dog Light Photography | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | cheetah | [link](https://www.inaturalist.org/photos/58544633) | Karim Haddad | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Animals | mole | [link](https://www.inaturalist.org/photos/695958871) | Lukas Zangl | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | toad | [link](https://www.inaturalist.org/photos/46547792) |  | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Animals | seagull | [link](https://www.inaturalist.org/photos/343002826) | Quinn | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | robin | [link](https://www.inaturalist.org/photos/30476100) | Alexis Tinker-Tsavalas | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -116,21 +117,25 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Music | guitar | [link](https://www.flickr.com/photos/137346712@N07/27024557575) | CC0photo | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | electric guitar | [link](https://www.rawpixel.com/image/6036958/photo-image-background-public-domain-free) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | bass guitar | [link](https://www.rawpixel.com/image/6036245/photo-image-background-public-domain-free) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Music | banjo | [link](https://www.flickr.com/photos/21304038@N08/2708778827) | Sougent Harrop | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | ukulele | [link](https://www.flickr.com/photos/35456333@N00/2134983870) | midnightcomm | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | sitar | [link](https://www.flickr.com/photos/23531860@N00/2440369754) | souravdas | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | shamisen | [link](https://www.flickr.com/photos/64015205@N00/3356254514) | timtak | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | koto | [link](https://www.flickr.com/photos/64097751@N00/5862861940) | Dominic's pics | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | piano | [link](https://www.flickr.com/photos/186095195@N02/49375456486) | chocolatedazzles | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | pipe organ | [link](https://www.flickr.com/photos/59323989@N00/2846048819) | seabamirum | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Music | synthesizer | [link](https://www.flickr.com/photos/92068436@N00/6854210636) | Jeffrey Tastes | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | accordion | [link](https://www.rawpixel.com/image/6023414/photo-image-public-domain-person-red) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | harmonica | [link](https://www.rawpixel.com/image/6023398/photo-image-public-domain-free-musical) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | bagpipes | [link](https://www.flickr.com/photos/80824546@N00/8469191672) | infomatique | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | flute | [link](https://www.rawpixel.com/image/6021183/photo-image-public-domain-free-musical) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | recorder | [link](https://www.rawpixel.com/image/6037813/photo-image-public-domain-free-musical) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | pan flute | [link](https://www.rawpixel.com/image/6033751/wooden-pan-flute-free-public-domain-cc0-photo) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Music | ocarina | [link](https://commons.wikimedia.org/w/index.php?curid=2859809) | The original uploader was Stepla at German Wikipedia. | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | clarinet | [link](https://www.flickr.com/photos/186095195@N02/49370748787) | chocolatedazzles | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | bassoon | [link](https://www.flickr.com/photos/93006384@N05/8467153585) | stephanie.lafayette | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | saxophone | [link](https://www.flickr.com/photos/59489479@N08/5439592385) | siaronj | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Music | trumpet | [link](https://www.flickr.com/photos/28648431@N00/208182067) | oddsock | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | trombone | [link](https://www.flickr.com/photos/21761329@N03/4013358422) | evoo73 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | drum | [link](https://www.flickr.com/photos/186095195@N02/49375021993) | chocolatedazzles | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | timpani | [link](https://www.flickr.com/photos/94729857@N00/300759612) | kaex0r | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -144,8 +149,10 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Music | steel drum | [link](https://www.flickr.com/photos/40650891@N02/8281836173) | Upupa4me | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | music box | [link](https://www.flickr.com/photos/64379474@N00/4257725708) | Tilemahos Efthimiadis | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | bell | [link](https://www.flickr.com/photos/101561334@N08/54205416241) | Gary Lee Todd, Ph.D. | [Public domain](https://creativecommons.org/publicdomain/mark/1.0/) |
+| Music | cowbell | [link](https://www.flickr.com/photos/83346641@N00/4045746740) | JD Hancock | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | jingle bells | [link](https://www.flickr.com/photos/9197427@N06/12199957376) | pmarkham | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | maracas | [link](https://www.flickr.com/photos/14812197@N00/6097455176) | vxla | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Music | claves | [link](https://www.flickr.com/photos/75218757@N00/389877411) | ljguitar | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | guiro | [link](https://www.rawpixel.com/image/8023340/guiro) | themet | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | wood block | [link](https://www.metmuseum.org/art/collection/search/500613) | Golden Tone Workshop | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Dinosaurs | T. rex | [link](https://www.flickr.com/photos/31867959@N04/7457730136) | Dallas Krentzel | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -155,6 +162,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Dinosaurs | ankylosaurus | [link](https://www.flickr.com/photos/10485077@N06/28776240302) | edenpictures | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Dinosaurs | parasaurolophus | [link](https://www.flickr.com/photos/10485077@N06/48069715221) | edenpictures | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Dinosaurs | dinosaur egg | [link](https://www.flickr.com/photos/28143834@N00/41859242) | TEDizen | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Flowers | rose | [link](https://www.flickr.com/photos/46488122@N05/16459670901) | Jangra Works | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Flowers | poppy | [link](https://www.inaturalist.org/photos/453568035) | Kai Löhr | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Flowers | tulip | [link](https://www.inaturalist.org/photos/419697310) | gwynmwilliams | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Flowers | sunflower | [link](https://www.inaturalist.org/photos/155296308) | Jay Pruett | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -191,7 +199,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Flowers | dahlia | [link](https://www.inaturalist.org/photos/31648580) | Roberto Rodriguez | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Flowers | wisteria | [link](https://www.inaturalist.org/photos/185375125) |  | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Trees | fir tree | [link](https://www.inaturalist.org/photos/28184943) | Gmihail | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Trees | Christmas tree | [link](https://www.inaturalist.org/photos/155561420) | Igor Balashov | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Trees | Christmas tree | [link](https://www.flickr.com/photos/35535885@N03/6438531793) | tsayrate | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Trees | palm tree | [link](https://www.inaturalist.org/photos/338329475) | Akiva | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Trees | oak tree | [link](https://www.inaturalist.org/photos/467469040) | zebedeugalinha | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Trees | apple tree | [link](https://www.inaturalist.org/photos/734589559) | zebedeugalinha | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -207,6 +215,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Trees | sequoia | [link](https://www.inaturalist.org/photos/319260122) |  | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Trees | chestnut tree | [link](https://www.inaturalist.org/photos/1183049) | Leonora Enking | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Trees | orange tree | [link](https://www.inaturalist.org/photos/111754703) | Andy | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Trees | banana tree | [link](https://www.inaturalist.org/photos/316337235) | Cheongweei Gan | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Trees | cactus | [link](https://www.inaturalist.org/photos/113108388) | Bob Miller | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Mushrooms | fly agaric | [link](https://www.inaturalist.org/photos/448681419) | Borja Fierro | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Mushrooms | death cap | [link](https://www.inaturalist.org/photos/347794788) |  | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
@@ -236,6 +245,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Fruits & vegetables | pear | [link](https://www.flickr.com/photos/57373363@N00/272685401) | S Baker | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | orange | [link](https://www.flickr.com/photos/65630793@N05/16477263453) | piropiro3 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | lemon | [link](https://www.flickr.com/photos/29848680@N08/3351247547) | James Bowe | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Fruits & vegetables | lime | [link](https://www.flickr.com/photos/44103481@N00/350002652) | Steve Hopson | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | banana | [link](https://www.flickr.com/photos/53507547@N06/5131280208) | robin_24 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | watermelon | [link](https://www.flickr.com/photos/78624494@N00/5330763573) | gianouts | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | grapes | [link](https://www.flickr.com/photos/82088316@N05/8011959622) | tribp | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -249,19 +259,24 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Fruits & vegetables | pineapple | [link](https://www.flickr.com/photos/12176869@N00/4853758891) | David Hilowitz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | coconut | [link](https://www.flickr.com/photos/35832540@N03/3330701660) | SingChan | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | kiwi | [link](https://www.flickr.com/photos/12173213@N00/4247251401) | matsuyuki | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Fruits & vegetables | chestnut | [link](https://www.flickr.com/photos/10559879@N00/4589113944) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Fruits & vegetables | olive | [link](https://www.flickr.com/photos/37054091@N06/5622055101) | CeresB | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | tomato | [link](https://www.flickr.com/photos/27429206@N02/2694720316) | Vladimir Morozov | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Fruits & vegetables | zucchini | [link](https://www.flickr.com/photos/41284017@N08/10463104734) | USDAgov | [Public domain](https://creativecommons.org/publicdomain/mark/1.0/) |
 | Fruits & vegetables | cucumber | [link](https://www.flickr.com/photos/44124390461@N01/4782586685) | David Davies | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Fruits & vegetables | avocado | [link](https://www.flickr.com/photos/146966953@N02/29215779510) | Kjokkenutstyr.net | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Fruits & vegetables | broccoli | [link](https://www.flickr.com/photos/22748341@N00/2638500179) | Linda N. | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | cauliflower | [link](https://www.flickr.com/photos/10361931@N06/4268969014) | Horia Varlan | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | lettuce | [link](https://www.flickr.com/photos/44738651@N04/24612207901) | Rogerio da Silva | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Fruits & vegetables | pepper | [link](https://www.flickr.com/photos/141324643@N05/28390995419) | Theo Crazzolara | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | corn | [link](https://www.flickr.com/photos/41894170049@N01/1728461908) | andrewmalone | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | carrot | [link](https://www.flickr.com/photos/24742305@N00/2256197976) | John-Morgan | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | radish | [link](https://www.flickr.com/photos/53133240@N00/7553779764) | Muffet | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Fruits & vegetables | beetroot | [link](https://www.rawpixel.com/image/6016688/beetroot-vegetable-free-public-domain-cc0-photo) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Fruits & vegetables | potato | [link](https://www.flickr.com/photos/87718306@N00/2268829508) | Nisha A | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | onion | [link](https://www.flickr.com/photos/39160147@N03/16078329022) | JeepersMedia | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | garlic | [link](https://www.flickr.com/photos/62528187@N00/7419599518) | photofarmer | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Fruits & vegetables | leek | [link](https://www.rawpixel.com/image/6021915/leek-vegetable-free-public-domain-cc0-photo) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Fruits & vegetables | peas | [link](https://www.rawpixel.com/image/5925207/photo-image-public-domain-plant-green) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Fruits & vegetables | beans | [link](https://www.flickr.com/photos/39160147@N03/14947740937) | JeepersMedia | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Fruits & vegetables | pumpkin | [link](https://www.flickr.com/photos/8441189@N04/4046983011) | Kam's World | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -277,13 +292,15 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Herbs & spices | tarragon | [link](https://www.flickr.com/photos/69166981@N00/2916342200) | Living in Monrovia | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Herbs & spices | chives | [link](https://www.flickr.com/photos/31797858@N00/8911219530) | Alexandre Dulaunoy | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Herbs & spices | bay leaf | [link](https://www.flickr.com/photos/21001756@N06/4605791600) | Stacy Spensley | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Herbs & spices | pepper | [link](https://www.flickr.com/photos/12955651@N07/4167737564) | dane brian | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Herbs & spices | pepper | [link](https://www.flickr.com/photos/45040421@N06/26611981037) | jlodder | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Herbs & spices | salt | [link](https://www.flickr.com/photos/80522246@N00/386171060) | 1lenore | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Herbs & spices | cinnamon | [link](https://www.flickr.com/photos/65187097@N03/7309903584) | trophygeek | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Herbs & spices | vanilla | [link](https://www.flickr.com/photos/37334066@N00/3189686584) | Augustine Fou | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Herbs & spices | nutmeg | [link](https://www.flickr.com/photos/40632439@N00/34083250855) | Thad Zajdowicz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Herbs & spices | star anise | [link](https://www.flickr.com/photos/49503154413@N01/4297746909) | geishaboy500 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Herbs & spices | paprika | [link](https://www.flickr.com/photos/67853626@N00/105526176) | notafish | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Herbs & spices | cumin | [link](https://www.flickr.com/photos/21063397@N00/8171256437) | Swami Stream | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Herbs & spices | turmeric | [link](https://www.flickr.com/photos/189590028@N07/50396528903) | formulatehealth | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Herbs & spices | chili | [link](https://www.flickr.com/photos/21051491@N02/7698343400) | qubodup | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Herbs & spices | ginger | [link](https://www.flickr.com/photos/146966953@N02/37310945730) | Kjokkenutstyr.net | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Kitchen | fridge | [link](https://www.flickr.com/photos/85979850@N00/3516885777) | ewen and donabel | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -301,16 +318,20 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Kitchen | waffle maker | [link](https://www.flickr.com/photos/21093323@N02/2661738043) | Dvortygirl | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Kitchen | frying pan | [link](https://www.flickr.com/photos/16405999@N00/2274947505) | Bruno Girin | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Kitchen | saucepan | [link](https://collections.museumsvictoria.com.au/items/1736551) | Maker: Felicity Clemons,Photographer: Sandra Morrow | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Kitchen | teapot | [link](https://www.flickr.com/photos/126337928@N05/31650435591) | Dai Lygad | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Kitchen | whisk | [link](https://www.flickr.com/photos/39551170@N02/13899030891) | Simon_sees | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Kitchen | rolling pin | [link](https://www.flickr.com/photos/47600671@N04/4383182681) | GranniesKitchen | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Kitchen | ladle | [link](https://n2t.net/ark:/65665/ng49ca746a0-f08e-704b-e053-15f76fa0b4fa) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Kitchen | spoon | [link](https://www.flickr.com/photos/120600995@N07/14283534363) | jacqui.brown33 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Kitchen | knife | [link](https://www.flickr.com/photos/87316606@N00/2865776146) | DaveCrosby | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Kitchen | grater | [link](https://www.flickr.com/photos/17306001@N00/3792844780) | noii's | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Kitchen | colander | [link](https://www.flickr.com/photos/31965484@N03/5932358553) | b0000per | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Kitchen | bowl | [link](https://collections.museumsvictoria.com.au/items/1732598) | Maker: Felicity Clemons,Photographer: Sandra Morrow | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Kitchen | jar | [link](https://www.flickr.com/photos/14529257@N03/5219784708) | Steve A Johnson | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | mountain | [link](https://www.flickr.com/photos/132795455@N08/16662196134) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Landscapes | volcano | [link](https://www.flickr.com/photos/12568296@N06/2589960481) | threefingeredlord | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Landscapes | beach | [link](https://www.flickr.com/photos/132795455@N08/22261293288) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Landscapes | island | [link](https://www.flickr.com/photos/96712513@N07/16706932513) | BlueShift 12 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | big wave | [link](https://www.flickr.com/photos/27190564@N02/19234564204) | Kirt Edblom | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Landscapes | desert | [link](https://www.flickr.com/photos/100308777@N07/10332688216) | tombabich24 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | river | [link](https://www.flickr.com/photos/36766427@N05/5680452457) | philhearing | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -324,6 +345,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Landscapes | sunset | [link](https://www.flickr.com/photos/99424477@N04/35718909923) | prague.czech.photo | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | rainbow | [link](https://stocksnap.io/photo/rainbow-landscape-8F4GHECPTG) | Bonnie Moreland | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Landscapes | jungle | [link](https://www.flickr.com/photos/24468935@N03/5555861169) | razvan.orendovici | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Landscapes | savanna | [link](https://www.flickr.com/photos/11418908@N07/6003935509) | puliarf | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | lake | [link](https://www.flickr.com/photos/141788246@N08/51592101887) | G. Lamar | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | coral reef | [link](https://www.flickr.com/photos/12187063@N02/1270216532) | *~Dawn~* | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | canyon | [link](https://www.flickr.com/photos/12900105@N03/2277771113) | Timo Kohlenberg | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
