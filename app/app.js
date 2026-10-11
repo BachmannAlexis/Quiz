@@ -1,5 +1,5 @@
 // Pikolo: a picture quiz for little ones. Data is in topics.js, pictures in pictures.js,
-// instrument sounds in sounds.js (loaded the first time music is needed).
+// instrument sounds in sounds.js (loaded in the background by index.html).
 "use strict";
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
@@ -144,15 +144,17 @@ function audio() {
   if (ctx.state === "suspended") ctx.resume();
   return ctx;
 }
-// sounds.js is big (2.6 MB), so it only loads when music is opened
+// sounds.js is big (2.6 MB), so the page loads it in the background (an async script tag
+// in index.html; scripts added from JavaScript are blocked in some embedded previews).
+// Sounds wait for it here.
 function loadSounds() {
-  if (window.INSTRUMENT_SOUNDS) return Promise.resolve();
   if (!soundsLoading) soundsLoading = new Promise((ok, fail) => {
-    const s = document.createElement("script");
-    s.src = "app/sounds.js";
-    s.onload = ok;
-    s.onerror = () => { soundsLoading = null; fail(); };
-    document.head.appendChild(s);
+    const started = Date.now();
+    (function check() {
+      if (window.INSTRUMENT_SOUNDS) return ok();
+      if (Date.now() - started > 60000) { soundsLoading = null; return fail(); }
+      setTimeout(check, 100);
+    })();
   });
   return soundsLoading;
 }
