@@ -70,12 +70,12 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Animals | caterpillar | [link](https://www.inaturalist.org/photos/198537155) |  | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Animals | worm | [link](https://www.inaturalist.org/photos/369071390) | alicia penney | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | chick | [link](https://www.inaturalist.org/photos/117887965) | Rachel Stringham | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Animals | goose | [link](https://www.flickr.com/photos/58414938@N00/5425053488) | Peter O'Connor aka anemoneprojectors | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Animals | goose | [link](https://www.flickr.com/photos/35237098471@N01/4212326371) | zenera | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | llama | [link](https://www.inaturalist.org/photos/11023551) | Peter O'Connor aka anemoneprojectors | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | hamster | [link](https://www.inaturalist.org/photos/198779458) | TetraHydroCannabinol | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Animals | leopard | [link](https://www.inaturalist.org/photos/90399697) | Raja bandi | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | orangutan | [link](https://www.inaturalist.org/photos/62662319) | Pirataber | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Animals | bison | [link](https://www.inaturalist.org/photos/91354425) | Catherine C. Galley | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Animals | bison | [link](https://www.flickr.com/photos/41284017@N08/8433750680) | USDAgov | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | moose | [link](https://www.inaturalist.org/photos/458933375) | Dan Vickers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | wild boar | [link](https://www.inaturalist.org/photos/34825790) | Cullen Hanks | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Animals | raccoon | [link](https://www.inaturalist.org/photos/38408348) |  | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
@@ -116,13 +116,13 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Music | cello | [link](https://www.rawpixel.com/image/6041603/photo-image-public-domain-free-musical) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | double bass | [link](https://www.flickr.com/photos/52957117@N04/5990869583) | Dave Catchpole | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | harp | [link](https://www.rawpixel.com/image/6023190/photo-image-public-domain-free-musical) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
-| Music | guitar | [link](https://www.flickr.com/photos/137346712@N07/27024557575) | CC0photo | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Music | guitar | [link](https://www.flickr.com/photos/37102902@N00/4618909893) | newandrew | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | electric guitar | [link](https://www.rawpixel.com/image/6036958/photo-image-background-public-domain-free) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
-| Music | bass guitar | [link](https://www.rawpixel.com/image/6036245/photo-image-background-public-domain-free) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Music | bass guitar | [link](https://www.flickr.com/photos/30139045@N00/532156025) | tawalker | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | banjo | [link](https://www.flickr.com/photos/21304038@N08/2708778827) | Sougent Harrop | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Music | ukulele | [link](https://www.flickr.com/photos/35456333@N00/2134983870) | midnightcomm | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | sitar | [link](https://www.flickr.com/photos/23531860@N00/2440369754) | souravdas | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Music | shamisen | [link](https://www.flickr.com/photos/64015205@N00/3356254514) | timtak | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Music | shamisen | [link](https://www.flickr.com/photos/14789435@N03/4565718410) | kento.ikeda | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | koto | [link](https://www.flickr.com/photos/64097751@N00/5862861940) | Dominic's pics | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | piano | [link](https://www.flickr.com/photos/186095195@N02/49375456486) | chocolatedazzles | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | pipe organ | [link](https://www.flickr.com/photos/59323989@N00/2846048819) | seabamirum | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -134,6 +134,7 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Music | recorder | [link](https://www.rawpixel.com/image/6037813/photo-image-public-domain-free-musical) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | pan flute | [link](https://www.rawpixel.com/image/6033751/wooden-pan-flute-free-public-domain-cc0-photo) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | ocarina | [link](https://commons.wikimedia.org/w/index.php?curid=2859809) | The original uploader was Stepla at German Wikipedia. | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Music | whistle | [link](https://www.flickr.com/photos/8489692@N03/33256020921) | katerha | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | clarinet | [link](https://www.flickr.com/photos/186095195@N02/49370748787) | chocolatedazzles | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Music | oboe | [link](https://www.rawpixel.com/image/9184980/oboe) | themet | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Music | bassoon | [link](https://www.flickr.com/photos/93006384@N05/8467153585) | stephanie.lafayette | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
@@ -173,7 +174,6 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Dinosaurs | ankylosaurus | [link](https://www.flickr.com/photos/10485077@N06/28776240302) | edenpictures | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Dinosaurs | parasaurolophus | [link](https://www.flickr.com/photos/10485077@N06/48069715221) | edenpictures | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Dinosaurs | pterodactyl | [link](https://www.flickr.com/photos/31856336@N03/11199387876) | subarcticmike | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Dinosaurs | plesiosaurus | [link](https://www.flickr.com/photos/23165290@N00/9322399731) | Tim Evanson | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Dinosaurs | mammoth | [link](https://www.flickr.com/photos/44124348109@N01/26636787648) | jurvetson | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Dinosaurs | dinosaur egg | [link](https://www.flickr.com/photos/28143834@N00/41859242) | TEDizen | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Flowers | rose | [link](https://www.flickr.com/photos/46488122@N05/16459670901) | Jangra Works | [CC BY](https://creativecommons.org/licenses/by/4.0/) |

@@ -146,6 +146,22 @@ RETRY.update({
     },
 })
 
+# fourth round, from the review page flags
+for _t, _i, _qs in [
+    ("animals", "bison", ["bison grazing", "american bison prairie"]),
+    ("animals", "goose", ["white goose farm", "goose walking grass"]),
+    ("dinosaurs", "plesiosaurus", ["plesiosaurus model long neck", "elasmosaurus model"]),
+    ("instruments", "bass-guitar", ["bass guitar", "electric bass guitar four strings"]),
+    ("instruments", "guitar", ["acoustic guitar", "classical guitar"]),
+    ("instruments", "shamisen", ["shamisen", "shamisen japanese instrument"]),
+    ("instruments", "horn", ["horn instrument brass coiled", "french horn musician"]),
+    ("instruments", "triangle", ["triangle instrument beater", "percussion triangle"]),
+    ("instruments", "whistle", ["metal whistle", "sports whistle"]),
+]:
+    RETRY.setdefault(_t, {}).setdefault(_i, [])
+    if isinstance(RETRY[_t][_i], tuple): RETRY[_t][_i] = [RETRY[_t][_i]]
+    RETRY[_t][_i] += [("openverse", q) for q in _qs]
+
 def get(url, tries=6):
     for attempt in range(tries):
         try:

@@ -15,7 +15,11 @@
    0.45
   ],
   "beetle": 3,
-  "bison": 15,
+  "bison": [
+   33,
+   0.62,
+   0.5
+  ],
   "blackbird": [
    0,
    0.55,
@@ -125,7 +129,7 @@
    0.4,
    0.5
   ],
-  "goose": 6,
+  "goose": 19,
   "gorilla": 0,
   "grasshopper": [
    4,
@@ -369,7 +373,6 @@
    0.55,
    0.5
   ],
-  "plesiosaurus": 0,
   "pterodactyl": 1,
   "spinosaurus": 9,
   "stegosaurus": [
@@ -526,7 +529,7 @@
    0.65,
    0.4
   ],
-  "bass-guitar": 0,
+  "bass-guitar": 6,
   "bassoon": 5,
   "bell": [
    0,
@@ -576,11 +579,7 @@
    0.5
   ],
   "guiro": 2,
-  "guitar": [
-   2,
-   0.62,
-   0.5
-  ],
+  "guitar": 17,
   "harmonica": 0,
   "harp": 3,
   "jingle-bells": 5,
@@ -603,7 +602,11 @@
   "pipe-organ": 3,
   "recorder": 0,
   "saxophone": 4,
-  "shamisen": 2,
+  "shamisen": [
+   8,
+   0.52,
+   0.5
+  ],
   "sitar": [
    2,
    0.5,
@@ -640,6 +643,11 @@
   "tuba": 25,
   "ukulele": 0,
   "violin": 0,
+  "whistle": [
+   26,
+   0.55,
+   0.5
+  ],
   "woodblock": 5,
   "xylophone": 21
  },
