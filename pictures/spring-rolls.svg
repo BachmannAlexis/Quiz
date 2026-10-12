@@ -1,28 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-<ellipse cx="64" cy="94" rx="60" ry="26" fill="#cfd8dc"/>
-<ellipse cx="64" cy="92" rx="60" ry="26" fill="#fff"/>
-<path d="M14 88 C10 70 30 60 44 66 C50 56 70 54 78 64 C88 58 104 64 104 78 C110 88 96 104 80 100 C60 110 26 106 14 88 Z" fill="#7cb342"/>
-<path d="M20 86 C24 76 34 70 44 72 M50 68 C58 62 70 64 76 70 M82 68 C92 66 100 72 100 80" fill="none" stroke="#aed581" stroke-width="3" stroke-linecap="round"/>
-<g transform="translate(56 80) rotate(-14)">
-<rect x="-29.0" y="-9" width="58" height="18" rx="9" fill="#e09a2a"/>
-<rect x="-25.0" y="-7" width="50" height="6" rx="3" fill="#f6c25a"/>
-<g fill="#b8701b"><circle cx="-19.0" cy="4" r="1.6"/><circle cx="-6" cy="5" r="1.6"/><circle cx="8" cy="3" r="1.6"/><circle cx="17.0" cy="5" r="1.6"/></g>
-<g fill="#fde3a0"><circle cx="-14" cy="-3" r="1.2"/><circle cx="2" cy="-4" r="1.2"/><circle cx="16" cy="-3" r="1.2"/></g>
-<ellipse cx="26.0" cy="0" rx="5" ry="8.6" fill="#c97f1e"/>
+<ellipse cx="64" cy="94" rx="62" ry="26" fill="#cfd8dc"/>
+<ellipse cx="64" cy="92" rx="62" ry="26" fill="#fff"/>
+<path d="M8 84 C4 64 24 52 40 60 C46 46 70 44 78 56 C90 48 110 56 110 72 C118 84 100 100 80 98 C60 108 18 104 8 84 Z" fill="#7cb342"/>
+<path d="M14 82 C18 70 28 64 40 66 M48 60 C56 52 70 54 76 62 M84 60 C96 58 104 66 104 74" fill="none" stroke="#aed581" stroke-width="3" stroke-linecap="round"/>
+<g transform="translate(54 58) rotate(-12)">
+<rect x="-30.0" y="-10" width="60" height="20" rx="10" fill="#d98a22"/>
+<rect x="-25.0" y="-8" width="50" height="7" rx="3.5" fill="#f6c25a"/>
+<g fill="#b4691a"><circle cx="-20.0" cy="5" r="1.7"/><circle cx="-6" cy="6" r="1.7"/><circle cx="8" cy="4" r="1.7"/><circle cx="18.0" cy="6" r="1.7"/><circle cx="-16" cy="3" r="1.3"/></g>
+<g fill="#fde3a0"><circle cx="-14" cy="-3" r="1.3"/><circle cx="2" cy="-4" r="1.3"/><circle cx="16" cy="-3" r="1.3"/></g>
 </g>
-<g transform="translate(58 62) rotate(-14)">
-<rect x="-29.0" y="-9" width="58" height="18" rx="9" fill="#e09a2a"/>
-<rect x="-25.0" y="-7" width="50" height="6" rx="3" fill="#f6c25a"/>
-<g fill="#b8701b"><circle cx="-19.0" cy="4" r="1.6"/><circle cx="-6" cy="5" r="1.6"/><circle cx="8" cy="3" r="1.6"/><circle cx="17.0" cy="5" r="1.6"/></g>
-<g fill="#fde3a0"><circle cx="-14" cy="-3" r="1.2"/><circle cx="2" cy="-4" r="1.2"/><circle cx="16" cy="-3" r="1.2"/></g>
-<ellipse cx="26.0" cy="0" rx="5" ry="8.6" fill="#c97f1e"/>
+<g transform="translate(58 80) rotate(-12)">
+<rect x="-32.0" y="-10" width="64" height="20" rx="10" fill="#d98a22"/>
+<rect x="-27.0" y="-8" width="54" height="7" rx="3.5" fill="#f6c25a"/>
+<g fill="#b4691a"><circle cx="-22.0" cy="5" r="1.7"/><circle cx="-6" cy="6" r="1.7"/><circle cx="8" cy="4" r="1.7"/><circle cx="20.0" cy="6" r="1.7"/><circle cx="-16" cy="3" r="1.3"/></g>
+<g fill="#fde3a0"><circle cx="-14" cy="-3" r="1.3"/><circle cx="2" cy="-4" r="1.3"/><circle cx="16" cy="-3" r="1.3"/></g>
 </g>
-<g transform="translate(58 92) rotate(-14)">
-<rect x="-27.0" y="-9" width="54" height="18" rx="9" fill="#e09a2a"/>
-<rect x="-23.0" y="-7" width="46" height="6" rx="3" fill="#f6c25a"/>
-<g fill="#b8701b"><circle cx="-17.0" cy="4" r="1.6"/><circle cx="-6" cy="5" r="1.6"/><circle cx="8" cy="3" r="1.6"/><circle cx="15.0" cy="5" r="1.6"/></g>
-<g fill="#fde3a0"><circle cx="-14" cy="-3" r="1.2"/><circle cx="2" cy="-4" r="1.2"/><circle cx="16" cy="-3" r="1.2"/></g>
-<ellipse cx="24.0" cy="0" rx="5" ry="8.6" fill="#c97f1e"/>
+<g transform="translate(36 40) rotate(-12)">
+<rect x="0" y="-10" width="40" height="20" rx="10" fill="#d98a22"/>
+<rect x="6" y="-8" width="30" height="7" rx="3.5" fill="#f6c25a"/>
+<g fill="#b4691a"><circle cx="16" cy="5" r="1.7"/><circle cx="28" cy="4" r="1.7"/></g>
+<ellipse cx="2" cy="0" rx="7" ry="10" fill="#e8a33a"/>
+<ellipse cx="2" cy="0" rx="5" ry="7.6" fill="#fff3d6"/>
+<g fill="#ef6c00"><circle cx="0" cy="-3" r="1.5"/><circle cx="3" cy="3" r="1.5"/></g><g fill="#558b2f"><circle cx="4" cy="-2" r="1.3"/><circle cx="-1" cy="2" r="1.3"/></g><circle cx="2" cy="-5" r="1.1" fill="#8d6e63"/>
 </g>
 <g transform="translate(100 98)">
 <ellipse cx="0" cy="4" rx="20" ry="9" fill="#90a4ae"/>

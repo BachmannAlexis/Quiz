@@ -12,7 +12,7 @@
 <g fill="#558b2f"><ellipse cx="30" cy="88" rx="5" ry="4"/><ellipse cx="72" cy="81" rx="5" ry="4"/><ellipse cx="96" cy="92" rx="5" ry="4"/><ellipse cx="44" cy="78" rx="4.5" ry="3.5"/></g>
 <g fill="#9ccc65"><circle cx="29" cy="87" r="1.5"/><circle cx="71" cy="80" r="1.5"/><circle cx="95" cy="91" r="1.5"/></g>
 <g fill="#33691e"><circle cx="76" cy="90" r="1.2"/><circle cx="36" cy="92" r="1.2"/><circle cx="62" cy="80" r="1.2"/></g>
-<g transform="rotate(-12 64 64)">
+<g transform="translate(0 -4) rotate(-9 64 64)">
 <path d="M14 66 C30 56 44 40 54 20 C58 12 70 12 74 20 C84 40 98 56 114 66 C96 74 32 74 14 66 Z" fill="#c1582a"/>
 <path d="M60 20 C54 38 42 54 26 64" fill="none" stroke="#e08a5a" stroke-width="6" stroke-linecap="round"/>
 <path d="M84 44 C92 54 100 60 110 65 C96 72 70 74 64 73 C80 66 86 56 84 44 Z" fill="#a1451f"/>

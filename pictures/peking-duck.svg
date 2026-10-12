@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<g transform="translate(2.1 -1.0) scale(0.967)">
 <ellipse cx="64" cy="90" rx="58" ry="28" fill="#b0bec5" opacity=".5"/>
 <ellipse cx="64" cy="86" rx="60" ry="30" fill="#e3e8ec"/>
 <ellipse cx="64" cy="85" rx="51" ry="23" fill="#fafafa"/>
@@ -15,4 +16,5 @@
 <ellipse cx="62" cy="88" rx="10" ry="6" fill="#7a2810"/><ellipse cx="60" cy="86" rx="5" ry="2" fill="#c8602c"/>
 <ellipse cx="94" cy="104" rx="22" ry="8" fill="#f7ecd0"/><ellipse cx="94" cy="101" rx="22" ry="8" fill="#e9d6a6"/><ellipse cx="94" cy="98" rx="22" ry="8" fill="#f7ecd0"/><ellipse cx="94" cy="95" rx="22" ry="8" fill="#e9d6a6"/><ellipse cx="94" cy="92" rx="22" ry="8" fill="#f7ecd0"/>
 <g stroke-linecap="round" stroke-width="3"><path d="M18 96 L40 104" stroke="#7cb342"/><path d="M40 104 L48 107" stroke="#f1f8e9"/><path d="M16 102 L36 108" stroke="#558b2f"/><path d="M36 108 L44 110" stroke="#f1f8e9"/></g>
+</g>
 </svg>
