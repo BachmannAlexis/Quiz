@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M10 40 Q64 30 118 40 Q114 112 64 114 Q14 112 10 40 Z" fill="#e57373"/>
+  <path d="M18 46 Q64 38 110 46 Q104 104 64 106 Q24 104 18 46 Z" fill="#7b1f2a"/>
+  <path d="M38 96 C42 80 86 80 90 96 C82 104 46 104 38 96 Z" fill="#f48fb1"/>
+  <path d="M64 86 V96" stroke="#e57399" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M18 46 Q64 38 110 46 L108 52 Q64 46 20 52 Z" fill="#f48fb1"/>
+  <g fill="#fff" stroke="#cfd8dc" stroke-width="1.5">
+    <path d="M22 51 h11 v8 q0 5 -5.5 5 q-5.5 0 -5.5 -5 Z"/>
+    <path d="M34 49 h12 v11 q0 5 -6 5 q-6 0 -6 -5 Z"/>
+    <path d="M47 48 h16 v14 q0 5 -8 5 q-8 0 -8 -5 Z"/>
+    <path d="M65 48 h16 v14 q0 5 -8 5 q-8 0 -8 -5 Z"/>
+    <path d="M82 49 h12 v11 q0 5 -6 5 q-6 0 -6 -5 Z"/>
+    <path d="M95 51 h11 v8 q0 5 -5.5 5 q-5.5 0 -5.5 -5 Z"/>
+    <path d="M36 92 q0 -5 5 -5 q5 0 5 5 v4 h-10 Z"/>
+    <path d="M47 93 q0 -5 5.5 -5 q5.5 0 5.5 5 v6 h-11 Z"/>
+    <path d="M59 93 q0 -5 5 -5 q5 0 5 5 v7 h-10 Z" transform="translate(0 0)"/>
+    <path d="M70 93 q0 -5 5.5 -5 q5.5 0 5.5 5 v6 h-11 Z"/>
+    <path d="M82 92 q0 -5 5 -5 q5 0 5 5 v4 h-10 Z"/>
+  </g>
+</svg>
