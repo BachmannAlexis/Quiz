@@ -511,56 +511,106 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Dishes | Peking duck | [link](https://www.flickr.com/photos/10559879@N00/5105766905) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Dishes | mochi | [link](https://www.flickr.com/photos/10559879@N00/2391707197) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Dishes | ceviche | [link](https://www.flickr.com/photos/34128007@N04/15759373579) | Prayitno / Thank you for (12 millions +) view | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | France | [link](https://www.flickr.com/photos/43355249@N00/27029805017) | szeke | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Belgium | [link](https://www.flickr.com/photos/32693718@N07/6799238678) | davidwilson1949 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Switzerland | [link](https://www.flickr.com/photos/22490717@N02/23004682155) | archer10 (Dennis) | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Italy | [link](https://www.flickr.com/photos/132084522@N05/16800139540) | Arch_Sam | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Spain | [link](https://www.flickr.com/photos/12505664@N00/14702572573) | illustir | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Portugal | [link](https://www.flickr.com/photos/76474398@N00/12471641943) | bonnieshappell | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Germany | [link](https://www.flickr.com/photos/22490717@N02/29697552784) | archer10 (Dennis) | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | the United Kingdom | [link](https://www.flickr.com/photos/43355249@N00/30977153027) | szeke | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Ireland | [link](https://www.flickr.com/photos/65865070@N05/13609426144) | DHuiz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | the Netherlands | [link](https://www.flickr.com/photos/61260300@N02/14480473691) | Digikerwin | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Greece | [link](https://www.flickr.com/photos/14824807@N00/6638007289) | microbe | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Canada | [link](https://www.flickr.com/photos/151415985@N06/36922523205) | Wallboat | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
-| Countries | the United States | [link](https://www.flickr.com/photos/16801915@N06/8191494514) | Reading Tom | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Mexico | [link](https://www.flickr.com/photos/94106059@N04/14051609560) | stacey.cavanagh | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Brazil | [link](https://www.flickr.com/photos/25897810@N00/5269512796) | David Berkowitz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Argentina | [link](https://www.flickr.com/photos/33037982@N04/3400720419) | wallygrom | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | China | [link](https://www.flickr.com/photos/29091377@N02/4065627169) | matt512 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | South Korea | [link](https://www.flickr.com/photos/42438955@N05/4271054092) | KOREA.NET - Official page of the Republic of Korea | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | India | [link](https://www.flickr.com/photos/39136124@N00/2154749801) | Paul and Jill | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Australia | [link](https://www.flickr.com/photos/50216172@N00/114537716) | jimmyharris | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Egypt | [link](https://www.flickr.com/photos/30739450@N05/2896309488) | treasureofthesea | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Morocco | [link](https://www.flickr.com/photos/60374292@N00/1388492576) | Jean & Nathalie | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Senegal | [link](https://www.flickr.com/photos/33398364@N08/5274051599) | Jeff Attaway | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Kenya | [link](https://www.flickr.com/photos/126397594@N03/20710511096) | ustung | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | veal blanquette | [link](https://www.flickr.com/photos/63871916@N00/293797423) | Nikchick | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | pot-au-feu | [link](https://www.flickr.com/photos/92203585@N00/4136692495) | jetalone | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | tartiflette | [link](https://www.flickr.com/photos/16875306@N03/3459924313) | johan.seland | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | coq au vin | [link](https://www.flickr.com/photos/21756912@N00/5503220893) | Will Clayton | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | cottage pie | [link](https://www.flickr.com/photos/7776449@N06/2353970574) | elPadawan | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | salade niçoise | [link](https://www.flickr.com/photos/26242865@N04/4520629066) | Katrin Gilger | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | snails | [link](https://www.flickr.com/photos/10559879@N00/2461261488) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | tarte flambée | [link](https://www.flickr.com/photos/51914917@N00/514471722) | lulu cooks | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | steak and fries | [link](https://www.flickr.com/photos/49215102@N00/3505780217) | goodiesfirst | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | kouign-amann | [link](https://www.flickr.com/photos/98627683@N00/4471850876) | bochalla | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | Paris-Brest | [link](https://www.flickr.com/photos/53999983@N00/6270797794) | portmanteaus | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | mille-feuille | [link](https://www.flickr.com/photos/44124362019@N01/747239234) | yoppy | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | far breton | [link](https://www.flickr.com/photos/124233432@N05/14143415735) | paiprou | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | floating island | [link](https://www.flickr.com/photos/96297851@N00/4783970482) | Jon Juan | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | rum baba | [link](https://www.flickr.com/photos/26226522@N08/3129385523) | [puamelia] | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | schnitzel | [link](https://www.flickr.com/photos/82088316@N05/9299930183) | tribp | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | currywurst | [link](https://www.flickr.com/photos/23178876@N03/4541065102) | cyclonebill | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | Black Forest cake | [link](https://www.flickr.com/photos/87542849@N00/3558891035) | kimberlykv | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | cinnamon bun | [link](https://www.flickr.com/photos/35254833@N04/6266557379) | andreasivarsson | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | Swedish meatballs | [link](https://www.flickr.com/photos/27519540@N04/4630508894) | Marit & Toomas Hinnosaar | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | custard tarts | [link](https://www.flickr.com/photos/35034347371@N01/3778293029) | roland | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | Irish stew | [link](https://www.flickr.com/photos/67238971@N04/6918062831) | SaucyGlo | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | English breakfast | [link](https://www.flickr.com/photos/23612670@N00/943635751) | Taylor and Kevin | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | borscht | [link](https://www.flickr.com/photos/44124395312@N01/290786861) | Kelly Sue | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | pelmeni | [link](https://www.flickr.com/photos/63669472@N00/563156522) | eekim | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | blini | [link](https://www.flickr.com/photos/55935853@N00/5111925674) | Ewan-M | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | khachapuri | [link](https://www.flickr.com/photos/10579374@N05/5602170315) | salvagekat | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | stroopwafels | [link](https://www.flickr.com/photos/33993074@N00/14236413979) | joyosity | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | gnocchi | [link](https://www.flickr.com/photos/10559879@N00/3241991271) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | minestrone | [link](https://www.flickr.com/photos/26242865@N04/4309005328) | Katrin Gilger | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | mac and cheese | [link](https://www.flickr.com/photos/27513492@N00/4820235149) | ugod | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | brigadeiros | [link](https://www.flickr.com/photos/74097092@N00/31394483) | Mayra Chiachia | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | arepas | [link](https://www.flickr.com/photos/10559879@N00/5040743676) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | tamales | [link](https://www.flickr.com/photos/68975104@N00/1937672566) | phil_g | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | nachos | [link](https://www.flickr.com/photos/78011127@N00/4516996612) | ginnerobot | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | tempura | [link](https://www.flickr.com/photos/10559879@N00/597352968) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | onigiri | [link](https://www.flickr.com/photos/37238219@N00/4421835992) | joo0ey | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | kimchi | [link](https://www.flickr.com/photos/89075592@N00/23219340) | Nagyman | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | nasi goreng | [link](https://www.flickr.com/photos/73082817@N03/9598345367) | BPPrice | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | satay | [link](https://www.flickr.com/photos/22118036@N00/4448026843) | Monica Arellano-Ongpin | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | tom yum soup | [link](https://www.flickr.com/photos/10559879@N00/1116074730) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | dal | [link](https://www.flickr.com/photos/70522326@N00/1248298366) | rovingI | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | naan | [link](https://www.flickr.com/photos/15441925@N00/1433378735) | www.theedinburghblog.co.uk | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | shakshuka | [link](https://www.flickr.com/photos/74105777@N00/12149680454) | adactio | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | tabbouleh | [link](https://www.flickr.com/photos/23178876@N03/2548028515) | cyclonebill | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | dolma | [link](https://www.flickr.com/photos/49506223@N00/5364841164) | Shockingly Tasty | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | bobotie | [link](https://www.flickr.com/photos/48777748@N00/5145742964) | Jon Mountjoy | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | pavlova | [link](https://www.flickr.com/photos/96105360@N00/41591925) | Maestro_AU | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | lamingtons | [link](https://www.flickr.com/photos/10559879@N00/179695927) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | plov | [link](https://www.flickr.com/photos/25834786@N03/3432157063) | secretlondon123 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Countries | Austria | [link](https://www.flickr.com/photos/43714545@N06/45274851764) | Prof. Mortel | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Poland | [link](https://www.flickr.com/photos/8249050@N02/7986036895) | Terrazzo | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Sweden | [link](https://www.flickr.com/photos/24736216@N07/3755005810) | roger4336 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Norway | [link](https://www.flickr.com/photos/87690240@N03/20058574343) | Giuseppe Milo (www.pixael.com) | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Belgium | [link](https://www.flickr.com/photos/32693718@N07/6799238678) | davidwilson1949 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Croatia | [link](https://www.flickr.com/photos/43714545@N06/29461123474) | Prof. Mortel | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Countries | Denmark | [link](https://www.flickr.com/photos/63234672@N04/7541745348) | Mustang Joe | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Countries | Finland | [link](https://www.flickr.com/photos/61533954@N00/9168343124) | Dimitry B | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Iceland | [link](https://www.flickr.com/photos/87690240@N03/34692750741) | Giuseppe Milo (www.pixael.com) | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Croatia | [link](https://www.flickr.com/photos/43714545@N06/29461123474) | Prof. Mortel | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Turkey | [link](https://www.flickr.com/photos/67769030@N07/11894327104) | Arian Zwegers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | France | [link](https://www.flickr.com/photos/43355249@N00/27029805017) | szeke | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Germany | [link](https://www.flickr.com/photos/22490717@N02/29697552784) | archer10 (Dennis) | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Greece | [link](https://www.flickr.com/photos/14824807@N00/6638007289) | microbe | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Countries | Hungary | [link](https://www.flickr.com/photos/67769030@N07/6931123047) | Arian Zwegers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Peru | [link](https://www.flickr.com/photos/34422126@N05/9560823768) | Hernan Irastorza | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Iceland | [link](https://www.flickr.com/photos/87690240@N03/34692750741) | Giuseppe Milo (www.pixael.com) | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Ireland | [link](https://www.flickr.com/photos/65865070@N05/13609426144) | DHuiz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Italy | [link](https://www.flickr.com/photos/132084522@N05/16800139540) | Arch_Sam | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | the Netherlands | [link](https://www.flickr.com/photos/61260300@N02/14480473691) | Digikerwin | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Norway | [link](https://www.flickr.com/photos/87690240@N03/20058574343) | Giuseppe Milo (www.pixael.com) | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Poland | [link](https://www.flickr.com/photos/8249050@N02/7986036895) | Terrazzo | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Portugal | [link](https://www.flickr.com/photos/76474398@N00/12471641943) | bonnieshappell | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Spain | [link](https://www.flickr.com/photos/12505664@N00/14702572573) | illustir | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Sweden | [link](https://www.flickr.com/photos/24736216@N07/3755005810) | roger4336 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Switzerland | [link](https://www.flickr.com/photos/22490717@N02/23004682155) | archer10 (Dennis) | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Turkey | [link](https://www.flickr.com/photos/67769030@N07/11894327104) | Arian Zwegers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | the United Kingdom | [link](https://www.flickr.com/photos/43355249@N00/30977153027) | szeke | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Argentina | [link](https://www.flickr.com/photos/33037982@N04/3400720419) | wallygrom | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Brazil | [link](https://www.flickr.com/photos/25897810@N00/5269512796) | David Berkowitz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Canada | [link](https://www.flickr.com/photos/151415985@N06/36922523205) | Wallboat | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Countries | Chile | [link](https://www.flickr.com/photos/61533954@N00/8846477248) | Dimitry B | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Countries | Cuba | [link](https://www.flickr.com/photos/12940826@N02/11592518635) | dibaer | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Mexico | [link](https://www.flickr.com/photos/94106059@N04/14051609560) | stacey.cavanagh | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Peru | [link](https://www.flickr.com/photos/34422126@N05/9560823768) | Hernan Irastorza | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | the United States | [link](https://www.flickr.com/photos/16801915@N06/8191494514) | Reading Tom | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | China | [link](https://www.flickr.com/photos/29091377@N02/4065627169) | matt512 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | India | [link](https://www.flickr.com/photos/39136124@N00/2154749801) | Paul and Jill | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Indonesia | [link](https://www.flickr.com/photos/67769030@N07/6806955622) | Arian Zwegers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Countries | Lebanon | [link](https://www.flickr.com/photos/67769030@N07/6842829519) | Arian Zwegers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Nepal | [link](https://www.flickr.com/photos/121483302@N02/14372766712) | theglobalpanorama | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | South Korea | [link](https://www.flickr.com/photos/42438955@N05/4271054092) | KOREA.NET - Official page of the Republic of Korea | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Countries | Thailand | [link](https://www.flickr.com/photos/88123769@N02/48047658306) | Bernard Spragg | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Countries | Vietnam | [link](https://www.flickr.com/photos/22490717@N02/3541377575) | archer10 (Dennis) | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Indonesia | [link](https://www.flickr.com/photos/67769030@N07/6806955622) | Arian Zwegers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Nepal | [link](https://www.flickr.com/photos/121483302@N02/14372766712) | theglobalpanorama | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Australia | [link](https://www.flickr.com/photos/50216172@N00/114537716) | jimmyharris | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Countries | New Zealand | [link](https://www.flickr.com/photos/99771506@N00/8237971913) | paul bica | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Countries | Algeria | [link](https://www.flickr.com/photos/53255320@N07/5312120832) | 16:9clue | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Tunisia | [link](https://www.flickr.com/photos/11991803@N04/2379729750) | Tunisia_Photos | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | South Africa | [link](https://www.flickr.com/photos/8327374@N02/3162936065) | Tips For Travellers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
-| Countries | Nigeria | [link](https://www.flickr.com/photos/33398364@N08/3329179458) | Jeff Attaway | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Countries | Ivory Coast | [link](https://www.flickr.com/photos/62878116@N00/1478566839) | Felix Krohn | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
-| Countries | Madagascar | [link](https://www.flickr.com/photos/68240136@N02/27483569630) | Hotel Kaesong | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Egypt | [link](https://www.flickr.com/photos/30739450@N05/2896309488) | treasureofthesea | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Countries | Ethiopia | [link](https://www.flickr.com/photos/64607715@N05/6192173296) | Rod Waddington | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Kenya | [link](https://www.flickr.com/photos/126397594@N03/20710511096) | ustung | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Madagascar | [link](https://www.flickr.com/photos/68240136@N02/27483569630) | Hotel Kaesong | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Morocco | [link](https://www.flickr.com/photos/60374292@N00/1388492576) | Jean & Nathalie | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Nigeria | [link](https://www.flickr.com/photos/33398364@N08/3329179458) | Jeff Attaway | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Senegal | [link](https://www.flickr.com/photos/33398364@N08/5274051599) | Jeff Attaway | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | South Africa | [link](https://www.flickr.com/photos/8327374@N02/3162936065) | Tips For Travellers | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Tunisia | [link](https://www.flickr.com/photos/11991803@N04/2379729750) | Tunisia_Photos | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | mountain | [link](https://www.flickr.com/photos/132795455@N08/16662196134) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Landscapes | volcano | [link](https://www.flickr.com/photos/12568296@N06/2589960481) | threefingeredlord | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Landscapes | beach | [link](https://www.flickr.com/photos/132795455@N08/22261293288) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
