@@ -361,6 +361,7 @@ function refreshPictures() {
 function picture(id, cls) {
   const img = document.createElement("img");
   img.alt = "";
+  img.draggable = false;
   if (cls) img.className = cls;
   setPicture(img, id);
   return img;
@@ -948,6 +949,46 @@ $("clearScores").onclick = () => {
   store.set("pikolo-scores", "[]"); store.set("pikolo-missed", "{}");
   renderScores();
 };
+// ---------- Touch for small fingers ----------
+// Children press long, slide a little or rest a palm, and the browser then drops the tap (a finger that
+// slides a few pixels turns into a scroll). So a picture in a game answers as soon as a finger lands on
+// it, and other buttons take a touch that ends less than 32 px from where it started. The browser's own
+// click that may follow is ignored.
+let firing = false, lastTap = { btn: null, at: 0 };
+const touches = new Map(); // touch identifier -> { btn, x, y }
+function fire(btn) {
+  if (btn.disabled || !btn.isConnected) return;
+  lastTap = { btn, at: Date.now() };
+  firing = true;
+  try { btn.click(); } finally { firing = false; }
+}
+const buttonOf = target => target && target.closest ? target.closest("button") : null;
+addEventListener("click", e => {
+  const btn = buttonOf(e.target);
+  if (!firing && btn && btn === lastTap.btn && Date.now() - lastTap.at < 800) { e.stopImmediatePropagation(); e.preventDefault(); }
+}, true);
+addEventListener("pointerdown", e => {
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  const btn = buttonOf(e.target);
+  if (btn && btn.closest("#choices")) fire(btn);
+}, true);
+addEventListener("touchstart", e => {
+  for (const t of e.changedTouches) {
+    const btn = buttonOf(t.target);
+    if (btn && !btn.closest("#choices")) touches.set(t.identifier, { btn, x: t.clientX, y: t.clientY });
+  }
+}, { capture: true, passive: true });
+addEventListener("touchend", e => {
+  for (const t of e.changedTouches) {
+    const d = touches.get(t.identifier);
+    touches.delete(t.identifier);
+    if (d && Math.hypot(t.clientX - d.x, t.clientY - d.y) < 32) fire(d.btn);
+  }
+}, true);
+addEventListener("touchcancel", e => { for (const t of e.changedTouches) touches.delete(t.identifier); }, true);
+// no "save image" menu on a long press
+addEventListener("contextmenu", e => { if (!e.target.closest || !e.target.closest(".sheet")) e.preventDefault(); });
+
 // keyboard: 1-3 pick a picture, space repeats the question, Escape goes back
 document.addEventListener("keydown", e => {
   if ($("about").open || $("scores").open) return;

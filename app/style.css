@@ -20,6 +20,10 @@
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* small fingers: no double-tap zoom delay, no long-press menu or image dragging */
+button { touch-action: manipulation; }
+img { -webkit-touch-callout: none; -webkit-user-drag: none; }
+body { -webkit-touch-callout: none; }
 html, body { margin: 0; min-height: 100%; overflow-x: hidden; }
 body {
   font-family: var(--font);
