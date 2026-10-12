@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Draw the ABC pictures (pictures/letter-a.svg … letter-z.svg, a big capital and its small letter)
-the numbers (pictures/number-1.svg … number-19.svg, the digits above as many dots and sticks of ten to count,
-and the tens up to 100),
+the numbers 1 to 100 (pictures/number-*.svg: the digits above as many dots and sticks of ten to count),
 the colours (pictures/color-*.svg, a paint splash) and the shapes (pictures/shape-*.svg).
 
 Usage: python3 tools/make_letters.py
@@ -127,6 +126,32 @@ def main():
                f'  <g fill="{color}" opacity=".75">{"".join(dots)}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
     print("11 to 19")
+    for n in range(21, 100):  # 21-99: the tens as sticks in a row, the units as dots below
+        if n % 10 == 0: continue
+        tens, units = divmod(n, 10)
+        color = COLORS[(n - 1) % len(COLORS)]
+        digits = [glyph(f, ch) for ch in str(n)]
+        h = 42
+        widths = [place(p, b, 0, 0, h, cap)[1] for p, b in digits]
+        x = (128 - sum(widths) - 3) / 2
+        parts = []
+        for (p, b), w in zip(digits, widths):
+            parts.append(place(p, b, x, 46, h, cap)[0]); x += w + 3
+        gap, rw = 3, min(12, (116 - (tens - 1) * 3) / tens)
+        left = 64 - (tens * rw + (tens - 1) * gap) / 2
+        rods = []
+        for r in range(tens):
+            rx = left + r * (rw + gap)
+            rods.append(f'<rect x="{rx:.1f}" y="54" width="{rw:.1f}" height="46" rx="2"/>')
+            for k in range(1, 10):
+                rods.append(f'<line x1="{rx:.1f}" x2="{rx + rw:.1f}" y1="{54 + k * 4.6:.1f}" y2="{54 + k * 4.6:.1f}"/>')
+        dots = [f'<circle cx="{64 + (k - (units - 1) / 2) * 13:.1f}" cy="113" r="5.5"/>' for k in range(units)]
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+               f'  <g fill="{color}">{"".join(parts)}</g>\n'
+               f'  <g fill="{color}" opacity=".75" stroke="#fff" stroke-width="1.1">{"".join(rods)}</g>\n'
+               f'  <g fill="{color}" opacity=".75">{"".join(dots)}</g>\n</svg>\n')
+        open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
+    print("21 to 99")
     colors()
     shapes()
 

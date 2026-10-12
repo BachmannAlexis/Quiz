@@ -522,21 +522,37 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
 });
 
 // ---------- Numbers: the digit and as many dots (pictures/number-*.svg)
-const NUMBER_WORDS = [["one", "un"], ["two", "deux"], ["three", "trois"], ["four", "quatre"], ["five", "cinq"],
-  ["six", "six"], ["seven", "sept"], ["eight", "huit"], ["nine", "neuf"], ["ten", "dix"]];
-const UNITS = "units", TEENS = "teens", TENS = "tens";
-const NUMBERS = NUMBER_WORDS.map(([en, fr], k) => ({
-  id: "number-" + (k + 1), en: "number " + en, fr: "le " + fr,
-  family: { 6: "69", 9: "69", 1: "17", 7: "17" }[k + 1] || "n" + (k + 1), styles: k === 9 ? [UNITS, TENS] : [UNITS],
-})).concat([["eleven", "onze"], ["twelve", "douze"], ["thirteen", "treize"], ["fourteen", "quatorze"], ["fifteen", "quinze"],
-  ["sixteen", "seize"], ["seventeen", "dix-sept"], ["eighteen", "dix-huit"], ["nineteen", "dix-neuf"]].map(([en, fr], k) => ({ id: "number-" + (k + 11), en: "number " + en, fr: "le " + fr,
-  family: "teen" + (k % 3), styles: [TEENS] }))).concat([["twenty", "vingt"], ["thirty", "trente"], ["forty", "quarante"], ["fifty", "cinquante"], ["sixty", "soixante"],
-  ["seventy", "soixante-dix"], ["eighty", "quatre-vingts"], ["ninety", "quatre-vingt-dix"], ["a hundred", "cent"]]
-  .map(([en, fr], k) => ({ id: "number-" + (k + 2) * 10, en: "number " + en, fr: "le " + fr, family: "t" + (k + 2), styles: k ? [TENS] : [TEENS, TENS] })));
+// the names of 1 to 100, by the rules of each language ("vingt et un", "soixante et onze", "quatre-vingt-onze")
+const EN_NUM = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen",
+  "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const EN_TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+const FR_NUM = ["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize",
+  "quatorze", "quinze", "seize"];
+const FR_TENS = ["", "dix", "vingt", "trente", "quarante", "cinquante", "soixante"];
+const enNumber = n => n === 100 ? "a hundred" : n < 20 ? EN_NUM[n] : EN_TENS[Math.floor(n / 10)] + (n % 10 ? "-" + EN_NUM[n % 10] : "");
+function frNumber(n) {
+  const t = Math.floor(n / 10), u = n % 10;
+  if (n === 100) return "cent";
+  if (n <= 16) return FR_NUM[n];
+  if (n < 20) return "dix-" + FR_NUM[u];
+  if (t === 7) return n === 71 ? "soixante et onze" : "soixante-" + frNumber(n - 60);
+  if (t === 8) return u ? "quatre-vingt-" + FR_NUM[u] : "quatre-vingts";
+  if (t === 9) return "quatre-vingt-" + frNumber(n - 80);
+  return FR_TENS[t] + (u === 0 ? "" : u === 1 ? " et un" : "-" + FR_NUM[u]);
+}
+const UNITS = "units", TEENS = "teens", TO50 = "to50", TO100 = "to100", TENS = "tens";
+// look-alikes: numbers written with the same digits (12 and 21, 6 and 9, 1 and 7)
+const NUMBERS = Array.from({ length: 100 }, (_, k) => k + 1).map(n => ({
+  id: "number-" + n, en: "number " + enNumber(n), fr: "le " + frNumber(n),
+  family: n < 10 ? { 6: "69", 9: "69", 1: "17", 7: "17" }[n] || "n" + n : String(n).split("").sort().join(""),
+  styles: [n <= 10 ? UNITS : n <= 20 ? TEENS : n <= 50 ? TO50 : TO100].concat(n % 10 === 0 ? [TENS] : []),
+}));
 const NUMBER_GROUPS = [
   { id: "all", pic: "number-3",  en: "All",            fr: "Tous" },
   { id: UNITS, pic: "number-5",  en: "1 to 10",        fr: "De 1 à 10" },
   { id: TEENS, pic: "number-13", en: "11 to 20",       fr: "De 11 à 20" },
+  { id: TO50,  pic: "number-34", en: "21 to 50",       fr: "De 21 à 50" },
+  { id: TO100, pic: "number-75", en: "51 to 100",      fr: "De 51 à 100" },
   { id: TENS,  pic: "number-30", en: "Tens",           fr: "Les dizaines" },
 ];
 
