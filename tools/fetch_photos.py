@@ -139,7 +139,7 @@ QUERY = {
     "peking-duck": "peking duck", "mochi": "mochi", "ceviche": "ceviche",
     "austria": "schonbrunn palace", "poland": "krakow main square", "sweden": "stockholm gamla stan", "norway": "geirangerfjord",
     "denmark": "nyhavn copenhagen", "finland": "helsinki cathedral", "iceland": "skogafoss", "croatia": "dubrovnik old town",
-    "turkey": "cappadocia balloons", "hungary": "budapest parliament", "peru": "machu picchu", "chile": "torres del paine",
+    "turkiye": "cappadocia balloons", "hungary": "budapest parliament", "peru": "machu picchu", "chile": "torres del paine",
     "colombia": "cartagena colombia", "cuba": "havana old cars", "lebanon": "baalbek", "thailand": "wat arun bangkok",
     "vietnam": "ha long bay", "indonesia": "borobudur", "nepal": "mount everest", "new-zealand": "milford sound",
     "algeria": "sahara dunes algeria", "tunisia": "sidi bou said", "south-africa": "table mountain cape town",

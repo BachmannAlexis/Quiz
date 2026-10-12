@@ -12,7 +12,7 @@ FLAGS = {"france": "fr", "belgium": "be", "switzerland": "ch", "canada": "ca", "
          "united-states": "us", "mexico": "mx", "brazil": "br", "argentina": "ar", "china": "cn", "japan": "jp",
          "south-korea": "kr", "india": "in", "egypt": "eg", "morocco": "ma", "senegal": "sn", "kenya": "ke",
          "australia": "au",
-         "austria": "at", "poland": "pl", "sweden": "se", "norway": "no", "denmark": "dk", "finland": "fi", "iceland": "is", "croatia": "hr", "turkey": "tr", "hungary": "hu", "peru": "pe", "chile": "cl", "colombia": "co", "cuba": "cu", "lebanon": "lb", "thailand": "th", "vietnam": "vn", "indonesia": "id", "nepal": "np", "new-zealand": "nz", "algeria": "dz", "tunisia": "tn", "south-africa": "za", "nigeria": "ng", "ivory-coast": "ci", "cameroon": "cm", "madagascar": "mg", "ethiopia": "et"}
+         "austria": "at", "poland": "pl", "sweden": "se", "norway": "no", "denmark": "dk", "finland": "fi", "iceland": "is", "croatia": "hr", "turkiye": "tr", "hungary": "hu", "peru": "pe", "chile": "cl", "colombia": "co", "cuba": "cu", "lebanon": "lb", "thailand": "th", "vietnam": "vn", "indonesia": "id", "nepal": "np", "new-zealand": "nz", "algeria": "dz", "tunisia": "tn", "south-africa": "za", "nigeria": "ng", "ivory-coast": "ci", "cameroon": "cm", "madagascar": "mg", "ethiopia": "et"}
 
 def main(icons_json):
     d = json.load(open(icons_json))
