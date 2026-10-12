@@ -365,7 +365,15 @@
   "sneakers": 2,
   "socks": 5,
   "t-shirt": 2,
-  "tie": 1
+  "tie": 1,
+  "sweater": 4,
+  "raincoat": 0,
+  "lab-coat": 4,
+  "apron": 2,
+  "high-heels": 4,
+  "goggles": 3,
+  "ring": 0,
+  "purse": 1
  },
  "countries": {
   "argentina": 0,
@@ -458,7 +466,10 @@
    0.5,
    0.62
   ],
-  "velociraptor": 6
+  "velociraptor": 6,
+  "brachiosaurus": 3,
+  "allosaurus": 1,
+  "dimetrodon": 0
  },
  "dishes": {
   "birthday-cake": 2,
@@ -929,7 +940,14 @@
    5,
    0.45,
    0.5
-  ]
+  ],
+  "plate": 4,
+  "glass": 5,
+  "mug": 5,
+  "cutlery": 0,
+  "chopsticks": 2,
+  "spatula": 3,
+  "cutting-board": 0
  },
  "mushrooms": {
   "bay-bolete": 0,
@@ -1080,7 +1098,11 @@
   "salt": 0,
   "star-anise": 0,
   "turmeric": 8,
-  "vanilla": 4
+  "vanilla": 4,
+  "cardamom": 0,
+  "mustard-seeds": 0,
+  "juniper": 3,
+  "curry-powder": 5
  },
  "sports": {
   "archery": 2,
@@ -1108,7 +1130,14 @@
   "surfing": 3,
   "swimming": 4,
   "tennis": 4,
-  "volleyball": 4
+  "volleyball": 4,
+  "american-football": 1,
+  "bowling": 5,
+  "field-hockey": 0,
+  "billiards": 1,
+  "water-polo": 3,
+  "weightlifting": 0,
+  "mountain-biking": 1
  },
  "transport": {
   "airplane": 1,
@@ -1134,7 +1163,18 @@
   "tractor": 0,
   "train": 4,
   "tram": 0,
-  "truck": 4
+  "truck": 4,
+  "minibus": 3,
+  "trolleybus": 3,
+  "suv": 4,
+  "pickup-truck": 1,
+  "lorry": 1,
+  "tuk-tuk": 1,
+  "railway-car": 5,
+  "gondola": 2,
+  "small-airplane": 0,
+  "parachute": 2,
+  "ferry": 2
  },
  "trees": {
   "apple-tree": 3,
@@ -1179,7 +1219,15 @@
    4,
    0.5,
    0.45
-  ]
+  ],
+  "beech": 3,
+  "linden": 1,
+  "poplar": 5,
+  "plane-tree": 1,
+  "cedar": 3,
+  "eucalyptus": 1,
+  "fig-tree": 2,
+  "walnut-tree": 2
  },
  "weather": {
   "cloud": 4,
@@ -1194,7 +1242,11 @@
   "storm": 1,
   "sun": 3,
   "thermometer": 4,
-  "umbrella": 0
+  "umbrella": 0,
+  "snowflake": 5,
+  "hail": 4,
+  "frost": 0,
+  "raindrop": 5
  },
  "herbs": {
   "basil": 1,
@@ -1212,6 +1264,8 @@
   "tarragon": 3,
   "dill": 20,
   "chives": 3,
-  "bay-leaf": 4
+  "bay-leaf": 4,
+  "lemon-balm": 4,
+  "wild-garlic": 5
  }
 }
