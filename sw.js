@@ -3,7 +3,7 @@
 const VERSION = "pikolo-14";
 const FILES = [
   "./", "index.html", "manifest.webmanifest",
-  "app/font.css", "app/style.css", "app/app.js", "app/words.js", "app/topics.js", "app/levels.js", "app/pictures.js", "app/sounds.js",
+  "app/font.css", "app/style.css", "app/app.js", "app/words.js", "app/lang/de.js", "app/lang/it.js", "app/topics.js", "app/levels.js", "app/pictures.js", "app/sounds.js",
   "app/voice/en/common.json", "app/voice/fr/common.json",
   "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
 ];

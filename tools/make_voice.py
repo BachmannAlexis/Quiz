@@ -15,7 +15,7 @@ new or changed sentences.
 """
 import base64, difflib, hashlib, json, os, re, subprocess, sys, unicodedata, wave
 
-VOICES = {"en": "en_US-ljspeech-high", "fr": "fr_FR-siwis-medium"}
+VOICES = {"en": "en_US-ljspeech-high", "fr": "fr_FR-siwis-medium", "de": "de_DE-thorsten-high", "it": "it_IT-paola-medium"}
 LENGTH_SCALE = 1.15  # a little slower than normal, for small children
 ENCODING = 2         # bump when encode() changes: clips are encoded again from the cached recordings
 
@@ -30,15 +30,22 @@ LETTER_PHONEMES = {
     "fr": {"a": "a", "beu": "bø", "keu": "kø", "deu": "dø", "eu": "ø", "fff": "fːː", "gueu": "ɡø", "i": "i",
            "jeu": "ʒø", "lll": "lːː", "mmm": "mːː", "nnn": "nːː", "o": "o", "peu": "pø", "reu": "ʁø", "sss": "sːːː",
            "teu": "tø", "u": "y", "vvv": "vːː", "oua": "wa", "ks": "ks", "zzz": "zːːː"},
+    "de": {"a": "a", "be": "bə", "ce": "tsə", "de": "də", "e": "e", "ef": "ɛf", "ge": "ɡə", "ha": "hə", "i": "i", "je": "jə",
+           "ke": "kə", "el": "ɛl", "em": "ɛm", "en": "ɛn", "o": "o", "pe": "pə", "kwe": "kvə", "er": "ɛʁ", "sss": "sːːː", "te": "tə",
+           "u": "u", "vau": "faʊ", "we": "və", "ks": "ks", "ü": "y", "zett": "tsɛt", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
+    "it": {"a": "a", "bi": "bi", "ci": "tʃi", "di": "di", "e": "e", "effe": "ˈɛffe", "gi": "dʒi", "i": "i", "elle": "ˈɛlle",
+           "emme": "ˈɛmme", "enne": "ˈɛnne", "o": "o", "pi": "pi", "cu": "ku", "erre": "ˈɛrre", "sss": "sːːː", "ti": "ti", "u": "u",
+           "vu": "vu", "zeta": "ˈdzɛːta", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
 }
 
 def spoken_form(text, lang):
     """What the synthesizer reads, when the written sentence would be mispronounced."""
     if lang == "en":
         text = text.replace("T. rex", "T-Rex")
-    if "letter" in text or "lettre" in text:  # "The letter S says sss": the sound as phonemes
+    # "The letter S says sss", "Das S macht sss", "La S fa sss": the sound as phonemes
+    if re.search(r"letter|lettre|Buchstabe|lettera", text) or re.match(r"(Das |La |L')[A-Z]\b", text):
         sounds = LETTER_PHONEMES[lang]
-        text = re.sub(r"\b(says|fait) (\S+?)(?=[ ,?!])",
+        text = re.sub(r"\b(says|fait|macht|fa) (\S+?)(?=[ ,?!])",
                       lambda m: f"{m.group(1)} [[ {sounds[m.group(2)]} ]] " if m.group(2) in sounds else m.group(0), text)
     return text
 

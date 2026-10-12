@@ -125,6 +125,12 @@
 </div>
 
 <!-- For parents -->
+<dialog class="sheet small" id="langs">
+  <form method="dialog" class="sheet-close"><button class="icon-btn" data-t-label="close">✕</button></form>
+  <h2 data-t="chooseLang"></h2>
+  <div class="lang-list" id="langList"></div>
+</dialog>
+
 <dialog class="sheet" id="scores">
   <form method="dialog" class="sheet-close"><button class="icon-btn" data-t-label="close">✕</button></form>
   <div class="sheet-head">
@@ -175,6 +181,8 @@
 <script src="app/topics.js"></script>
 <script src="app/levels.js"></script>
 <script src="app/words.js"></script>
+<script src="app/lang/de.js"></script>
+<script src="app/lang/it.js"></script>
 <script src="app/app.js"></script>
 <!-- the instrument sounds (2.6 MB) load in the background without delaying the page -->
 <script src="app/sounds.js" async></script>

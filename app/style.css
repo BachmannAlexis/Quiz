@@ -445,3 +445,9 @@ img:not([src]) { visibility: hidden; }
 .missed span { display: flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 999px; background: rgba(42, 34, 69, 0.06); font-size: .9rem; }
 .missed img { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; }
 #clearScores { margin-top: 18px; }
+
+/* Language picker */
+.sheet.small { max-width: 360px; }
+.lang-list { display: grid; gap: 10px; margin-top: 14px; }
+.lang-choice { font-size: 1.2rem; justify-content: flex-start; }
+.lang-btn { white-space: nowrap; }

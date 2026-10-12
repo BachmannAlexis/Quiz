@@ -22,7 +22,12 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
 };
 
-let lang = store.get("quiz-lang", (navigator.language || "en").startsWith("fr") ? "fr" : "en");
+// the languages: each item has a name per language; says, like and unit are arrays in this order
+const LANGS = ["en", "fr", "de", "it"];
+const deviceLang = (navigator.language || "en").slice(0, 2).toLowerCase();
+let lang = store.get("quiz-lang", LANGS.includes(deviceLang) ? deviceLang : "en");
+if (!LANGS.includes(lang)) lang = "en";
+const li = () => LANGS.indexOf(lang);
 let topic = TOPICS.find(t => t.id === store.get("quiz-topic")) || TOPICS[0];
 const groupOf = {}; // topic id -> chosen group
 TOPICS.forEach(t => { groupOf[t.id] = store.get("quiz-group-" + t.id, "all"); });
@@ -49,13 +54,18 @@ const isMusic = () => topic.id === "instruments";
 // a recording to play (instruments, landscapes, many animals), or a sound the voice makes
 // (the other animals, dinosaurs)
 const hasRecording = item => isMusic() || !!item.sound;
-const hasSound = item => hasRecording(item) || !!item.says;
+const hasSound = item => hasRecording(item) || !!soundOf(item);
 // how an item sounds, so the listening game never offers two that sound alike
 const soundFamily = item => item.hears || item.family;
 const nameOf = item => item[lang];
-const shortName = item => cap(item[lang].replace(/^(le |la |les |l')/, "")); // "la flûte à bec" -> "Flûte à bec"
-const soundOf = item => item.says && item.says[lang === "en" ? 0 : 1];
-const unitOf = t => t.unit[lang === "en" ? 0 : 1];
+// the name without its article, shown on the cards: "la flûte à bec" -> "Flûte à bec", "der Hund" -> "Hund"
+const ARTICLE = { fr: /^(le |la |les |l')/, de: /^(der |die |das )/, it: /^(il |lo |la |i |gli |le |l')/ };
+const shortName = item => cap(ARTICLE[lang] ? item[lang].replace(ARTICLE[lang], "") : item[lang]);
+const soundOf = item => item.says && item.says[li()];
+const likeOf = item => item.like && item.like[li()];
+const unitOf = t => t.unit[li()];
+// plural: English and French from `many` (French also from "les"), German and Italian from their translation
+const manyOf = item => lang === "en" || lang === "fr" ? item.many : !!(item.plural && item.plural[lang]);
 
 // ---------- Speech ----------
 const isAndroid = /android/i.test(navigator.userAgent);
@@ -70,7 +80,7 @@ const langOf = v => v.lang.replace("_", "-").toLowerCase();
 function voiceFor() {
   if (!voices.length) loadVoices();
   const mine = voices.filter(v => langOf(v).startsWith(lang) && (isAndroid || v.localService));
-  const main = lang === "fr" ? "fr-fr" : "en-us";
+  const main = { en: "en-us", fr: "fr-fr", de: "de-de", it: "it-it" }[lang];
   const score = v => (v.localService ? 4 : 0) + (langOf(v) === main ? 2 : 0) + (v.default ? 1 : 0) +
     (/premium|enhanced|siri|samantha|amélie|thomas|audrey/i.test(v.name) ? 1 : 0);
   return mine.sort((a, b) => score(b) - score(a))[0] || null;
@@ -83,7 +93,7 @@ let sayId = 0;
 // on every device, even without any text-to-speech installed. Packs per language and topic
 // (app/voice/<lang>/<pack>.json: sentence -> MP3) load when needed; a sentence without a
 // recording falls back to the device's own voice.
-const clips = { en: {}, fr: {} };   // sentence -> data URI, from the packs loaded so far
+const clips = Object.fromEntries(LANGS.map(l => [l, {}])); // sentence -> data URI, from the packs loaded so far
 const packs = {};                   // "fr/animals" -> Promise
 function loadPack(l, name) {
   const key = l + "/" + name;
@@ -292,7 +302,8 @@ function playInstrument(inst) {
 // Play-mode keys: one octave of the major scale, do ré mi fa sol la si do, in rainbow colours.
 const KEY_STEPS = [0, 2, 4, 5, 7, 9, 11, 12];
 const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#7cb342", "#26a69a", "#1e88e5", "#5e35b1", "#e53935"];
-const KEY_NAMES = { en: ["C", "D", "E", "F", "G", "A", "B", "C"], fr: ["do", "ré", "mi", "fa", "sol", "la", "si", "do"] };
+const KEY_NAMES = { en: ["C", "D", "E", "F", "G", "A", "B", "C"], fr: ["do", "ré", "mi", "fa", "sol", "la", "si", "do"],
+  de: ["C", "D", "E", "F", "G", "A", "H", "C"], it: ["do", "re", "mi", "fa", "sol", "la", "si", "do"] };
 function playNote(inst, k) {
   stopSound(); playToken++;
   const info = window.INSTRUMENT_NOTES[inst.id];
@@ -334,9 +345,9 @@ function gamePool() {
 }
 // what the voice adds after naming an item: an animal's or dinosaur's sound, or a mushroom warning
 function extra(item) {
-  if (item.says) return T().says(nameOf(item), soundOf(item), item.like && item.like[lang === "en" ? 0 : 1]);
+  if (soundOf(item)) return T().says(nameOf(item), soundOf(item), likeOf(item));
   if (item.poison) return T().poison;
-  if (item.from) return T().from(nameOf(item), COUNTRIES.find(c => c.id === item.from)[lang], item.many);
+  if (item.from) { const c = ITEMS.get(item.from); return T().from(nameOf(item), c[lang], manyOf(item), manyOf(c)); }
   return "";
 }
 
@@ -544,7 +555,7 @@ function renderProgress() {
 let results = []; // per round: true if found on the first try
 
 function promptText() {
-  if (mode !== "listen") return T().where(nameOf(answer), answer.many, topic.bare);
+  if (mode !== "listen") return T().where(nameOf(answer), manyOf(answer), topic.bare);
   if (isMusic()) return T().listen;
   if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt, transport: T().whatIsIt, weather: T().whatWeather }[topic.id] || T().whoIsIt;
   return topic.id === "letters" ? T().whichLetter(soundOf(answer)) : T().who(soundOf(answer));
@@ -838,7 +849,7 @@ function release(e) {
 // ---------- Language, parents sheet, sharing ----------
 function translate() {
   document.documentElement.lang = lang;
-  document.querySelectorAll(".lang-btn").forEach(b => { b.textContent = T().flag; b.setAttribute("aria-label", lang === "en" ? "Français" : "English"); });
+  document.querySelectorAll(".lang-btn").forEach(b => { b.textContent = T().flag; b.setAttribute("aria-label", T().chooseLang); });
   document.querySelectorAll("[data-t]").forEach(el => { el.textContent = T()[el.dataset.t]; });
   document.querySelectorAll("[data-t-html]").forEach(el => { el.innerHTML = T()[el.dataset.tHtml]; });
   document.querySelectorAll("[data-t-label]").forEach(el => el.setAttribute("aria-label", T()[el.dataset.tLabel]));
@@ -911,7 +922,16 @@ function confetti(n) {
 }
 
 // ---------- Wiring ----------
-document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => setLang(lang === "en" ? "fr" : "en"));
+// the language picker: one button per language, each written in its own language
+LANGS.forEach(l => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "btn lang-choice";
+  b.textContent = TEXT[l].langName;
+  b.onclick = () => { $("langs").close(); if (l !== lang) setLang(l); };
+  $("langList").appendChild(b);
+});
+document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => $("langs").showModal());
 document.querySelector(".info-btn").onclick = () => $("about").showModal();
 $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
@@ -1023,7 +1043,7 @@ addEventListener("contextmenu", e => { if (!e.target.closest || !e.target.closes
 
 // keyboard: 1-3 pick a picture, space repeats the question, Escape goes back
 document.addEventListener("keydown", e => {
-  if ($("about").open || $("scores").open) return;
+  if ($("about").open || $("scores").open || $("langs").open) return;
   if (screen === "game" && /^[1-4]$/.test(e.key)) $("choices").children[e.key - 1]?.click();
   else if (screen === "game" && e.key === " ") { e.preventDefault(); if (!locked) ask(); }
   else if (e.key === "Escape") { if (screen === "topic") goHome(); else if (screen !== "home") backToTopic(); }
