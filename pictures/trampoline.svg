@@ -9,7 +9,6 @@
 <ellipse cx="64" cy="101" rx="20" ry="4" fill="#37474f"/>
 <g stroke-linecap="round" fill="none">
 <path stroke="#1565c0" stroke-width="5" d="M18 46 L18 104 M110 46 L110 104"/>
-<path stroke="#ffffff" stroke-width="2" stroke-dasharray="3 5" opacity=".6" d="M4 0" />
 <path stroke="#f0a007" stroke-width="7" stroke-linejoin="round" d="M58 36 L48 18 M70 36 L82 18"/>
 <path stroke="#ffca28" stroke-width="7" stroke-linejoin="round" d="M58 36 L50 20 M70 36 L80 20"/>
 <path stroke="#1565c0" stroke-width="9" stroke-linejoin="round" d="M60 54 L50 66 L48 74 M68 54 L78 66 L80 74"/>
@@ -25,5 +24,4 @@
 <path fill="#6d4c41" d="M54 23 C53 12 75 11 74 23 C72 18 66 16 64 18 C60 16 56 18 54 23 Z"/>
 <circle cx="60" cy="25" r="1.5" fill="#404040"/><circle cx="68" cy="25" r="1.5" fill="#404040"/>
 <path fill="#c62828" d="M60 28 Q64 33 68 28 Z"/>
-<path d="M18 46 C18 38 110 38 110 46" fill="none" stroke="#1565c0" stroke-width="4" opacity="0"/>
 </svg>

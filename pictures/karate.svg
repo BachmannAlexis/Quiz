@@ -1,25 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path stroke="#9e9e9e" stroke-width="17" d="M50 72 L46 96 L44 110"/>
-<path stroke="#ffffff" stroke-width="13" d="M50 72 L46 96 L44 110"/>
-<path stroke="#9e9e9e" stroke-width="17" d="M56 70 L82 56 L104 44"/>
-<path stroke="#ffffff" stroke-width="13" d="M56 70 L82 56 L104 44"/>
-<path stroke="#9e9e9e" stroke-width="13" d="M44 46 L30 58 L22 50"/>
-<path stroke="#ffffff" stroke-width="9" d="M44 46 L30 58 L22 50"/>
+<path stroke="#9e9e9e" stroke-width="22" d="M50 72 L46 96 L44 110"/>
+<path stroke="#ffffff" stroke-width="17" d="M50 72 L46 96 L44 110"/>
+<path stroke="#9e9e9e" stroke-width="22" d="M56 70 L82 56 L104 44"/>
+<path stroke="#ffffff" stroke-width="17" d="M56 70 L82 56 L104 44"/>
+<path stroke="#9e9e9e" stroke-width="16" d="M44 46 L30 58 L22 50"/>
+<path stroke="#ffffff" stroke-width="12" d="M44 46 L30 58 L22 50"/>
 </g>
 <path fill="#ffca28" d="M40 112 C40 108 48 108 50 110 L56 118 C57 121 54 122 50 121 L41 119 C38 118 38 114 40 112 Z"/>
 <path fill="#ffca28" d="M104 38 C108 34 116 36 118 40 C120 44 112 48 108 50 C104 51 102 46 104 38 Z"/>
-<path fill="#e0e0e0" d="M38 40 C44 34 60 36 62 44 L62 72 C56 76 44 76 38 72 Z"/>
-<path fill="#ffffff" d="M40 42 C46 37 58 39 60 45 L60 70 C54 73 46 73 40 70 Z"/>
+<path fill="#e0e0e0" d="M35 40 C42 33 62 35 65 44 L64 74 C56 78 42 78 36 74 Z"/>
+<path fill="#ffffff" d="M37.5 42 C44 36 60 38 62.5 45 L62 72 C54 75 44 75 38.5 72 Z"/>
 <path fill="none" stroke="#9e9e9e" stroke-width="2" d="M42 41 L52 60 L59 42"/>
 <path fill="none" stroke="#9e9e9e" stroke-width="1.5" d="M52 60 L52 66"/>
 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path stroke="#9e9e9e" stroke-width="13" d="M56 46 L72 50 L74 38"/>
-<path stroke="#ffffff" stroke-width="9" d="M56 46 L72 50 L74 38"/>
+<path stroke="#9e9e9e" stroke-width="16" d="M56 46 L72 50 L74 38"/>
+<path stroke="#ffffff" stroke-width="12" d="M56 46 L72 50 L74 38"/>
 </g>
 <circle cx="74" cy="35" r="6" fill="#ffca28"/>
 <circle cx="21" cy="47" r="6" fill="#ffca28"/>
-<path fill="#212121" d="M38 64 L62 63 L62 70 L38 71 Z"/>
+<path fill="#212121" d="M36 64 L64 63 L64 70 L36 71 Z"/>
 <path fill="none" stroke="#212121" stroke-width="4" stroke-linecap="round" d="M48 70 L44 82 M50 70 L54 82"/>
 <rect x="45" y="63" width="8" height="8" rx="2" fill="#424242"/>
 <circle cx="50" cy="25" r="11" fill="#ffca28"/>
