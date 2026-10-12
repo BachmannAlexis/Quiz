@@ -74,3 +74,10 @@ Set `localStorage['pikolo-look']` before loading, or the drawings/photos chooser
 open every topic and play every mode (no page errors), every item has a picture in `app/pictures.js`, and
 every sentence from `tools/phrases.mjs` has a recording in `app/voice/`. Look at new pictures on a contact
 sheet next to existing ones before committing them.
+
+## Long tasks in cloud sessions
+
+Background jobs (voice recording, photo downloads) and drawing agents can be cut off by usage limits or a
+restart. Commit and push often. When starting such work, schedule one check-in (, about 5 hours
+ahead) that resumes it, and cancel it as soon as the work is done, so a check-in only happens when the work
+was actually interrupted. Don't set up recurring check-ins.
