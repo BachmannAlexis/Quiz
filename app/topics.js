@@ -484,35 +484,70 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
 // ---------- Numbers: the digit and as many dots (pictures/number-*.svg)
 const NUMBER_WORDS = [["one", "un"], ["two", "deux"], ["three", "trois"], ["four", "quatre"], ["five", "cinq"],
   ["six", "six"], ["seven", "sept"], ["eight", "huit"], ["nine", "neuf"], ["ten", "dix"]];
+const UNITS = "units", TENS = "tens";
 const NUMBERS = NUMBER_WORDS.map(([en, fr], k) => ({
   id: "number-" + (k + 1), en: "number " + en, fr: "le " + fr,
-  family: { 6: "69", 9: "69", 1: "17", 7: "17" }[k + 1] || "n" + (k + 1),
-}));
+  family: { 6: "69", 9: "69", 1: "17", 7: "17" }[k + 1] || "n" + (k + 1), styles: k === 9 ? [UNITS, TENS] : [UNITS],
+})).concat([["twenty", "vingt"], ["thirty", "trente"], ["forty", "quarante"], ["fifty", "cinquante"], ["sixty", "soixante"],
+  ["seventy", "soixante-dix"], ["eighty", "quatre-vingts"], ["ninety", "quatre-vingt-dix"], ["a hundred", "cent"]]
+  .map(([en, fr], k) => ({ id: "number-" + (k + 2) * 10, en: "number " + en, fr: "le " + fr, family: "t" + (k + 2), styles: [TENS] })));
+const NUMBER_GROUPS = [
+  { id: "all", pic: "number-3",  en: "All",            fr: "Tous" },
+  { id: UNITS, pic: "number-5",  en: "1 to 10",        fr: "De 1 à 10" },
+  { id: TENS,  pic: "number-30", en: "Tens",           fr: "Les dizaines" },
+];
 
 // ---------- The body
+const OUTSIDE = "outside", INSIDE = "inside";
 const BODY = [
-  { id: "head",    en: "head",    fr: "la tête",      family: "head" },
-  { id: "hair",    en: "hair",    fr: "les cheveux",  family: "head", many: true },
-  { id: "eye",     en: "eye",     fr: "l'œil",        family: "eye" },
-  { id: "ear",     en: "ear",     fr: "l'oreille",    family: "ear" },
-  { id: "nose",    en: "nose",    fr: "le nez",       family: "nose" },
-  { id: "mouth",   en: "mouth",   fr: "la bouche",    family: "mouth" },
-  { id: "tongue",  en: "tongue",  fr: "la langue",    family: "mouth" },
-  { id: "tooth",   en: "tooth",   fr: "la dent",      family: "tooth" },
-  { id: "neck",    en: "neck",    fr: "le cou",       family: "neck" },
-  { id: "arm",     en: "arm",     fr: "le bras",      family: "arm" },
-  { id: "hand",    en: "hand",    fr: "la main",      family: "hand" },
-  { id: "finger",  en: "finger",  fr: "le doigt",     family: "hand" },
-  { id: "thumb",   en: "thumb",   fr: "le pouce",     family: "hand" },
-  { id: "belly",   en: "belly",   fr: "le ventre",    family: "belly" },
-  { id: "leg",     en: "leg",     fr: "la jambe",     family: "leg" },
-  { id: "knee",    en: "knee",    fr: "le genou",     family: "leg" },
-  { id: "foot",    en: "foot",    fr: "le pied",      family: "foot" },
-  { id: "toes",    en: "toes",    fr: "les orteils",  family: "foot", many: true },
-  { id: "heart",   en: "heart",   fr: "le cœur",      family: "organ" },
-  { id: "brain",   en: "brain",   fr: "le cerveau",   family: "organ" },
-  { id: "lungs",   en: "lungs",   fr: "les poumons",  family: "organ", many: true },
-  { id: "bone",    en: "bone",    fr: "l'os",         family: "bone" },
+  { id: "head",      en: "head",      fr: "la tête",      family: "head" },
+  { id: "hair",      en: "hair",      fr: "les cheveux",  family: "head", many: true },
+  { id: "eyebrow",   en: "eyebrow",   fr: "le sourcil",   family: "eye" },
+  { id: "eyelashes", en: "eyelashes", fr: "les cils",     family: "eye", many: true },
+  { id: "eye",       en: "eye",       fr: "l'œil",        family: "eye" },
+  { id: "ear",       en: "ear",       fr: "l'oreille",    family: "ear" },
+  { id: "nose",      en: "nose",      fr: "le nez",       family: "nose" },
+  { id: "cheek",     en: "cheek",     fr: "la joue",      family: "face" },
+  { id: "chin",      en: "chin",      fr: "le menton",    family: "face" },
+  { id: "mouth",     en: "mouth",     fr: "la bouche",    family: "mouth" },
+  { id: "lips",      en: "lips",      fr: "les lèvres",   family: "mouth", many: true },
+  { id: "tongue",    en: "tongue",    fr: "la langue",    family: "mouth" },
+  { id: "tooth",     en: "tooth",     fr: "la dent",      family: "tooth" },
+  { id: "neck",      en: "neck",      fr: "le cou",       family: "neck" },
+  { id: "shoulder",  en: "shoulder",  fr: "l'épaule",     family: "neck" },
+  { id: "back",      en: "back",      fr: "le dos",       family: "back" },
+  { id: "arm",       en: "arm",       fr: "le bras",      family: "arm" },
+  { id: "elbow",     en: "elbow",     fr: "le coude",     family: "arm" },
+  { id: "wrist",     en: "wrist",     fr: "le poignet",   family: "hand" },
+  { id: "hand",      en: "hand",      fr: "la main",      family: "hand" },
+  { id: "finger",    en: "finger",    fr: "le doigt",     family: "hand" },
+  { id: "thumb",     en: "thumb",     fr: "le pouce",     family: "hand" },
+  { id: "nails",     en: "nails",     fr: "les ongles",   family: "hand", many: true },
+  { id: "belly",     en: "belly",     fr: "le ventre",    family: "belly" },
+  { id: "leg",       en: "leg",       fr: "la jambe",     family: "leg" },
+  { id: "knee",      en: "knee",      fr: "le genou",     family: "leg" },
+  { id: "ankle",     en: "ankle",     fr: "la cheville",  family: "foot" },
+  { id: "foot",      en: "foot",      fr: "le pied",      family: "foot" },
+  { id: "heel",      en: "heel",      fr: "le talon",     family: "foot" },
+  { id: "toes",      en: "toes",      fr: "les orteils",  family: "foot", many: true },
+].map(i => ({ ...i, styles: [OUTSIDE] })).concat([
+  { id: "brain",      en: "brain",      fr: "le cerveau",    family: "brain" },
+  { id: "heart",      en: "heart",      fr: "le cœur",       family: "heart" },
+  { id: "lungs",      en: "lungs",      fr: "les poumons",   family: "lungs", many: true },
+  { id: "stomach",    en: "stomach",    fr: "l'estomac",     family: "belly" },
+  { id: "liver",      en: "liver",      fr: "le foie",       family: "liver" },
+  { id: "kidneys",    en: "kidneys",    fr: "les reins",     family: "liver", many: true },
+  { id: "intestines", en: "intestines", fr: "les intestins", family: "belly", many: true },
+  { id: "muscle",     en: "muscle",     fr: "le muscle",     family: "muscle" },
+  { id: "bone",       en: "bone",       fr: "l'os",          family: "bone" },
+  { id: "skeleton",   en: "skeleton",   fr: "le squelette",  family: "bone" },
+  { id: "blood",      en: "blood",      fr: "le sang",       family: "blood" },
+  { id: "teeth",      en: "teeth",      fr: "les dents",     family: "tooth", many: true },
+].map(i => ({ ...i, styles: [INSIDE] })));
+const BODY_GROUPS = [
+  { id: "all",   pic: "hand",     en: "All",          fr: "Tout" },
+  { id: OUTSIDE, pic: "nose",     en: "Outside",      fr: "Dehors" },
+  { id: INSIDE,  pic: "heart",    en: "Inside",       fr: "Dedans" },
 ];
 
 // ---------- Sports (English names without "the": the topic is `bare`)
@@ -615,10 +650,16 @@ const WEATHER = [
 
 // ---------- Colours (English names without "the": the topic is `bare`) and shapes, drawn by tools/make_letters.py
 const COLORS = [
-  ["red", "le rouge"], ["blue", "le bleu"], ["yellow", "le jaune"], ["green", "le vert"], ["orange", "l'orange"],
-  ["purple", "le violet"], ["pink", "le rose"], ["brown", "le marron"], ["black", "le noir"], ["white", "le blanc"],
-  ["grey", "le gris"],
-].map(([en, fr]) => ({ id: "color-" + en, en, fr, family: { orange: "ry", red: "ry", pink: "pv", purple: "pv", black: "bg", grey: "bg" }[en] || en }));
+  ["red", "red", "le rouge", "red"], ["burgundy", "burgundy", "le bordeaux", "red"], ["coral", "coral", "le corail", "orange"],
+  ["orange", "orange", "l'orange", "orange"], ["yellow", "yellow", "le jaune", "yellow"], ["gold", "gold", "le doré", "yellow"],
+  ["beige", "beige", "le beige", "light"], ["brown", "brown", "le marron", "brown"], ["khaki", "khaki", "le kaki", "brown"],
+  ["green", "green", "le vert", "green"], ["light-green", "light green", "le vert clair", "green"],
+  ["dark-green", "dark green", "le vert foncé", "green"], ["turquoise", "turquoise", "le turquoise", "blue"],
+  ["light-blue", "light blue", "le bleu clair", "blue"], ["blue", "blue", "le bleu", "blue"], ["navy", "navy blue", "le bleu marine", "blue"],
+  ["purple", "purple", "le violet", "purple"], ["mauve", "mauve", "le mauve", "purple"], ["pink", "pink", "le rose", "pink"],
+  ["white", "white", "le blanc", "light"], ["grey", "grey", "le gris", "grey"], ["silver", "silver", "l'argenté", "grey"],
+  ["black", "black", "le noir", "black"],
+].map(([id, en, fr, family]) => ({ id: "color-" + id, en, fr, family }));
 const SHAPES = [
   ["circle", "le rond", "round"], ["oval", "l'ovale", "round"], ["square", "le carré", "box"], ["rectangle", "le rectangle", "box"],
   ["triangle", "le triangle", "tri"], ["diamond", "le losange", "tri"], ["star", "l'étoile", "star"], ["heart", "le cœur", "heart"],
@@ -688,8 +729,8 @@ const TOPICS = [
   { id: "spices",      pic: "basil",      en: "Herbs & spices", fr: "Épices et herbes", unit: ["herbs and spices", "épices et herbes"], color: "#b5651d", tint: "#fbf0e4", items: SPICES, groups: SPICE_GROUPS, modes: ["name", "explore"] },
   { id: "kitchen",     pic: "toaster",    en: "Kitchen",    fr: "Cuisine",     unit: ["things", "objets"],          color: "#0e86a8", tint: "#e2f3f8", items: KITCHEN, groups: KITCHEN_GROUPS, modes: ["name", "listen", "explore"] },
   { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS,     modes: ["name", "listen", "explore"] },
-  { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS,     modes: ["name", "explore"] },
-  { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY,  modes: ["name", "explore"] },
+  { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS, groups: NUMBER_GROUPS, modes: ["name", "explore"] },
+  { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "explore"] },
   { id: "sports",      pic: "soccer",     en: "Sports",     fr: "Les sports",  unit: ["sports", "sports"],           color: "#2b7de9", tint: "#e3effd", items: SPORTS, groups: SPORT_GROUPS, bare: true, modes: ["name", "explore"] },
   { id: "transport",   pic: "car",        en: "Transport",  fr: "Les transports", unit: ["vehicles", "véhicules"],      color: "#e53935", tint: "#fdecea", items: TRANSPORT, groups: TRANSPORT_GROUPS, modes: ["name", "listen", "explore"] },
   { id: "weather",     pic: "cloudy",     en: "Weather",    fr: "La météo",    unit: ["kinds of weather", "temps"],   color: "#0288d1", tint: "#e1f3fc", items: WEATHER,     modes: ["name", "listen", "explore"] },

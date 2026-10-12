@@ -81,12 +81,39 @@ def main():
                f'  <g fill="{color}" opacity=".7">{"".join(dots)}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
     print("10 numbers")
+    for tens in range(2, 11):  # the tens: digits above as many sticks of ten
+        n = tens * 10
+        color = COLORS[(tens - 1) % len(COLORS)]
+        digits = [glyph(f, ch) for ch in str(n)]
+        h = 46
+        widths = [place(p, b, 0, 0, h, cap)[1] for p, b in digits]
+        x = (128 - sum(widths) - 3 * (len(digits) - 1)) / 2
+        parts = []
+        for (p, b), w in zip(digits, widths):
+            parts.append(place(p, b, x, 52, h, cap)[0]); x += w + 3
+        gap = 3.5
+        rw = min(14, (112 - (tens - 1) * gap) / tens)
+        left = 64 - (tens * rw + (tens - 1) * gap) / 2
+        rods = []
+        for r in range(tens):
+            rx = left + r * (rw + gap)
+            rods.append(f'<rect x="{rx:.1f}" y="62" width="{rw:.1f}" height="58" rx="2"/>')
+            for k in range(1, 10):  # the ten units of each stick
+                rods.append(f'<line x1="{rx:.1f}" x2="{rx + rw:.1f}" y1="{62 + k * 5.8:.1f}" y2="{62 + k * 5.8:.1f}"/>')
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+               f'  <g fill="{color}">{"".join(parts)}</g>\n'
+               f'  <g fill="{color}" opacity=".75" stroke="#fff" stroke-width="1.2">{"".join(rods)}</g>\n</svg>\n')
+        open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
+    print("9 tens")
     colors()
     shapes()
 
 COLOR_SWATCHES = {"red": "#e53935", "blue": "#1e88e5", "yellow": "#fdd835", "green": "#43a047", "orange": "#fb8c00",
                   "purple": "#8e24aa", "pink": "#f06292", "brown": "#8d6e63", "black": "#263238", "white": "#ffffff",
-                  "grey": "#9e9e9e"}
+                  "grey": "#9e9e9e", "turquoise": "#1ccfc4", "light-blue": "#81d4fa", "navy": "#1a237e",
+                  "light-green": "#9ccc65", "dark-green": "#1b5e20", "gold": "url(#gold)", "silver": "url(#silver)",
+                  "beige": "#e8d5b0", "burgundy": "#7b1e3a", "mauve": "#c39bd3", "khaki": "#8f8a4c", "coral": "#ff7f6b"}
+METAL = {"gold": ("#fff3b0", "#f5c518", "#b8860b"), "silver": ("#ffffff", "#c8ccd0", "#7d858c")}
 
 def colors():
     """A round paint splash with drops, in the colour (white gets an outline to show on the white card)."""
@@ -104,7 +131,12 @@ def colors():
         drops = "".join(f'<circle cx="{x}" cy="{y}" r="{r}"/>' for x, y, r in [(18, 108, 6), (110, 20, 5), (114, 104, 7), (16, 26, 4)])
         stroke = ' stroke="#b0bec5" stroke-width="2.5"' if name == "white" else ""
         shine = "#ffffff" if name != "white" else "#eceff1"
-        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+        defs = ""
+        if name in METAL:  # shiny metal: a gradient
+            a, b, c = METAL[name]
+            defs = (f'  <defs><linearGradient id="{name}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/>'
+                    f'<stop offset=".45" stop-color="{b}"/><stop offset="1" stop-color="{c}"/></linearGradient></defs>\n')
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n' + defs +
                f'  <g fill="{fill}"{stroke} stroke-linejoin="round"><path d="{d}"/>{drops}</g>\n'
                f'  <ellipse cx="48" cy="44" rx="12" ry="7" fill="{shine}" opacity=".35" transform="rotate(-30 48 44)"/>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"color-{name}.svg"), "w").write(svg)
