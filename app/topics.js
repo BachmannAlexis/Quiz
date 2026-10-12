@@ -484,16 +484,19 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
 // ---------- Numbers: the digit and as many dots (pictures/number-*.svg)
 const NUMBER_WORDS = [["one", "un"], ["two", "deux"], ["three", "trois"], ["four", "quatre"], ["five", "cinq"],
   ["six", "six"], ["seven", "sept"], ["eight", "huit"], ["nine", "neuf"], ["ten", "dix"]];
-const UNITS = "units", TENS = "tens";
+const UNITS = "units", TEENS = "teens", TENS = "tens";
 const NUMBERS = NUMBER_WORDS.map(([en, fr], k) => ({
   id: "number-" + (k + 1), en: "number " + en, fr: "le " + fr,
   family: { 6: "69", 9: "69", 1: "17", 7: "17" }[k + 1] || "n" + (k + 1), styles: k === 9 ? [UNITS, TENS] : [UNITS],
-})).concat([["twenty", "vingt"], ["thirty", "trente"], ["forty", "quarante"], ["fifty", "cinquante"], ["sixty", "soixante"],
+})).concat([["eleven", "onze"], ["twelve", "douze"], ["thirteen", "treize"], ["fourteen", "quatorze"], ["fifteen", "quinze"],
+  ["sixteen", "seize"]].map(([en, fr], k) => ({ id: "number-" + (k + 11), en: "number " + en, fr: "le " + fr,
+  family: "teen" + (k % 3), styles: [TEENS] }))).concat([["twenty", "vingt"], ["thirty", "trente"], ["forty", "quarante"], ["fifty", "cinquante"], ["sixty", "soixante"],
   ["seventy", "soixante-dix"], ["eighty", "quatre-vingts"], ["ninety", "quatre-vingt-dix"], ["a hundred", "cent"]]
   .map(([en, fr], k) => ({ id: "number-" + (k + 2) * 10, en: "number " + en, fr: "le " + fr, family: "t" + (k + 2), styles: [TENS] })));
 const NUMBER_GROUPS = [
   { id: "all", pic: "number-3",  en: "All",            fr: "Tous" },
   { id: UNITS, pic: "number-5",  en: "1 to 10",        fr: "De 1 à 10" },
+  { id: TEENS, pic: "number-13", en: "11 to 16",       fr: "De 11 à 16" },
   { id: TENS,  pic: "number-30", en: "Tens",           fr: "Les dizaines" },
 ];
 

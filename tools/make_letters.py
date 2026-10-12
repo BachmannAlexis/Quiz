@@ -105,6 +105,25 @@ def main():
                f'  <g fill="{color}" opacity=".75" stroke="#fff" stroke-width="1.2">{"".join(rods)}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
     print("9 tens")
+    for n in range(11, 17):  # 11-16: one stick of ten and the units as dots
+        color = COLORS[(n - 1) % len(COLORS)]
+        digits = [glyph(f, ch) for ch in str(n)]
+        h = 46
+        widths = [place(p, b, 0, 0, h, cap)[1] for p, b in digits]
+        x = (128 - sum(widths) - 3) / 2
+        parts = []
+        for (p, b), w in zip(digits, widths):
+            parts.append(place(p, b, x, 52, h, cap)[0]); x += w + 3
+        rod = [f'<rect x="20" y="62" width="14" height="58" rx="2"/>'] + [
+            f'<line x1="20" x2="34" y1="{62 + k * 5.8:.1f}" y2="{62 + k * 5.8:.1f}"/>' for k in range(1, 10)]
+        units = n - 10
+        dots = [f'<circle cx="{56 + (k % 3) * 22}" cy="{78 + (k // 3) * 26}" r="9"/>' for k in range(units)]
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+               f'  <g fill="{color}">{"".join(parts)}</g>\n'
+               f'  <g fill="{color}" opacity=".75" stroke="#fff" stroke-width="1.2">{"".join(rod)}</g>\n'
+               f'  <g fill="{color}" opacity=".75">{"".join(dots)}</g>\n</svg>\n')
+        open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
+    print("11 to 16")
     colors()
     shapes()
 

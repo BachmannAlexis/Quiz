@@ -35,7 +35,7 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 🌿 Herbs & spices | 25 | herbs, spices |
 | 🍞 Kitchen | 26, 10 of them with a real recording (toaster, kettle, microwave, mixer, frying pan…) | appliances, utensils |
 | 🔤 ABC | 26 letters: the voice says "the letter B"; letters that look alike (b, d, p) never appear together. Listening game: hear a letter's sound ("sss", "mmm", "buh") and find the letter; then "S says sss, like snake!" | |
-| 🔢 Numbers | 1 to 10 with as many dots to count, and the tens (10 to 100) with sticks of ten | 1 to 10, tens |
+| 🔢 Numbers | 1 to 10 with as many dots to count, 11 to 16 as a stick of ten and dots, and the tens (10 to 100) with sticks of ten | 1 to 10, 11 to 16, tens |
 | 🖐️ My body | 42: 30 outside (eyebrow, cheek, elbow, ankle, nails…) and 12 inside (heart, brain, lungs, stomach, liver, kidneys, intestines, skeleton…) | outside, inside |
 | ⚽ Sports | 30, with ball games, winter, water and more | ball games, winter, water, more |
 | 🚗 Transport | 25, 17 with real sounds (sirens, horns, train, plane, helicopter…) and a listening game | road, rails, air, water |
