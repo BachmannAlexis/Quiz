@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<ellipse cx="64" cy="118" rx="52" ry="7" fill="#5d4037" opacity=".15"/>
+<path d="M4 66 C6 96 34 114 64 114 C94 114 122 96 124 66 Z" fill="#d5dde1"/>
+<path d="M14 80 C22 98 40 106 60 108" fill="none" stroke="#eef2f4" stroke-width="4" stroke-linecap="round"/>
+<ellipse cx="64" cy="66" rx="60" ry="24" fill="#f5f7f8"/>
+<ellipse cx="64" cy="68" rx="50" ry="18" fill="#e3e9ec"/>
+<ellipse cx="64" cy="70" rx="48" ry="15" fill="#e9b04c"/>
+<ellipse cx="60" cy="74" rx="34" ry="8" fill="#f3c86c"/>
+<path d="M50 34 V66 C50 70 74 70 74 66 V34 Z" fill="#e6d2a6"/>
+<path d="M66 36 V68 C70 68 74 67 74 66 V34 Z" fill="#cdb585"/>
+<ellipse cx="62" cy="34" rx="12" ry="5.5" fill="#f4e8cc"/>
+<ellipse cx="62" cy="34" rx="7.5" ry="3.3" fill="#c9875a"/>
+<ellipse cx="61" cy="33.4" rx="4" ry="1.5" fill="#e3a77a"/>
+<path d="M16 66 C14 52 26 44 38 46 C48 48 52 58 48 68 C42 76 22 76 16 66 Z" fill="#7b4a2e"/>
+<path d="M20 60 C24 52 34 50 42 54 M20 66 C26 60 38 60 46 64" fill="none" stroke="#a0673f" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M78 64 C76 50 90 44 102 46 C114 48 116 60 112 68 C104 76 84 76 78 64 Z" fill="#7b4a2e"/>
+<path d="M84 58 C88 52 98 50 106 54 M84 64 C90 60 102 60 110 62" fill="none" stroke="#a0673f" stroke-width="2.2" stroke-linecap="round"/>
+<g transform="rotate(-16 40 84)"><path d="M6 82 C6 78 10 76 16 77 L64 81 C66 82 66 84 64 85 L16 90 C10 91 6 88 6 84 Z" fill="#f57c00"/><path d="M14 80 L60 82" stroke="#ffa64d" stroke-width="2" stroke-linecap="round"/><path d="M24 84 v4 M38 83 v3 M50 82 v3" stroke="#d65f00" stroke-width="1.4" stroke-linecap="round"/><path d="M6 84 C2 80 0 78 -2 74 M6 82 C2 78 2 74 2 70" stroke="#43a047" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+<g transform="rotate(10 90 84)"><path d="M120 80 C120 76 116 75 110 76 L70 80 C68 81 68 83 70 84 L110 89 C116 90 120 88 120 84 Z" fill="#fb8c00"/><path d="M110 79 L74 81" stroke="#ffb366" stroke-width="2" stroke-linecap="round"/><path d="M100 83 v4 M88 82 v3" stroke="#d65f00" stroke-width="1.4" stroke-linecap="round"/><path d="M120 82 C124 78 126 74 126 70" stroke="#43a047" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+<g transform="rotate(4 64 92)"><rect x="34" y="86" width="60" height="13" rx="6.5" fill="#f1f8e9"/><rect x="66" y="86" width="28" height="13" rx="6.5" fill="#9ccc65"/><rect x="80" y="86" width="22" height="13" rx="6.5" fill="#558b2f"/><path d="M38 89 H76" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="36" cy="92.5" rx="3" ry="6.5" fill="#dcedc8"/><circle cx="36" cy="92.5" r="2" fill="#f1f8e9"/></g>
+</svg>

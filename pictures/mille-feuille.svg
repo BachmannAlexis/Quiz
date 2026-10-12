@@ -19,6 +19,6 @@
   <path d="M94 93 L114 67 L114 77 L94 103 Z" fill="#a8661a"/>
   <path d="M14 98.0 H40 M46 99.0 H72 M78 98.0 H90" stroke="#f7c66a" stroke-width="1.6" stroke-linecap="round"/>
   <path d="M22 101 H54 M62 101 H84" stroke="#b8741e" stroke-width="1.2" stroke-linecap="round"/>
-  <path d="M10 50 L94 50 L114 24 L30 24 Z" fill="#fffdf7"/>
+  <path d="M10 50 L94 50 L114 24 L30 24 Z" fill="#fffdf7" stroke="#e8dcc8" stroke-width="1.5" stroke-linejoin="round"/>
   <g fill="none" stroke="#6d3b1a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M17.6 46.6 L27.8 43 L32.4 46.6 L42.6 43 L47.2 46.6 L57.4 43 L62 46.6 L72.2 43 L76.8 46.6 L87 43 L91.6 46.6"/><path d="M21.6 41.4 L31.8 37.8 L36.4 41.4 L46.6 37.8 L51.2 41.4 L61.4 37.8 L66 41.4 L76.2 37.8 L80.8 41.4 L91 37.8 L95.6 41.4"/><path d="M25.6 36.2 L35.8 32.6 L40.4 36.2 L50.6 32.6 L55.2 36.2 L65.4 32.6 L70 36.2 L80.2 32.6 L84.8 36.2 L95 32.6 L99.6 36.2"/><path d="M29.6 31 L39.8 27.4 L44.4 31 L54.6 27.4 L59.2 31 L69.4 27.4 L74 31 L84.2 27.4 L88.8 31 L99 27.4 L103.6 31"/></g>
 </svg>
