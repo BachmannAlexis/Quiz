@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Record Pikolo's voice: every sentence the app says, in English and French.
 
-Usage: python3 tools/make_voice.py <build dir> [--check] [en|fr]
+Usage: python3 tools/make_voice.py <build dir> [--check | --check-all] [en|fr]
   node tools/phrases.mjs must be runnable (it lists the sentences).
   <build dir>/voices holds the Piper voices (see README):
     en_US-ljspeech-high.onnx(.json)  US English, LJ Speech dataset, public domain
     fr_FR-siwis-medium.onnx(.json)   French, SIWIS dataset, CC BY 4.0
   A language code records only that language (run one per language in parallel).
-  --check transcribes every clip with Whisper (faster-whisper) and lists the ones that
-  do not match their sentence, in <build dir>/voice-check[-<lang>].txt.
+  --check transcribes the clips recorded in this run (--check-all: every clip) with Whisper
+  (faster-whisper) and lists the ones that do not match their sentence, in <build dir>/voice-check[-<lang>].txt.
 Needs piper-tts and ffmpeg (and faster-whisper for --check). Writes app/voice/<lang>/<pack>.json:
 {sentence: MP3 data URI}. Clips are cached in <build dir>/voice-cache, so reruns only record
 new or changed sentences.
@@ -82,7 +82,7 @@ def norm(s):
     s = "".join(c for c in s if not unicodedata.combining(c))
     return re.sub(r"[^a-z0-9 ]+", " ", s).split()
 
-def main(build, check, only):
+def main(build, check, only, check_all=False):
     from piper import PiperVoice
     phrases = json.loads(subprocess.run(["node", os.path.join(ROOT, "tools", "phrases.mjs")],
                                         capture_output=True, check=True, text=True).stdout)
@@ -107,14 +107,15 @@ def main(build, check, only):
                 key = f"{VOICES[lang]}|{LENGTH_SCALE}|{spoken}" + ("|stretched" if "[[" in spoken else "")
                 h = hashlib.sha1(key.encode()).hexdigest()[:16]
                 wav, mp3 = os.path.join(cache, h + ".wav"), os.path.join(cache, f"{h}.{ENCODING}.mp3")
-                if not os.path.exists(wav):
+                fresh = not os.path.exists(wav)
+                if fresh:
                     record(voice, spoken, wav + ".tmp")
                     os.replace(wav + ".tmp", wav)
                 if not os.path.exists(mp3):
                     encode(wav, mp3 + ".tmp.mp3")
                     os.replace(mp3 + ".tmp.mp3", mp3)
                 data[text] = "data:audio/mpeg;base64," + base64.b64encode(open(mp3, "rb").read()).decode()
-                if asr:
+                if asr and (fresh or check_all):
                     # half a second of silence around the clip: Whisper invents words on very short audio
                     raw = subprocess.run(["ffmpeg", "-v", "error", "-i", mp3, "-af", "adelay=500,apad=pad_dur=0.5",
                                           "-ac", "1", "-ar", "16000", "-f", "f32le", "-"],
@@ -135,4 +136,5 @@ def main(build, check, only):
         print("checked", len(report), "clips; below 0.5:", sum(1 for r in report if r[0] < 0.5))
 
 if __name__ == "__main__":
-    main(sys.argv[1], "--check" in sys.argv, [a for a in sys.argv[2:] if a in VOICES])
+    main(sys.argv[1], "--check" in sys.argv or "--check-all" in sys.argv, [a for a in sys.argv[2:] if a in VOICES],
+         "--check-all" in sys.argv)

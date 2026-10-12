@@ -133,7 +133,7 @@ done
 cd ../.. && build/tts/bin/python tools/make_voice.py build --check
 ```
 
-`tools/phrases.mjs` lists the sentences, recordings are cached in `build/voice-cache`, and `--check` transcribes each clip with Whisper and lists the doubtful ones in `build/voice-check.txt`. Words the synthesizer mispronounces can be respelled in `spoken_form()` in `tools/make_voice.py`.
+`tools/phrases.mjs` lists the sentences, recordings are cached in `build/voice-cache`, and `--check` transcribes each new clip with Whisper (`--check-all`: every clip) and lists the doubtful ones in `build/voice-check.txt`. Words the synthesizer mispronounces can be respelled in `spoken_form()` in `tools/make_voice.py`.
 
 ## Credits
 

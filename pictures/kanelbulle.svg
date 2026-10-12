@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<ellipse cx="64" cy="108" rx="54" ry="10" fill="#000" opacity=".12"/>
+<path d="M8 62 C8 34 34 18 64 18 C94 18 120 34 120 62 L118 80 C116 98 92 106 64 106 C36 106 12 98 10 80 Z" fill="#9c5016"/>
+<path d="M10 62 L10 78 C14 96 38 102 64 102 C90 102 114 96 118 78 L118 62 C114 80 90 90 64 90 C38 90 14 80 10 62 Z" fill="#c26a22"/>
+<g fill="none" stroke="#e39a48" stroke-width="2.5" stroke-linecap="round"><path d="M16 74 C24 88 44 94 64 94"/><path d="M74 94 C92 92 108 86 114 74"/></g>
+<ellipse cx="64" cy="58" rx="56" ry="38" fill="#e9a24d"/>
+<path d="M64 58 m-4 0 a5 4 0 1 1 9 1 a11 8 0 1 1 -20 -2 a18 13 0 1 1 33 5 a26 18 0 1 1 -48 -8 a35 25 0 1 1 66 6 a46 31 0 0 1 -55 28" fill="none" stroke="#7a3410" stroke-width="5" stroke-linecap="round"/>
+<path d="M64 58 m-4 0 a5 4 0 1 1 9 1 a11 8 0 1 1 -20 -2 a18 13 0 1 1 33 5 a26 18 0 1 1 -48 -8 a35 25 0 1 1 66 6 a46 31 0 0 1 -55 28" fill="none" stroke="#b5581a" stroke-width="2" stroke-linecap="round"/>
+<path d="M22 46 C28 34 42 26 56 24" fill="none" stroke="#f6c785" stroke-width="5" stroke-linecap="round"/>
+<g fill="#fff"><rect x="40" y="34" width="6" height="5" rx="1.5" transform="rotate(20 43 36)"/><rect x="60" y="28" width="6" height="5" rx="1.5"/><rect x="82" y="32" width="6" height="5" rx="1.5" transform="rotate(-25 85 34)"/><rect x="96" y="48" width="6" height="5" rx="1.5"/><rect x="28" y="56" width="6" height="5" rx="1.5" transform="rotate(30 31 58)"/><rect x="50" y="46" width="5" height="4.5" rx="1.5"/><rect x="74" y="48" width="5" height="4.5" rx="1.5" transform="rotate(15 76 50)"/><rect x="62" y="66" width="6" height="5" rx="1.5"/><rect x="86" y="66" width="6" height="5" rx="1.5" transform="rotate(-20 89 68)"/><rect x="40" y="72" width="6" height="5" rx="1.5"/><rect x="18" y="66" width="5" height="4.5" rx="1.5"/><rect x="104" y="64" width="5" height="4.5" rx="1.5" transform="rotate(30 106 66)"/><rect x="72" y="22" width="5" height="4" rx="1.5"/><rect x="56" y="82" width="5" height="4" rx="1.5"/></g>
+<g fill="#cfd8dc"><rect x="41" y="37.5" width="5" height="1.5"/><rect x="60" y="31.5" width="6" height="1.5"/><rect x="96" y="51.5" width="6" height="1.5"/><rect x="62" y="69.5" width="6" height="1.5"/><rect x="40" y="75.5" width="6" height="1.5"/></g>
+</svg>

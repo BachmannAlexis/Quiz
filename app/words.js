@@ -61,7 +61,7 @@ const TEXT = {
     whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?", whatIsIt: "Écoute ! Qu'est-ce que c'est ?", whatWeather: "Écoute ! Quel temps fait-il ?",
     poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
     // "la France" -> "de France", "l'Italie" -> "d'Italie", "le Japon" -> "du Japon", "les États-Unis" -> "des États-Unis"
-    from: (n, country) => `${cap(n)} ${n.startsWith("les ") ? "viennent" : "vient"} ${/^(la|le|les) |^l'/.test(country) ? country.replace(/^la /, "de ").replace(/^l'/, "d'").replace(/^le /, "du ").replace(/^les /, "des ") : "de " + country} !`,
+    from: (n, country) => `${cap(n)} ${n.startsWith("les ") ? "viennent" : "vient"} ${/^(la|le|les) |^l'/.test(country) ? country.replace(/^la /, "de ").replace(/^l'/, "d'").replace(/^le /, "du ").replace(/^les /, "des ") : (/^[aeiouyhâéèêîïôûAEIOUYHÂÉÈÊÎÏÔÛ]/.test(country) ? "d'" : "de ") + country} !`,
     name: n => cap(n),
     yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo !", bravoSaid: "Bravo ! Tu as réussi !",
     flag: "🇫🇷 FR", voice: "fr-FR",
