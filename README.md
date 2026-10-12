@@ -4,7 +4,7 @@
 
 **A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English or French.
 
-- 397 pictures in 22 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
+- 955 pictures in 22 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
 - A recorded voice in English and French, the same on every device
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
@@ -17,11 +17,11 @@ Pick a topic, then a game:
 
 - 🗣️ **Find the picture**: the voice asks "Where is the cello?" and the child taps the right picture among three. Its name then appears on the card.
 - 👂 **Listening games** (music, animals, dinosaurs, kitchen, letters, landscapes): an instrument plays, an animal calls, the voice asks "Who says roar?", a toaster pops or a kettle boils, or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
-- 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, the animal's real call, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys (a pentatonic scale, so everything sounds nice).
+- 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, the animal's real call, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys: one octave, do ré mi fa sol la si do (C to C), with the note names on the keys.
 
 **Drawings or photos:** at the first start Pikolo asks whether to show drawings or real photos; the 🖼️ button on the home screen changes it. Letters always use drawings.
 
-A game has 10 rounds, shown as a progress bar; each first-try answer earns a star, and the best score is kept on the topic card. Pictures that look or sound alike (lion and tiger, trumpet and trombone, button mushroom and death cap) never appear together, and nothing repeats within a game. The **?** button opens a page for parents with how to play, sharing and privacy.
+A game has 10 rounds, shown as a progress bar; each first-try answer earns a star, and the best score is kept on the topic card. Pictures that look or sound alike (lion and tiger, trumpet and trombone, button mushroom and death cap) never appear together, and nothing repeats within a game. The 📊 button shows the **scores**: every finished game per topic, game and group, marked *too easy* (nearly all first-try and quick in the last three games), *just right* or *tricky*, and the pictures most often missed. The **?** button opens a page for parents with how to play, sharing and privacy.
 
 | Topic | Items | Groups |
 |---|---|---|
@@ -35,7 +35,7 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 🌿 Herbs & spices | 25 | herbs, spices |
 | 🍞 Kitchen | 26, 10 of them with a real recording (toaster, kettle, microwave, mixer, frying pan…) | appliances, utensils |
 | 🔤 ABC | 26 letters: the voice says "the letter B"; letters that look alike (b, d, p) never appear together. Listening game: hear a letter's sound ("sss", "mmm", "buh") and find the letter; then "S says sss, like snake!" | |
-| 🔢 Numbers | 1 to 10 with as many dots to count, 11 to 16 as a stick of ten and dots, and the tens (10 to 100) with sticks of ten | 1 to 10, 11 to 16, tens |
+| 🔢 Numbers | 1 to 10 with as many dots to count, 11 to 19 as a stick of ten and dots, and the tens (10 to 100) with sticks of ten | 1 to 10, 11 to 20, tens |
 | 🖐️ My body | 42: 30 outside (eyebrow, cheek, elbow, ankle, nails…) and 12 inside (heart, brain, lungs, stomach, liver, kidneys, intestines, skeleton…) | outside, inside |
 | ⚽ Sports | 30, with ball games, winter, water and more | ball games, winter, water, more |
 | 🚗 Transport | 25, 17 with real sounds (sirens, horns, train, plane, helicopter…) and a listening game | road, rails, air, water |
@@ -44,8 +44,8 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 🔷 Shapes | 10 | |
 | 👕 Clothes | 26 | |
 | 👷 Jobs | 15 | |
-| 🍕 Dishes | 39, savory and sweet (pizza, crêpes, fondue, sushi…) | savory, sweet |
-| 🌍 Countries | 25: the flag, and a landmark in photo mode (Eiffel Tower, Colosseum…) | Europe, Americas, Asia & Oceania, Africa |
+| 🍕 Dishes | 149 dishes, 41 from France (quiche, cassoulet, tartiflette, macarons, paris-brest…) and 86 from around the world (couscous, phở, mafé, feijoada, plov…); the voice says where each one comes from ("Couscous comes from Morocco!") | savory, sweet, from France, world |
+| 🌍 Countries | 195, every country of the UN plus the Vatican and Palestine: the flag (look-alike flags never together), and for 50 of them a landmark in photo mode (Eiffel Tower, Machu Picchu…) | Europe, Americas, Asia, Oceania, Africa |
 | 🏔️ Landscapes | 24, 16 of them with real sounds (waves, stream, wind, birds, rain, thunder, bubbles, a city) | |
 
 **Mushrooms, a note for parents:** the fly agaric, the death cap, the panther cap and Satan's bolete are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.
@@ -87,7 +87,7 @@ The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages 
 Everything is bundled in the page, so it works offline:
 
 - `app/sounds.js`: for each instrument a short tune and the notes for the play mode, built by `tools/make_sounds.py`.
-- `app/pictures.js`: all 233 pictures, built by `tools/make_pictures.py`.
+- `app/pictures.js`: all the pictures, built by `tools/make_pictures.py`.
 
 Where each instrument's sound comes from, best first:
 
