@@ -279,9 +279,10 @@ function playInstrument(inst) {
     if (token === playToken && inst.says) say(extra(inst));
   });
 }
-// Play-mode keys: a pentatonic scale, so every combination sounds nice.
-const KEY_STEPS = [-5, -3, 0, 2, 4, 7, 9, 12];
-const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#7cb342", "#26a69a", "#1e88e5", "#5e35b1", "#d81b60"];
+// Play-mode keys: one octave of the major scale, do ré mi fa sol la si do, in rainbow colours.
+const KEY_STEPS = [0, 2, 4, 5, 7, 9, 11, 12];
+const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#7cb342", "#26a69a", "#1e88e5", "#5e35b1", "#e53935"];
+const KEY_NAMES = { en: ["C", "D", "E", "F", "G", "A", "B", "C"], fr: ["do", "ré", "mi", "fa", "sol", "la", "si", "do"] };
 function playNote(inst, k) {
   stopSound(); playToken++;
   const info = window.INSTRUMENT_NOTES[inst.id];
@@ -668,6 +669,7 @@ function bounce() {
 function openPlay() {
   $("playTitle").textContent = topic[lang];
   $("keys").hidden = !isMusic();
+  [...$("keys").children].forEach((key, k) => { key.textContent = KEY_NAMES[lang][k]; });
   const grid = $("grid");
   grid.innerHTML = "";
   groupPool().forEach(item => {
