@@ -424,3 +424,18 @@ img:not([src]) { visibility: hidden; }
 .look-pics img.photo { object-fit: cover; border-radius: 16px; }
 #look .bar { align-self: stretch; }
 #look .tagline { text-align: center; }
+
+/* Scores sheet */
+.score { display: grid; grid-template-columns: 48px 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.score img { width: 48px; height: 48px; grid-row: span 2; object-fit: contain; border-radius: 10px; }
+.score strong { font-weight: 600; }
+.score small { color: var(--ink-soft); grid-column: 2 / 4; }
+.score .hint { grid-column: 1 / 4; margin: 4px 0 0; font-size: .9rem; }
+.badge { font-size: .85rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.badge.easy { background: #e3f6e5; color: #1f7a33; }
+.badge.right { background: #e8eefc; color: #2b5bb8; }
+.badge.tricky { background: #fdecea; color: #b3261e; }
+.missed { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 16px; }
+.missed span { display: flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 999px; background: rgba(42, 34, 69, 0.06); font-size: .9rem; }
+.missed img { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; }
+#clearScores { margin-top: 18px; }

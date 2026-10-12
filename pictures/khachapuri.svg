@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-<g transform="translate(2.7 -8.2) scale(0.958)">
+<g transform="translate(2.7 -1.9) scale(0.958)">
 <g transform="translate(0 -20) scale(1 1.32)">
-<ellipse cx="64" cy="100" rx="56" ry="10" fill="#b0bec5" opacity=".5"/>
+<ellipse cx="64" cy="94" rx="50" ry="6" fill="#b0bec5" opacity=".5"/>
 <path d="M4 62 C24 30 104 30 124 62 C104 104 24 104 4 62Z" fill="#a85a1c"/>
 <path d="M4 60 C24 26 104 26 124 60 C104 96 24 96 4 60Z" fill="#d98a35"/>
 <path d="M12 58 C30 34 98 34 116 58" fill="none" stroke="#f0b35a" stroke-width="5" stroke-linecap="round"/>

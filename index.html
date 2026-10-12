@@ -56,6 +56,7 @@
       <div class="bar-tools">
         <button class="pill lang-btn" type="button"></button>
         <button class="icon-btn" type="button" id="lookBtn" data-t-label="lookTitle">🖼️</button>
+        <button class="icon-btn" type="button" id="scoresBtn" data-t-label="scoresTitle">📊</button>
         <button class="icon-btn info-btn" type="button" data-t-label="parents">?</button>
       </div>
     </header>
@@ -123,6 +124,17 @@
 </div>
 
 <!-- For parents -->
+<dialog class="sheet" id="scores">
+  <form method="dialog" class="sheet-close"><button class="icon-btn" data-t-label="close">✕</button></form>
+  <div class="sheet-head">
+    <img class="logo" src="icons/icon.svg" alt="">
+    <h2 data-t="scoresTitle"></h2>
+  </div>
+  <p class="muted" data-t="scoresIntro"></p>
+  <div id="scoreList"></div>
+  <button class="btn" type="button" id="clearScores" data-t="clearScores"></button>
+</dialog>
+
 <dialog class="sheet" id="about">
   <form method="dialog" class="sheet-close"><button class="icon-btn" data-t-label="close">✕</button></form>
   <div class="sheet-head">

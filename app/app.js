@@ -31,6 +31,7 @@ const ITEMS = new Map(TOPICS.flatMap(t => t.items.map(i => [i.id, i])));
 let screen = "home";
 let deck = []; // items still to ask this game, so nothing repeats
 let mode = "name", round = 0, stars = 0, answer = null, locked = false, firstTry = true, lastAnswer = null;
+let asked = 0, thinking = [], missed = [];  // for the scores: when the question was asked, seconds to the first tap, missed answers
 let gameId = 0;     // bumps when a game starts or ends, so its pending timers do nothing
 let questionId = 0; // bumps every question, so stale timers and speech callbacks do nothing
 
@@ -462,8 +463,7 @@ function renderTopic() {
   const modes = $("modes");
   modes.innerHTML = "";
   topic.modes.forEach(m => {
-    const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters", transport: "listenTransport", weather: "listenWeather" }[topic.id] || "listenAnimals" : m;
-    const [title, sub] = T().modes[key];
+    const [title, sub] = modeText(topic, m);
     const b = document.createElement("button");
     b.type = "button";
     b.className = "mode";
@@ -475,6 +475,12 @@ function renderTopic() {
     b.onclick = () => start(m);
     modes.appendChild(b);
   });
+}
+
+// a game's title and subtitle; the listening game is named after what you hear
+function modeText(t, m) {
+  const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters", transport: "listenTransport", weather: "listenWeather" }[t.id] || "listenAnimals" : m;
+  return T().modes[key];
 }
 
 function goHome() {
@@ -560,6 +566,7 @@ function askQuestion() {
     box.appendChild(b);
   });
   $("promptText").textContent = promptText();
+  asked = Date.now();
   ask();
 }
 
@@ -571,6 +578,7 @@ function showName(btn, item) {
 function pick(item, btn) {
   if (locked) return;
   const q = questionId;
+  if (firstTry) thinking.push((Date.now() - asked) / 1000);
   showName(btn, item);
   if (item === answer) {
     locked = true;
@@ -593,6 +601,7 @@ function pick(item, btn) {
       setTimeout(next, hear ? 3000 : 900);
     });
   } else {
+    if (firstTry) missed.push(answer.id);
     firstTry = false;
     btn.classList.add("wrong");
     btn.disabled = true;
@@ -608,7 +617,95 @@ function pick(item, btn) {
   }
 }
 
+// ---------- Scores: every finished game, to see what is too easy or still tricky ----------
+// pikolo-scores: [{t: topic, m: mode, g: group, s: stars, sec: median seconds to the first tap, at: time}],
+// the last 500 games; pikolo-missed: {topic: {item: times not found on the first try}}.
+const readJSON = (k, d) => { try { return JSON.parse(store.get(k)) || d; } catch (e) { return d; } };
+function saveScore() {
+  const sorted = [...thinking].sort((a, b) => a - b);
+  const sec = sorted.length ? Math.round(sorted[sorted.length >> 1] * 10) / 10 : 0;
+  const all = readJSON("pikolo-scores", []);
+  all.push({ t: topic.id, m: mode, g: groupOf[topic.id], s: stars, sec, at: Date.now() });
+  store.set("pikolo-scores", JSON.stringify(all.slice(-500)));
+  const miss = readJSON("pikolo-missed", {});
+  miss[topic.id] = miss[topic.id] || {};
+  for (const id of missed) miss[topic.id][id] = (miss[topic.id][id] || 0) + 1;
+  store.set("pikolo-missed", JSON.stringify(miss));
+}
+// the last three games of a game and group: too easy when nearly all first-try and quick
+function verdict(games) {
+  const last = games.slice(-3), avg = last.reduce((a, g) => a + g.s, 0) / last.length;
+  if (last.length < 3) return null;
+  if (avg >= ROUNDS * 0.95 && last.every(g => !g.sec || g.sec < 6)) return "easy";
+  if (avg < ROUNDS * 0.5) return "tricky";
+  return "right";
+}
+function renderScores() {
+  const list = $("scoreList");
+  list.innerHTML = "";
+  const all = readJSON("pikolo-scores", []);
+  if (!all.length) {
+    const p = document.createElement("p");
+    p.textContent = T().scoresEmpty;
+    list.appendChild(p);
+  }
+  // one row per topic, game and group, the most recently played first
+  const rows = new Map();
+  for (const g of all) {
+    const k = [g.t, g.m, g.g].join("|");
+    const games = rows.get(k) || [];
+    rows.delete(k); rows.set(k, [...games, g]);
+  }
+  for (const games of [...rows.values()].reverse()) {
+    const t = TOPICS.find(x => x.id === games[0].t);
+    if (!t) continue;
+    const group = (t.groups || []).find(x => x.id === games[0].g);
+    const v = verdict(games);
+    const row = document.createElement("div");
+    row.className = "score";
+    const title = document.createElement("strong");
+    title.textContent = `${t[lang]} · ${modeText(t, games[0].m)[0]}` + (group && group.id !== "all" ? ` · ${group[lang]}` : "");
+    const badge = document.createElement("span");
+    if (v) { badge.className = "badge " + v; badge.textContent = T()[{ easy: "tooEasy", right: "justRight", tricky: "tricky" }[v]]; }
+    const info = document.createElement("small");
+    const secs = games.slice(-3).map(g => g.sec).filter(Boolean);
+    info.textContent = [T().games(games.length), `⭐ ${games.slice(-5).map(g => g.s).join(" · ")} (${T().lastGames})`,
+      secs.length ? T().perAnswer((secs.reduce((a, b) => a + b, 0) / secs.length).toFixed(1)) : ""].filter(Boolean).join(" — ");
+    row.append(picture(t.pic), title, badge, info);
+    if (v === "easy" || v === "tricky") {
+      const hint = document.createElement("p");
+      hint.className = "hint muted";
+      hint.textContent = v === "easy" ? T().tooEasyHint : T().trickyHint;
+      row.appendChild(hint);
+    }
+    list.appendChild(row);
+  }
+  // the items most often not found on the first try
+  const miss = readJSON("pikolo-missed", {}), top = [];
+  for (const [tid, items] of Object.entries(miss)) {
+    const t = TOPICS.find(x => x.id === tid);
+    for (const [id, n] of Object.entries(items)) {
+      const item = t && t.items.find(i => i.id === id);
+      if (item && n >= 2) top.push([n, item]);
+    }
+  }
+  if (top.length) {
+    const h = document.createElement("h3");
+    h.textContent = T().missedTitle;
+    const box = document.createElement("div");
+    box.className = "missed";
+    top.sort((a, b) => b[0] - a[0]).slice(0, 12).forEach(([n, item]) => {
+      const chip = document.createElement("span");
+      chip.append(picture(item.id), `${shortName(item)} ×${n}`);
+      box.appendChild(chip);
+    });
+    list.append(h, box);
+  }
+  $("clearScores").hidden = !all.length;
+}
+
 function finish() {
+  saveScore();
   const key = bestKey(topic, mode);
   const best = +store.get(key, 0);
   if (stars > best) store.set(key, String(stars));
@@ -633,7 +730,7 @@ function start(m) {
   gameId++;
   mode = m;
   if (m === "play" || m === "explore") return openPlay();
-  round = 0; stars = 0; results = []; lastAnswer = null; deck = [];
+  round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
   $("speak").textContent = mode === "listen" ? "👂" : "🔊";
   show("game");
   askQuestion();
@@ -845,9 +942,15 @@ function openLook() {
   $("look-" + l).onclick = () => { audio(); setLook(l); goHome(); };
 });
 $("lookBtn").onclick = openLook;
+$("scoresBtn").onclick = () => { renderScores(); $("scores").showModal(); };
+$("clearScores").onclick = () => {
+  if (!confirm(T().clearConfirm)) return;
+  store.set("pikolo-scores", "[]"); store.set("pikolo-missed", "{}");
+  renderScores();
+};
 // keyboard: 1-3 pick a picture, space repeats the question, Escape goes back
 document.addEventListener("keydown", e => {
-  if ($("about").open) return;
+  if ($("about").open || $("scores").open) return;
   if (screen === "game" && /^[1-3]$/.test(e.key)) $("choices").children[e.key - 1]?.click();
   else if (screen === "game" && e.key === " ") { e.preventDefault(); if (!locked) ask(); }
   else if (e.key === "Escape") { if (screen === "topic") goHome(); else if (screen !== "home") backToTopic(); }

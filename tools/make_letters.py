@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Draw the ABC pictures (pictures/letter-a.svg … letter-z.svg, a big capital and its small letter)
-the numbers (pictures/number-1.svg … number-10.svg, the digits above as many dots to count),
+the numbers (pictures/number-1.svg … number-19.svg, the digits above as many dots and sticks of ten to count,
+and the tens up to 100),
 the colours (pictures/color-*.svg, a paint splash) and the shapes (pictures/shape-*.svg).
 
 Usage: python3 tools/make_letters.py
@@ -105,7 +106,7 @@ def main():
                f'  <g fill="{color}" opacity=".75" stroke="#fff" stroke-width="1.2">{"".join(rods)}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
     print("9 tens")
-    for n in range(11, 17):  # 11-16: one stick of ten and the units as dots
+    for n in range(11, 20):  # 11-19: one stick of ten and the units as dots
         color = COLORS[(n - 1) % len(COLORS)]
         digits = [glyph(f, ch) for ch in str(n)]
         h = 46
@@ -117,13 +118,15 @@ def main():
         rod = [f'<rect x="20" y="62" width="14" height="58" rx="2"/>'] + [
             f'<line x1="20" x2="34" y1="{62 + k * 5.8:.1f}" y2="{62 + k * 5.8:.1f}"/>' for k in range(1, 10)]
         units = n - 10
-        dots = [f'<circle cx="{56 + (k % 3) * 22}" cy="{78 + (k // 3) * 26}" r="9"/>' for k in range(units)]
+        # rows of three: two roomy rows up to 6, three tighter rows for 7-9
+        top, step, r = (78, 26, 9) if units <= 6 else (72, 20, 8)
+        dots = [f'<circle cx="{56 + (k % 3) * 22}" cy="{top + (k // 3) * step}" r="{r}"/>' for k in range(units)]
         svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
                f'  <g fill="{color}">{"".join(parts)}</g>\n'
                f'  <g fill="{color}" opacity=".75" stroke="#fff" stroke-width="1.2">{"".join(rod)}</g>\n'
                f'  <g fill="{color}" opacity=".75">{"".join(dots)}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"number-{n}.svg"), "w").write(svg)
-    print("11 to 16")
+    print("11 to 19")
     colors()
     shapes()
 
