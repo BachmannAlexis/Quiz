@@ -25,6 +25,7 @@ SOURCES = {
     "food": ("openverse", ""), "scenery": ("openverse", "landscape"), "dinosaurs": ("openverse", "dinosaur model"),
     "spices": ("openverse", ""), "sports": ("openverse", ""),
     "transport": ("openverse", ""), "weather": ("openverse", ""), "clothes": ("openverse", ""),
+    "dishes": ("openverse", ""), "countries": ("openverse", ""),
 }
 # better searches for some items (iNaturalist: scientific names; Openverse: clearer words)
 QUERY = {
@@ -107,6 +108,22 @@ QUERY = {
     "cap": "baseball cap", "top-hat": "top hat", "sun-hat": "straw hat", "crown": "crown", "glasses": "eyeglasses",
     "tie": "necktie", "sneakers": "sneakers", "shoes": "leather shoes", "boots": "rain boots", "hiking-boots": "hiking boots",
     "sandals": "sandals", "flip-flops": "flip flops", "ballet-shoes": "ballet shoes", "backpack": "backpack", "handbag": "handbag",
+    # dishes and countries (a famous landmark of each)
+    "pizza": "pizza margherita", "hamburger": "hamburger", "hot-dog": "hot dog", "sandwich": "sandwich", "fries": "french fries",
+    "spaghetti": "spaghetti tomato sauce", "noodle-soup": "ramen bowl", "soup": "vegetable soup bowl", "salad": "mixed salad bowl",
+    "rice": "bowl of rice", "curry": "curry rice", "paella": "paella", "sushi": "sushi", "dumplings": "dumplings", "taco": "tacos",
+    "burrito": "burrito", "kebab": "kebab wrap", "falafel": "falafel", "fried-egg": "fried egg", "chicken": "roast chicken",
+    "fondue": "cheese fondue", "cheese": "cheese platter", "bread": "baguette bread", "croissant": "croissant", "pancakes": "crepes",
+    "waffle": "waffle", "birthday-cake": "birthday cake candles", "cake": "slice of cake", "cupcake": "cupcake", "pie": "fruit tart",
+    "custard": "flan caramel", "doughnut": "doughnut", "cookie": "cookies", "chocolate": "chocolate bar", "ice-cream": "ice cream cone",
+    "candy": "candy sweets", "lollipop": "lollipop", "honey": "honey jar", "popcorn": "popcorn",
+    "france": "eiffel tower", "belgium": "atomium brussels", "switzerland": "matterhorn", "italy": "colosseum rome",
+    "spain": "sagrada familia", "portugal": "belem tower lisbon", "germany": "brandenburg gate", "united-kingdom": "big ben london",
+    "ireland": "cliffs of moher", "netherlands": "windmills kinderdijk", "greece": "parthenon athens", "canada": "moraine lake canada",
+    "united-states": "statue of liberty", "mexico": "chichen itza", "brazil": "christ the redeemer rio", "argentina": "iguazu falls",
+    "china": "great wall of china", "japan": "mount fuji", "south-korea": "gyeongbokgung palace", "india": "taj mahal",
+    "australia": "sydney opera house", "egypt": "pyramids giza", "morocco": "marrakech koutoubia", "senegal": "dakar senegal",
+    "kenya": "kenya masai mara",
     # Openverse words
     "drum-kit": "drum kit", "bell-pepper": "bell pepper vegetable", "corn": "corn on the cob", "peas": "green peas pod",
     "beans": "green beans", "lettuce": "lettuce head", "orange": "orange fruit", "lime": "lime fruit", "kiwi": "kiwi fruit",

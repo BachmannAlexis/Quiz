@@ -427,6 +427,66 @@ photos, from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://
 | Clothes | hiking boots | [link](https://www.flickr.com/photos/28786233@N03/8285008948) | breki74 | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Clothes | ballet shoes | [link](https://www.flickr.com/photos/27869035@N00/2305528652) | Megyarsh | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Clothes | handbag | [link](https://www.flickr.com/photos/95267793@N00/3371006146) | Denna Jones | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | pizza | [link](https://www.flickr.com/photos/95268887@N00/281406925) | Ozchin | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | hamburger | [link](https://www.flickr.com/photos/13589188@N00/3646219431) | GorillaSushi | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | sandwich | [link](https://www.flickr.com/photos/74105777@N00/78755315) | adactio | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | fries | [link](https://www.flickr.com/photos/35034346243@N01/2932206250) | stu_spivack | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | spaghetti | [link](https://www.flickr.com/photos/21559804@N00/824608884) | jshj | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | soup | [link](https://www.flickr.com/photos/7927684@N03/5058084454) | jeffreyw | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | salad | [link](https://www.flickr.com/photos/7352088@N08/1040570600) | rexipe | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | curry | [link](https://www.flickr.com/photos/92203585@N00/1398781973) | jetalone | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | paella | [link](https://www.flickr.com/photos/70626035@N00/8418480180) | jacilluch | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | sushi | [link](https://www.flickr.com/photos/54359128@N00/3010145362) | Geoff Peters 604 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | dumplings | [link](https://www.flickr.com/photos/35034346243@N01/134506201) | stu_spivack | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | taco | [link](https://www.flickr.com/photos/72949902@N00/5076902674) | TheCulinaryGeek | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | burrito | [link](https://www.flickr.com/photos/7927684@N03/8628568071) | jeffreyw | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | kebab | [link](https://www.flickr.com/photos/10559879@N00/3014257435) | avlxyz | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | falafel | [link](https://www.flickr.com/photos/9751325@N02/3933231871) | kudumomo | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | fried egg | [link](https://www.flickr.com/photos/22937701@N00/5313353035) | MattHurst | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | roast chicken | [link](https://www.flickr.com/photos/8355656@N04/3567534343) | jamesdkirk | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | fondue | [link](https://www.flickr.com/photos/27346873@N04/14797910101) | Javcon117* | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | cheese | [link](https://www.flickr.com/photos/95408008@N08/8692988715) | winestyr | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | baguette | [link](https://www.rawpixel.com/image/5917689/image-public-domain-food-free) | unknown | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dishes | croissant | [link](https://www.flickr.com/photos/46583370@N04/4599562280) | Blarvar | [Public domain](https://creativecommons.org/publicdomain/mark/1.0/) |
+| Dishes | pancakes | [link](https://www.flickr.com/photos/35034346243@N01/6849581313) | stu_spivack | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | waffle | [link](https://www.flickr.com/photos/68979377@N00/3751958052) | jonathan mcintosh | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | birthday cake | [link](https://www.flickr.com/photos/22272408@N07/2656467632) | jessica.diamond | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | cake | [link](https://www.flickr.com/photos/33904751@N04/3516417150) | thepinkpeppercorn | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | cupcake | [link](https://www.flickr.com/photos/73422502@N08/8257552048) | Zeeyolq Photography | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | pie | [link](https://www.flickr.com/photos/95142644@N00/7762283142) | Ruth and Dave | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | custard | [link](https://www.flickr.com/photos/25128194@N02/4996853387) | Vegan Feast Catering | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | doughnut | [link](https://www.flickr.com/photos/24311648@N00/6142660833) | mastermaq | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | cookie | [link](https://www.flickr.com/photos/39535794@N05/4020277369) | seriousbri | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | chocolate | [link](https://www.flickr.com/photos/78011127@N00/3400397462) | ginnerobot | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Dishes | ice cream | [link](https://www.flickr.com/photos/72949902@N00/5076899310) | TheCulinaryGeek | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | sweet | [link](https://www.flickr.com/photos/12808962@N00/5133474263) | Salicia | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | lollipop | [link](https://www.flickr.com/photos/41894170049@N01/3985484550) | andrewmalone | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Dishes | honey | [link](https://www.flickr.com/photos/184594136@N08/51330849013) | Alabama Extension | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Dishes | popcorn | [link](https://www.flickr.com/photos/72139255@N00/2145862702) | veggiefrog | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | France | [link](https://www.flickr.com/photos/43355249@N00/27029805017) | szeke | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Belgium | [link](https://www.flickr.com/photos/32693718@N07/6799238678) | davidwilson1949 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Switzerland | [link](https://www.flickr.com/photos/22490717@N02/23004682155) | archer10 (Dennis) | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Italy | [link](https://www.flickr.com/photos/132084522@N05/16800139540) | Arch_Sam | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Spain | [link](https://www.flickr.com/photos/12505664@N00/14702572573) | illustir | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Portugal | [link](https://www.flickr.com/photos/76474398@N00/12471641943) | bonnieshappell | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Germany | [link](https://www.flickr.com/photos/22490717@N02/29697552784) | archer10 (Dennis) | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | the United Kingdom | [link](https://www.flickr.com/photos/43355249@N00/30977153027) | szeke | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Ireland | [link](https://www.flickr.com/photos/65865070@N05/13609426144) | DHuiz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | the Netherlands | [link](https://www.flickr.com/photos/61260300@N02/14480473691) | Digikerwin | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Greece | [link](https://www.flickr.com/photos/14824807@N00/6638007289) | microbe | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Canada | [link](https://www.flickr.com/photos/151415985@N06/36922523205) | Wallboat | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| Countries | the United States | [link](https://www.flickr.com/photos/16801915@N06/8191494514) | Reading Tom | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Mexico | [link](https://www.flickr.com/photos/94106059@N04/14051609560) | stacey.cavanagh | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Brazil | [link](https://www.flickr.com/photos/25897810@N00/5269512796) | David Berkowitz | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Argentina | [link](https://www.flickr.com/photos/33037982@N04/3400720419) | wallygrom | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | China | [link](https://www.flickr.com/photos/29091377@N02/4065627169) | matt512 | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | South Korea | [link](https://www.flickr.com/photos/42438955@N05/4271054092) | KOREA.NET - Official page of the Republic of Korea | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | India | [link](https://www.flickr.com/photos/39136124@N00/2154749801) | Paul and Jill | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Australia | [link](https://www.flickr.com/photos/50216172@N00/114537716) | jimmyharris | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Egypt | [link](https://www.flickr.com/photos/30739450@N05/2896309488) | treasureofthesea | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
+| Countries | Morocco | [link](https://www.flickr.com/photos/60374292@N00/1388492576) | Jean & Nathalie | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Senegal | [link](https://www.flickr.com/photos/33398364@N08/5274051599) | Jeff Attaway | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
+| Countries | Kenya | [link](https://www.flickr.com/photos/126397594@N03/20710511096) | ustung | [CC BY](https://creativecommons.org/licenses/by/4.0/) |
 | Landscapes | mountain | [link](https://www.flickr.com/photos/132795455@N08/16662196134) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | Landscapes | volcano | [link](https://www.flickr.com/photos/12568296@N06/2589960481) | threefingeredlord | [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) |
 | Landscapes | beach | [link](https://www.flickr.com/photos/132795455@N08/22261293288) | Image Catalog | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |

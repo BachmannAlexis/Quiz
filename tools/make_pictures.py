@@ -76,6 +76,15 @@ NOTO = {
     "farmer": "farmer", "teacher": "teacher", "astronaut": "astronaut", "pilot": "pilot", "mechanic": "mechanic",
     "builder": "construction-worker", "painter": "artist", "singer": "singer", "scientist": "scientist", "judge": "judge",
     "detective": "detective",
+    # dishes
+    "pizza": "pizza", "hamburger": "hamburger", "hot-dog": "hot-dog", "sandwich": "sandwich", "fries": "french-fries",
+    "spaghetti": "spaghetti", "noodle-soup": "steaming-bowl", "soup": "pot-of-food", "salad": "green-salad", "rice": "cooked-rice",
+    "curry": "curry-rice", "paella": "shallow-pan-of-food", "sushi": "sushi", "dumplings": "dumpling", "taco": "taco",
+    "burrito": "burrito", "kebab": "stuffed-flatbread", "falafel": "falafel", "fried-egg": "cooking", "chicken": "poultry-leg",
+    "fondue": "fondue", "cheese": "cheese-wedge", "bread": "baguette-bread", "croissant": "croissant", "pancakes": "pancakes",
+    "waffle": "waffle", "birthday-cake": "birthday-cake", "cake": "shortcake", "cupcake": "cupcake", "pie": "pie",
+    "custard": "custard", "doughnut": "doughnut", "cookie": "cookie", "chocolate": "chocolate-bar", "ice-cream": "ice-cream",
+    "candy": "candy", "lollipop": "lollipop", "honey": "honey-pot", "popcorn": "popcorn",
     # kitchen
     "teapot": "teapot", "spoon": "spoon", "knife": "kitchen-knife", "bowl": "bowl-with-spoon", "jar": "jar",
     # flowers

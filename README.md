@@ -4,7 +4,7 @@
 
 **A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English or French.
 
-- 397 pictures in 20 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
+- 397 pictures in 22 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
 - A recorded voice in English and French, the same on every device
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
@@ -44,6 +44,8 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 🔷 Shapes | 10 | |
 | 👕 Clothes | 26 | |
 | 👷 Jobs | 15 | |
+| 🍕 Dishes | 39, savory and sweet (pizza, crêpes, fondue, sushi…) | savory, sweet |
+| 🌍 Countries | 25: the flag, and a landmark in photo mode (Eiffel Tower, Colosseum…) | Europe, Americas, Asia & Oceania, Africa |
 | 🏔️ Landscapes | 24, 16 of them with real sounds (waves, stream, wind, birds, rain, thunder, bubbles, a city) | |
 
 **Mushrooms, a note for parents:** the fly agaric, the death cap, the panther cap and Satan's bolete are marked ⚠️ and the voice says they are poisonous and must never be eaten. The game teaches names, not which mushrooms are safe to pick; never let children eat wild mushrooms.
@@ -143,6 +145,7 @@ cd ../.. && build/tts/bin/python tools/make_voice.py build --check
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
 - Photos (photo mode): freely licensed photos (CC0, CC BY, CC BY-SA) from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://openverse.org), cropped and resized; each photo and its author is listed in `PHOTO-CREDITS.md` (built by `tools/fetch_photos.py` and `tools/make_photos.py`, choices in `tools/photo_picks.json`).
+- Flags: [Circle Flags](https://github.com/HatScripts/circle-flags) by HatScripts, MIT (`tools/make_flags.py`).
 - Letters, numbers, colours and shapes: drawn by `tools/make_letters.py` (letters and digits from the Fredoka font).
 - Animal, kitchen, transport and weather recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
 - Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

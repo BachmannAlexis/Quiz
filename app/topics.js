@@ -718,6 +718,93 @@ const JOBS = [
   { id: "detective",     en: "detective",         fr: "le détective",       family: "detective" },
 ];
 
+// ---------- Dishes
+const SAVORY = "savory", SWEET = "sweet";
+const DISHES = [
+  { id: "pizza",      en: "pizza",        fr: "la pizza",             family: "pizza",  styles: [SAVORY] },
+  { id: "hamburger",  en: "hamburger",    fr: "le hamburger",         family: "bun",    styles: [SAVORY] },
+  { id: "hot-dog",    en: "hot dog",      fr: "le hot-dog",           family: "bun",    styles: [SAVORY] },
+  { id: "sandwich",   en: "sandwich",     fr: "le sandwich",          family: "bread",  styles: [SAVORY] },
+  { id: "fries",      en: "fries",        fr: "les frites",           family: "fries",  styles: [SAVORY], many: true },
+  { id: "spaghetti",  en: "spaghetti",    fr: "les spaghettis",       family: "noodle", styles: [SAVORY] },
+  { id: "noodle-soup", en: "noodle soup", fr: "la soupe de nouilles", family: "noodle", styles: [SAVORY] },
+  { id: "soup",       en: "soup",         fr: "la soupe",             family: "pot",    styles: [SAVORY] },
+  { id: "salad",      en: "salad",        fr: "la salade composée",   family: "salad",  styles: [SAVORY] },
+  { id: "rice",       en: "rice",         fr: "le riz",               family: "rice",   styles: [SAVORY] },
+  { id: "curry",      en: "curry",        fr: "le curry",             family: "rice",   styles: [SAVORY] },
+  { id: "paella",     en: "paella",       fr: "la paella",            family: "pan",    styles: [SAVORY] },
+  { id: "sushi",      en: "sushi",        fr: "les sushis",           family: "sushi",  styles: [SAVORY] },
+  { id: "dumplings",  en: "dumplings",    fr: "les raviolis chinois", family: "dumpling", styles: [SAVORY], many: true },
+  { id: "taco",       en: "taco",         fr: "le taco",              family: "taco",   styles: [SAVORY] },
+  { id: "burrito",    en: "burrito",      fr: "le burrito",           family: "taco",   styles: [SAVORY] },
+  { id: "kebab",      en: "kebab",        fr: "le kebab",             family: "taco",   styles: [SAVORY] },
+  { id: "falafel",    en: "falafel",      fr: "les falafels",         family: "ball",   styles: [SAVORY] },
+  { id: "fried-egg",  en: "fried egg",    fr: "l'œuf au plat",        family: "egg",    styles: [SAVORY] },
+  { id: "chicken",    en: "roast chicken", fr: "le poulet",           family: "meat",   styles: [SAVORY] },
+  { id: "fondue",     en: "fondue",       fr: "la fondue",            family: "pot",    styles: [SAVORY] },
+  { id: "cheese",     en: "cheese",       fr: "le fromage",           family: "cheese", styles: [SAVORY] },
+  { id: "bread",      en: "baguette",     fr: "la baguette",          family: "bread",  styles: [SAVORY] },
+  { id: "croissant",  en: "croissant",    fr: "le croissant",         family: "pastry", styles: [SWEET] },
+  { id: "pancakes",   en: "pancakes",     fr: "les crêpes",           family: "pancake", styles: [SWEET], many: true },
+  { id: "waffle",     en: "waffle",       fr: "la gaufre",            family: "pancake", styles: [SWEET] },
+  { id: "birthday-cake", en: "birthday cake", fr: "le gâteau d'anniversaire", family: "cake", styles: [SWEET] },
+  { id: "cake",       en: "cake",         fr: "la part de gâteau",    family: "cake",   styles: [SWEET] },
+  { id: "cupcake",    en: "cupcake",      fr: "le cupcake",           family: "cake",   styles: [SWEET] },
+  { id: "pie",        en: "pie",          fr: "la tarte",             family: "pie",    styles: [SWEET] },
+  { id: "custard",    en: "custard",      fr: "le flan",              family: "pie",    styles: [SWEET] },
+  { id: "doughnut",   en: "doughnut",     fr: "le beignet",           family: "ring",   styles: [SWEET] },
+  { id: "cookie",     en: "cookie",       fr: "le biscuit",           family: "cookie", styles: [SWEET] },
+  { id: "chocolate",  en: "chocolate",    fr: "le chocolat",          family: "choc",   styles: [SWEET] },
+  { id: "ice-cream",  en: "ice cream",    fr: "la glace",             family: "ice",    styles: [SWEET] },
+  { id: "candy",      en: "sweet",        fr: "le bonbon",            family: "candy",  styles: [SWEET] },
+  { id: "lollipop",   en: "lollipop",     fr: "la sucette",           family: "candy",  styles: [SWEET] },
+  { id: "honey",      en: "honey",        fr: "le miel",              family: "honey",  styles: [SWEET] },
+  { id: "popcorn",    en: "popcorn",      fr: "le pop-corn",          family: "popcorn", styles: [SWEET] },
+];
+const DISH_GROUPS = [
+  { id: "all",  pic: "pizza",    en: "All",    fr: "Tous" },
+  { id: SAVORY, pic: "spaghetti", en: "Savory", fr: "Salé" },
+  { id: SWEET,  pic: "cupcake",  en: "Sweet",  fr: "Sucré" },
+];
+
+// ---------- Countries: the flag (pictures/<country>.svg, tools/make_flags.py), a landmark in photo mode.
+// English names without "the" before them (the topic is `bare`); look-alike flags share a family.
+const EUROPE = "europe", AMERICAS = "americas", ASIA = "asia", AFRICA = "africa";
+const COUNTRIES = [
+  { id: "france",         en: "France",          fr: "la France",       family: "tricolor-v", styles: [EUROPE] },
+  { id: "belgium",        en: "Belgium",         fr: "la Belgique",     family: "black-red-yellow", styles: [EUROPE] },
+  { id: "switzerland",    en: "Switzerland",     fr: "la Suisse",       family: "cross",      styles: [EUROPE] },
+  { id: "italy",          en: "Italy",           fr: "l'Italie",        family: "green-red",  styles: [EUROPE] },
+  { id: "spain",          en: "Spain",           fr: "l'Espagne",       family: "red-yellow", styles: [EUROPE] },
+  { id: "portugal",       en: "Portugal",        fr: "le Portugal",     family: "green-red2", styles: [EUROPE] },
+  { id: "germany",        en: "Germany",         fr: "l'Allemagne",     family: "black-red-yellow", styles: [EUROPE] },
+  { id: "united-kingdom", en: "the United Kingdom", fr: "le Royaume-Uni", family: "union",    styles: [EUROPE] },
+  { id: "ireland",        en: "Ireland",         fr: "l'Irlande",       family: "green-red",  styles: [EUROPE] },
+  { id: "netherlands",    en: "the Netherlands", fr: "les Pays-Bas",    family: "tricolor-v", styles: [EUROPE], many: true },
+  { id: "greece",         en: "Greece",          fr: "la Grèce",        family: "blue-white", styles: [EUROPE] },
+  { id: "canada",         en: "Canada",          fr: "le Canada",       family: "red-white",  styles: [AMERICAS] },
+  { id: "united-states",  en: "the United States", fr: "les États-Unis", family: "stars",     styles: [AMERICAS], many: true },
+  { id: "mexico",         en: "Mexico",          fr: "le Mexique",      family: "green-red",  styles: [AMERICAS] },
+  { id: "brazil",         en: "Brazil",          fr: "le Brésil",       family: "brazil",     styles: [AMERICAS] },
+  { id: "argentina",      en: "Argentina",       fr: "l'Argentine",     family: "blue-white", styles: [AMERICAS] },
+  { id: "china",          en: "China",           fr: "la Chine",        family: "red-yellow2", styles: [ASIA] },
+  { id: "japan",          en: "Japan",           fr: "le Japon",        family: "red-white",  styles: [ASIA] },
+  { id: "south-korea",    en: "South Korea",     fr: "la Corée du Sud", family: "korea",      styles: [ASIA] },
+  { id: "india",          en: "India",           fr: "l'Inde",          family: "india",      styles: [ASIA] },
+  { id: "australia",      en: "Australia",       fr: "l'Australie",     family: "union",      styles: [ASIA] },
+  { id: "egypt",          en: "Egypt",           fr: "l'Égypte",        family: "red-white-black", styles: [AFRICA] },
+  { id: "morocco",        en: "Morocco",         fr: "le Maroc",        family: "red-yellow2", styles: [AFRICA] },
+  { id: "senegal",        en: "Senegal",         fr: "le Sénégal",      family: "green-yellow-red", styles: [AFRICA] },
+  { id: "kenya",          en: "Kenya",           fr: "le Kenya",        family: "red-white-black", styles: [AFRICA] },
+];
+const COUNTRY_GROUPS = [
+  { id: "all",     pic: "france",        en: "All",       fr: "Tous" },
+  { id: EUROPE,    pic: "italy",         en: "Europe",    fr: "L'Europe" },
+  { id: AMERICAS,  pic: "brazil",        en: "Americas",  fr: "Les Amériques" },
+  { id: ASIA,      pic: "japan",         en: "Asia & Oceania", fr: "L'Asie et l'Océanie" },
+  { id: AFRICA,    pic: "senegal",       en: "Africa",    fr: "L'Afrique" },
+];
+
 // Topics on the home screen. `groups` adds a group picker; `modes` are the games offered:
 // name (hear the name), listen (hear the sound), play (instrument keys) or explore (tap to hear names).
 // `color` and `tint` theme the topic's screens; `unit` names its items ("87 animals").
@@ -741,5 +828,7 @@ const TOPICS = [
   { id: "shapes",      pic: "shape-star", en: "Shapes",     fr: "Les formes",  unit: ["shapes", "formes"],            color: "#3949ab", tint: "#e8eaf8", items: SHAPES,      modes: ["name", "explore"] },
   { id: "clothes",     pic: "t-shirt",    en: "Clothes",    fr: "Les vêtements", unit: ["clothes", "vêtements"],      color: "#00897b", tint: "#e0f4f1", items: CLOTHES,     modes: ["name", "explore"] },
   { id: "jobs",        pic: "firefighter", en: "Jobs",      fr: "Les métiers", unit: ["jobs", "métiers"],             color: "#6d4c41", tint: "#f3ebe7", items: JOBS,        modes: ["name", "explore"] },
+  { id: "dishes",      pic: "pizza",      en: "Dishes",     fr: "Les plats",   unit: ["dishes", "plats"],             color: "#d84315", tint: "#fdece6", items: DISHES, groups: DISH_GROUPS, modes: ["name", "explore"] },
+  { id: "countries",   pic: "france",     en: "Countries",  fr: "Les pays",    unit: ["countries", "pays"],           color: "#1565c0", tint: "#e3eefb", items: COUNTRIES, groups: COUNTRY_GROUPS, bare: true, modes: ["name", "explore"] },
   { id: "scenery",     pic: "mountain",   en: "Landscapes", fr: "Paysages",    unit: ["landscapes", "paysages"],     color: "#1f6fd6", tint: "#e4eefc", items: SCENERY,     modes: ["name", "listen", "explore"] },
 ];
