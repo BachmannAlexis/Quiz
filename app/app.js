@@ -3,12 +3,11 @@
 "use strict";
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
-const CHOICES = 3;
 
 const CONFETTI = {
   instruments: ["🎵", "🎶", "⭐", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
-  dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"],
+  dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"], herbs: ["🌿", "🍃", "⭐", "✨"],
   kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"],
   numbers: ["🔢", "⭐", "🎉", "✨"], transport: ["🚗", "⭐", "🎉", "✨"], weather: ["☀️", "🌈", "⭐", "✨"],
   colors: ["🎨", "🌈", "⭐", "✨"], shapes: ["🔷", "⭐", "🎉", "✨"], clothes: ["👕", "⭐", "🎉", "✨"], jobs: ["👷", "⭐", "🎉", "✨"],
@@ -27,6 +26,16 @@ let lang = store.get("quiz-lang", (navigator.language || "en").startsWith("fr") 
 let topic = TOPICS.find(t => t.id === store.get("quiz-topic")) || TOPICS[0];
 const groupOf = {}; // topic id -> chosen group
 TOPICS.forEach(t => { groupOf[t.id] = store.get("quiz-group-" + t.id, "all"); });
+// difficulty per topic: 1 easy (common items, 2 pictures), 2 medium (3 pictures), 3 hard (everything, 4 pictures);
+// each item's level comes from app/levels.js (not listed: medium)
+const levelOf = {};
+TOPICS.forEach(t => {
+  levelOf[t.id] = +store.get("pikolo-level-" + t.id, 2);
+  const L = (typeof LEVELS !== "undefined" && LEVELS[t.id]) || {};
+  const easy = new Set(L.easy || []), hard = new Set(L.hard || []);
+  t.items.forEach(i => { i.level = easy.has(i.id) ? 1 : hard.has(i.id) ? 3 : 2; });
+});
+const choices = () => levelOf[topic.id] + 1;
 const ITEMS = new Map(TOPICS.flatMap(t => t.items.map(i => [i.id, i])));
 let screen = "home";
 let deck = []; // items still to ask this game, so nothing repeats
@@ -311,14 +320,17 @@ function shuffle(arr) {
 const families = items => new Set(items.map(i => i.family)).size;
 function groupPool() {
   const g = groupOf[topic.id];
-  return g === "all" || !topic.groups ? topic.items : topic.items.filter(i => i.styles.includes(g));
+  const group = g === "all" || !topic.groups ? topic.items : topic.items.filter(i => i.styles.includes(g));
+  // the items of the chosen level and below; the whole group when that leaves too few kinds to choose from
+  const pool = group.filter(i => i.level <= levelOf[topic.id]);
+  return families(pool) >= choices() + 1 ? pool : group;
 }
 // what a game asks about: in the listening game, only items with a sound; if the chosen
 // group has too few, all of the topic's
 function gamePool() {
   if (mode !== "listen") return groupPool();
   const pool = groupPool().filter(hasSound);
-  return new Set(pool.map(soundFamily)).size >= CHOICES ? pool : topic.items.filter(hasSound);
+  return new Set(pool.map(soundFamily)).size >= choices() ? pool : topic.items.filter(hasSound);
 }
 // what the voice adds after naming an item: an animal's or dinosaur's sound, or a mushroom warning
 function extra(item) {
@@ -385,8 +397,8 @@ function theme() {
   document.body.style.setProperty("--tint", topic.tint);
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", screen === "home" ? "#6c47ff" : topic.color);
 }
-const bestKey = (t, m) => `quiz-best-${t.id}-${m}`;
-function bestOf(t) { return Math.max(0, ...t.modes.map(m => +store.get(bestKey(t, m), 0))); }
+const bestKey = (t, m, l = levelOf[t.id]) => `quiz-best-${t.id}-${m}` + (l === 2 ? "" : "-l" + l); // medium keeps the old key
+function bestOf(t) { return Math.max(0, ...t.modes.flatMap(m => [1, 2, 3].map(l => +store.get(bestKey(t, m, l), 0)))); }
 
 function renderHome() {
   const grid = $("topicGrid");
@@ -425,6 +437,7 @@ function openTopic(t) {
   show("topic");
 }
 
+const LEVEL_DOTS = ["🟢", "🟡", "🔴"];
 function renderTopic() {
   $("topicTitle").textContent = topic[lang];
   const hero = $("topicHero");
@@ -460,6 +473,22 @@ function renderTopic() {
       else say(g[lang]);
     };
     groups.appendChild(b);
+  });
+  const levels = $("levels");
+  levels.innerHTML = "";
+  T().levels.forEach((name, k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip level";
+    b.setAttribute("aria-pressed", k + 1 === levelOf[topic.id]);
+    b.textContent = `${LEVEL_DOTS[k]} ${name}`;
+    b.onclick = () => {
+      levelOf[topic.id] = k + 1;
+      store.set("pikolo-level-" + topic.id, String(k + 1));
+      renderTopic();
+      say(name);
+    };
+    levels.appendChild(b);
   });
   const modes = $("modes");
   modes.innerHTML = "";
@@ -557,10 +586,11 @@ function askQuestion() {
   const kind = mode === "listen" ? soundFamily : i => i.family;
   const others = [];
   for (const i of [...shuffle(pool), ...shuffle(fallback)]) {
-    if (others.length < CHOICES - 1 && i.family !== answer.family && kind(i) !== kind(answer) && !others.some(o => o.family === i.family || kind(o) === kind(i))) others.push(i);
+    if (others.length < choices() - 1 && i.family !== answer.family && kind(i) !== kind(answer) && !others.some(o => o.family === i.family || kind(o) === kind(i))) others.push(i);
   }
   const box = $("choices");
   box.innerHTML = "";
+  box.style.setProperty("--n", others.length + 1);
   shuffle([answer, ...others]).forEach(item => {
     const b = card(item);
     b.onclick = () => pick(item, b);
@@ -626,7 +656,7 @@ function saveScore() {
   const sorted = [...thinking].sort((a, b) => a - b);
   const sec = sorted.length ? Math.round(sorted[sorted.length >> 1] * 10) / 10 : 0;
   const all = readJSON("pikolo-scores", []);
-  all.push({ t: topic.id, m: mode, g: groupOf[topic.id], s: stars, sec, at: Date.now() });
+  all.push({ t: topic.id, m: mode, g: groupOf[topic.id], l: levelOf[topic.id], s: stars, sec, at: Date.now() });
   store.set("pikolo-scores", JSON.stringify(all.slice(-500)));
   const miss = readJSON("pikolo-missed", {});
   miss[topic.id] = miss[topic.id] || {};
@@ -653,7 +683,7 @@ function renderScores() {
   // one row per topic, game and group, the most recently played first
   const rows = new Map();
   for (const g of all) {
-    const k = [g.t, g.m, g.g].join("|");
+    const k = [g.t, g.m, g.g, g.l || 2].join("|");
     const games = rows.get(k) || [];
     rows.delete(k); rows.set(k, [...games, g]);
   }
@@ -665,7 +695,9 @@ function renderScores() {
     const row = document.createElement("div");
     row.className = "score";
     const title = document.createElement("strong");
-    title.textContent = `${t[lang]} · ${modeText(t, games[0].m)[0]}` + (group && group.id !== "all" ? ` · ${group[lang]}` : "");
+    const l = games[0].l || 2;
+    title.textContent = `${t[lang]} · ${modeText(t, games[0].m)[0]}` + (group && group.id !== "all" ? ` · ${group[lang]}` : "") +
+      ` · ${LEVEL_DOTS[l - 1]} ${T().levels[l - 1]}`;
     const badge = document.createElement("span");
     if (v) { badge.className = "badge " + v; badge.textContent = T()[{ easy: "tooEasy", right: "justRight", tricky: "tricky" }[v]]; }
     const info = document.createElement("small");
@@ -676,7 +708,7 @@ function renderScores() {
     if (v === "easy" || v === "tricky") {
       const hint = document.createElement("p");
       hint.className = "hint muted";
-      hint.textContent = v === "easy" ? T().tooEasyHint : T().trickyHint;
+      hint.textContent = v === "easy" ? (l < 3 ? T().tooEasyHintLevel(T().levels[l]) : T().tooEasyHint) : (l > 1 ? T().trickyHintLevel(T().levels[l - 2]) : T().trickyHint);
       row.appendChild(hint);
     }
     list.appendChild(row);
@@ -992,7 +1024,7 @@ addEventListener("contextmenu", e => { if (!e.target.closest || !e.target.closes
 // keyboard: 1-3 pick a picture, space repeats the question, Escape goes back
 document.addEventListener("keydown", e => {
   if ($("about").open || $("scores").open) return;
-  if (screen === "game" && /^[1-3]$/.test(e.key)) $("choices").children[e.key - 1]?.click();
+  if (screen === "game" && /^[1-4]$/.test(e.key)) $("choices").children[e.key - 1]?.click();
   else if (screen === "game" && e.key === " ") { e.preventDefault(); if (!locked) ask(); }
   else if (e.key === "Escape") { if (screen === "topic") goHome(); else if (screen !== "home") backToTopic(); }
 });

@@ -20,7 +20,7 @@ for (const lang of ["en", "fr"]) {
   const likeOf = item => item.like && item.like[lang === "en" ? 0 : 1];
   const extra = item => item.says ? T.says(item[lang], soundOf(item), likeOf(item)) : item.poison ? T.poison
     : item.from ? T.from(item[lang], COUNTRIES.find(c => c.id === item.from)[lang], item.many) : "";
-  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample]);
+  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, ...T.levels]);
   for (const t of TOPICS) {
     common.add(t[lang]);
     for (const g of t.groups || []) common.add(g[lang]);

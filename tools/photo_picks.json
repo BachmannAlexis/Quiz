@@ -1068,33 +1068,17 @@
   ]
  },
  "spices": {
-  "basil": 1,
-  "bay-leaf": 4,
   "chili": 0,
-  "chives": 3,
   "cinnamon": 0,
   "cloves": 17,
-  "coriander": 0,
   "cumin": 0,
-  "dill": 20,
   "ginger": 0,
-  "mint": 0,
   "nutmeg": 2,
-  "oregano": 13,
   "paprika": 7,
-  "parsley": [
-   2,
-   0.55,
-   0.5
-  ],
   "pepper": 6,
-  "rosemary": 1,
   "saffron": 12,
-  "sage": 0,
   "salt": 0,
   "star-anise": 0,
-  "tarragon": 3,
-  "thyme": 2,
   "turmeric": 8,
   "vanilla": 4
  },
@@ -1211,5 +1195,23 @@
   "sun": 3,
   "thermometer": 4,
   "umbrella": 0
+ },
+ "herbs": {
+  "basil": 1,
+  "parsley": [
+   2,
+   0.55,
+   0.5
+  ],
+  "coriander": 0,
+  "mint": 0,
+  "sage": 0,
+  "thyme": 2,
+  "oregano": 13,
+  "rosemary": 1,
+  "tarragon": 3,
+  "dill": 20,
+  "chives": 3,
+  "bay-leaf": 4
  }
 }

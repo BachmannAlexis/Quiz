@@ -52,6 +52,10 @@ NOTO = {
     "running": "person-running", "horse-riding": "horse-racing", "gymnastics": "person-cartwheeling",
     "climbing": "person-climbing", "boxing": "boxing-glove", "judo": "martial-arts-uniform", "fencing": "person-fencing",
     "archery": "bow-and-arrow", "skateboarding": "skateboard", "roller-skating": "roller-skate",
+    "american-football": "american-football", "bowling": "bowling", "handball": "person-playing-handball",
+    "cricket-sport": "cricket-game", "field-hockey": "field-hockey", "billiards": "pool-8-ball", "frisbee": "flying-disc",
+    "curling": "curling-stone", "water-polo": "person-playing-water-polo", "rowing": "person-rowing-boat",
+    "weightlifting": "person-lifting-weights", "mountain-biking": "person-mountain-biking", "yoga": "person-in-lotus-position",
     # transport
     "car": "automobile", "racing-car": "racing-car", "taxi": "taxi", "police-car": "police-car", "ambulance": "ambulance",
     "fire-engine": "fire-engine", "bus": "bus", "truck": "delivery-truck", "tractor": "tractor", "motorcycle": "motorcycle",
@@ -59,23 +63,31 @@ NOTO = {
     "high-speed-train": "high-speed-train", "tram": "tram", "metro": "metro", "cable-car": "aerial-tramway",
     "airplane": "airplane", "helicopter": "helicopter", "rocket": "rocket", "flying-saucer": "flying-saucer",
     "ship": "ship", "sailboat": "sailboat", "speedboat": "speedboat",
+    "minibus": "minibus", "trolleybus": "trolleybus", "suv": "sport-utility-vehicle", "pickup-truck": "pickup-truck",
+    "lorry": "articulated-lorry", "tuk-tuk": "auto-rickshaw", "railway-car": "railway-car", "mountain-railway": "mountain-railway",
+    "monorail": "monorail", "gondola": "mountain-cableway", "small-airplane": "small-airplane", "parachute": "parachute",
+    "ferry": "ferry",
     # weather
     "sun": "sun", "cloudy": "sun-behind-cloud", "cloud": "cloud", "rain": "cloud-with-rain", "umbrella": "umbrella-with-rain-drops",
     "storm": "cloud-with-lightning-and-rain", "lightning": "high-voltage", "wind": "wind-face", "tornado": "tornado",
     "snowing": "cloud-with-snow", "snowman": "snowman", "fog": "fog", "thermometer": "thermometer", "moon": "crescent-moon",
-    "star": "star",
+    "star": "star", "snowflake": "snowflake", "sun-shower": "sun-behind-rain-cloud", "raindrop": "droplet",
     # clothes
     "t-shirt": "t-shirt", "blouse": "womans-clothes", "dress": "dress", "kimono": "kimono", "jeans": "jeans", "shorts": "shorts",
     "coat": "coat", "scarf": "scarf", "gloves": "gloves", "socks": "socks", "swimsuit": "one-piece-swimsuit", "cap": "billed-cap",
     "top-hat": "top-hat", "sun-hat": "womans-hat", "crown": "crown", "glasses": "glasses", "tie": "necktie",
     "sneakers": "running-shoe", "shoes": "mans-shoe", "boots": "womans-boot", "hiking-boots": "hiking-boot",
     "sandals": "womans-sandal", "flip-flops": "thong-sandal", "ballet-shoes": "ballet-shoes", "backpack": "backpack",
-    "handbag": "handbag",
+    "handbag": "handbag", "lab-coat": "lab-coat", "sari": "sari", "bikini": "bikini", "underpants": "briefs",
+    "graduation-cap": "graduation-cap", "helmet": "rescue-workers-helmet", "high-heels": "high-heeled-shoe",
+    "flat-shoes": "flat-shoe", "sunglasses": "sunglasses", "goggles": "goggles", "ring": "ring", "safety-vest": "safety-vest",
+    "purse": "purse",
     # jobs
     "firefighter": "firefighter", "police-officer": "police-officer", "doctor": "health-worker", "cook": "cook",
     "farmer": "farmer", "teacher": "teacher", "astronaut": "astronaut", "pilot": "pilot", "mechanic": "mechanic",
     "builder": "construction-worker", "painter": "artist", "singer": "singer", "scientist": "scientist", "judge": "judge",
-    "detective": "detective",
+    "detective": "detective", "nurse": "woman-health-worker", "office-worker": "office-worker", "programmer": "technologist",
+    "factory-worker": "factory-worker", "guard": "guard", "dancer": "ballet-dancer",
     # dishes
     "pizza": "pizza", "hamburger": "hamburger", "hot-dog": "hot-dog", "sandwich": "sandwich", "fries": "french-fries",
     "spaghetti": "spaghetti", "noodle-soup": "steaming-bowl", "soup": "pot-of-food", "salad": "green-salad", "rice": "cooked-rice",
@@ -87,6 +99,7 @@ NOTO = {
     "candy": "candy", "lollipop": "lollipop", "honey": "honey-pot", "popcorn": "popcorn",
     # kitchen
     "teapot": "teapot", "spoon": "spoon", "knife": "kitchen-knife", "bowl": "bowl-with-spoon", "jar": "jar",
+    "mug": "hot-beverage", "cutlery": "fork-and-knife", "chopsticks": "chopsticks",
     # flowers
     "rose": "rose", "tulip": "tulip", "sunflower": "sunflower", "cherry-blossom": "cherry-blossom", "hibiscus": "hibiscus",
     "lotus": "lotus", "hyacinth": "hyacinth",

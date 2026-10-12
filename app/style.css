@@ -154,6 +154,8 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 }
 .chip img { width: 36px; height: 36px; }
 .chip[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+#levels { margin-top: 10px; }
+.chip.level { padding: 8px 16px; }
 .modes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 .mode {
   border: 0;
@@ -210,7 +212,7 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 .prompt { margin: 0; font-size: clamp(1.5rem, 5.5vw, 2.4rem); font-weight: 600; text-wrap: balance; max-width: 16em; }
 .choices {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--n, 3), 1fr);
   gap: clamp(12px, 3vw, 24px);
   margin: auto 0;
 }

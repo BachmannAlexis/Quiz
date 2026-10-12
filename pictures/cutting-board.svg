@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<ellipse cx="62" cy="114" rx="58" ry="5" fill="#90a4ae" opacity=".35"/>
+<path fill-rule="evenodd" fill="#a86a32" d="M14 28 H86 C91 28 93 31 95 35 L102 44 H108 A14 14 0 0 1 108 78 H102 L95 87 C93 91 91 110 86 110 H14 C8 110 4 106 4 100 V38 C4 32 8 28 14 28 Z M110 61 A5.5 5.5 0 1 0 110 61.1 Z"/>
+<path fill-rule="evenodd" fill="#e3a868" d="M14 22 H86 C91 22 93 25 95 29 L102 38 H108 A14 14 0 0 1 108 72 H102 L95 81 C93 85 91 104 86 104 H14 C8 104 4 100 4 94 V32 C4 26 8 22 14 22 Z M110 55 A5.5 5.5 0 1 0 110 55.1 Z"/>
+<g stroke="#c98a4b" stroke-width="2" fill="none" stroke-linecap="round"><path d="M12 34 C40 30 60 36 86 32"/><path d="M10 96 C34 92 60 98 84 94"/><path d="M98 46 C104 44 112 46 118 50"/></g>
+<path d="M12 27 H60" stroke="#f5c995" stroke-width="3" stroke-linecap="round"/>
+<circle cx="24" cy="54" r="10" fill="#ef6c00"/><circle cx="24" cy="54" r="6.5" fill="#ffa726"/><circle cx="24" cy="54" r="2.2" fill="#ffcc80"/>
+<circle cx="40" cy="72" r="10" fill="#ef6c00"/><circle cx="40" cy="72" r="6.5" fill="#ffa726"/><circle cx="40" cy="72" r="2.2" fill="#ffcc80"/>
+<circle cx="20" cy="82" r="9" fill="#ef6c00"/><circle cx="20" cy="82" r="5.8" fill="#ffa726"/><circle cx="20" cy="82" r="2" fill="#ffcc80"/>
+<circle cx="56" cy="46" r="11" fill="#2e7d32"/><circle cx="56" cy="46" r="8.8" fill="#dcedc8"/><g fill="#9ccc65"><ellipse cx="56" cy="42" rx="1.5" ry="2.6"/><ellipse cx="52" cy="49" rx="2.6" ry="1.5"/><ellipse cx="60" cy="49" rx="2.6" ry="1.5"/></g>
+<circle cx="78" cy="56" r="11" fill="#2e7d32"/><circle cx="78" cy="56" r="8.8" fill="#dcedc8"/><g fill="#9ccc65"><ellipse cx="78" cy="52" rx="1.5" ry="2.6"/><ellipse cx="74" cy="59" rx="2.6" ry="1.5"/><ellipse cx="82" cy="59" rx="2.6" ry="1.5"/></g>
+<path d="M54 84 L72 72 C78 80 74 92 64 93 C58 93 54 90 54 84 Z" fill="#e53935"/><path d="M57 84 L70 75" stroke="#ffcdd2" stroke-width="2.5" stroke-linecap="round"/><circle cx="64" cy="86" r="1.4" fill="#ffee58"/><circle cx="68" cy="82" r="1.4" fill="#ffee58"/>
+<path d="M76 88 L92 76 C96 86 90 96 82 96 C78 96 76 93 76 88 Z" fill="#c62828"/><path d="M79 88 L90 80" stroke="#ef9a9a" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

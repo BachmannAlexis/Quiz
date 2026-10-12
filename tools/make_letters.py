@@ -180,6 +180,23 @@ def shapes():
         "diamond": ('<polygon points="64,8 112,64 64,120 16,64"/>', "#00897b"),
         "hexagon": (f'<polygon points="{poly(6, 54, 0)}"/>', "#5c6bc0"),
         "crescent": ('<path d="M84 14 A 52 52 0 1 0 84 114 A 42 42 0 1 1 84 14 Z"/>', "#ffb300"),
+        "pentagon": (f'<polygon points="{poly(5, 56, -90, 64, 68)}"/>', "#26a69a"),
+        "octagon": (f'<polygon points="{poly(8, 54, -67.5)}"/>', "#d32f2f"),
+        "semicircle": ('<path d="M10 90 A 54 54 0 0 1 118 90 Z"/>', "#7cb342"),
+        "cross": ('<polygon points="46,12 82,12 82,46 116,46 116,82 82,82 82,116 46,116 46,82 12,82 12,46 46,46"/>', "#ec407a"),
+        "arrow": ('<polygon points="8,48 66,48 66,20 120,64 66,108 66,80 8,80"/>', "#3949ab"),
+        # solids: a lighter top and a darker side
+        "cube": ('<polygon points="18,48 46,20 110,20 82,48" fill="#ffb74d"/><polygon points="82,48 110,20 110,84 82,112" fill="#e65100"/>'
+                 '<rect x="18" y="48" width="64" height="64"/>', "#fb8c00"),
+        "sphere": ('<defs><radialGradient id="g" cx="38%" cy="34%" r="70%"><stop offset="0" stop-color="#b2ebf2"/>'
+                   '<stop offset=".45" stop-color="#26c6da"/><stop offset="1" stop-color="#00838f"/></radialGradient></defs>'
+                   '<circle cx="64" cy="64" r="52" fill="url(#g)"/>', "#26c6da"),
+        "cylinder": ('<ellipse cx="64" cy="100" rx="36" ry="13"/><rect x="28" y="28" width="72" height="72"/>'
+                     '<path d="M74 28 H100 V100 A36 13 0 0 1 74 112 Z" fill="#1565c0"/>'
+                     '<ellipse cx="64" cy="28" rx="36" ry="13" fill="#90caf9"/>', "#1e88e5"),
+        "cone": ('<ellipse cx="64" cy="102" rx="42" ry="14"/><polygon points="64,10 22,102 106,102"/>'
+                 '<polygon points="64,10 106,102 64,116" fill="#b71c1c"/>', "#e53935"),
+        "pyramid": ('<polygon points="64,12 14,98 76,114"/><polygon points="64,12 76,114 114,90" fill="#f9a825"/>', "#fdd835"),
     }
     for name, (shape, fill) in SHAPES.items():
         svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
