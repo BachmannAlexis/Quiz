@@ -2,10 +2,10 @@
 
 # Pikolo
 
-**A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English or French.
+**A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English, French, German or Italian.
 
 - 955 pictures in 22 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
-- A recorded voice in English and French, the same on every device
+- A recorded voice in English, French, German and Italian, the same on every device
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
 
@@ -72,7 +72,9 @@ The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages 
 |---|---|
 | `index.html` | The page: home, topic, game, end and play screens, parents' sheet |
 | `app/app.js` | The app logic |
-| `app/words.js` | Everything the app says and shows, in English and French |
+| `app/words.js` | Everything the app says and shows, in English, French, German and Italian |
+| `app/lang/` | German and Italian names of every item |
+| `app/levels.js` | Easy and hard items per topic (three difficulty levels) |
 | `app/voice/` | The recorded voice: every sentence in English and French (`<lang>/<topic>.json`, loaded when a topic opens) |
 | `app/style.css`, `app/font.css` | Design (one bright theme; each topic recolors its screens) and the embedded Fredoka font |
 | `app/topics.js` | Topics and items: names in English and French, families, groups, animal sounds |
@@ -126,7 +128,8 @@ To record the voice again after changing `app/words.js` or `app/topics.js` (need
 ```sh
 python3 -m venv build/tts && build/tts/bin/pip install piper-tts faster-whisper
 mkdir -p build/voices && cd build/voices
-for v in en/en_US/ljspeech/high/en_US-ljspeech-high fr/fr_FR/siwis/medium/fr_FR-siwis-medium; do
+for v in en/en_US/ljspeech/high/en_US-ljspeech-high fr/fr_FR/siwis/medium/fr_FR-siwis-medium \
+         de/de_DE/thorsten/high/de_DE-thorsten-high it/it_IT/paola/medium/it_IT-paola-medium; do
   curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/$v.onnx
   curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/$v.onnx.json
 done
@@ -148,6 +151,6 @@ cd ../.. && build/tts/bin/python tools/make_voice.py build --check
 - Flags: [Circle Flags](https://github.com/HatScripts/circle-flags) by HatScripts, MIT (`tools/make_flags.py`).
 - Letters, numbers, colours and shapes: drawn by `tools/make_letters.py` (letters and digits from the Fredoka font).
 - Animal, kitchen, transport and weather recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
-- Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+- Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); German voice trained on [Thorsten-Voice](https://github.com/thorstenMueller/Thorsten-Voice) (CC0); Italian voice trained on [Paola Persico's dataset](https://huggingface.co/datasets/paolapersico1/Voice-Dataset-Italian) (CC0).
 - Font: [Fredoka](https://github.com/hafontia/Fredoka) by Milena Brandão, SIL Open Font License 1.1 (embedded in `app/font.css`).
 - Drawings: 180 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (most animals, fruits and vegetables, and the ones listed in `tools/make_pictures.py`). The other 217 are drawn for this project (`pictures/`).

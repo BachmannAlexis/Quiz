@@ -1,6 +1,6 @@
 # Pikolo — notes for Claude
 
-Pikolo is a picture quiz for children of 3 to 5 years, in English and French: a voice says a name (or a
+Pikolo is a picture quiz for children of 3 to 5 years, in English, French, German and Italian: a voice says a name (or a
 sound plays) and the child taps the right picture among three. Live at https://bachmannalexis.github.io/Quiz/
 (GitHub Pages, published from `main` by `.github/workflows/pages.yml`). See README.md for the user-facing
 description, the asset sources and the full rebuild commands.
@@ -12,8 +12,10 @@ description, the asset sources and the full rebuild commands.
   loading the app's own files.
 - **For small children who cannot read.** Everything is spoken; pictures must be recognisable at about
   110 px and look-alikes must never be offered together (see `family` below). Keep sentences short.
-- **Both languages, always.** Every visible or spoken text exists in English and French (`app/words.js`,
-  and `en`/`fr` on every item). French names carry their article ("la quiche", "les frites", "l'Italie").
+- **All four languages, always.** Every visible or spoken text exists in English, French, German and Italian
+  (`app/words.js`; `en`/`fr` on every item in `app/topics.js`, German and Italian names in `app/lang/de.js` and
+  `it.js`). Names carry their article ("la quiche", "die Pommes", "l'Italia"); German and Italian plurals are marked
+  `["…", "pl"]`. `says`, `like` and `unit` are arrays in the order en, fr, de, it.
 - **Privacy.** No ads, no accounts, no analytics. Anything kept is in `localStorage` on the device
   (best scores, scores, language, drawings/photos choice).
 - **Secrets** (API keys) go in the environment settings, never in the repo or the chat.
@@ -24,7 +26,9 @@ description, the asset sources and the full rebuild commands.
 | Path | What it is |
 |---|---|
 | `app/topics.js` | All topics and items (source of truth for content) |
-| `app/words.js` | All texts, EN and FR, including sentence builders (`where`, `name`, `yes`, `says`, `from`) |
+| `app/words.js` | All texts in the four languages, sentence builders (`where`, `name`, `yes`, `says`, `from`), `addLanguage()` |
+| `app/lang/de.js`, `it.js` | German and Italian names, sounds, topic and group names |
+| `app/levels.js` | Difficulty: per topic the easy and hard item ids (the rest is medium) |
 | `app/app.js` | Screens, games, voice playback, photos, scores |
 | `app/style.css` | Design; each topic recolours its screens with `color`/`tint` |
 | `app/pictures.js` | **Generated** by `tools/make_pictures.py`: Noto emoji + `pictures/*.svg` as data URIs |
