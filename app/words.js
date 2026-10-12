@@ -10,6 +10,7 @@ const TEXT = {
     who: sound => `Who says ${sound}?`, says: (n, sound, like) => `The ${n} says ${sound}${like ? `, like ${like}` : ""}!`,
     whichLetter: sound => `Listen! Which letter says ${sound}?`,
     whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?", whatIsIt: "Listen! What is it?", whatWeather: "Listen! What is the weather like?",
+    blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     poison: "Careful! This mushroom is poisonous. Never eat it!",
     from: (n, country, many) => `The ${n} ${many ? "come" : "comes"} from ${country}!`,
     name: (n, bare) => bare ? `${cap(n)}!` : `The ${n}!`, // an item named on its own ("The cat!" is clearer than "Cat")
@@ -28,6 +29,8 @@ const TEXT = {
       listenKitchen: ["What is that sound?", "Hear the toaster, the kettle or the microwave, find it"],
       listenTransport: ["What is that sound?", "Hear a siren, a train or a plane, find it"],
       listenWeather: ["What is the weather like?", "Hear the rain, the wind or the thunder, find it"],
+      nameLetters: ["Letter names", "Hear the name of a letter, find it"],
+      nameSyllables: ["Read the syllable", "Hear a syllable, find it"],
       listenLetters: ["Letter sounds", "Hear a sound like sss or mmm, find the letter"],
       play: ["Play music", "Tap an instrument, play the rainbow keys"],
       explore: ["Discover", "Tap a picture to hear its name and its sound"],
@@ -70,6 +73,7 @@ const TEXT = {
     who: sound => `Qui fait ${sound} ?`, says: (n, sound, like) => `${cap(n)} fait ${sound}${like ? `, comme ${like}` : ""} !`,
     whichLetter: sound => `Écoute ! Quelle lettre fait ${sound} ?`,
     whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?", whatIsIt: "Écoute ! Qu'est-ce que c'est ?", whatWeather: "Écoute ! Quel temps fait-il ?",
+    blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
     // "la France" -> "de France", "l'Italie" -> "d'Italie", "le Japon" -> "du Japon", "les États-Unis" -> "des États-Unis"
     from: (n, country) => `${cap(n)} ${n.startsWith("les ") ? "viennent" : "vient"} ${/^(la|le|les) |^l'/.test(country) ? country.replace(/^la /, "de ").replace(/^l'/, "d'").replace(/^le /, "du ").replace(/^les /, "des ") : (/^[aeiouyhâéèêîïôûAEIOUYHÂÉÈÊÎÏÔÛ]/.test(country) ? "d'" : "de ") + country} !`,
@@ -89,6 +93,8 @@ const TEXT = {
       listenKitchen: ["Quel est ce bruit ?", "Écoute le grille-pain, la bouilloire ou le micro-ondes, trouve-le"],
       listenTransport: ["Quel est ce bruit ?", "Écoute une sirène, un train ou un avion, trouve-le"],
       listenWeather: ["Quel temps fait-il ?", "Écoute la pluie, le vent ou l'orage, trouve-le"],
+      nameLetters: ["Le nom des lettres", "Écoute le nom d'une lettre, trouve-la"],
+      nameSyllables: ["Lis la syllabe", "Écoute une syllabe, trouve-la"],
       listenLetters: ["Le son des lettres", "Écoute un son comme sss ou mmm, trouve la lettre"],
       play: ["Joue de la musique", "Choisis un instrument, joue sur l'arc-en-ciel"],
       explore: ["Découvre", "Touche une image pour entendre son nom et son bruit"],
@@ -131,6 +137,7 @@ const TEXT = {
     who: sound => `Wer macht ${sound}?`, says: (n, sound, like) => `${cap(n)} macht ${sound}${like ? `, wie ${like}` : ""}!`,
     whichLetter: sound => `Hör zu! Welcher Buchstabe macht ${sound}?`,
     whereAreWe: "Hör zu! Wo sind wir?", whoIsIt: "Hör zu! Wer ist das?", whatIsIt: "Hör zu! Was ist das?", whatWeather: "Hör zu! Wie ist das Wetter?",
+    blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     poison: "Achtung! Dieser Pilz ist giftig. Niemals essen!",
     // "aus Italien", "aus der Schweiz", "aus dem Iran", "aus den USA"
     from: (n, country, many, countryMany) => `${cap(n)} ${many ? "kommen" : "kommt"} aus ${countryMany ? country.replace(/^die /, "den ").replace(/([^nsA-Z])$/, "$1n")
@@ -151,6 +158,8 @@ const TEXT = {
       listenKitchen: ["Was ist das für ein Geräusch?", "Hör den Toaster, den Wasserkocher oder die Mikrowelle, finde sie"],
       listenTransport: ["Was ist das für ein Geräusch?", "Hör eine Sirene, einen Zug oder ein Flugzeug, finde es"],
       listenWeather: ["Wie ist das Wetter?", "Hör den Regen, den Wind oder den Donner, finde es"],
+      nameLetters: ["Buchstabennamen", "Hör den Namen eines Buchstabens, finde ihn"],
+      nameSyllables: ["Lies die Silbe", "Hör eine Silbe, finde sie"],
       listenLetters: ["Laute der Buchstaben", "Hör einen Laut wie sss oder mmm, finde den Buchstaben"],
       play: ["Musik machen", "Wähl ein Instrument, spiel auf den Regenbogentasten"],
       explore: ["Entdecken", "Tipp auf ein Bild, um seinen Namen und sein Geräusch zu hören"],
@@ -193,6 +202,7 @@ const TEXT = {
     who: sound => `Chi fa ${sound}?`, says: (n, sound, like) => `${cap(n)} fa ${sound}${like ? `, come ${like}` : ""}!`,
     whichLetter: sound => `Ascolta! Quale lettera fa ${sound}?`,
     whereAreWe: "Ascolta! Dove siamo?", whoIsIt: "Ascolta! Chi è?", whatIsIt: "Ascolta! Che cos'è?", whatWeather: "Ascolta! Che tempo fa?",
+    blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     poison: "Attenzione! Questo fungo è velenoso. Non mangiarlo mai!",
     // "dall'Italia", "dalla Francia", "dal Giappone", "dagli Stati Uniti", "da Cuba"
     from: (n, country, many) => `${cap(n)} ${many ? "vengono" : "viene"} ${/^(il|lo|la|i|gli|le) |^l'/.test(country)
@@ -214,6 +224,8 @@ const TEXT = {
       listenKitchen: ["Che rumore è?", "Ascolta il tostapane, il bollitore o il microonde, trovalo"],
       listenTransport: ["Che rumore è?", "Ascolta una sirena, un treno o un aereo, trovalo"],
       listenWeather: ["Che tempo fa?", "Ascolta la pioggia, il vento o il tuono, trovalo"],
+      nameLetters: ["I nomi delle lettere", "Ascolta il nome di una lettera, trovala"],
+      nameSyllables: ["Leggi la sillaba", "Ascolta una sillaba, trovala"],
       listenLetters: ["I suoni delle lettere", "Ascolta un suono come sss o mmm, trova la lettera"],
       play: ["Suona la musica", "Scegli uno strumento, suona i tasti arcobaleno"],
       explore: ["Scopri", "Tocca un'immagine per sentire il suo nome e il suo suono"],

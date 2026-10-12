@@ -22,6 +22,7 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   const likeOf = item => item.like && item.like[k];
   const manyOf = item => lang === "en" || lang === "fr" ? item.many : !!(item.plural && item.plural[lang]);
   const extra = item => soundOf(item) ? T.says(item[lang], soundOf(item), likeOf(item)) : item.poison ? T.poison
+    : item.blend ? T.blend(item.blend[0], item.blend[1], item[lang])
     : item.from ? (c => T.from(item[lang], c[lang], manyOf(item), manyOf(c)))(COUNTRIES.find(c => c.id === item.from)) : "";
   const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, ...T.levels]);
   for (const t of TOPICS) {

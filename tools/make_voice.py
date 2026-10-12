@@ -38,8 +38,29 @@ LETTER_PHONEMES = {
            "vu": "vu", "zeta": "ˈdzɛːta", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
 }
 
-def spoken_form(text, lang):
+# Syllables (app/topics.js SYLLABLES) are read as sounds: a consonant alone is stretched ("mmm") or said with a
+# short schwa ("puh"), and a syllable is consonant + vowel ("ma"), so "m… a… ma!" sounds out and blends.
+SYL_CONSONANTS = {"m": "m", "l": "l", "r": {"en": "ɹ", "fr": "ʁ", "de": "ʁ", "it": "r"}, "s": "s", "f": "f", "n": "n", "v": "v",
+                  "p": "p", "t": "t", "b": "b", "d": "d"}
+SYL_VOWELS = {"en": {"a": "æ", "e": "ɛ", "i": "ɪ", "o": "ɒ", "u": "ʌ"}, "fr": {"a": "a", "e": "ə", "i": "i", "o": "o", "u": "y"},
+              "de": {"a": "a", "e": "e", "i": "i", "o": "o", "u": "u"}, "it": {"a": "a", "e": "e", "i": "i", "o": "o", "u": "u"}}
+
+def syllable_phonemes(token, lang):
+    c = lambda ch: SYL_CONSONANTS[ch][lang] if isinstance(SYL_CONSONANTS[ch], dict) else SYL_CONSONANTS[ch]
+    t = token.lower()
+    if len(t) == 2 and t[0] in SYL_CONSONANTS and t[1] in SYL_VOWELS[lang]:
+        return c(t[0]) + SYL_VOWELS[lang][t[1]]
+    if len(t) == 1 and t in SYL_VOWELS[lang]:
+        return SYL_VOWELS[lang][t]
+    if len(t) == 1 and t in SYL_CONSONANTS:
+        return c(t) + ("ːː" if t in "mlrsfnv" else "ə")
+    return None
+
+def spoken_form(text, lang, pack=None):
     """What the synthesizer reads, when the written sentence would be mispronounced."""
+    if pack == "syllables":
+        return re.sub(r"(?<![\w'’])([A-Za-z]{1,2})(?![\w'’])",
+                      lambda m: f"[[ {p} ]]" if (p := syllable_phonemes(m.group(1), lang)) else m.group(1), text)
     if lang == "en":
         text = text.replace("T. rex", "T-Rex")
     # "The letter S says sss", "Das S macht sss", "La S fa sss": the sound as phonemes
@@ -110,7 +131,7 @@ def main(build, check, only, check_all=False):
         for pack, sentences in packs.items():
             data = {}
             for text in sentences:
-                spoken = spoken_form(text, lang)
+                spoken = spoken_form(text, lang, pack)
                 key = f"{VOICES[lang]}|{LENGTH_SCALE}|{spoken}" + ("|stretched" if "[[" in spoken else "")
                 h = hashlib.sha1(key.encode()).hexdigest()[:16]
                 wav, mp3 = os.path.join(cache, h + ".wav"), os.path.join(cache, f"{h}.{ENCODING}.mp3")

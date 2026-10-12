@@ -8,7 +8,7 @@ const CONFETTI = {
   instruments: ["🎵", "🎶", "⭐", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
   dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"], herbs: ["🌿", "🍃", "⭐", "✨"],
-  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"],
+  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"], syllables: ["🔤", "📖", "⭐", "✨"],
   numbers: ["🔢", "⭐", "🎉", "✨"], transport: ["🚗", "⭐", "🎉", "✨"], weather: ["☀️", "🌈", "⭐", "✨"],
   colors: ["🎨", "🌈", "⭐", "✨"], shapes: ["🔷", "⭐", "🎉", "✨"], clothes: ["👕", "⭐", "🎉", "✨"], jobs: ["👷", "⭐", "🎉", "✨"],
   dishes: ["🍕", "🍰", "⭐", "✨"], countries: ["🌍", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
@@ -346,6 +346,7 @@ function gamePool() {
 // what the voice adds after naming an item: an animal's or dinosaur's sound, or a mushroom warning
 function extra(item) {
   if (soundOf(item)) return T().says(nameOf(item), soundOf(item), likeOf(item));
+  if (item.blend) return T().blend(item.blend[0], item.blend[1], nameOf(item)); // "m… a… ma!"
   if (item.poison) return T().poison;
   if (item.from) { const c = ITEMS.get(item.from); return T().from(nameOf(item), c[lang], manyOf(item), manyOf(c)); }
   return "";
@@ -520,7 +521,8 @@ function renderTopic() {
 
 // a game's title and subtitle; the listening game is named after what you hear
 function modeText(t, m) {
-  const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters", transport: "listenTransport", weather: "listenWeather" }[t.id] || "listenAnimals" : m;
+  const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters", transport: "listenTransport", weather: "listenWeather" }[t.id] || "listenAnimals"
+    : m === "name" ? { letters: "nameLetters", syllables: "nameSyllables" }[t.id] || m : m;
   return T().modes[key];
 }
 
@@ -799,6 +801,8 @@ function sayItem() {
   const q = ++questionId;
   bounce();
   if (hasRecording(playing)) say(T().name(nameOf(playing), topic.bare), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
+  // letters and syllables: the sound first ("The letter S says sss, like snake!", "m… a… ma!")
+  else if (soundOf(playing) && topic.id === "letters" || playing.blend) say(extra(playing));
   else say([T().name(nameOf(playing), topic.bare), extra(playing)]);
 }
 

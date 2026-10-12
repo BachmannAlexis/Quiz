@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Draw the ABC pictures (pictures/letter-a.svg … letter-z.svg, a big capital and its small letter)
 the numbers 1 to 100 (pictures/number-*.svg: the digits above as many dots and sticks of ten to count),
-the colours (pictures/color-*.svg, a paint splash) and the shapes (pictures/shape-*.svg).
+the colours (pictures/color-*.svg, a paint splash), the shapes (pictures/shape-*.svg) and the syllables
+(pictures/syl-*.svg, consonant in blue and vowel in red).
 
 Usage: python3 tools/make_letters.py
 Needs fonttools and brotli (pip install fonttools brotli). The letters are Fredoka, the app's font
@@ -58,6 +59,7 @@ def main():
                f'  <g fill="{color}" opacity=".6">{small}</g>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"letter-{ch.lower()}.svg"), "w").write(svg)
     print("26 letters")
+    syllables(f, cap)
     for n in range(1, 11):
         color = COLORS[(n - 1) % len(COLORS)]
         digits = [glyph(f, ch) for ch in str(n)]
@@ -188,6 +190,26 @@ def colors():
                f'  <ellipse cx="48" cy="44" rx="12" ry="7" fill="{shine}" opacity=".35" transform="rotate(-30 48 44)"/>\n</svg>\n')
         open(os.path.join(ROOT, "pictures", f"color-{name}.svg"), "w").write(svg)
     print(len(COLOR_SWATCHES), "colours")
+
+SYL_CONSONANTS, SYL_VOWELS = "mlrsfnvptbd", "aeiou"  # as in app/topics.js SYLLABLES
+
+def syllables(f, cap):
+    """syllable cards (pictures/syl-ma.svg): the consonant in blue, the vowel in red, small letters"""
+    n = 0
+    for c in SYL_CONSONANTS:
+        for v in SYL_VOWELS:
+            parts, x, h, gap = [], 0, 74, 4
+            glyphs = [glyph(f, c), glyph(f, v)]
+            widths = [place(p, b, 0, 0, h, cap)[1] for p, b in glyphs]
+            if sum(widths) + gap > 116:
+                h *= (116 - gap) / sum(widths); widths = [w * h / 74 for w in widths]
+            x = (128 - sum(widths) - gap) / 2
+            for (p, b), w, color in zip(glyphs, widths, ["#1e63c9", "#e53935"]):
+                parts.append(f'<g fill="{color}">{place(p, b, x, 64 + h * 0.36, h, cap)[0]}</g>'); x += w + gap
+            open(os.path.join(ROOT, "pictures", f"syl-{c}{v}.svg"), "w").write(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n  ' + "\n  ".join(parts) + "\n</svg>\n")
+            n += 1
+    print(n, "syllables")
 
 def shapes():
     import math

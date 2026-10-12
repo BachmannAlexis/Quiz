@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<path fill="#4fc3f7" d="M2 108 C12 100 22 100 32 106 C42 100 54 100 64 106 C74 100 86 100 96 106 C106 100 118 100 126 106 L126 122 L2 122 Z"/>
+<path fill="#0288d1" d="M2 116 C14 110 24 112 34 116 C46 110 58 112 68 116 C80 110 92 112 102 116 C112 110 120 112 126 114 L126 124 L2 124 Z"/>
+<path fill="#fff" d="M8 104 C14 100 20 100 24 104 C18 103 12 104 8 106 Z M100 104 C106 100 112 100 118 104 C112 103 106 104 100 106 Z"/>
+<path fill="#fdd835" d="M10 100 C8 96 14 94 20 94 L112 92 C118 92 120 96 116 99 C112 101 104 102 96 102 L20 103 C14 103 11 102 10 100 Z"/>
+<path fill="#f9a825" d="M14 101 L112 98 C110 100 104 102 96 102 L20 103 Z"/>
+<path fill="#e53935" d="M62 6 L58 92 L14 82 C20 56 38 26 62 6 Z"/>
+<path fill="#fdd835" d="M61 26 L59 54 L28 50 C36 40 46 32 61 26 Z"/>
+<path fill="#1e88e5" d="M59 54 L58 76 L18 72 C20 64 24 56 28 50 Z"/>
+<path fill="#7e57c2" d="M58 76 L58 92 L14 82 C15 78 16 75 18 72 Z"/>
+<path fill="#fff" opacity=".35" d="M62 6 C46 22 34 40 26 60 L30 60 C38 40 48 24 62 6 Z"/>
+<path stroke="#455a64" stroke-width="3" stroke-linecap="round" d="M62 6 L58 94"/>
+<path fill="none" stroke="#37474f" stroke-width="3" stroke-linecap="round" d="M60 54 C48 50 30 58 18 72 M60 58 C46 60 30 66 18 72"/>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path stroke="#ffca28" stroke-width="7" d="M80 46 L68 52 L62 54"/>
+<path stroke="#f0a007" stroke-width="7" d="M82 52 L72 58 L63 58"/>
+<path stroke="#212121" stroke-width="11" d="M86 70 L82 82 L76 94 M90 70 L96 82 L94 94"/>
+</g>
+<path fill="#00acc1" d="M76 44 C78 38 90 38 92 46 L94 72 C88 75 82 75 82 72 Z"/>
+<path fill="#00838f" d="M88 44 C91 46 92 52 92 60 L94 72 C91 73 89 74 87 74 Z"/>
+<circle cx="88" cy="32" r="10" fill="#ffca28"/>
+<path fill="#6d4c41" d="M78 30 C76 20 98 18 98 30 C95 25 90 24 88 25 C84 23 80 25 78 30 Z"/>
+<circle cx="84" cy="33" r="1.6" fill="#404040"/>
+<ellipse cx="74" cy="96" rx="6" ry="3" fill="#ffca28"/><ellipse cx="96" cy="96" rx="6" ry="3" fill="#ffca28"/>
+</svg>

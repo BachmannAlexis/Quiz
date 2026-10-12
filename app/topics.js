@@ -396,6 +396,20 @@ const FOOD = [
   { id: "pumpkin",      en: "pumpkin",      fr: "la citrouille",      family: "pumpkin", styles: [VEG] },
   { id: "artichoke",    en: "artichoke",    fr: "l'artichaut",        family: "artichoke", styles: [VEG] },
   { id: "asparagus",    en: "asparagus",    fr: "les asperges",       family: "leek",   styles: [VEG] },
+  { id: "blackberry", en: "blackberry", fr: "la mûre", family: "berry", styles: [FRUIT] },
+  { id: "redcurrant", en: "redcurrants", fr: "les groseilles", family: "berry", styles: [FRUIT], many: true },
+  { id: "apricot", en: "apricot", fr: "l'abricot", family: "peach", styles: [FRUIT] },
+  { id: "fig", en: "fig", fr: "la figue", family: "fig", styles: [FRUIT] },
+  { id: "pomegranate", en: "pomegranate", fr: "la grenade", family: "pomegranate", styles: [FRUIT] },
+  { id: "papaya", en: "papaya", fr: "la papaye", family: "papaya", styles: [FRUIT] },
+  { id: "passion-fruit", en: "passion fruit", fr: "le fruit de la passion", family: "passion", styles: [FRUIT] },
+  { id: "lychee", en: "lychee", fr: "le litchi", family: "lychee", styles: [FRUIT] },
+  { id: "grapefruit", en: "grapefruit", fr: "le pamplemousse", family: "citrus", styles: [FRUIT] },
+  { id: "clementine", en: "clementine", fr: "la clémentine", family: "citrus", styles: [FRUIT] },
+  { id: "persimmon", en: "persimmon", fr: "le kaki", family: "kaki", styles: [FRUIT] },
+  { id: "quince", en: "quince", fr: "le coing", family: "pear", styles: [FRUIT] },
+  { id: "date", en: "dates", fr: "les dattes", family: "date", styles: [FRUIT], many: true },
+  { id: "dragon-fruit", en: "dragon fruit", fr: "le fruit du dragon", family: "dragon", styles: [FRUIT] },
 ];
 const FOOD_GROUPS = [
   { id: "all", pic: "strawberry", en: "All",        fr: "Tous" },
@@ -511,15 +525,37 @@ const LETTER_SOUNDS = {
   V: ["vvv", "vvv", "violin", "vache"], W: ["wuh", "oua", "whale", ""], X: ["ks", "ks", "fox", "xylophone"],
   Y: ["yuh", "i", "yellow", "yaourt"], Z: ["zzz", "zzz", "zebra", "zèbre"],
 };
+// Phonics: children learn the sound of each letter before its name, starting with the vowels and the sounds
+// that can be stretched (mmm, sss), then the short ones (b, t); the groups follow that order.
+const VOWELS = "vowels", STRETCH = "stretch", QUICK = "quick";
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
   const [en, fr, likeEn, likeFr] = LETTER_SOUNDS[c];
   return {
     id: "letter-" + c.toLowerCase(), en: "letter " + c, fr: "la lettre " + c,
     family: ["BDPRQ", "MNW", "EF", "OCGQ", "IJLT", "UV", "KXY"].find(f => f.includes(c)) || c,
     hears: "CKQ".includes(c) ? "k" : "IY".includes(c) ? "i" : c,
+    styles: ["AEIOUY".includes(c) ? VOWELS : "FLMNRSVZ".includes(c) ? STRETCH : QUICK],
     ...(en && fr ? { says: [en, fr], like: [likeEn, likeFr] } : {}),
   };
 });
+
+const LETTER_GROUPS = [
+  { id: "all",   pic: "letter-a", en: "All",          fr: "Toutes" },
+  { id: VOWELS,  pic: "letter-a", en: "Vowels",       fr: "Les voyelles" },
+  { id: STRETCH, pic: "letter-s", en: "Long sounds",  fr: "Les sons longs" },
+  { id: QUICK,   pic: "letter-b", en: "Short sounds", fr: "Les sons courts" },
+];
+
+// ---------- Syllables (pictures/syl-*.svg, tools/make_letters.py): blending a consonant and a vowel, the next
+// step in learning to read. The voice says them as sounds ("mmm… a… ma!"), see LETTER_PHONEMES in tools/make_voice.py.
+const SYLLABLES = "mlrsfnvptbd".split("").flatMap(c => "aeiou".split("").map(v => ({
+  id: `syl-${c}${v}`, en: c + v, fr: c + v, family: `syl-${c}${v}`, blend: [c, v], styles: ["ptbd".includes(c) ? QUICK : STRETCH],
+})));
+const SYLLABLE_GROUPS = [
+  { id: "all",   pic: "syl-ma", en: "All",          fr: "Toutes" },
+  { id: STRETCH, pic: "syl-ma", en: "Long sounds",  fr: "Les sons longs" },
+  { id: QUICK,   pic: "syl-pa", en: "Short sounds", fr: "Les sons courts" },
+];
 
 // ---------- Numbers: the digit and as many dots (pictures/number-*.svg)
 // the names of 1 to 100, by the rules of each language ("vingt et un", "soixante et onze", "quatre-vingt-onze")
@@ -655,6 +691,20 @@ const SPORTS = [
   { id: "weightlifting", en: "weightlifting", fr: "l'haltérophilie", family: "gym", styles: [MORE] },
   { id: "mountain-biking", en: "mountain biking", fr: "le VTT", family: "wheel", styles: [MORE] },
   { id: "yoga", en: "yoga", fr: "le yoga", family: "gym", styles: [MORE] },
+  { id: "lacrosse", en: "lacrosse", fr: "la crosse", family: "ice", styles: [BALL] },
+  { id: "softball", en: "softball", fr: "le softball", family: "bat", styles: [BALL] },
+  { id: "wrestling", en: "wrestling", fr: "la lutte", family: "fight", styles: [MORE] },
+  { id: "fishing", en: "fishing", fr: "la pêche", family: "fish", styles: [WATER] },
+  { id: "cross-country-skiing", en: "cross-country skiing", fr: "le ski de fond", family: "snow", styles: [WINTER] },
+  { id: "juggling", en: "juggling", fr: "le jonglage", family: "juggle", styles: [MORE] },
+  { id: "hiking", en: "hiking", fr: "la randonnée", family: "walk", styles: [MORE] },
+  { id: "trampoline", en: "trampoline", fr: "le trampoline", family: "gym", styles: [MORE] },
+  { id: "karate", en: "karate", fr: "le karaté", family: "fight", styles: [MORE] },
+  { id: "petanque", en: "pétanque", fr: "la pétanque", family: "bowl", styles: [BALL, MORE] },
+  { id: "windsurfing", en: "windsurfing", fr: "la planche à voile", family: "board", styles: [WATER] },
+  { id: "water-skiing", en: "water skiing", fr: "le ski nautique", family: "board", styles: [WATER] },
+  { id: "karting", en: "go-karting", fr: "le karting", family: "kart", styles: [MORE] },
+  { id: "ski-jumping", en: "ski jumping", fr: "le saut à ski", family: "snow", styles: [WINTER] },
 ];
 const SPORT_GROUPS = [
   { id: "all",  pic: "soccer",   en: "All",          fr: "Tous" },
@@ -1225,7 +1275,8 @@ const TOPICS = [
   { id: "herbs",       pic: "basil",      en: "Herbs",      fr: "Herbes aromatiques", unit: ["herbs", "herbes"], color: "#388e3c", tint: "#e8f5e9", items: HERBS, modes: ["name", "explore"] },
   { id: "spices",      pic: "cinnamon",   en: "Spices",     fr: "Épices",      unit: ["spices", "épices"],           color: "#b5651d", tint: "#fbf0e4", items: SPICES, modes: ["name", "explore"] },
   { id: "kitchen",     pic: "toaster",    en: "Kitchen",    fr: "Cuisine",     unit: ["things", "objets"],          color: "#0e86a8", tint: "#e2f3f8", items: KITCHEN, groups: KITCHEN_GROUPS, modes: ["name", "listen", "explore"] },
-  { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS,     modes: ["name", "listen", "explore"] },
+  { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS, groups: LETTER_GROUPS, modes: ["listen", "explore", "name"] },
+  { id: "syllables",   pic: "syl-ma",     en: "Syllables",  fr: "Syllabes",    unit: ["syllables", "syllabes"],      color: "#00838f", tint: "#e0f4f5", items: SYLLABLES, groups: SYLLABLE_GROUPS, bare: true, modes: ["name", "explore"] },
   { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS, groups: NUMBER_GROUPS, modes: ["name", "explore"] },
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "explore"] },
   { id: "sports",      pic: "soccer",     en: "Sports",     fr: "Les sports",  unit: ["sports", "sports"],           color: "#2b7de9", tint: "#e3effd", items: SPORTS, groups: SPORT_GROUPS, bare: true, modes: ["name", "explore"] },

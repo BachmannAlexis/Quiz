@@ -53,9 +53,13 @@ const LEVELS = {
     hard: ["cooktop", "hood", "kitchen-scale", "juicer", "coffee-machine", "ladle", "grater", "colander", "spatula", "peeler"],
   },
   letters: {
-    easy: ["letter-a", "letter-b", "letter-c", "letter-d", "letter-e", "letter-i", "letter-l", "letter-m", "letter-o",
-      "letter-p", "letter-s", "letter-t"],
-    hard: ["letter-k", "letter-q", "letter-w", "letter-x", "letter-y", "letter-z"],
+    // phonics order: the vowels and the sounds that can be stretched first
+    easy: ["letter-a", "letter-i", "letter-o", "letter-u", "letter-e", "letter-m", "letter-s", "letter-l", "letter-r", "letter-f", "letter-n"],
+    hard: ["letter-k", "letter-q", "letter-w", "letter-x", "letter-y", "letter-z", "letter-j", "letter-h"],
+  },
+  syllables: {
+    easy: ["syl-ma", "syl-mi", "syl-mo", "syl-la", "syl-li", "syl-lo", "syl-ra", "syl-ri", "syl-ro", "syl-sa", "syl-si", "syl-so"],
+    hard: ["syl-pe", "syl-pu", "syl-te", "syl-tu", "syl-be", "syl-bu", "syl-de", "syl-du"],
   },
   numbers: {
     easy: ["number-1", "number-2", "number-3", "number-4", "number-5", "number-6", "number-7", "number-8", "number-9", "number-10"],

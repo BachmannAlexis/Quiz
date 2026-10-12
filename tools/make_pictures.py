@@ -56,6 +56,8 @@ NOTO = {
     "cricket-sport": "cricket-game", "field-hockey": "field-hockey", "billiards": "pool-8-ball", "frisbee": "flying-disc",
     "curling": "curling-stone", "water-polo": "person-playing-water-polo", "rowing": "person-rowing-boat",
     "weightlifting": "person-lifting-weights", "mountain-biking": "person-mountain-biking", "yoga": "person-in-lotus-position",
+    "lacrosse": "lacrosse", "softball": "softball", "wrestling": "people-wrestling", "fishing": "fishing-pole",
+    "cross-country-skiing": "skis", "juggling": "person-juggling",
     # transport
     "car": "automobile", "racing-car": "racing-car", "taxi": "taxi", "police-car": "police-car", "ambulance": "ambulance",
     "fire-engine": "fire-engine", "bus": "bus", "truck": "delivery-truck", "tractor": "tractor", "motorcycle": "motorcycle",
