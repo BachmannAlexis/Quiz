@@ -11,6 +11,7 @@ const TEXT = {
     whichLetter: sound => `Listen! Which letter says ${sound}?`,
     whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?", whatIsIt: "Listen! What is it?", whatWeather: "Listen! What is the weather like?",
     poison: "Careful! This mushroom is poisonous. Never eat it!",
+    from: (n, country, many) => `The ${n} ${many ? "come" : "comes"} from ${country}!`,
     name: (n, bare) => bare ? `${cap(n)}!` : `The ${n}!`, // an item named on its own ("The cat!" is clearer than "Cat")
     yes: (n, bare) => `Yes! ${bare ? cap(n) : `The ${n}`}!`, no: "Try again!", bravo: "Bravo!", bravoSaid: "Bravo! You did it!",
     flag: "🇬🇧 EN", voice: "en-US",
@@ -54,11 +55,13 @@ const TEXT = {
     creditsText: `Pictures from <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) and drawn for Pikolo. Real animal and kitchen recordings by Joseph Sardin from <a href="https://bigsoundbank.com" target="_blank" rel="noopener">BigSoundBank</a> (CC0, listed in <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Photos from <a href="https://www.inaturalist.org" target="_blank" rel="noopener">iNaturalist</a> and <a href="https://openverse.org" target="_blank" rel="noopener">Openverse</a> (CC0, CC BY, CC BY-SA, photographers listed in <a href="${SOURCE_URL}/blob/main/PHOTO-CREDITS.md" target="_blank" rel="noopener">PHOTO-CREDITS.md</a>). Instruments from VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, and the MusyngKite and GeneralUser GS sound banks. Voice recorded with Piper (LJ Speech, public domain; SIWIS, CC BY 4.0). Flags: Circle Flags (MIT). Font: Fredoka. Full credits and source on <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
   fr: {
-    where: (n, many) => `Où ${many ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
+    where: (n, many) => `Où ${many || n.startsWith("les ") ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
     who: sound => `Qui fait ${sound} ?`, says: (n, sound, like) => `${cap(n)} fait ${sound}${like ? `, comme ${like}` : ""} !`,
     whichLetter: sound => `Écoute ! Quelle lettre fait ${sound} ?`,
     whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?", whatIsIt: "Écoute ! Qu'est-ce que c'est ?", whatWeather: "Écoute ! Quel temps fait-il ?",
     poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
+    // "la France" -> "de France", "l'Italie" -> "d'Italie", "le Japon" -> "du Japon", "les États-Unis" -> "des États-Unis"
+    from: (n, country) => `${cap(n)} ${n.startsWith("les ") ? "viennent" : "vient"} ${/^(la|le|les) |^l'/.test(country) ? country.replace(/^la /, "de ").replace(/^l'/, "d'").replace(/^le /, "du ").replace(/^les /, "des ") : "de " + country} !`,
     name: n => cap(n),
     yes: n => `Oui ! C'est ${n} !`, no: "Essaie encore !", bravo: "Bravo !", bravoSaid: "Bravo ! Tu as réussi !",
     flag: "🇫🇷 FR", voice: "fr-FR",

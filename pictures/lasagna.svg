@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<ellipse cx="64" cy="104" rx="60" ry="18" fill="#cfd8dc"/>
+<ellipse cx="64" cy="102" rx="60" ry="18" fill="#fff"/>
+<ellipse cx="64" cy="102" rx="44" ry="12" fill="#eceff1"/>
+<path d="M20 56 V86 H84 V56 Z" fill="#f2c46d"/>
+<rect x="20" y="56" width="64" height="4.6" fill="#f2c46d"/><rect x="20" y="60" width="64" height="4.6" fill="#c62828"/><rect x="20" y="64" width="64" height="3.6" fill="#fff3e0"/><rect x="20" y="67" width="64" height="4.6" fill="#f2c46d"/><rect x="20" y="71" width="64" height="4.6" fill="#c62828"/><rect x="20" y="75" width="64" height="3.6" fill="#fff3e0"/><rect x="20" y="78" width="64" height="4.6" fill="#f2c46d"/><rect x="20" y="82" width="64" height="4.6" fill="#c62828"/><path d="M84 56 L108 38 L108 42.6 L84 60.6 Z" fill="#d9a84e"/><path d="M84 60 L108 42 L108 46.6 L84 64.6 Z" fill="#a31f1f"/><path d="M84 64 L108 46 L108 49.6 L84 67.6 Z" fill="#e8d6bd"/><path d="M84 67 L108 49 L108 53.6 L84 71.6 Z" fill="#d9a84e"/><path d="M84 71 L108 53 L108 57.6 L84 75.6 Z" fill="#a31f1f"/><path d="M84 75 L108 57 L108 60.6 L84 78.6 Z" fill="#e8d6bd"/><path d="M84 78 L108 60 L108 64.6 L84 82.6 Z" fill="#d9a84e"/><path d="M84 82 L108 64 L108 68.6 L84 86.6 Z" fill="#a31f1f"/>
+<path d="M20 86 H84 L108 68" fill="none" stroke="#b71c1c" stroke-width="2"/>
+<path d="M20 56 L44 38 H108 L84 56 Z" fill="#f4b740"/>
+<path d="M20 56 C26 52 30 58 36 54 C42 50 46 58 54 55 C62 52 66 58 74 54 C78 52 82 56 84 56" fill="#f4b740" stroke="#e09a2a" stroke-width="1"/>
+<g fill="#c0661f"><ellipse cx="48" cy="46" rx="5" ry="2.5"/><ellipse cx="74" cy="42" rx="4" ry="2"/><ellipse cx="90" cy="48" rx="5" ry="2.5"/><ellipse cx="62" cy="51" rx="3" ry="1.5"/></g>
+<g fill="#e53935"><ellipse cx="36" cy="51" rx="4" ry="2"/><ellipse cx="96" cy="41" rx="4" ry="2"/><ellipse cx="68" cy="46" rx="3" ry="1.6"/></g>
+<g fill="#43a047"><path d="M78 46 C82 40 90 40 92 44 C88 48 82 48 78 46 Z"/><path d="M78 46 C76 40 70 38 66 40 C68 45 74 47 78 46 Z"/></g>
+<path d="M22 60 V82" stroke="#fff" stroke-width="2" opacity=".4"/>
+</svg>

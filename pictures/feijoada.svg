@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <ellipse cx="60" cy="118" rx="48" ry="5" fill="#000" opacity=".12"/>
+  <path d="M6 54 C2 54 2 66 8 66 L14 66 L14 56 Z M114 54 C118 54 118 66 112 66 L106 66 L106 56 Z" fill="#a0522d"/>
+  <path d="M12 52 C12 92 30 114 60 114 C90 114 108 92 108 52 Z" fill="#b5602e"/>
+  <path d="M20 62 C22 86 34 102 50 108" fill="none" stroke="#d98b55" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="60" cy="52" rx="50" ry="16" fill="#c97440"/>
+  <ellipse cx="60" cy="53" rx="44" ry="12" fill="#2b1d1a"/>
+  <g fill="#1a1110"><ellipse cx="34" cy="54" rx="4" ry="2.6"/><ellipse cx="50" cy="60" rx="4" ry="2.6"/><ellipse cx="80" cy="58" rx="4" ry="2.6"/><ellipse cx="70" cy="46" rx="4" ry="2.6"/><ellipse cx="88" cy="50" rx="3.5" ry="2.4"/></g>
+  <g fill="#4e3a35"><circle cx="36" cy="53" r="1"/><circle cx="52" cy="59" r="1"/><circle cx="82" cy="57" r="1"/><circle cx="72" cy="45" r="1"/></g>
+  <g>
+    <ellipse cx="44" cy="50" rx="7" ry="4.5" fill="#8d2b2b"/><ellipse cx="44" cy="49" rx="5.5" ry="3.3" fill="#d4686a"/>
+    <ellipse cx="64" cy="56" rx="7" ry="4.5" fill="#8d2b2b"/><ellipse cx="64" cy="55" rx="5.5" ry="3.3" fill="#d4686a"/>
+    <ellipse cx="82" cy="48" rx="6.5" ry="4.2" fill="#8d2b2b"/><ellipse cx="82" cy="47" rx="5" ry="3" fill="#d4686a"/>
+    <g fill="#f8bbd0"><circle cx="43" cy="48" r="1"/><circle cx="46" cy="50" r="1"/><circle cx="63" cy="54" r="1"/><circle cx="66" cy="56" r="1"/><circle cx="81" cy="46" r="1"/><circle cx="84" cy="48" r="1"/></g>
+  </g>
+  <path d="M28 58 C32 54 36 58 40 56" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M96 106 A24 24 0 0 1 120 82 L120 106 Z" fill="#fb8c00" transform="rotate(0)"/>
+  <g transform="translate(120 106)">
+    <path d="M-30 0 A30 30 0 0 1 0 -30 L0 0 Z" fill="#f57c00"/>
+    <path d="M-26 0 A26 26 0 0 1 0 -26 L0 0 Z" fill="#fff3e0"/>
+    <path d="M-23 0 A23 23 0 0 1 0 -23 L0 0 Z" fill="#ffa726"/>
+    <path d="M0 0 L-23 0 M0 0 L-20 -11.5 M0 0 L-11.5 -20 M0 0 L0 -23" stroke="#fff3e0" stroke-width="2"/>
+  </g>
+</svg>

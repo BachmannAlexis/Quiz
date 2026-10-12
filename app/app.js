@@ -322,6 +322,7 @@ function gamePool() {
 function extra(item) {
   if (item.says) return T().says(nameOf(item), soundOf(item), item.like && item.like[lang === "en" ? 0 : 1]);
   if (item.poison) return T().poison;
+  if (item.from) return T().from(nameOf(item), COUNTRIES.find(c => c.id === item.from)[lang], item.many);
   return "";
 }
 

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <g id="p">
+      <path d="M-26 0 L0 12 L0 34 L-26 22 Z" fill="#f4c66e"/>
+      <path d="M26 0 L0 12 L0 34 L26 22 Z" fill="#e3a94a"/>
+      <g stroke="#b9741c" stroke-width="1.6"><path d="M-26 6 L0 18 L26 6 M-26 11 L0 23 L26 11 M-26 16 L0 28 L26 16"/></g>
+      <g stroke="#6aa84f" stroke-width="2"><path d="M-26 13.5 L0 25.5 L26 13.5"/></g>
+      <path d="M-26 0 L0 -12 L26 0 L0 12 Z" fill="#d98e26"/>
+      <path d="M-14 0 L0 -6 L14 0 L0 6 Z" fill="#e8a53e"/>
+      <g fill="#7cb342"><circle cx="-4" cy="-1" r="2.2"/><circle cx="3" cy="1" r="2"/><circle cx="0" cy="-4" r="1.8"/><circle cx="6" cy="-3" r="1.5"/><circle cx="-7" cy="2" r="1.5"/><circle cx="1" cy="4" r="1.5"/></g>
+      <g fill="#c5e1a5"><circle cx="-4" cy="-1.6" r=".8"/><circle cx="3" cy=".4" r=".8"/></g>
+    </g>
+  </defs>
+  <ellipse cx="64" cy="100" rx="60" ry="20" fill="#e0e0e0"/>
+  <ellipse cx="64" cy="98" rx="54" ry="16" fill="#fafafa"/>
+  <use href="#p" transform="translate(64 38)"/>
+  <use href="#p" transform="translate(38 66)"/>
+  <use href="#p" transform="translate(90 66)"/>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<ellipse cx="64" cy="116" rx="40" ry="7" fill="#b0bec5" opacity=".5"/>
+<path d="M8 54 C10 94 36 114 64 114 C92 114 118 94 120 54 Z" fill="#fafafa"/>
+<path d="M92 72 C108 70 116 64 120 54 C118 94 92 114 64 114 C84 104 94 90 92 72Z" fill="#e0e0e0"/>
+<path d="M12 72 C26 80 102 80 116 72 L114 80 C100 88 28 88 14 80Z" fill="#1e88e5"/>
+<ellipse cx="64" cy="54" rx="56" ry="22" fill="#eeeeee"/>
+<ellipse cx="64" cy="55" rx="50" ry="18" fill="#b71c1c"/>
+<ellipse cx="64" cy="53" rx="46" ry="14" fill="#d84315"/>
+<g transform="translate(42 52) rotate(12)"><rect x="-8" y="-8" width="16" height="16" rx="3.6" fill="#5d2e1a"/><rect x="-8" y="-8" width="16" height="8" rx="3.6" fill="#8d4a2c"/></g><g transform="translate(76 46) rotate(-10)"><rect x="-7" y="-7" width="14" height="14" rx="3.1" fill="#5d2e1a"/><rect x="-7" y="-7" width="14" height="7" rx="3.1" fill="#8d4a2c"/></g><g transform="translate(86 62) rotate(20)"><rect x="-7" y="-7" width="14" height="14" rx="3.1" fill="#5d2e1a"/><rect x="-7" y="-7" width="14" height="7" rx="3.1" fill="#8d4a2c"/></g>
+<g transform="translate(60 62) rotate(-8)"><rect x="-7" y="-7" width="14" height="14" rx="3.1" fill="#e9b23c"/><rect x="-7" y="-7" width="14" height="7" rx="3.1" fill="#f7d36b"/></g><g transform="translate(30 62) rotate(15)"><rect x="-6" y="-6" width="12" height="12" rx="2.7" fill="#e9b23c"/><rect x="-6" y="-6" width="12" height="6" rx="2.7" fill="#f7d36b"/></g><g transform="translate(98 50) rotate(0)"><rect x="-6" y="-6" width="12" height="12" rx="2.7" fill="#e9b23c"/><rect x="-6" y="-6" width="12" height="6" rx="2.7" fill="#f7d36b"/></g><g transform="translate(56 44) rotate(25)"><rect x="-5" y="-5" width="10" height="10" rx="2.2" fill="#e9b23c"/><rect x="-5" y="-5" width="10" height="5" rx="2.2" fill="#f7d36b"/></g>
+<g fill="#fb8c00"><circle cx="72" cy="60" r="4"/><circle cx="44" cy="42" r="3.5"/></g>
+<g fill="#43a047"><circle cx="50" cy="56" r="1.8"/><circle cx="68" cy="52" r="1.6"/><circle cx="82" cy="54" r="1.8"/><circle cx="38" cy="58" r="1.4"/><circle cx="92" cy="58" r="1.4"/></g>
+<path d="M16 70 C18 88 30 102 44 108" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg>

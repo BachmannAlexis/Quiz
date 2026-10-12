@@ -10,7 +10,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ctx = {};
 vm.createContext(ctx);
 for (const f of ["app/topics.js", "app/words.js"]) vm.runInContext(fs.readFileSync(path.join(root, f), "utf8"), ctx);
-const { TOPICS, TEXT, cap } = vm.runInContext("({ TOPICS, TEXT, cap })", ctx);
+const { TOPICS, TEXT, cap, COUNTRIES } = vm.runInContext("({ TOPICS, TEXT, cap, COUNTRIES })", ctx);
 
 const out = {};
 for (const lang of ["en", "fr"]) {
@@ -18,7 +18,8 @@ for (const lang of ["en", "fr"]) {
   const soundOf = item => item.says && item.says[lang === "en" ? 0 : 1];
   // same as extra() in app.js
   const likeOf = item => item.like && item.like[lang === "en" ? 0 : 1];
-  const extra = item => item.says ? T.says(item[lang], soundOf(item), likeOf(item)) : item.poison ? T.poison : "";
+  const extra = item => item.says ? T.says(item[lang], soundOf(item), likeOf(item)) : item.poison ? T.poison
+    : item.from ? T.from(item[lang], COUNTRIES.find(c => c.id === item.from)[lang], item.many) : "";
   const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample]);
   for (const t of TOPICS) {
     common.add(t[lang]);
