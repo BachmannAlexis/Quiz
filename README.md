@@ -4,7 +4,7 @@
 
 **A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English, French, German or Italian.
 
-- 955 pictures in 22 topics, drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
+- 1,258 pictures in 24 topics, each with three levels (easy, medium, hard), drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
 - A recorded voice in English, French, German and Italian, the same on every device
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
@@ -27,23 +27,25 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 |---|---|---|
 | 🐄 Animals | 106, 26 of them with a real recording (cow, horse, rooster, owl, robin, bee…) and 24 with what they say ("the cow says moo") | farm, wild, sea, birds, bugs |
 | 🎻 Music | 55 instruments, each with a short tune in its style | orchestra, jazz, rock & pop, world |
-| 🦖 Dinosaurs | 12 (with the mammoth, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
+| 🦖 Dinosaurs | 20 (with the mammoth, the sabre-toothed cat, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
 | 🌻 Flowers | 36 | |
-| 🌳 Trees | 19 | |
+| 🌳 Trees | 28 | |
 | 🍄 Mushrooms | 24, including the chanterelle and four boletes | |
-| 🍓 Fruits & vegetables | 44 | fruits, vegetables |
-| 🌿 Herbs & spices | 25 | herbs, spices |
-| 🍞 Kitchen | 26, 10 of them with a real recording (toaster, kettle, microwave, mixer, frying pan…) | appliances, utensils |
-| 🔤 ABC | 26 letters: the voice says "the letter B"; letters that look alike (b, d, p) never appear together. Listening game: hear a letter's sound ("sss", "mmm", "buh") and find the letter; then "S says sss, like snake!" | |
-| 🔢 Numbers | 1 to 10 with as many dots to count, 11 to 19 as a stick of ten and dots, and the tens (10 to 100) with sticks of ten | 1 to 10, 11 to 20, tens |
+| 🍓 Fruits & vegetables | 72 (fig, pomegranate, lychee, rhubarb, fennel, chickpeas…) | fruits, vegetables |
+| 🌿 Herbs | 28 (basil, chervil, borage, lemon balm, wild garlic…) | |
+| 🫚 Spices | 33 (cinnamon, saffron, cardamom, sumac, piment d'Espelette…) | |
+| 🍞 Kitchen | 35, 10 of them with a real recording (toaster, kettle, microwave, mixer, frying pan…) | appliances, utensils |
+| 🔤 ABC | 26 letters, taught by their sounds first (phonics): the first game plays a sound ("sss", "mmm", "buh") and the child finds the letter, then "S says sss, like snake!"; a second game uses the letter names. Letters that look alike (b, d, p) never appear together | vowels, long sounds (m, s, l…), short sounds (b, t, p…) |
+| 📖 Syllables | 55 (ma, li, ro, pu…), consonant in blue and vowel in red: the voice says a syllable and the child finds it; in Discover the voice sounds it out and blends it ("mmm… a… ma!") | long sounds, short sounds |
+| 🔢 Numbers | 1 to 100, with as many dots and sticks of ten to count | 1 to 10, 11 to 20, 21 to 50, 51 to 100, tens |
 | 🖐️ My body | 42: 30 outside (eyebrow, cheek, elbow, ankle, nails…) and 12 inside (heart, brain, lungs, stomach, liver, kidneys, intestines, skeleton…) | outside, inside |
-| ⚽ Sports | 30, with ball games, winter, water and more | ball games, winter, water, more |
-| 🚗 Transport | 25, 17 with real sounds (sirens, horns, train, plane, helicopter…) and a listening game | road, rails, air, water |
-| ⛅ Weather | 15, with rain, storm, thunder and wind sounds and a listening game | |
+| ⚽ Sports | 57, with ball games, winter, water and more | ball games, winter, water, more |
+| 🚗 Transport | 38, 17 with real sounds (sirens, horns, train, plane, helicopter…) and a listening game | road, rails, air, water |
+| ⛅ Weather | 20, with rain, storm, thunder and wind sounds and a listening game | |
 | 🎨 Colours | 23 paint splashes (with turquoise, navy, gold, silver, burgundy…) | |
-| 🔷 Shapes | 10 | |
-| 👕 Clothes | 26 | |
-| 👷 Jobs | 15 | |
+| 🔷 Shapes | 20, with 3D shapes (cube, sphere, cylinder, cone, pyramid) | |
+| 👕 Clothes | 43 | |
+| 👷 Jobs | 29 | |
 | 🍕 Dishes | 149 dishes, 41 from France (quiche, cassoulet, tartiflette, macarons, paris-brest…) and 86 from around the world (couscous, phở, mafé, feijoada, plov…); the voice says where each one comes from ("Couscous comes from Morocco!") | savory, sweet, from France, world |
 | 🌍 Countries | 195, every country of the UN plus the Vatican and Palestine: the flag (look-alike flags never together), and for 50 of them a landmark in photo mode (Eiffel Tower, Machu Picchu…) | Europe, Americas, Asia, Oceania, Africa |
 | 🏔️ Landscapes | 24, 16 of them with real sounds (waves, stream, wind, birds, rain, thunder, bubbles, a city) | |

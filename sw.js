@@ -1,6 +1,6 @@
 // Offline support: keeps the app's files in the browser so Pikolo opens without a connection.
 // Bump VERSION when the list of files changes.
-const VERSION = "pikolo-14";
+const VERSION = "pikolo-15";
 const FILES = [
   "./", "index.html", "manifest.webmanifest",
   "app/font.css", "app/style.css", "app/app.js", "app/words.js", "app/lang/de.js", "app/lang/it.js", "app/topics.js", "app/levels.js", "app/pictures.js", "app/sounds.js",

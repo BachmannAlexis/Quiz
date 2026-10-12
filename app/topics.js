@@ -453,6 +453,14 @@ const HERBS = [
   { id: "savory", en: "savory", fr: "la sarriette", family: "needle" },
   { id: "wild-garlic", en: "wild garlic", fr: "l'ail des ours", family: "spear" },
   { id: "curry-leaves", en: "curry leaves", fr: "les feuilles de curry", family: "glossy", many: true },
+  { id: "lovage", en: "lovage", fr: "la livèche", family: "glossy" },
+  { id: "borage", en: "borage", fr: "la bourrache", family: "flowerherb" },
+  { id: "lemon-verbena", en: "lemon verbena", fr: "la verveine citronnelle", family: "narrow" },
+  { id: "hyssop", en: "hyssop", fr: "l'hysope", family: "flowerherb" },
+  { id: "shiso", en: "shiso", fr: "le shiso", family: "shiso" },
+  { id: "stevia", en: "stevia", fr: "la stévia", family: "tiny" },
+  { id: "nettle", en: "nettle", fr: "l'ortie", family: "soft" },
+  { id: "purslane", en: "purslane", fr: "le pourpier", family: "succulent" },
 ];
 const SPICES = [
   { id: "pepper",      en: "pepper",      fr: "le poivre",           family: "seed" },
@@ -478,6 +486,16 @@ const SPICES = [
   { id: "curry-powder", en: "curry powder", fr: "la poudre de curry", family: "powder" },
   { id: "wasabi", en: "wasabi", fr: "le wasabi", family: "wasabi" },
   { id: "licorice", en: "licorice", fr: "la réglisse", family: "stick" },
+  { id: "allspice", en: "allspice", fr: "le piment de la Jamaïque", family: "seed" },
+  { id: "fenugreek", en: "fenugreek", fr: "le fenugrec", family: "tinyseed" },
+  { id: "fennel-seeds", en: "fennel seeds", fr: "les graines de fenouil", family: "seed", many: true },
+  { id: "coriander-seeds", en: "coriander seeds", fr: "les graines de coriandre", family: "seed", many: true },
+  { id: "pink-peppercorns", en: "pink peppercorns", fr: "les baies roses", family: "berry", many: true },
+  { id: "sichuan-pepper", en: "Sichuan pepper", fr: "le poivre de Sichuan", family: "seed" },
+  { id: "mace", en: "mace", fr: "le macis", family: "nutmeg" },
+  { id: "ras-el-hanout", en: "ras el hanout", fr: "le ras el hanout", family: "powder" },
+  { id: "horseradish", en: "horseradish", fr: "le raifort", family: "root" },
+  { id: "espelette", en: "Espelette pepper", fr: "le piment d'Espelette", family: "chili" },
 ];
 
 // ---------- Kitchen (`sound`: a real recording of the appliance)

@@ -38,15 +38,15 @@ const LEVELS = {
     easy: ["apple", "pear", "orange", "lemon", "banana", "watermelon", "grapes", "strawberry", "cherries", "tomato",
       "carrot", "potato", "corn", "peas", "pumpkin"],
     hard: ["lime", "plum", "chestnut", "olive", "eggplant", "radish", "beetroot", "sweet-potato", "garlic", "leek",
-      "artichoke", "asparagus"],
+      "artichoke", "asparagus", "persimmon", "quince", "lychee", "passion-fruit", "dragon-fruit", "papaya", "parsnip", "turnip", "endive", "rhubarb", "fennel"],
   },
   herbs: {
     easy: ["basil", "parsley", "coriander", "mint", "thyme", "rosemary", "chives", "bay-leaf"],
-    hard: ["chervil", "marjoram", "lemon-balm", "sorrel", "savory", "wild-garlic", "curry-leaves"],
+    hard: ["chervil", "marjoram", "lemon-balm", "sorrel", "savory", "wild-garlic", "curry-leaves", "lovage", "borage", "lemon-verbena", "hyssop", "shiso", "purslane"],
   },
   spices: {
     easy: ["salt", "pepper", "cinnamon", "vanilla", "chili", "ginger", "sesame", "licorice"],
-    hard: ["star-anise", "turmeric", "cardamom", "juniper", "poppy-seeds", "sumac", "caraway"],
+    hard: ["star-anise", "turmeric", "cardamom", "juniper", "poppy-seeds", "sumac", "caraway", "allspice", "fenugreek", "sichuan-pepper", "mace", "ras-el-hanout", "espelette"],
   },
   kitchen: {
     easy: ["fridge", "oven", "toaster", "kettle", "frying-pan", "spoon", "knife", "bowl", "plate", "glass", "mug"],
@@ -81,7 +81,7 @@ const LEVELS = {
     easy: ["soccer", "basketball", "tennis", "skiing", "skating", "sledding", "swimming", "cycling", "running",
       "horse-riding", "judo", "skateboarding"],
     hard: ["baseball", "badminton", "hockey", "fencing", "american-football", "cricket-sport", "field-hockey", "billiards",
-      "curling", "water-polo", "rowing", "weightlifting"],
+      "curling", "water-polo", "rowing", "weightlifting", "lacrosse", "softball", "curling", "karting", "ski-jumping"],
   },
   transport: {
     easy: ["car", "police-car", "fire-engine", "bus", "tractor", "motorcycle", "bicycle", "train", "airplane",
