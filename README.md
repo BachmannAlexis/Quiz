@@ -4,10 +4,10 @@
 
 **A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English, French, German or Italian.
 
-- 1,345 pictures in 25 topics, each with three levels (easy, medium, hard), drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
+- 1,363 pictures in 26 topics, each with three levels (easy, medium, hard), drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
 - A recorded voice in English, French, German and Italian, the same on every device
 - Free, no ads, no account, nothing collected
-- Works on phones, tablets and computers, and offline once opened
+- Works on phones, tablets and computers; opens fast (each topic loads its own pictures, sounds and voice), and once added to the home screen it downloads everything for its language and works without internet
 
 **Play:** https://bachmannalexis.github.io/Quiz/ (see [Publishing](#publishing)), or download this repository and open `index.html`.
 
@@ -40,6 +40,7 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 📖 Syllables | 55 (ma, li, ro, pu…), consonant in blue and vowel in red: the voice says a syllable and the child finds it; in Discover the voice sounds it out and blends it ("mmm… a… ma!") | long sounds, short sounds |
 | 🔢 Numbers | 1 to 100, with as many dots and sticks of ten to count | 1 to 10, 11 to 20, 21 to 50, 51 to 100, tens |
 | 🕒 The clock | 64 times on a clock face (short red hour hand, long blue minute hand), in the order it is taught: o'clock, half past, quarter past and to, then five-minute steps. The voice asks "Show me half past three!" ("Montre-moi trois heures et demie !", "Zeig mir halb vier!", "Mostrami le tre e mezza!"). **Turn the hands**: a big clock to play with; drag the long minute hand (the hour hand follows, as on a real clock) or the hour hand, and the voice says the time, in 5-minute steps | o'clock, half past, quarters, minutes |
+| 😀 Emotions | 18 feelings as faces: happy, sad, angry, scared, surprised, tired, sleepy, disgusted, shy, excited, worried, calm, silly, in love, sick, hurt, confused, embarrassed. The voice asks "Who is happy?" ("Qui est content ?", "Wer ist fröhlich?", "Chi è felice?") and then says when we feel it: "I feel scared when there is thunder." | |
 | 🖐️ My body | 42: 30 outside (eyebrow, cheek, elbow, ankle, nails…) and 12 inside (heart, brain, lungs, stomach, liver, kidneys, intestines, skeleton…) | outside, inside |
 | ⚽ Sports | 57, with ball games, winter, water and more | ball games, winter, water, more |
 | 🚗 Transport | 38, 17 with real sounds (sirens, horns, train, plane, helicopter…) and a listening game | road, rails, air, water |
@@ -68,7 +69,7 @@ Each instrument plays a short tune in its style, for example the opening of Bach
 
 ## Publishing
 
-The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages each time `main` changes. It needs a one-time setting: **Settings → Pages → Build and deployment → Source: GitHub Actions**. The app is then at https://bachmannalexis.github.io/Quiz/, and links shared in messaging apps show a preview card (`icons/og-image.png`). On the website the app can be added to the home screen and works offline (`manifest.webmanifest`, `sw.js`; bump `VERSION` in `sw.js` when files change).
+The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages each time `main` changes. It needs a one-time setting: **Settings → Pages → Build and deployment → Source: GitHub Actions**. The app is then at https://bachmannalexis.github.io/Quiz/, and links shared in messaging apps show a preview card (`icons/og-image.png`). On the website the app can be added to the home screen (`manifest.webmanifest`). The service worker (`sw.js`) serves everything from the device first: the app itself is refreshed in the background, and packs (pictures, sounds, voice, photos) carry their version from `app/packs.js` and are kept until they change. Once installed, or when a parent asks in the parents' page, the app downloads every pack of its language (about 55 MB) and works without internet. Bump `VERSION` in `sw.js` when the list of app files changes.
 
 ## Project layout
 
