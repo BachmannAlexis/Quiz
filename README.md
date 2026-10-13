@@ -132,7 +132,7 @@ To record the voice again after changing `app/words.js` or `app/topics.js` (need
 python3 -m venv build/tts && build/tts/bin/pip install piper-tts faster-whisper
 mkdir -p build/voices && cd build/voices
 for v in en/en_US/ljspeech/high/en_US-ljspeech-high fr/fr_FR/siwis/medium/fr_FR-siwis-medium \
-         de/de_DE/thorsten/high/de_DE-thorsten-high it/it_IT/paola/medium/it_IT-paola-medium; do
+         de/de_DE/thorsten/high/de_DE-thorsten-high it/it_IT/riccardo/x_low/it_IT-riccardo-x_low; do
   curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/$v.onnx
   curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/$v.onnx.json
 done
@@ -154,6 +154,6 @@ cd ../.. && build/tts/bin/python tools/make_voice.py build --check
 - Flags: [Circle Flags](https://github.com/HatScripts/circle-flags) by HatScripts, MIT (`tools/make_flags.py`).
 - Letters, numbers, colours and shapes: drawn by `tools/make_letters.py` (letters and digits from the Fredoka font).
 - Animal, kitchen, transport and weather recordings: real recordings by Joseph Sardin from [BigSoundBank](https://bigsoundbank.com), [CC0](https://creativecommons.org/publicdomain/zero/1.0/) (listed in `SOUND-CREDITS.md`, downloaded by `tools/fetch_animals.py`).
-- Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); German voice trained on [Thorsten-Voice](https://github.com/thorstenMueller/Thorsten-Voice) (CC0); Italian voice trained on [Paola Persico's dataset](https://huggingface.co/datasets/paolapersico1/Voice-Dataset-Italian) (CC0).
+- Voice: recorded with [Piper](https://github.com/OHF-Voice/piper1-gpl). English voice trained on the [LJ Speech](https://keithito.com/LJ-Speech-Dataset/) dataset (public domain); French voice trained on the [SIWIS](https://datashare.ed.ac.uk/handle/10283/2353) dataset, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); German voice trained on [Thorsten-Voice](https://github.com/thorstenMueller/Thorsten-Voice) (CC0); Italian voice (Riccardo) trained on the [M-AILABS](https://cs.paperswithcode.com/dataset/m-ailabs-speech-dataset) Italian recordings from LibriVox (public domain).
 - Font: [Fredoka](https://github.com/hafontia/Fredoka) by Milena Brandão, SIL Open Font License 1.1 (embedded in `app/font.css`).
 - Drawings: 180 come from [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, licensed Apache-2.0 (most animals, fruits and vegetables, and the ones listed in `tools/make_pictures.py`). The other 217 are drawn for this project (`pictures/`).

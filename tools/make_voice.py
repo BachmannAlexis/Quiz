@@ -15,7 +15,7 @@ new or changed sentences.
 """
 import base64, difflib, hashlib, json, os, re, subprocess, sys, unicodedata, wave
 
-VOICES = {"en": "en_US-ljspeech-high", "fr": "fr_FR-siwis-medium", "de": "de_DE-thorsten-high", "it": "it_IT-paola-medium"}
+VOICES = {"en": "en_US-ljspeech-high", "fr": "fr_FR-siwis-medium", "de": "de_DE-thorsten-high", "it": "it_IT-riccardo-x_low"}
 LENGTH_SCALE = 1.15  # a little slower than normal, for small children
 ENCODING = 2         # bump when encode() changes: clips are encoded again from the cached recordings
 
