@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g transform="rotate(-32 64 64)">
+    <path d="M64 6 q-8 0 -8 7 q0 6 8 6" fill="none" stroke="#5d2e0c" stroke-width="5" stroke-linecap="round"/>
+    <path d="M64 36 C50 34 38 40 39 52 C40 60 47 62 46 68 C45 74 35 78 36 92 C37 108 50 114 64 114 C78 114 91 108 92 92 C93 78 83 74 82 68 C81 62 88 60 89 52 C90 40 78 34 64 36 Z" fill="#c0560f"/>
+    <path d="M64 40 C53 39 44 43 45 52 C46 59 52 61 51 68 C50 75 42 80 42 92 C43 104 52 109 64 109" fill="none" stroke="#ef8a3c" stroke-width="3" opacity=".8"/>
+    <rect x="60" y="16" width="8" height="54" rx="3" fill="#3e2723"/>
+    <path d="M56 98 h16 l-2 6 h-12 Z" fill="#3e2723"/>
+    <rect x="57" y="104" width="14" height="8" rx="4" fill="#3e2723"/>
+    <rect x="61" y="74" width="6" height="8" rx="1" fill="#f5deb3"/>
+    <g stroke="#ffe0b2" stroke-width="1"><path d="M62.2 18 V98"/><path d="M63.4 18 V98"/><path d="M64.6 18 V98"/><path d="M65.8 18 V98"/></g>
+    <path d="M51 66 q-3 6 0 12 M77 66 q3 6 0 12" fill="none" stroke="#5d2e0c" stroke-width="2.5" stroke-linecap="round"/>
+    <g fill="#3e2723"><rect x="54" y="20" width="5" height="3" rx="1"/><rect x="69" y="20" width="5" height="3" rx="1"/><rect x="54" y="27" width="5" height="3" rx="1"/><rect x="69" y="27" width="5" height="3" rx="1"/></g>
+  </g>
+  <path d="M118 46 L16 98" stroke="#6d4c41" stroke-width="4" stroke-linecap="round"/>
+  <path d="M116 50 L16 101" stroke="#fff8e1" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M114 42 l6 8 l-5 3 Z" fill="#212121"/>
+  <rect x="18" y="90" width="10" height="7" rx="2" transform="rotate(-27 23 93)" fill="#212121"/>
+</svg>

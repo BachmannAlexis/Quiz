@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g transform="rotate(-20 64 64)">
+    <path d="M55 12 L73 4 V104 C80 108 82 120 72 124 H56 C46 120 48 108 55 104 Z" fill="#d6cc76"/>
+    <path d="M68 7 V104 C73 108 76 118 70 122" fill="none" stroke="#aba04a" stroke-width="5"/>
+    <path d="M58 14 V104" stroke="#f2eebd" stroke-width="3"/>
+    <path d="M55 12 L73 4 L73 8 L55 16 Z" fill="#fff8e1"/>
+    <path d="M60 12.6 L70 8.3 V14 L60 18 Z" fill="#f5f0dc"/>
+    <g fill="#c2b75e" stroke="#8a7f30" stroke-width="1"><rect x="53.5" y="30" width="21" height="4" rx="2"/><rect x="53.5" y="58" width="21" height="4" rx="2"/><rect x="53.5" y="84" width="21" height="4" rx="2"/><rect x="53.5" y="102" width="21" height="4" rx="2"/></g>
+    <g fill="#3e2a12"><ellipse cx="64" cy="48" rx="2.6" ry="3"/><ellipse cx="64" cy="68" rx="2.6" ry="3"/><ellipse cx="64" cy="77" rx="2.6" ry="3"/><ellipse cx="64" cy="94" rx="2.6" ry="3"/></g>
+    <g fill="#8a7f30"><circle cx="54" cy="113" r="1.5"/><circle cx="60" cy="117" r="1.5"/><circle cx="68" cy="117" r="1.5"/><circle cx="74" cy="113" r="1.5"/><circle cx="64" cy="121" r="1.5"/></g>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g transform="rotate(40 64 64)">
+    <rect x="54" y="2" width="20" height="124" rx="9" fill="#c8a165"/>
+    <rect x="56.5" y="10" width="4" height="108" rx="2" fill="#e3c48f"/>
+    <path d="M53 2 h22 v12 h-22 Z" fill="#e53935"/><path d="M53 114 h22 v12 h-22 Z" fill="#e53935"/>
+    <path d="M53 6 h22 M53 120 h22" stroke="#fdd835" stroke-width="2"/>
+    <rect x="54" y="28" width="20" height="5" fill="#1e88e5"/>
+    <path d="M54 44 l5 -6 l5 6 l5 -6 l5 6" fill="none" stroke="#43a047" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="54" y="52" width="20" height="5" fill="#fdd835"/>
+    <path d="M54 68 l5 -6 l5 6 l5 -6 l5 6" fill="none" stroke="#e53935" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="54" y="76" width="20" height="5" fill="#1e88e5"/>
+    <path d="M54 92 l5 -6 l5 6 l5 -6 l5 6" fill="none" stroke="#43a047" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="54" y="100" width="20" height="5" fill="#fdd835"/>
+  </g>
+  <g fill="#42a5f5"><path d="M24 54 q-5 8 0 10 q5 -2 0 -10 Z"/><path d="M36 74 q-5 8 0 10 q5 -2 0 -10 Z"/><path d="M18 82 q-5 8 0 10 q5 -2 0 -10 Z"/><path d="M98 44 q-5 8 0 10 q5 -2 0 -10 Z"/><path d="M110 64 q-5 8 0 10 q5 -2 0 -10 Z"/><path d="M90 24 q-5 8 0 10 q5 -2 0 -10 Z"/></g>
+</svg>

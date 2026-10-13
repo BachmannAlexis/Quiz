@@ -11,7 +11,8 @@ The build dir holds the sample libraries (see README for how to fetch them):
   sonicpi/<name>.flac                   supersonic-scsynth-samples
   commons/credits.json, commons/raw/*   animal recordings, BigSoundBank and Wikimedia Commons (tools/fetch_animals.py)
   rendered/<id>.wav, <id>.note.wav      GeneralUser GS renders from tools/render_gm.mjs
-                                        (instruments, and landscape sounds without notes)
+                                        (instruments, and landscape sounds without notes),
+                                        and synthesized instruments from tools/make_synth.py
 Requires ffmpeg and numpy. Writes app/sounds.js, and SOUND-CREDITS.md for the animal recordings.
 """
 import base64, json, os, re, subprocess, sys, tempfile
@@ -84,6 +85,29 @@ PITCHED = {
     # Amazing Grace, with the drones
     "bagpipes":        ("musyngkite", "109-bagpipe", [("E4", 0, .3), ("A4", .3, .6), ("C#5", .9, .15), ("A4", 1.05, .15), ("C#5", 1.2, .6),
                         ("B4", 1.8, .3), ("A4", 2.1, 1.2), ("A3", 0, 3.1), ("A2", 0, 3.1)], "A4"),
+    # the rest of the orchestra
+    "viola":           ("vsco", "violas", S("C4 E4 G4 E4 C4", .45, .5, last=1.4), "C4"),
+    "piccolo":         ("musyngkite", "072-piccolo", S("G5 C6 E6 G6 E6 G6 C7", .17, .18, last=1.0), "C6"),
+    # Dvořák, New World Symphony, Largo
+    "english-horn":    ("musyngkite", "069-english-horn", S("E4 G4 G4", .4, .42) + S("E4 D4 C4", .4, .42, 1.2) + S("D4 E4 G4 E4", .3, .32, 2.4, last=.9), "C4"),
+    "bass-clarinet":   ("musyngkite", "071-clarinet", S("C3 E3 G3 A#3 A3 G3 E3 C3", .25, .26, last=1.0), "C3"),
+    "contrabassoon":   ("vsco", "bassoon", S("C2 G1 C2 E2 G2 E2 C2", .3, .28, last=1.0), "C2"),
+    # Tchaikovsky, Dance of the Sugar Plum Fairy
+    "celesta":         ("musyngkite", "008-celesta", S("G5 E5 G5 F#5 D#5 E5", .28, .5, last=1.2), "C5"),
+    # Petzold, Minuet in G
+    "harpsichord":     ("musyngkite", "006-harpsichord", S("D5 G4 A4 B4 C5 D5 G4 G4", .22, .3, last=.8) + [("G3", 0, .6), ("B3", .66, .6), ("C4", 1.1, .6)], "C4"),
+    "marimba":         ("vsco", "marimba", S("C5 E5 G5 C6 G5 E5 C5", .18, .5, last=1.0), "C5"),
+    "vibraphone":      ("musyngkite", "011-vibraphone", chord("C4 E4 G4 B4 D5", 0, 1.3, .04) + S("E5 G5 B5 A5 G5", .25, .6, 1.2, last=1.4), "C4"),
+    # Westminster chimes
+    "tubular-bells":   ("musyngkite", "014-tubular-bells", S("E4 C4 D4 G3", .55, 1.0, last=2.0), "C4"),
+    # tremolo, as mandolins play long notes
+    "mandolin":        ("musyngkite", "025-acoustic-guitar-steel", [(n, t0 + k * .08, .12) for n, t0, c in [("E5", 0, 7), ("G5", .6, 7), ("A5", 1.2, 10)] for k in range(c)] + [("A5", 2.0, 1.0)], "C5"),
+    "alphorn":         ("musyngkite", "060-french-horn", S("C3 G3 C4 E4 G4 E4", .55, .6, last=1.8), "C3"),
+    "erhu":            ("musyngkite", "110-fiddle", S("E5 G5 A5 C6 A5 G5 E5", .32, .36, last=1.2), "C5"),
+    "melodica":        ("musyngkite", "022-harmonica", S("C5 E5 G5 E5 F5 D5 C5", .25, .26, last=1.0), "C5"),
+    # a drone and a melody, as in Indian music
+    "harmonium":       ("tonejs", "harmonium", [("C3", 0, 2.8), ("G3", 0, 2.8)] + S("C4 D4 E4 G4 E4 D4 C4", .3, .32, last=.9), "C4"),
+    "shakuhachi":      ("musyngkite", "077-shakuhachi", S("D5 F5 G5 A5 G5", .45, .5, last=1.6), "C5"),
 }
 
 # Percussion and other recordings played as they are: id -> (tune [(file, start, length)], play-mode sounds).
@@ -103,6 +127,8 @@ HITS = {
     "cowbell":   ([(P + "drum_cowbell", t, .3) for t in [0, .25, .5, .62, .75, 1.0, 1.25, 1.5]], [P + "drum_cowbell"]),
     "drum-kit":  ([(KIT[2], t, .15) for t in [0, .15, .3, .45, .6, .75, .9, 1.05]] + [(KIT[0], t, .4) for t in [0, .6, .75]] + [(KIT[1], t, .3) for t in [.3, .9]]
                   + [(KIT[k], 1.2 + i * .1, .3) for i, k in enumerate([3, 4, 5, 5])] + [(KIT[0], 1.65, .8), (KIT[6], 1.65, 1.4)], KIT),
+    "cajon":     ([(P + ("drum_bass_hard" if k in (0, 3, 6) else "drum_snare_soft"), t, .4) for k, t in enumerate([0, .3, .5, .75, 1.05, 1.25, 1.5, 1.8, 1.9])],
+                  [P + "drum_bass_hard", P + "drum_snare_soft"]),
     "tabla":     ([(TABLA[k], t, 1.0) for k, t in [(0, 0), (1, .25), (2, .5), (6, .75), (1, .9), (1, 1.05), (3, 1.25), (4, 1.5), (4, 1.62), (1, 1.75), (0, 2.0), (3, 2.0)]], TABLA),
 }
 
@@ -212,7 +238,7 @@ def main(build):
             iid, is_note = m.group(1), m.group(2)
             if iid in PITCHED or iid in HITS: continue  # a better source covers it
             if is_note:
-                notes[iid] = {"pitched": iid in ("steel-drum",), "samples": [single(os.path.join(rendered, f), iid + ".note", 0, NOTE_LEN)]}
+                notes[iid] = {"pitched": iid in ("steel-drum", "theremin"), "samples": [single(os.path.join(rendered, f), iid + ".note", 0, NOTE_LEN)]}
             else:
                 ffmpeg([os.path.join(rendered, f)], [part(0, 4)], out(iid))
                 tunes[iid] = uri(out(iid))

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M14 60 L120 54 L30 6 Z" fill="#1b5e20"/>
+  <path d="M21 57 L110 52.5 L32 13 Z" fill="#81d4fa"/>
+  <path d="M27 54 C36 40 46 38 54 44 C62 36 74 36 86 46 L104 52 Z" fill="#66bb6a"/>
+  <path d="M40 55 C48 48 58 48 66 54 Z" fill="#43a047"/>
+  <circle cx="44" cy="28" r="4" fill="#fff176"/>
+  <path d="M74 56 L64 30" stroke="#5d4037" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="#5d4037"><rect x="14" y="80" width="5" height="40" rx="2"/><rect x="56" y="80" width="5" height="40" rx="2"/><rect x="110" y="66" width="5" height="48" rx="2"/></g>
+  <path d="M8 60 L120 54 L122 58 L64 68 L8 68 Z" fill="#d7b07a"/>
+  <path d="M8 68 L64 68 L122 58 L122 68 L64 82 L8 82 Z" fill="#2e7d32"/>
+  <path d="M10 76 L64 76 L120 64" fill="none" stroke="#fdd835" stroke-width="2"/>
+  <path d="M4 62 L46 62 L46 72 L4 72 Z" fill="#212121"/>
+  <path d="M4 72 L46 72 L46 80 L4 80 Z" fill="#212121"/>
+  <path d="M10 62 v10 M16 62 v10 M22 62 v10 M28 62 v10 M34 62 v10 M40 62 v10 M10 72 v8 M16 72 v8 M22 72 v8 M28 72 v8 M34 72 v8 M40 72 v8" stroke="#616161" stroke-width="1"/>
+  <g fill="#fafafa"><rect x="8.5" y="62" width="3" height="5"/><rect x="14.5" y="62" width="3" height="5"/><rect x="26.5" y="62" width="3" height="5"/><rect x="32.5" y="62" width="3" height="5"/><rect x="38.5" y="62" width="3" height="5"/><rect x="8.5" y="72" width="3" height="4.5"/><rect x="14.5" y="72" width="3" height="4.5"/><rect x="26.5" y="72" width="3" height="4.5"/><rect x="32.5" y="72" width="3" height="4.5"/><rect x="38.5" y="72" width="3" height="4.5"/></g>
+</svg>

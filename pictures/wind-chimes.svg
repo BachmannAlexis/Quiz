@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path d="M64 4 V16" stroke="#6d4c41" stroke-width="2"/>
+  <circle cx="64" cy="6" r="4" fill="none" stroke="#6d4c41" stroke-width="2.5"/>
+  <g stroke="#795548" stroke-width="1.2"><path d="M38 22 V32"/><path d="M51 22 V30"/><path d="M77 22 V30"/><path d="M90 22 V32"/><path d="M64 22 V84"/></g>
+  <g fill="#b0bec5"><rect x="34" y="32" width="8" height="58" rx="3"/><rect x="47" y="30" width="8" height="74" rx="3"/><rect x="73" y="30" width="8" height="66" rx="3"/><rect x="86" y="32" width="8" height="48" rx="3"/></g>
+  <g fill="#eceff1"><rect x="35.5" y="34" width="2.5" height="54" rx="1"/><rect x="48.5" y="32" width="2.5" height="70" rx="1"/><rect x="74.5" y="32" width="2.5" height="62" rx="1"/><rect x="87.5" y="34" width="2.5" height="44" rx="1"/></g>
+  <g fill="#78909c"><rect x="39.5" y="32" width="2.5" height="58" rx="1"/><rect x="52.5" y="30" width="2.5" height="74" rx="1"/><rect x="78.5" y="30" width="2.5" height="66" rx="1"/><rect x="91.5" y="32" width="2.5" height="48" rx="1"/></g>
+  <ellipse cx="64" cy="20" rx="36" ry="7" fill="#8d5524"/>
+  <ellipse cx="64" cy="17" rx="36" ry="7" fill="#c68642"/>
+  <ellipse cx="64" cy="86" rx="10" ry="3.5" fill="#a1887f"/><ellipse cx="64" cy="85" rx="10" ry="3" fill="#d7ccc8"/>
+  <path d="M64 88 V100" stroke="#795548" stroke-width="1.2"/>
+  <path d="M64 100 L76 108 L64 126 L52 108 Z" fill="#26a69a"/>
+  <path d="M64 100 L52 108 L64 126 Z" fill="#4db6ac"/>
+</svg>
