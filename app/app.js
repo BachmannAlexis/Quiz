@@ -522,7 +522,8 @@ function renderTopic() {
 // a game's title and subtitle; the listening game is named after what you hear
 function modeText(t, m) {
   const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters", transport: "listenTransport", weather: "listenWeather" }[t.id] || "listenAnimals"
-    : m === "name" ? { letters: "nameLetters", syllables: "nameSyllables" }[t.id] || m : m;
+    : m === "name" ? { letters: "nameLetters", syllables: "nameSyllables" }[t.id] || m
+    : m === "explore" && t.id === "clock" ? "exploreClock" : m;
   return T().modes[key];
 }
 
@@ -938,6 +939,12 @@ function bounce() {
 
 function openPlay() {
   $("playTitle").textContent = topic[lang];
+  const isClock = topic.id === "clock";
+  $("clockPlay").hidden = !isClock;
+  document.querySelector("#play .stage").hidden = isClock;
+  $("grid").hidden = isClock;
+  $("keys").hidden = !isMusic();
+  if (isClock) return openClock();
   $("keys").hidden = !isMusic();
   [...$("keys").children].forEach((key, k) => { key.textContent = KEY_NAMES[lang][k]; });
   const grid = $("grid");
@@ -955,6 +962,105 @@ function openPlay() {
   show("play");
   selectItem(groupPool()[0], false);
 }
+
+// ---------- The clock to play with ----------
+// A big clock face: drag the long blue minute hand (the short red hour hand follows, as on a real clock) or the
+// hour hand; the time snaps to 5 minutes and is said when the finger lifts. `clockTime` is minutes after 12:00.
+let clockTime = 3 * 60, clockDrag = null;
+const SVG_NS = "http://www.w3.org/2000/svg";
+function svgEl(name, attrs, parent) {
+  const el = document.createElementNS(SVG_NS, name);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  parent.appendChild(el);
+  return el;
+}
+const clockPoint = (deg, r) => [64 + r * Math.sin(deg * Math.PI / 180), 64 - r * Math.cos(deg * Math.PI / 180)];
+function drawClockFace() {
+  const face = $("clockFace");
+  if (face.childNodes.length) return;
+  svgEl("circle", { cx: 64, cy: 64, r: 60, fill: "#fff", stroke: "#1e88e5", "stroke-width": 5 }, face);
+  const ticks = svgEl("g", { stroke: "#90a4ae", "stroke-linecap": "round" }, face);
+  for (let t = 0; t < 60; t++) {
+    const [x1, y1] = clockPoint(t * 6, 55), [x2, y2] = clockPoint(t * 6, t % 5 ? 53 : 50);
+    svgEl("line", { x1, y1, x2, y2, "stroke-width": t % 5 ? 1 : 2.2 }, ticks);
+  }
+  for (let n = 1; n <= 12; n++) {
+    const [x, y] = clockPoint(n * 30, 41);
+    svgEl("text", { x, y: y + 4.2, "text-anchor": "middle", "font-size": 12, "font-weight": 600, fill: "#37474f" }, face).textContent = n;
+  }
+  svgEl("line", { id: "minuteHand", x1: 64, y1: 64, x2: 64, y2: 26, stroke: "#1e63c9", "stroke-width": 4.5, "stroke-linecap": "round" }, face);
+  svgEl("line", { id: "hourHand", x1: 64, y1: 64, x2: 64, y2: 38, stroke: "#e53935", "stroke-width": 7, "stroke-linecap": "round" }, face);
+  svgEl("circle", { cx: 64, cy: 64, r: 4.5, fill: "#37474f" }, face);
+}
+function showClock() {
+  const t = ((clockTime % 720) + 720) % 720;
+  for (const [id, deg, r] of [["minuteHand", t % 60 * 6, 36], ["hourHand", t / 2, 24]]) {
+    const [x, y] = clockPoint(deg, r);
+    $(id).setAttribute("x2", x.toFixed(1)); $(id).setAttribute("y2", y.toFixed(1));
+  }
+}
+// the time's name, in the language: "half past three", "trois heures et demie", "halb vier", "le tre e mezza"
+function clockName() {
+  const t = ((clockTime % 720) + 720) % 720, h = Math.floor(t / 60) || 12, m = t % 60;
+  return clockNames(h, m)[li()];
+}
+function sayClock() {
+  const t = ((clockTime % 720) + 720) % 720, h = Math.floor(t / 60) || 12, m = t % 60;
+  $("clockName").textContent = cap(clockName());
+  $("clockDigits").textContent = `${h}:${String(m).padStart(2, "0")}`;
+  const face = $("clockFace");
+  face.classList.remove("bounce"); void face.getBoundingClientRect(); face.classList.add("bounce");
+  say(T().name(clockName(), true));
+}
+function openClock() {
+  drawClockFace();
+  showClock();
+  show("play");
+  $("clockName").textContent = cap(clockName());
+  const t = ((clockTime % 720) + 720) % 720;
+  $("clockDigits").textContent = `${Math.floor(t / 60) || 12}:${String(t % 60).padStart(2, "0")}`;
+}
+function clockAngle(e) {
+  const r = $("clockFace").getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width * 128 - 64, y = (e.clientY - r.top) / r.height * 128 - 64;
+  return { deg: (Math.atan2(x, -y) * 180 / Math.PI + 360) % 360, dist: Math.hypot(x, y) };
+}
+$("clockFace").addEventListener("pointerdown", e => {
+  e.preventDefault();
+  audio();
+  hush();
+  const { deg, dist } = clockAngle(e), t = ((clockTime % 720) + 720) % 720;
+  const off = a => Math.abs(((deg - a) % 360 + 540) % 360 - 180);
+  // the hand nearest the finger; near the middle, the short hour hand wins a tie
+  const hand = off(t / 2) < off(t % 60 * 6) + (dist < 30 ? 25 : -10) ? "hour" : "minute";
+  clockDrag = { id: e.pointerId, hand, last: clockTime };
+  $("clockFace").setPointerCapture?.(e.pointerId);
+  moveClock(e);
+});
+function moveClock(e) {
+  if (!clockDrag || e.pointerId !== clockDrag.id) return;
+  const { deg } = clockAngle(e);
+  if (clockDrag.hand === "minute") {
+    // the change of minutes the shortest way round, so going past 12 moves the hour on (or back)
+    const m = Math.round(deg / 6) % 60, now = ((clockTime % 60) + 60) % 60;
+    clockTime += ((m - now) % 60 + 90) % 60 - 30;
+  } else {
+    const turn = Math.floor(clockTime / 720) * 720;
+    clockTime = turn + Math.round(deg * 2);
+  }
+  const step = Math.round(clockTime / 5);
+  if (step !== Math.round(clockDrag.last / 5)) { tone(1400, 0, 0.03, "square", 0.05); clockDrag.last = clockTime; }
+  showClock();
+}
+$("clockFace").addEventListener("pointermove", moveClock);
+["pointerup", "pointercancel"].forEach(type => $("clockFace").addEventListener(type, e => {
+  if (!clockDrag || e.pointerId !== clockDrag.id) return;
+  clockDrag = null;
+  clockTime = Math.round(clockTime / 5) * 5;
+  showClock();
+  sayClock();
+}));
+$("clockName").onclick = sayClock;
 
 // keys: press, or slide a finger across them
 const pressed = new Map(); // pointerId -> key index

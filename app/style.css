@@ -288,6 +288,13 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 /* ---------- Play and discover ---------- */
 /* the stage and keys stay in view; only the picture grid scrolls */
 #play:not([hidden]) { height: calc(100vh - 40px); height: calc(100dvh - 40px); min-height: 0; flex: none; }
+/* the clock to play with */
+.clock-play { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: auto 0; }
+.clock-face { width: min(86vw, 58vh, 460px); height: auto; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; filter: drop-shadow(0 6px 0 rgba(42, 34, 69, 0.12)); }
+.clock-face.bounce { animation: bounce .5s; }
+.clock-face text { font-family: inherit; pointer-events: none; }
+.clock-name { border: 0; background: none; padding: 4px 12px; font: inherit; font-size: clamp(1.5rem, 6vw, 2.4rem); font-weight: 600; color: inherit; cursor: pointer; text-align: center; }
+.clock-digits { font-size: 1.1rem; opacity: .6; font-variant-numeric: tabular-nums; }
 .stage { display: flex; align-items: center; justify-content: center; gap: 18px; }
 .big {
   position: relative;

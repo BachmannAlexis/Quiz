@@ -12,7 +12,7 @@ vm.createContext(ctx);
 const LANGS = ["en", "fr", "de", "it"];
 for (const f of ["app/topics.js", "app/words.js", "app/lang/de.js", "app/lang/it.js"])
   if (fs.existsSync(path.join(root, f))) vm.runInContext(fs.readFileSync(path.join(root, f), "utf8"), ctx);
-const { TOPICS, TEXT, cap, COUNTRIES } = vm.runInContext("({ TOPICS, TEXT, cap, COUNTRIES })", ctx);
+const { TOPICS, TEXT, cap, COUNTRIES, clockNames } = vm.runInContext("({ TOPICS, TEXT, cap, COUNTRIES, clockNames })", ctx);
 
 const out = {};
 for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
@@ -39,6 +39,8 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
       if (extra(item)) s.add(extra(item));
       if (soundOf(item)) s.add(t.id === "letters" ? T.whichLetter(soundOf(item)) : T.who(soundOf(item)));
     }
+    // the clock to play with says every time, in steps of 5 minutes
+    if (t.id === "clock") for (let h = 1; h <= 12; h++) for (let m = 0; m < 60; m += 5) s.add(T.name(clockNames(h, m)[k], true));
     out[lang][t.id] = [...s];
   }
 }
