@@ -17,7 +17,8 @@ description, the asset sources and the full rebuild commands.
   `it.js`). Names carry their article ("la quiche", "die Pommes", "l'Italia"); German and Italian plurals are marked
   `["…", "pl"]`. `says`, `like` and `unit` are arrays in the order en, fr, de, it.
 - **Privacy.** No ads, no accounts, no analytics. The microphone ("Say it!") only measures loudness on the device
-  while listening; never record, keep or send audio. Anything kept is in `localStorage` on the device
+  while listening, and (if a parent turns on word checking) recognises the word with Vosk on the device; never record,
+  keep or send audio. Anything kept is in `localStorage` on the device
   (best scores, scores, language, drawings/photos choice).
 - **Secrets** (API keys) go in the environment settings, never in the repo or the chat.
 - After changing the list of app files, bump `VERSION` in `sw.js` (the service worker is network-first).
@@ -35,6 +36,7 @@ description, the asset sources and the full rebuild commands.
 | `app/pictures.js` | **Generated** by `tools/make_pictures.py`: Noto emoji + `pictures/*.svg` as data URIs |
 | `app/sounds.js` | **Generated** by `tools/make_sounds.py` (instruments, recordings, landscape sounds) |
 | `app/voice/<lang>/<topic>.json` | **Generated** by `tools/make_voice.py`: every sentence as an MP3 data URI |
+| `app/vosk/` | Optional word checking for "Say it!": `vosk.js` (vosk-browser) and a small Vosk model per language (`<lang>.tar.gz`, 41–50 MB, loaded only when a parent turns it on; the service worker skips them) |
 | `app/photos/<topic>.json`, `covers.json` | **Generated** by `tools/make_photos.py` from `tools/photo_picks.json` |
 | `pictures/*.svg` | Hand-drawn or generated pictures (128×128 viewBox, flat Noto-like style, no text) |
 | `tools/` | Generators and fetchers, see below |
@@ -69,7 +71,7 @@ letters, numbers, colours and shapes from `tools/make_letters.py`.
   `tools/phrases.mjs` lists every sentence the app can say; it must mirror `extra()` in `app/app.js`.
 - `tools/fetch_photos.py <build> [topics] [--retry]` → candidate photos (iNaturalist, Openverse; CC0/BY/BY-SA
   only); `tools/make_photos.py <build>` → photo packs and PHOTO-CREDITS.md.
-- `tools/fetch_animals.py`, `tools/make_sounds.py`, `tools/render_gm.mjs` → sounds (SOUND-CREDITS.md).
+- `tools/fetch_animals.py`, `tools/make_synth.py`, `tools/make_sounds.py`, `tools/render_gm.mjs` → sounds (SOUND-CREDITS.md).
 
 ## Checking changes
 

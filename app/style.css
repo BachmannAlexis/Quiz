@@ -246,6 +246,7 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 .choice.solo { width: min(78vw, 46vh, 360px); margin: auto; box-shadow: var(--lift), 0 0 0 calc(var(--vol, 0) * 22px) color-mix(in srgb, var(--accent) 45%, transparent); transition: transform .15s, background-color .2s, box-shadow .08s; }
 .speak.listening { animation: listening 1.4s ease-in-out infinite; }
 @keyframes listening { 50% { box-shadow: 0 6px 0 rgba(42, 34, 69, 0.18), 0 0 0 10px color-mix(in srgb, var(--accent) 35%, transparent); } }
+.heard { margin: 0 auto 6px; min-height: 1.3em; text-align: center; font-size: .95rem; opacity: .6; }
 .mic-hint { margin: 0 auto 8px; max-width: 26em; text-align: center; font-size: .95rem; opacity: .75; }
 .poison::after { content: "⚠️"; position: absolute; top: 7%; right: 8%; font-size: clamp(1rem, 4vw, 1.7rem); }
 

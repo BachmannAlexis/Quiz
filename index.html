@@ -92,6 +92,7 @@
     </div>
     <div class="choices" id="choices"></div>
     <p class="mic-hint" id="micHint" data-t="noMic" hidden></p>
+    <p class="heard" id="heard" aria-live="polite"></p>
   </section>
 
   <!-- End of a quiz -->
@@ -158,6 +159,7 @@
   <h3 data-t="howTitle"></h3>
   <ul class="how">
     <li><span>🗣️</span><span data-t="howName"></span></li>
+    <li><span>🎤</span><span data-t="howSay"></span></li>
     <li><span>👂</span><span data-t="howListen"></span></li>
     <li><span>👆</span><span data-t="howPlay"></span></li>
     <li><span>⭐</span><span data-t="howStars"></span></li>
@@ -175,6 +177,12 @@
     <span class="small muted" id="voiceStatus" aria-live="polite"></span>
   </div>
   <p class="muted small" data-t="voiceHelp"></p>
+  <h3 data-t="recogTitle"></h3>
+  <p class="small" data-t="recogText"></p>
+  <div class="share-row">
+    <button class="btn btn-primary" type="button" id="recogBtn"></button>
+    <span class="small muted" id="recogStatus" aria-live="polite"></span>
+  </div>
   <h3 data-t="privacyTitle"></h3>
   <p data-t="privacyText"></p>
   <h3 data-t="creditsTitle"></h3>

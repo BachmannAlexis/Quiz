@@ -689,6 +689,7 @@ function askSay() {
   box.appendChild(b);
   $("promptText").textContent = promptText();
   $("micHint").hidden = canHear && !micDenied;
+  $("heard").textContent = "";
   asked = Date.now();
   ask();
 }
@@ -703,8 +704,9 @@ async function openMic() {
     const c = audio();
     const analyser = c.createAnalyser();
     analyser.fftSize = 1024;
-    c.createMediaStreamSource(stream).connect(analyser);
-    mic = { stream, analyser, data: new Float32Array(analyser.fftSize) };
+    const source = c.createMediaStreamSource(stream);
+    source.connect(analyser);
+    mic = { stream, analyser, source, data: new Float32Array(analyser.fftSize) };
   } catch (e) {
     micDenied = true;
     $("micHint").hidden = false;
@@ -714,6 +716,7 @@ async function openMic() {
 
 function stopListening() {
   listenId++;
+  stopWords();
   clearInterval(listenTimer);
   $("speak").classList.remove("listening");
   const solo = document.querySelector(".choice.solo");
@@ -733,6 +736,8 @@ function listenFor(onSpoke, onSilent) {
     if (q !== questionId || id !== listenId || !m) return;
     const started = Date.now(), solo = document.querySelector(".choice.solo");
     let floor = 0, loud = 0, quiet = 0, spoke = false;
+    const words = startWords(m);
+    if (words) onSpoke = (spokeNow => () => words.finish().then(heard => { if (q === questionId) spokeNow(heard); }))(onSpoke);
     $("speak").classList.add("listening");
     listenTimer = setInterval(() => {
       if (q !== questionId || id !== listenId) return clearInterval(listenTimer);
@@ -757,10 +762,21 @@ function listenFor(onSpoke, onSilent) {
 function hearChild() {
   const q = questionId, solo = document.querySelector(".choice.solo");
   if (!solo || locked) return;
-  listenFor(() => {
+  listenFor(heard => {
     if (q !== questionId || locked) return;
     if (firstTry) thinking.push((Date.now() - asked) / 1000);
     showName(solo, answer);
+    // checking the words: not the right name (or not understood) → the name again and one more try,
+    // then "Bravo! The cow!" and on; never a "no", as small children are often misheard
+    if (heard !== undefined && !saidName(heard, answer)) {
+      if (firstTry) {
+        missed.push(answer.id);
+        firstTry = false;
+        $("promptText").textContent = T().yourTurn;
+        return say([T().name(nameOf(answer), topic.bare), T().yourTurn], () => { if (q === questionId) setTimeout(() => { if (q === questionId) hearChild(); }, 250); });
+      }
+      return moveOn([T().bravo, T().name(nameOf(answer), topic.bare)]);
+    }
     win(answer, solo);
   }, () => {
     if (q !== questionId || locked) return;
@@ -770,20 +786,114 @@ function hearChild() {
       firstTry = false;
       $("promptText").textContent = T().yourTurn;
       say([T().name(nameOf(answer), topic.bare), T().yourTurn], () => { if (q === questionId) setTimeout(() => { if (q === questionId) hearChild(); }, 250); });
-    } else {
-      locked = true;
-      questionId++;
-      results.push(false);
-      renderProgress();
-      $("promptText").textContent = T().name(nameOf(answer), topic.bare);
-      round++;
-      const g = gameId;
-      say(T().name(nameOf(answer), topic.bare), () => {
-        if (g === gameId) setTimeout(() => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); }, 600);
-      });
-    }
+    } else moveOn(T().name(nameOf(answer), topic.bare));
   });
 }
+
+// a round without a star: show and say the name, then the next picture
+function moveOn(sentence) {
+  locked = true;
+  questionId++;
+  results.push(false);
+  renderProgress();
+  $("promptText").textContent = T().name(nameOf(answer), topic.bare);
+  round++;
+  const g = gameId;
+  say(sentence, () => {
+    if (g === gameId) setTimeout(() => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); }, 600);
+  });
+}
+
+// ---------- Checking the words (optional, set in the parents' page) ----------
+// Vosk recognises speech on the device with a small model per language (app/vosk/<lang>.tar.gz, downloaded once
+// and kept by the browser). It only chooses among the names of the topic, which makes it far more reliable.
+const RECOG_MB = { en: 41, fr: 42, de: 47, it: 50 };
+const recog = { models: {}, loading: {} };
+let words = null; // the recognizer of the current listening
+const recogOn = () => store.get("pikolo-recog-" + lang) === "1";
+function loadVosk() {
+  if (window.Vosk) return Promise.resolve();
+  return new Promise((ok, fail) => {
+    const script = document.createElement("script");
+    script.src = "app/vosk/vosk.js";
+    script.onload = ok; script.onerror = fail;
+    document.head.appendChild(script);
+  });
+}
+function loadModel(l) {
+  if (!recog.loading[l]) {
+    const url = new URL(`app/vosk/${l}.tar.gz`, location.href).href;
+    recog.loading[l] = loadVosk()
+      .then(() => Promise.race([Vosk.createModel(url), new Promise((_, fail) => setTimeout(() => fail(new Error("timeout")), 180000))]))
+      .then(model => { recog.models[l] = model; return model; })
+      .catch(e => { delete recog.loading[l]; throw e; });
+  }
+  return recog.loading[l];
+}
+// "flûte à bec", "la flûte à bec": lower case, no accents or punctuation
+const plainWords = text => text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9ß ]+/g, " ").split(" ").filter(Boolean);
+function startWords(m) {
+  const model = recogOn() && recog.models[lang];
+  if (!model) return null;
+  const names = new Set();
+  // each name as the model may spell it: "la flûte à bec", "flûte à bec", "l'alto", "l alto", "vingt-et-un", "vingt et un"
+  topic.items.forEach(i => [shortName(i), nameOf(i)].forEach(n => {
+    const t = n.toLowerCase().replace(/[’]/g, "'").replace(/[^\p{L}\p{N}' -]+/gu, " ").replace(/\s+/g, " ").trim();
+    [t, t.replace(/-/g, " "), t.replace(/'/g, "' "), t.replace(/['-]/g, " ")].forEach(v => names.add(v.replace(/\s+/g, " ").trim()));
+  }));
+  const rec = new model.KaldiRecognizer(m.analyser.context.sampleRate, JSON.stringify([...names, "[unk]"]));
+  const heard = [];
+  rec.on("result", msg => { if (msg.result && msg.result.text) heard.push(msg.result.text); });
+  const c = m.analyser.context, node = c.createScriptProcessor(4096, 1, 1), mute = c.createGain();
+  mute.gain.value = 0;
+  node.onaudioprocess = e => { try { rec.acceptWaveform(e.inputBuffer); } catch (err) {} };
+  m.source.connect(node); node.connect(mute); mute.connect(c.destination);
+  words = { rec, node, mute, heard, done: false,
+    // the last words: ask for the final result and wait for it (at most a second and a half)
+    finish() {
+      if (this.done) return Promise.resolve(heard.join(" "));
+      this.done = true;
+      return new Promise(ok => {
+        const end = () => { ok(heard.join(" ")); stopWords(); };
+        rec.on("result", end);
+        try { rec.retrieveFinalResult(); } catch (err) { end(); }
+        setTimeout(end, 1500);
+      });
+    } };
+  return words;
+}
+function stopWords() {
+  if (!words) return;
+  const w = words;
+  words = null;
+  try { w.node.disconnect(); w.mute.disconnect(); } catch (e) {}
+  setTimeout(() => { try { w.rec.remove(); } catch (e) {} }, 2000);
+}
+// right when every longer word of the name was heard ("vache" in "la vache", "flute" and "bec" in "flûte à bec")
+function saidName(heard, item) {
+  const got = new Set(plainWords(heard));
+  $("heard").textContent = heard.replace(/\[unk\]/g, "…").trim() ? `🎤 ${heard.replace(/\[unk\]/g, "…")}` : "🎤 …";
+  const need = plainWords(shortName(item)).filter(w => w.length > 2);
+  return (need.length ? need : plainWords(shortName(item))).every(w => got.has(w));
+}
+
+function renderRecog() {
+  const on = recogOn(), btn = $("recogBtn"), status = $("recogStatus");
+  btn.textContent = on ? T().recogTurnOff : T().recogTurnOn(RECOG_MB[lang]);
+  btn.classList.toggle("btn-primary", !on);
+  status.textContent = !on ? "" : recog.models[lang] ? T().recogReady : recog.loading[lang] ? T().recogLoading : "";
+}
+$("recogBtn").onclick = () => {
+  const on = !recogOn();
+  store.set("pikolo-recog-" + lang, on ? "1" : "0");
+  renderRecog();
+  if (on) loadModel(lang).then(renderRecog, () => {
+    store.set("pikolo-recog-" + lang, "0");
+    renderRecog();
+    $("recogStatus").textContent = T().recogFailed;
+  });
+  renderRecog();
+};
 
 // ---------- Scores: every finished game, to see what is too easy or still tricky ----------
 // pikolo-scores: [{t: topic, m: mode, g: group, s: stars, sec: median seconds to the first tap, at: time}],
@@ -904,6 +1014,8 @@ function start(m) {
   round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
   $("speak").textContent = mode === "listen" ? "👂" : mode === "say" ? "🎤" : "🔊";
   $("micHint").hidden = true;
+  $("heard").textContent = "";
+  if (m === "say" && recogOn()) loadModel(lang).catch(() => {});
   show("game");
   askQuestion();
 }
@@ -1167,7 +1279,7 @@ LANGS.forEach(l => {
   $("langList").appendChild(b);
 });
 document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => $("langs").showModal());
-document.querySelector(".info-btn").onclick = () => $("about").showModal();
+document.querySelector(".info-btn").onclick = () => { renderRecog(); $("about").showModal(); };
 $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
 $("voiceTest").onclick = () => {

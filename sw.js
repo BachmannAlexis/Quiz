@@ -1,6 +1,6 @@
 // Offline support: keeps the app's files in the browser so Pikolo opens without a connection.
 // Bump VERSION when the list of files changes.
-const VERSION = "pikolo-17";
+const VERSION = "pikolo-18";
 const FILES = [
   "./", "index.html", "manifest.webmanifest",
   "app/font.css", "app/style.css", "app/app.js", "app/words.js", "app/lang/de.js", "app/lang/it.js", "app/topics.js", "app/levels.js", "app/pictures.js", "app/sounds.js",
@@ -21,6 +21,8 @@ self.addEventListener("activate", e => {
 // Latest version first, so fixes reach everyone right away; the saved copy when offline.
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
+  // speech models (app/vosk/*.tar.gz, 40-50 MB): Vosk keeps its own copy, so not a second one here
+  if (e.request.url.endsWith(".tar.gz")) return;
   e.respondWith(
     fetch(e.request)
       .then(res => {
