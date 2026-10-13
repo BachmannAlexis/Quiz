@@ -4,7 +4,7 @@
 
 **A picture quiz for little ones.** Children from about 3 years old learn the names of animals, musical instruments, dinosaurs, flowers, trees, mushrooms, fruits and vegetables, herbs and spices, kitchen things, letters and landscapes, with pictures or real photos, and sounds. No reading needed: everything is spoken, in English, French, German or Italian.
 
-- 1,258 pictures in 24 topics, each with three levels (easy, medium, hard), drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
+- 1,322 pictures in 25 topics, each with three levels (easy, medium, hard), drawn or as real photos (chosen at the start), real instrument, animal and kitchen recordings
 - A recorded voice in English, French, German and Italian, the same on every device
 - Free, no ads, no account, nothing collected
 - Works on phones, tablets and computers, and offline once opened
@@ -38,6 +38,7 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | 🔤 ABC | 26 letters, taught by their sounds first (phonics): the first game plays a sound ("sss", "mmm", "buh") and the child finds the letter, then "S says sss, like snake!"; a second game uses the letter names. Letters that look alike (b, d, p) never appear together | vowels, long sounds (m, s, l…), short sounds (b, t, p…) |
 | 📖 Syllables | 55 (ma, li, ro, pu…), consonant in blue and vowel in red: the voice says a syllable and the child finds it; in Discover the voice sounds it out and blends it ("mmm… a… ma!") | long sounds, short sounds |
 | 🔢 Numbers | 1 to 100, with as many dots and sticks of ten to count | 1 to 10, 11 to 20, 21 to 50, 51 to 100, tens |
+| 🕒 The clock | 64 times on a clock face (short red hour hand, long blue minute hand), in the order it is taught: o'clock, half past, quarter past and to, then five-minute steps. The voice asks "Show me half past three!" ("Montre-moi trois heures et demie !", "Zeig mir halb vier!", "Mostrami le tre e mezza!") | o'clock, half past, quarters, minutes |
 | 🖐️ My body | 42: 30 outside (eyebrow, cheek, elbow, ankle, nails…) and 12 inside (heart, brain, lungs, stomach, liver, kidneys, intestines, skeleton…) | outside, inside |
 | ⚽ Sports | 57, with ball games, winter, water and more | ball games, winter, water, more |
 | 🚗 Transport | 38, 17 with real sounds (sirens, horns, train, plane, helicopter…) and a listening game | road, rails, air, water |
