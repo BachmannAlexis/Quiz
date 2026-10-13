@@ -61,6 +61,11 @@ const LEVELS = {
     easy: ["syl-ma", "syl-mi", "syl-mo", "syl-la", "syl-li", "syl-lo", "syl-ra", "syl-ri", "syl-ro", "syl-sa", "syl-si", "syl-so"],
     hard: ["syl-pe", "syl-pu", "syl-te", "syl-tu", "syl-be", "syl-bu", "syl-de", "syl-du"],
   },
+  clock: {
+    // o'clock first, then half past and the quarters, then five-minute steps
+    easy: ["clock-1-00", "clock-2-00", "clock-3-00", "clock-4-00", "clock-5-00", "clock-6-00", "clock-7-00", "clock-8-00", "clock-9-00", "clock-10-00", "clock-11-00", "clock-12-00"],
+    hard: ["clock-2-05", "clock-8-05", "clock-3-10", "clock-1-10", "clock-4-20", "clock-6-20", "clock-5-25", "clock-11-25", "clock-6-35", "clock-4-35", "clock-7-40", "clock-9-40", "clock-8-50", "clock-2-50", "clock-9-55", "clock-7-55"],
+  },
   numbers: {
     easy: ["number-1", "number-2", "number-3", "number-4", "number-5", "number-6", "number-7", "number-8", "number-9", "number-10"],
     // easy 1 to 10; medium 11 to 20 and the tens; hard the other numbers up to 100

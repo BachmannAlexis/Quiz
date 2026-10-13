@@ -33,7 +33,7 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   for (const t of TOPICS) {
     const s = new Set();
     for (const item of t.items) {
-      s.add(T.where(item[lang], manyOf(item), t.bare));
+      s.add(t.id === "clock" ? T.showTime(item[lang]) : T.where(item[lang], manyOf(item), t.bare));
       s.add(T.yes(item[lang], t.bare));
       s.add(T.name(item[lang], t.bare));
       if (extra(item)) s.add(extra(item));

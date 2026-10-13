@@ -11,6 +11,7 @@ const TEXT = {
     whichLetter: sound => `Listen! Which letter says ${sound}?`,
     whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?", whatIsIt: "Listen! What is it?", whatWeather: "Listen! What is the weather like?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
+    showTime: time => `Show me ${time}!`, // the clock game
     poison: "Careful! This mushroom is poisonous. Never eat it!",
     from: (n, country, many) => `The ${n} ${many ? "come" : "comes"} from ${country}!`,
     name: (n, bare) => bare ? `${cap(n)}!` : `The ${n}!`, // an item named on its own ("The cat!" is clearer than "Cat")
@@ -74,6 +75,7 @@ const TEXT = {
     whichLetter: sound => `Écoute ! Quelle lettre fait ${sound} ?`,
     whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?", whatIsIt: "Écoute ! Qu'est-ce que c'est ?", whatWeather: "Écoute ! Quel temps fait-il ?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
+    showTime: time => `Montre-moi ${time} !`,
     poison: "Attention ! Ce champignon est toxique. Il ne faut jamais le manger !",
     // "la France" -> "de France", "l'Italie" -> "d'Italie", "le Japon" -> "du Japon", "les États-Unis" -> "des États-Unis"
     from: (n, country) => `${cap(n)} ${n.startsWith("les ") ? "viennent" : "vient"} ${/^(la|le|les) |^l'/.test(country) ? country.replace(/^la /, "de ").replace(/^l'/, "d'").replace(/^le /, "du ").replace(/^les /, "des ") : (/^[aeiouyhâéèêîïôûAEIOUYHÂÉÈÊÎÏÔÛ]/.test(country) ? "d'" : "de ") + country} !`,
@@ -138,6 +140,7 @@ const TEXT = {
     whichLetter: sound => `Hör zu! Welcher Buchstabe macht ${sound}?`,
     whereAreWe: "Hör zu! Wo sind wir?", whoIsIt: "Hör zu! Wer ist das?", whatIsIt: "Hör zu! Was ist das?", whatWeather: "Hör zu! Wie ist das Wetter?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
+    showTime: time => `Zeig mir ${time}!`,
     poison: "Achtung! Dieser Pilz ist giftig. Niemals essen!",
     // "aus Italien", "aus der Schweiz", "aus dem Iran", "aus den USA"
     from: (n, country, many, countryMany) => `${cap(n)} ${many ? "kommen" : "kommt"} aus ${countryMany ? country.replace(/^die /, "den ").replace(/([^nsA-Z])$/, "$1n")
@@ -203,6 +206,7 @@ const TEXT = {
     whichLetter: sound => `Ascolta! Quale lettera fa ${sound}?`,
     whereAreWe: "Ascolta! Dove siamo?", whoIsIt: "Ascolta! Chi è?", whatIsIt: "Ascolta! Che cos'è?", whatWeather: "Ascolta! Che tempo fa?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
+    showTime: time => `Mostrami ${time}!`,
     poison: "Attenzione! Questo fungo è velenoso. Non mangiarlo mai!",
     // "dall'Italia", "dalla Francia", "dal Giappone", "dagli Stati Uniti", "da Cuba"
     from: (n, country, many) => `${cap(n)} ${many ? "vengono" : "viene"} ${/^(il|lo|la|i|gli|le) |^l'/.test(country)
@@ -275,7 +279,7 @@ function addLanguage(code, data) {
     for (const g of t.groups || []) g[code] = g.id === "all" ? TEXT[code].all : (d.groups || {})[g.id] || g.en;
     for (const i of t.items) {
       const n = (d.items || {})[i.id];
-      i[code] = Array.isArray(n) ? n[0] : n || i.en;
+      i[code] = Array.isArray(n) ? n[0] : n || i[code] || i.en; // names set in topics.js (the clock) stay
       if (Array.isArray(n) && n[1] === "pl") (i.plural = i.plural || {})[code] = true;
       if (d.says && d.says[i.id]) { i.says = i.says || []; i.says[k] = d.says[i.id]; }
       if (d.like && d.like[i.id]) { i.like = i.like || []; i.like[k] = d.like[i.id]; }

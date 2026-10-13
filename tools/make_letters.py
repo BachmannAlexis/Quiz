@@ -60,6 +60,7 @@ def main():
         open(os.path.join(ROOT, "pictures", f"letter-{ch.lower()}.svg"), "w").write(svg)
     print("26 letters")
     syllables(f, cap)
+    clocks(f, cap)
     for n in range(1, 11):
         color = COLORS[(n - 1) % len(COLORS)]
         digits = [glyph(f, ch) for ch in str(n)]
@@ -210,6 +211,39 @@ def syllables(f, cap):
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n  ' + "\n  ".join(parts) + "\n</svg>\n")
             n += 1
     print(n, "syllables")
+
+def clocks(f, cap):
+    """clock faces (pictures/clock-H-MM.svg) for the times in app/topics.js CLOCK: numbers 1 to 12, minute ticks,
+    a short red hour hand and a long blue minute hand"""
+    import math
+    times = [(h, m) for h in range(1, 13) for m in (0, 30, 15, 45)]
+    for k, m in enumerate([5, 10, 20, 25, 35, 40, 50, 55]):
+        times += [(k % 12 + 2, m), ((k * 5 + 7) % 12 + 1, m)]
+    pt = lambda deg, r: (64 + r * math.sin(math.radians(deg)), 64 - r * math.cos(math.radians(deg)))
+    ticks = []
+    for t in range(60):
+        (x1, y1), (x2, y2) = pt(t * 6, 55), pt(t * 6, 50 if t % 5 == 0 else 53)
+        ticks.append(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke-width="{2.2 if t % 5 == 0 else 1}"/>')
+    nums = []
+    for n in range(1, 13):
+        cx, cy = pt(n * 30, 41)
+        glyphs = [glyph(f, ch) for ch in str(n)]
+        h = 11
+        widths = [place(p, b, 0, 0, h, cap)[1] for p, b in glyphs]
+        x = cx - (sum(widths) + (len(widths) - 1)) / 2
+        for (p, b), w in zip(glyphs, widths):
+            nums.append(place(p, b, x, cy + h / 2, h, cap)[0]); x += w + 1
+    for h, m in times:
+        (hx, hy), (mx, my) = pt((h % 12 + m / 60) * 30, 24), pt(m * 6, 36)
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+               '  <circle cx="64" cy="64" r="60" fill="#fff" stroke="#1e88e5" stroke-width="6"/>\n'
+               f'  <g stroke="#90a4ae" stroke-linecap="round">{"".join(ticks)}</g>\n'
+               f'  <g fill="#37474f">{"".join(nums)}</g>\n'
+               f'  <line x1="64" y1="64" x2="{mx:.1f}" y2="{my:.1f}" stroke="#1e63c9" stroke-width="4.5" stroke-linecap="round"/>\n'
+               f'  <line x1="64" y1="64" x2="{hx:.1f}" y2="{hy:.1f}" stroke="#e53935" stroke-width="7" stroke-linecap="round"/>\n'
+               '  <circle cx="64" cy="64" r="4.5" fill="#37474f"/>\n</svg>\n')
+        open(os.path.join(ROOT, "pictures", f"clock-{h}-{m:02d}.svg"), "w").write(svg)
+    print(len(times), "clocks")
 
 def shapes():
     import math

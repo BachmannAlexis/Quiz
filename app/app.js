@@ -8,7 +8,7 @@ const CONFETTI = {
   instruments: ["🎵", "🎶", "⭐", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
   dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"], herbs: ["🌿", "🍃", "⭐", "✨"],
-  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"], syllables: ["🔤", "📖", "⭐", "✨"],
+  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"], syllables: ["🔤", "📖", "⭐", "✨"], clock: ["🕒", "⏰", "⭐", "✨"],
   numbers: ["🔢", "⭐", "🎉", "✨"], transport: ["🚗", "⭐", "🎉", "✨"], weather: ["☀️", "🌈", "⭐", "✨"],
   colors: ["🎨", "🌈", "⭐", "✨"], shapes: ["🔷", "⭐", "🎉", "✨"], clothes: ["👕", "⭐", "🎉", "✨"], jobs: ["👷", "⭐", "🎉", "✨"],
   dishes: ["🍕", "🍰", "⭐", "✨"], countries: ["🌍", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
@@ -557,7 +557,7 @@ function renderProgress() {
 let results = []; // per round: true if found on the first try
 
 function promptText() {
-  if (mode !== "listen") return T().where(nameOf(answer), manyOf(answer), topic.bare);
+  if (mode !== "listen") return topic.id === "clock" ? T().showTime(nameOf(answer)) : T().where(nameOf(answer), manyOf(answer), topic.bare);
   if (isMusic()) return T().listen;
   if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt, transport: T().whatIsIt, weather: T().whatWeather }[topic.id] || T().whoIsIt;
   return topic.id === "letters" ? T().whichLetter(soundOf(answer)) : T().who(soundOf(answer));

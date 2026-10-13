@@ -624,6 +624,43 @@ const NUMBER_GROUPS = [
   { id: TENS,  pic: "number-30", en: "Tens",           fr: "Les dizaines" },
 ];
 
+// ---------- The clock (pictures/clock-*.svg, tools/make_letters.py): read the time, in the order it is taught:
+// o'clock, half past, quarter past and to, then five-minute steps. The names follow each language's own way
+// ("half past three", "trois heures et demie", "halb vier", "le tre e mezza"), so German and Italian are set here.
+const OCLOCK = "oclock", HALF = "half", QUARTER = "quarter", MINUTES = "minutes";
+const CLOCK_EN = ["twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+const CLOCK_FR = ["douze heures", "une heure", "deux heures", "trois heures", "quatre heures", "cinq heures", "six heures",
+  "sept heures", "huit heures", "neuf heures", "dix heures", "onze heures", "douze heures"];
+const CLOCK_DE = ["zwölf", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf"];
+const CLOCK_IT = ["le dodici", "l'una", "le due", "le tre", "le quattro", "le cinque", "le sei", "le sette", "le otto", "le nove",
+  "le dieci", "le undici", "le dodici"];
+const MIN_WORDS = { 5: ["five", "cinq", "fünf", "cinque"], 10: ["ten", "dix", "zehn", "dieci"], 20: ["twenty", "vingt", "zwanzig", "venti"],
+  25: ["twenty-five", "vingt-cinq", "fünf", "venticinque"] };
+function clockNames(h, m) {
+  const next = h % 12 + 1, [en, fr, de, it] = m <= 30 ? [0, 1, 2, 3].map(k => MIN_WORDS[m] && MIN_WORDS[m][k]) : [0, 1, 2, 3].map(k => MIN_WORDS[60 - m] && MIN_WORDS[60 - m][k]);
+  if (m === 0) return [`${CLOCK_EN[h]} o'clock`, CLOCK_FR[h], `${h === 1 ? "ein" : CLOCK_DE[h]} Uhr`, CLOCK_IT[h]];
+  if (m === 30) return [`half past ${CLOCK_EN[h]}`, `${CLOCK_FR[h]} et demie`, `halb ${CLOCK_DE[next]}`, `${CLOCK_IT[h]} e mezza`];
+  if (m === 15) return [`quarter past ${CLOCK_EN[h]}`, `${CLOCK_FR[h]} et quart`, `Viertel nach ${CLOCK_DE[h]}`, `${CLOCK_IT[h]} e un quarto`];
+  if (m === 45) return [`quarter to ${CLOCK_EN[next]}`, `${CLOCK_FR[next]} moins le quart`, `Viertel vor ${CLOCK_DE[next]}`, `${CLOCK_IT[next]} meno un quarto`];
+  if (m < 30) return [`${en} past ${CLOCK_EN[h]}`, `${CLOCK_FR[h]} ${fr}`, m === 25 ? `fünf vor halb ${CLOCK_DE[next]}` : `${de} nach ${CLOCK_DE[h]}`, `${CLOCK_IT[h]} e ${it}`];
+  return [`${en} to ${CLOCK_EN[next]}`, `${CLOCK_FR[next]} moins ${fr}`, m === 35 ? `fünf nach halb ${CLOCK_DE[next]}` : `${de} vor ${CLOCK_DE[next]}`, `${CLOCK_IT[next]} meno ${it}`];
+}
+const CLOCK_TIMES = [];
+for (let h = 1; h <= 12; h++) for (const m of [0, 30, 15, 45]) CLOCK_TIMES.push([h, m]);
+[5, 10, 20, 25, 35, 40, 50, 55].forEach((m, k) => CLOCK_TIMES.push([k % 12 + 2, m], [(k * 5 + 7) % 12 + 1, m]));
+const CLOCK = CLOCK_TIMES.map(([h, m]) => {
+  const [en, fr, de, it] = clockNames(h, m);
+  return { id: `clock-${h}-${String(m).padStart(2, "0")}`, en, fr, de, it, family: `clock-${h}-${m}`,
+    styles: [m === 0 ? OCLOCK : m === 30 ? HALF : m % 15 === 0 ? QUARTER : MINUTES], ...(it.startsWith("le ") ? { plural: { it: true } } : {}) };
+});
+const CLOCK_GROUPS = [
+  { id: "all",   pic: "clock-3-00",  en: "All",         fr: "Toutes" },
+  { id: OCLOCK,  pic: "clock-3-00",  en: "O'clock",     fr: "Les heures pile" },
+  { id: HALF,    pic: "clock-6-30",  en: "Half past",   fr: "Et demie" },
+  { id: QUARTER, pic: "clock-9-15",  en: "Quarters",    fr: "Les quarts" },
+  { id: MINUTES, pic: "clock-2-10",  en: "Minutes",     fr: "Les minutes" },
+];
+
 // ---------- The body
 const OUTSIDE = "outside", INSIDE = "inside";
 const BODY = [
@@ -1310,6 +1347,7 @@ const TOPICS = [
   { id: "letters",     pic: "letter-a",   en: "ABC",        fr: "ABC",         unit: ["letters", "lettres"],         color: "#e0457b", tint: "#fde7ef", items: LETTERS, groups: LETTER_GROUPS, modes: ["listen", "explore", "name"] },
   { id: "syllables",   pic: "syl-ma",     en: "Syllables",  fr: "Syllabes",    unit: ["syllables", "syllabes"],      color: "#00838f", tint: "#e0f4f5", items: SYLLABLES, groups: SYLLABLE_GROUPS, bare: true, modes: ["name", "explore"] },
   { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS, groups: NUMBER_GROUPS, modes: ["name", "explore"] },
+  { id: "clock",       pic: "clock-3-00", en: "The clock", fr: "L'heure",    unit: ["times", "heures"],             color: "#5d4037", tint: "#f1ebe7", items: CLOCK, groups: CLOCK_GROUPS, bare: true, modes: ["name", "explore"] },
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "explore"] },
   { id: "sports",      pic: "soccer",     en: "Sports",     fr: "Les sports",  unit: ["sports", "sports"],           color: "#2b7de9", tint: "#e3effd", items: SPORTS, groups: SPORT_GROUPS, bare: true, modes: ["name", "explore"] },
   { id: "transport",   pic: "car",        en: "Transport",  fr: "Les transports", unit: ["vehicles", "véhicules"],      color: "#e53935", tint: "#fdecea", items: TRANSPORT, groups: TRANSPORT_GROUPS, modes: ["name", "listen", "explore"] },
