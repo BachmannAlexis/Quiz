@@ -9,7 +9,7 @@ description, the asset sources and the full rebuild commands.
 
 - **Static app, no build step to run it.** `index.html` loads plain scripts from `app/`; it must keep working
   offline and when opened as a local file. No frameworks, no bundler, no network calls at run time except
-  loading the app's own files.
+  loading the app's own files. Load big things per topic (packs), never all at start.
 - **For small children who cannot read.** Everything is spoken; pictures must be recognisable at about
   110 px and look-alikes must never be offered together (see `family` below). Keep sentences short.
 - **All four languages, always.** Every visible or spoken text exists in English, French, German and Italian
@@ -21,7 +21,10 @@ description, the asset sources and the full rebuild commands.
   keep or send audio. Anything kept is in `localStorage` on the device
   (best scores, scores, language, drawings/photos choice).
 - **Secrets** (API keys) go in the environment settings, never in the repo or the chat.
-- After changing the list of app files, bump `VERSION` in `sw.js` (the service worker is network-first).
+- After changing the list of app files, bump `VERSION` in `sw.js`. The service worker serves everything from the device
+  first (the app shell is refreshed in the background, packs are kept until their version in `app/packs.js` changes), so
+  after changing a pack by hand rerun `tools/make_packs.py`. Installed, the app downloads every pack of the language
+  and works offline.
 
 ## Layout
 
@@ -33,8 +36,9 @@ description, the asset sources and the full rebuild commands.
 | `app/levels.js` | Difficulty: per topic the easy and hard item ids (the rest is medium) |
 | `app/app.js` | Screens, games, voice playback, photos, scores |
 | `app/style.css` | Design; each topic recolours its screens with `color`/`tint` |
-| `app/pictures.js` | **Generated** by `tools/make_pictures.py`: Noto emoji + `pictures/*.svg` as data URIs |
-| `app/sounds.js` | **Generated** by `tools/make_sounds.py` (instruments, recordings, landscape sounds) |
+| `app/pictures/<topic>.js`, `home.js` | **Generated** by `tools/make_pictures.py`: Noto emoji + `pictures/*.svg` as data URIs, one pack per topic |
+| `app/sounds/<topic>.js` | **Generated** by `tools/make_sounds.py` (instruments, recordings, landscape sounds), one pack per topic |
+| `app/packs.js` | **Generated** by `tools/make_packs.py` (run by the other tools): version and size of every pack; the app adds the version to pack URLs, so the service worker keeps a pack until it changes |
 | `app/voice/<lang>/<topic>.json` | **Generated** by `tools/make_voice.py`: every sentence as an MP3 data URI |
 | `app/vosk/` | Optional word checking for "Say it!": `vosk.js` (vosk-browser) and a small Vosk model per language (`<lang>.tar.gz`, 41–50 MB, loaded only when a parent turns it on; the service worker skips them) |
 | `app/photos/<topic>.json`, `covers.json` | **Generated** by `tools/make_photos.py` from `tools/photo_picks.json` |
@@ -57,13 +61,13 @@ Each item: `{ id, en, fr, family, styles, ... }`.
 - Topic flags: `bare` (English name without "the"), `modes` (`name`, `say`, `listen`, `explore`, `play`), `groups`.
 
 When adding items: add the picture (`pictures/<id>.svg` or a Noto mapping in `tools/make_pictures.py`), rebuild
-`pictures.js`, record the voice, optionally add a photo query in `tools/fetch_photos.py` and a pick in
+the picture packs, record the voice, optionally add a photo query in `tools/fetch_photos.py` and a pick in
 `tools/photo_picks.json`, update the counts in README.md. Flags come from `tools/make_flags.py` (Circle Flags);
 letters, numbers, colours and shapes from `tools/make_letters.py`.
 
 ## Tools (run from the repo root, assets in a build dir outside git)
 
-- `tools/make_pictures.py <noto icons.json>` → `app/pictures.js`
+- `tools/make_pictures.py <noto icons.json>` → `app/pictures/<topic>.js` (uses `tools/topic_ids.mjs`)
 - `tools/make_flags.py <circle-flags icons.json>` → `pictures/<country>.svg`
 - `tools/make_letters.py` (needs fontTools) → letters, numbers, colours, shapes
 - `tools/make_voice.py <build> [--check | --check-all] [en|fr]` → voice packs; clips are cached, `--check`
@@ -78,7 +82,7 @@ letters, numbers, colours and shapes from `tools/make_letters.py`.
 There is no test suite in the repo. Check in a real browser with Playwright (Chromium is preinstalled; import
 from `/opt/node22/lib/node_modules/playwright/index.mjs`), serving the repo over a small local HTTP server.
 Set `localStorage['pikolo-look']` before loading, or the drawings/photos chooser opens first. Useful checks:
-open every topic and play every mode (no page errors), every item has a picture in `app/pictures.js`, and
+open every topic and play every mode (no page errors), every item has a picture in its topic's pack in `app/pictures/`, and
 every sentence from `tools/phrases.mjs` has a recording in `app/voice/`. Look at new pictures on a contact
 sheet next to existing ones before committing them.
 

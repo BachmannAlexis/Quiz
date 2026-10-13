@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Synthesize the instruments no sample library covers: gong, theremin, didgeridoo, slide whistle, rainstick and
 wind chimes. Writes <build dir>/rendered/<id>.wav (the tune) and <id>.note.wav (the play-mode sound), which
-tools/make_sounds.py then turns into app/sounds.js.
+tools/make_sounds.py then turns into the sound packs (app/sounds/).
 
 Usage: python3 tools/make_synth.py <build dir>     (needs numpy)
 """

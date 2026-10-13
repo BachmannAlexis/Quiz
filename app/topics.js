@@ -681,7 +681,7 @@ const CLOCK_GROUPS = [
   { id: OCLOCK,  pic: "clock-3-00",  en: "O'clock",     fr: "Les heures pile" },
   { id: HALF,    pic: "clock-6-30",  en: "Half past",   fr: "Et demie" },
   { id: QUARTER, pic: "clock-9-15",  en: "Quarters",    fr: "Les quarts" },
-  { id: MINUTES, pic: "clock-2-10",  en: "Minutes",     fr: "Les minutes" },
+  { id: MINUTES, pic: "clock-3-10",  en: "Minutes",     fr: "Les minutes" },
 ];
 
 // ---------- The body
@@ -1377,6 +1377,9 @@ const EMOTIONS = [
   { id: "confused", en: "confused", fr: "perdu", de: "verwirrt", it: "confuso", family: "feel-confused", feel: ["I feel confused when I don't understand.", "Je suis perdu quand je ne comprends pas.", "Ich bin verwirrt, wenn ich etwas nicht verstehe.", "Sono confuso quando non capisco."] },
   { id: "embarrassed", en: "embarrassed", fr: "gêné", de: "verlegen", it: "imbarazzato", family: "feel-shy", feel: ["I feel embarrassed when everybody looks at me.", "Je suis gêné quand tout le monde me regarde.", "Ich bin verlegen, wenn mich alle anschauen.", "Sono imbarazzato quando tutti mi guardano."] },
 ];
+
+// the pictures shown when choosing drawings or photos at the first start
+const LOOK_SAMPLES = ["lion", "sunflower", "strawberry"];
 
 const TOPICS = [
   { id: "animals",     pic: "cow",        en: "Animals",    fr: "Animaux",     unit: ["animals", "animaux"],         color: "#e8620c", tint: "#fff0e2", items: ANIMALS,     groups: ANIMAL_GROUPS, modes: ["name", "say", "listen", "explore"] },

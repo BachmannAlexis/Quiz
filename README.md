@@ -82,19 +82,21 @@ The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages 
 | `app/voice/` | The recorded voice: every sentence in English and French (`<lang>/<topic>.json`, loaded when a topic opens) |
 | `app/style.css`, `app/font.css` | Design (one bright theme; each topic recolors its screens) and the embedded Fredoka font |
 | `app/topics.js` | Topics and items: names in English and French, families, groups, animal sounds |
-| `app/pictures.js`, `app/sounds.js` | Generated drawings and sounds (sounds load in the background) |
+| `app/pictures/`, `app/sounds/` | Generated drawings and sounds, one pack per topic (`<topic>.js`, loaded when the topic opens; `pictures/home.js` for the home screen) |
+| `app/packs.js` | Generated list of every pack with its version and size (for the service worker and the offline download) |
 | `app/vosk/` | Optional word checking: `vosk.js` ([vosk-browser](https://github.com/ccoreilly/vosk-browser)) and one small speech model per language (`<lang>.tar.gz`), loaded only when a parent turns it on |
 | `app/photos/` | The photo mode: real photos per topic (`<topic>.json`) and for the home screen (`covers.json`), loaded when needed |
 | `pictures/` | The pictures drawn for the app (SVG) |
 | `icons/` | App icon, home-screen icons and the link preview image |
-| `tools/` | Scripts that build `pictures.js`, `sounds.js` and the voice |
+| `tools/` | Scripts that build the picture, sound, voice and photo packs |
 
 ## Sounds and pictures
 
-Everything is bundled in the page, so it works offline:
+Everything is bundled with the app, so it works offline:
 
-- `app/sounds.js`: for each instrument a short tune and the notes for the play mode, built by `tools/make_sounds.py`.
-- `app/pictures.js`: all the pictures, built by `tools/make_pictures.py`.
+- `app/sounds/<topic>.js`: for each instrument a short tune and the notes for the play mode, and the real recordings, built by `tools/make_sounds.py`.
+- `app/pictures/<topic>.js`: all the pictures, built by `tools/make_pictures.py`.
+- `app/packs.js`: the version and size of every pack, rebuilt by `tools/make_packs.py` (the tools above run it).
 
 Where each instrument's sound comes from, best first:
 
@@ -160,7 +162,7 @@ done
 - Piano: [Salamander Grand Piano V3](https://archive.org/details/SalamanderGrandPianoV3) by Alexander Holm, licensed [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) (MP3 packaging by Jan Forst, `@audio-samples`).
 - Recordings of violin, cello, guitar, bass guitar, saxophone and xylophone: [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments) by Nicholaus Brosowsky (npm packaging by Makefully Studios), licensed [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 - Drum kit, cowbell and tabla: samples from [Sonic Pi](https://sonic-pi.net/) (npm `supersonic-scsynth-samples`), CC0.
-- MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so `app/sounds.js` is shared under the same license.
+- MusyngKite sound bank samples from [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) by Benjamin Gleitzman, packaged by web-music-score-samples. MusyngKite is licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), so the sound packs (`app/sounds/`) are shared under the same license.
 - Steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle and jingle bells: rendered from the [GeneralUser GS](https://www.schristiancollins.com/generaluser.php) sound bank by S. Christian Collins (free to use, see its license) with [spessasynth_core](https://github.com/spessasus/spessasynth_core).
 - All recordings were trimmed, pitch-shifted and combined into short tunes.
 - Photos (photo mode): freely licensed photos (CC0, CC BY, CC BY-SA) from [iNaturalist](https://www.inaturalist.org) and [Openverse](https://openverse.org), cropped and resized; each photo and its author is listed in `PHOTO-CREDITS.md` (built by `tools/fetch_photos.py` and `tools/make_photos.py`, choices in `tools/photo_picks.json`).

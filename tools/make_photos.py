@@ -75,6 +75,7 @@ def main(build):
     for topic, item, page, author, lic, url in credits:
         lines.append(f"| {topic} | {item} | [link]({page}) | {author} | " + (f"[{lic}]({url})" if url else lic) + " |")
     open(os.path.join(ROOT, "PHOTO-CREDITS.md"), "w").write("\n".join(lines) + "\n")
+    import make_packs; make_packs.main()  # the new versions for app/packs.js
 
 if __name__ == "__main__":
     main(sys.argv[1])

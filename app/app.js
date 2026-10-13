@@ -98,7 +98,7 @@ const packs = {};                   // "fr/animals" -> Promise
 function loadPack(l, name) {
   const key = l + "/" + name;
   if (!packs[key]) {
-    loading[key] = packs[key] = fetch(`app/voice/${key}.json`)
+    loading[key] = packs[key] = fetch(packUrl(`voice/${key}.json`))
       .then(r => (r.ok ? r.json() : {}))
       .then(map => Object.assign(clips[l], map))
       .catch(() => {}) // offline from a file, or no pack: the device voice speaks instead
@@ -220,7 +220,7 @@ function speakDevice(text, id, finish, note, busy) {
 function hush() { sayId++; stopVoice(); if ("speechSynthesis" in window) speechSynthesis.cancel(); }
 
 // ---------- Sounds ----------
-let ctx, current, playToken = 0, soundsLoading = null;
+let ctx, current, playToken = 0;
 const buffers = {}; // id -> Promise<AudioBuffer>
 function audio() {
   if (!ctx) {
@@ -242,26 +242,44 @@ function unlockAudio() {
   if (c.state === "running") ["pointerdown", "touchend", "keydown"].forEach(e => removeEventListener(e, unlockAudio, true));
 }
 ["pointerdown", "touchend", "keydown"].forEach(e => addEventListener(e, unlockAudio, true));
-// sounds.js is big (2.6 MB), so the page loads it in the background (an async script tag
-// in index.html; scripts added from JavaScript are blocked in some embedded previews).
-// Sounds wait for it here.
-function loadSounds() {
-  if (!soundsLoading) soundsLoading = new Promise((ok, fail) => {
-    const started = Date.now();
-    (function check() {
-      if (window.INSTRUMENT_SOUNDS) return ok();
-      if (Date.now() - started > 60000) { soundsLoading = null; return fail(); }
-      setTimeout(check, 100);
-    })();
-  });
-  return soundsLoading;
+// ---------- Picture and sound packs ----------
+// Pictures and sounds come in packs per topic: app/pictures/<topic>.js (and home.js for the home screen) and
+// app/sounds/<topic>.js, each one call addPictures({...}) or addSounds({sounds, notes}). They are read with fetch,
+// and from a local file, where fetch does not work, as a script. Each URL carries the pack's version (PACKS, app/packs.js)
+// so the service worker can keep it until it changes.
+const PICS = {}, SOUNDS = {}, NOTES = {};
+function addPictures(map) { Object.assign(PICS, map); }
+function addSounds(pack) { Object.assign(SOUNDS, pack.sounds); Object.assign(NOTES, pack.notes); }
+const PACK_INFO = typeof PACKS !== "undefined" ? PACKS : {};
+const packUrl = path => `app/${path}?v=${(PACK_INFO[path] || [0])[0]}`;
+const assetPacks = {};
+function loadAsset(kind, name) {
+  const path = `${kind}/${name}.js`;
+  if (!assetPacks[path]) {
+    const add = kind === "pictures" ? addPictures : addSounds;
+    assetPacks[path] = fetch(packUrl(path))
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(text => add(JSON.parse(text.slice(text.indexOf("(") + 1, text.lastIndexOf(")")))))
+      .catch(() => new Promise(ok => {
+        const script = document.createElement("script");
+        script.src = `app/${path}`;
+        script.onload = script.onerror = ok;
+        document.head.appendChild(script);
+      }))
+      .then(() => { if (kind === "pictures") refreshPictures(); });
+  }
+  return assetPacks[path];
 }
+const topicOf = {}; // item id -> its topic
+TOPICS.forEach(t => t.items.forEach(i => { topicOf[i.id] = t; }));
+const hasSoundPack = t => t.id === "instruments" || t.items.some(i => i.sound);
+function loadSounds(t = topic) { return hasSoundPack(t) ? loadAsset("sounds", t.id) : Promise.resolve(); }
 // Decode a recording the first time it is needed. Tunes are keyed by instrument id,
 // play-mode sounds by "id#k".
 function recording(id) {
-  return loadSounds().then(() => {
-    const [iid, k] = id.split("#");
-    const uri = k === undefined ? window.INSTRUMENT_SOUNDS[iid] : (window.INSTRUMENT_NOTES[iid] || { samples: [] }).samples[k];
+  const [iid, k] = id.split("#");
+  return loadSounds(topicOf[iid] || topic).then(() => {
+    const uri = k === undefined ? SOUNDS[iid] : (NOTES[iid] || { samples: [] }).samples[k];
     if (!buffers[id] && uri) {
       const bin = atob(uri.split(",")[1]);
       const bytes = new Uint8Array(bin.length);
@@ -306,7 +324,7 @@ const KEY_NAMES = { en: ["C", "D", "E", "F", "G", "A", "B", "C"], fr: ["do", "rÃ
   de: ["C", "D", "E", "F", "G", "A", "H", "C"], it: ["do", "re", "mi", "fa", "sol", "la", "si", "do"] };
 function playNote(inst, k) {
   stopSound(); playToken++;
-  const info = window.INSTRUMENT_NOTES[inst.id];
+  const info = NOTES[inst.id];
   // several sounds (drum kit, tabla): one per key; one sound: tuned up and down
   const many = info.samples.length > 1;
   const steps = many ? 0 : info.pitched ? KEY_STEPS[k] : KEY_STEPS[k] / 2;
@@ -363,7 +381,7 @@ const photos = {}, photoPacks = {}, photoLoading = new Set();
 function loadPhotos(name, always) {
   if ((look !== "photos" && !always) || photoPacks[name]) return photoPacks[name];
   photoLoading.add(name);
-  return photoPacks[name] = fetch(`app/photos/${name}.json`)
+  return photoPacks[name] = fetch(packUrl(`photos/${name}.json`))
     .then(r => (r.ok ? r.json() : {}))
     .then(map => Object.assign(photos, map))
     .catch(() => {}) // offline from a file: drawings instead
@@ -372,7 +390,7 @@ function loadPhotos(name, always) {
 function srcOf(id) {
   if (look === "photos" && photos[id]) return photos[id];
   if (look === "photos" && photoLoading.size) return ""; // its photo may be on the way
-  return window.INSTRUMENT_PICTURES[id];
+  return PICS[id];
 }
 function setPicture(img, id) {
   img.dataset.pic = id;
@@ -398,6 +416,7 @@ function setLook(l) {
   loadPhotos("covers");
   if (screen !== "look") loadPhotos(topic.id);
   refreshPictures();
+  if (l === "photos" && navigator.serviceWorker && navigator.serviceWorker.controller) offlineSoon();
 }
 function show(name) {
   screen = name;
@@ -444,7 +463,8 @@ function openTopic(t) {
   store.set("quiz-topic", t.id);
   loadVoice();
   loadPhotos(t.id);
-  if (t.items.some(hasRecording)) loadSounds().catch(() => {});
+  loadAsset("pictures", t.id);
+  loadSounds(t).catch(() => {});
   theme();
   renderTopic();
   show("topic");
@@ -882,6 +902,55 @@ function saidName(heard, item) {
   return (need.length ? need : plainWords(shortName(item))).every(w => got.has(w));
 }
 
+// ---------- Without internet ----------
+// Once Pikolo is installed on the home screen (or when a parent asks), every pack of the language is fetched once:
+// the service worker keeps it, so the whole app works offline. Only what is missing is downloaded.
+const OFFLINE_CACHE = "pikolo";
+const isInstalled = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const offline = { state: "", done: 0, total: 0, run: null };
+function offlinePaths() {
+  return Object.keys(PACK_INFO).filter(p => /^(pictures|sounds)\//.test(p) || p.startsWith(`voice/${lang}/`) || (look === "photos" && p.startsWith("photos/")));
+}
+const offlineMB = () => Math.max(1, Math.round(offlinePaths().reduce((n, p) => n + PACK_INFO[p][1], 0) / 1048576));
+function makeOffline() {
+  if (offline.run) return offline.run;
+  if (!("caches" in window) || !navigator.serviceWorker || !navigator.serviceWorker.controller) { offline.state = "fail"; renderOffline(); return Promise.resolve(); }
+  const l = lang;
+  offline.run = (async () => {
+    const cache = await caches.open(OFFLINE_CACHE);
+    const missing = [];
+    for (const p of offlinePaths()) if (!(await cache.match(packUrl(p)))) missing.push(p);
+    if (recogOn() && !(await cache.match("app/vosk/vosk.js", { ignoreSearch: true }))) missing.push("vosk");
+    offline.total = missing.reduce((n, p) => n + (PACK_INFO[p] ? PACK_INFO[p][1] : 5800000), 0);
+    offline.done = 0;
+    offline.state = missing.length ? "progress" : "ready";
+    renderOffline();
+    for (const p of missing) {
+      const r = await fetch(p === "vosk" ? "app/vosk/vosk.js" : packUrl(p));
+      if (!r.ok) throw new Error(r.status);
+      await r.arrayBuffer();
+      offline.done += PACK_INFO[p] ? PACK_INFO[p][1] : 5800000;
+      renderOffline();
+    }
+    offline.state = "ready";
+    store.set("pikolo-offline-" + l, "1");
+  })().catch(() => { offline.state = "fail"; }).then(() => { offline.run = null; renderOffline(); });
+  return offline.run;
+}
+function renderOffline() {
+  const btn = $("offlineBtn"), status = $("offlineStatus");
+  if (!btn) return;
+  const ready = offline.state === "ready" || (!offline.state && store.get("pikolo-offline-" + lang) === "1");
+  btn.hidden = ready || offline.state === "progress";
+  btn.textContent = T().offlineGet(offlineMB());
+  status.textContent = offline.state === "progress" ? T().offlineProgress(Math.floor(offline.done / Math.max(1, offline.total) * 100))
+    : ready ? T().offlineReady : offline.state === "fail" ? T().offlineFail : "";
+}
+$("offlineBtn").onclick = () => { store.set("pikolo-offline-want", "1"); makeOffline(); };
+// installed, or asked for once: keep the language's packs on the device, a little after the start
+const wantOffline = () => isInstalled() || store.get("pikolo-offline-want") === "1";
+function offlineSoon() { if (wantOffline()) setTimeout(() => { if (!offline.run) { offline.state = ""; makeOffline(); } }, 4000); }
+
 function renderRecog() {
   const on = recogOn(), btn = $("recogBtn"), status = $("recogStatus");
   btn.textContent = on ? T().recogTurnOff : T().recogTurnOn(RECOG_MB[lang]);
@@ -981,6 +1050,7 @@ function renderScores() {
     box.className = "missed";
     top.sort((a, b) => b[0] - a[0]).slice(0, 12).forEach(([n, item]) => {
       const chip = document.createElement("span");
+      loadAsset("pictures", topicOf[item.id].id);
       chip.append(picture(item.id), `${shortName(item)} Ã—${n}`);
       box.appendChild(chip);
     });
@@ -1220,7 +1290,7 @@ function setLang(l) {
       b.setAttribute("aria-label", nameOf(item));
       if (b.classList.contains("named")) b.querySelector(".label").textContent = shortName(item);
     });
-    $("promptText").textContent = locked ? T().yes(nameOf(answer), topic.bare) : promptText();
+    $("promptText").textContent = locked ? yesOf(answer) : promptText();
     if (!locked) ask();
   }
   if (screen === "play" && playing) {
@@ -1229,6 +1299,8 @@ function setLang(l) {
     selectItem(playing, false);
   }
   if (screen === "done") $("doneText").textContent = T().found(stars);
+  offline.state = "";
+  offlineSoon(); // the voice of the new language too
 }
 
 function toast(text) {
@@ -1284,7 +1356,7 @@ LANGS.forEach(l => {
   $("langList").appendChild(b);
 });
 document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => $("langs").showModal());
-document.querySelector(".info-btn").onclick = () => { renderRecog(); $("about").showModal(); };
+document.querySelector(".info-btn").onclick = () => { renderRecog(); renderOffline(); $("about").showModal(); };
 $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
 $("voiceTest").onclick = () => {
@@ -1321,7 +1393,6 @@ KEY_COLORS.forEach((c, k) => {
 $("keys").addEventListener("pointerdown", e => { e.preventDefault(); $("keys").releasePointerCapture?.(e.pointerId); press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 $("keys").addEventListener("pointermove", e => { if (pressed.has(e.pointerId)) press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 ["pointerup", "pointercancel", "pointerleave"].forEach(t => $("keys").addEventListener(t, release));
-const LOOK_SAMPLES = ["lion", "sunflower", "strawberry"];
 function openLook() {
   ["drawings", "photos"].forEach(l => {
     const b = $("look-" + l);
@@ -1332,14 +1403,15 @@ function openLook() {
       const img = document.createElement("img");
       img.alt = "";
       img.dataset.sample = id;
-      if (l === "drawings") img.src = window.INSTRUMENT_PICTURES[id];
-      else img.className = "photo";
+      if (l !== "drawings") img.className = "photo";
       row.appendChild(img);
     });
   });
-  const fill = () => document.querySelectorAll("#look-photos img").forEach(img => {
-    img.src = photos[img.dataset.sample] || window.INSTRUMENT_PICTURES[img.dataset.sample];
+  const fill = () => document.querySelectorAll(".look-pics img").forEach(img => {
+    const id = img.dataset.sample, src = (img.closest("#look-photos") && photos[id]) || PICS[id];
+    if (src) img.src = src;
   });
+  loadAsset("pictures", "home").then(fill);
   (loadPhotos("covers", true) || Promise.resolve()).then(fill);
   show("look");
 }
@@ -1404,11 +1476,12 @@ document.addEventListener("keydown", e => {
 addEventListener("visibilitychange", () => { if (document.hidden) stopListening(); });
 if ("speechSynthesis" in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
 // offline support when served from a website (not from a file or inside a preview frame)
-if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").then(() => navigator.serviceWorker.ready).then(offlineSoon).catch(() => {});
 
 translate();
+loadAsset("pictures", "home");
 renderHome();
 theme();
-loadVoice();
+loadPack(lang, "common"); // a topic's voice loads when the topic opens
 // first start: drawings or photos?
 if (look) setLook(look); else openLook();

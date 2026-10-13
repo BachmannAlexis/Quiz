@@ -3,7 +3,7 @@
 
 Usage: python3 tools/fetch_animals.py <build dir> [--no-commons]
 Writes <build>/commons/raw/<animal>.<ext> and <build>/commons/credits.json, which
-tools/make_sounds.py turns into short excerpts in app/sounds.js and SOUND-CREDITS.md.
+tools/make_sounds.py turns into short excerpts in the sound packs (app/sounds/) and SOUND-CREDITS.md.
 Sources: BigSoundBank (CC0 recordings by Joseph Sardin) first, Wikimedia Commons for the
 animals it does not have. The Commons API rate-limits hard, so requests are batched and
 paced; --no-commons skips it (already downloaded files are kept).

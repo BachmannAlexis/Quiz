@@ -177,6 +177,12 @@
     <span class="small muted" id="voiceStatus" aria-live="polite"></span>
   </div>
   <p class="muted small" data-t="voiceHelp"></p>
+  <h3 data-t="offlineTitle"></h3>
+  <p class="small" data-t="offlineText"></p>
+  <div class="share-row">
+    <button class="btn btn-primary" type="button" id="offlineBtn"></button>
+    <span class="small muted" id="offlineStatus" aria-live="polite"></span>
+  </div>
   <h3 data-t="recogTitle"></h3>
   <p class="small" data-t="recogText"></p>
   <div class="share-row">
@@ -191,14 +197,12 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="app/pictures.js"></script>
+<script src="app/packs.js"></script>
 <script src="app/topics.js"></script>
 <script src="app/levels.js"></script>
 <script src="app/words.js"></script>
 <script src="app/lang/de.js"></script>
 <script src="app/lang/it.js"></script>
 <script src="app/app.js"></script>
-<!-- the instrument sounds (2.6 MB) load in the background without delaying the page -->
-<script src="app/sounds.js" async></script>
 </body>
 </html>

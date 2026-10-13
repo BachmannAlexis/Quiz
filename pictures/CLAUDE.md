@@ -21,4 +21,4 @@ Items without a file here use a Google Noto emoji (mapping in `tools/make_pictur
 
 Render a contact sheet (Playwright, `page.goto` a local HTML grid of `<img width=128>` with labels on white cards,
 including a few existing pictures for comparison), look at it, and redraw what is weak. Then rebuild
-`app/pictures.js` with `tools/make_pictures.py`.
+the picture packs (`app/pictures/`) with `tools/make_pictures.py`.

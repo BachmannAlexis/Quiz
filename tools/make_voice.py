@@ -156,6 +156,7 @@ def main(build, check, only, check_all=False):
             with open(os.path.join(out_dir, pack + ".json"), "w") as f:
                 json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
             print(lang, pack, len(data), "sentences", flush=True)
+    import make_packs; make_packs.main()  # the new versions for app/packs.js
     if asr:
         report.sort()
         with open(os.path.join(build, "voice-check%s.txt" % "".join("-" + l for l in only)), "w") as f:
