@@ -13,7 +13,7 @@ const CONFETTI = {
   colors: ["🎨", "🌈", "⭐", "✨"], shapes: ["🔷", "⭐", "🎉", "✨"], clothes: ["👕", "⭐", "🎉", "✨"], jobs: ["👷", "⭐", "🎉", "✨"],
   dishes: ["🍕", "🍰", "⭐", "✨"], countries: ["🌍", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
 };
-const MODE_ICONS = { name: "🗣️", listen: "👂", play: "🎹", explore: "👆" };
+const MODE_ICONS = { name: "🗣️", say: "🎤", listen: "👂", play: "🎹", explore: "👆" };
 
 // ---------- State ----------
 const $ = id => document.getElementById(id);
@@ -539,6 +539,7 @@ function backToTopic() {
 }
 function stopEverything() {
   gameId++; questionId++; playToken++;
+  stopListening();
   stopSound();
   hush();
 }
@@ -557,6 +558,7 @@ function renderProgress() {
 let results = []; // per round: true if found on the first try
 
 function promptText() {
+  if (mode === "say") return T().sayWhat;
   if (mode !== "listen") return topic.id === "clock" ? T().showTime(nameOf(answer)) : T().where(nameOf(answer), manyOf(answer), topic.bare);
   if (isMusic()) return T().listen;
   if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt, transport: T().whatIsIt, weather: T().whatWeather }[topic.id] || T().whoIsIt;
@@ -568,7 +570,9 @@ function ask() {
   const q = questionId;
   const btn = $("speak");
   btn.classList.remove("pulse"); void btn.offsetWidth; btn.classList.add("pulse");
-  if (mode === "listen" && hasRecording(answer)) say(promptText(), () => { if (q === questionId) playInstrument(answer); });
+  stopListening();
+  if (mode === "say") say(promptText(), () => { if (q === questionId) setTimeout(() => { if (q === questionId) hearChild(); }, 250); });
+  else if (mode === "listen" && hasRecording(answer)) say(promptText(), () => { if (q === questionId) playInstrument(answer); });
   else say(promptText());
 }
 
@@ -593,6 +597,7 @@ function askQuestion() {
   answer = deck.pop();
   lastAnswer = answer;
   if (hasRecording(answer)) recording(answer.id).catch(() => {}); // start decoding now so the sound is ready
+  if (mode === "say") return askSay();
   // wrong choices come from other families, so pictures and sounds are easy to tell
   // apart; prefer the same group, and in the animal sound game animals with a sound
   const fallback = mode === "listen" ? topic.items.filter(hasSound) : topic.items;
@@ -624,27 +629,8 @@ function pick(item, btn) {
   const q = questionId;
   if (firstTry) thinking.push((Date.now() - asked) / 1000);
   showName(btn, item);
-  if (item === answer) {
-    locked = true;
-    questionId++; // cancel any pending replay of the question
-    btn.classList.add("right");
-    $("promptText").textContent = T().yes(nameOf(item), topic.bare);
-    cheer();
-    results.push(firstTry);
-    if (firstTry) stars++;
-    renderProgress();
-    confetti(10);
-    round++;
-    const g = gameId;
-    const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
-    const hear = hasRecording(item) && mode === "name"; // found by name: now let them hear it
-    // "Yes! The cow! The cow says moo!", then the next question
-    say([T().yes(nameOf(item), topic.bare), hasRecording(item) ? "" : extra(item)], () => {
-      if (g !== gameId) return;
-      if (hear) playInstrument(item);
-      setTimeout(next, hear ? 3000 : 900);
-    });
-  } else {
+  if (item === answer) win(item, btn);
+  else {
     if (firstTry) missed.push(answer.id);
     firstTry = false;
     btn.classList.add("wrong");
@@ -659,6 +645,143 @@ function pick(item, btn) {
       say([what, T().no], () => { if (q === questionId) setTimeout(() => { if (q === questionId) ask(); }, 400); });
     }
   }
+}
+
+// Found (or said): cheer, "Yes! The cow! The cow says moo!", then the next question.
+function win(item, btn) {
+  stopListening();
+  locked = true;
+  questionId++; // cancel any pending replay of the question
+  btn.classList.add("right");
+  $("promptText").textContent = T().yes(nameOf(item), topic.bare);
+  cheer();
+  results.push(firstTry);
+  if (firstTry) stars++;
+  renderProgress();
+  confetti(10);
+  round++;
+  const g = gameId;
+  const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
+  const hear = hasRecording(item) && mode !== "listen"; // found by name: now let them hear it
+  // "Yes! The cow! The cow says moo!", then the next question
+  say([T().yes(nameOf(item), topic.bare), hasRecording(item) ? "" : extra(item)], () => {
+    if (g !== gameId) return;
+    if (hear) playInstrument(item);
+    setTimeout(next, hear ? 3000 : 900);
+  });
+}
+
+// ---------- Say it: the child says the name out loud ----------
+// The microphone only measures how loud it is, on the device, to notice that the child spoke and stopped:
+// nothing is recorded, kept or sent, and the word itself is not checked. It is open only while listening.
+// Without a microphone (or permission) a tap on the picture counts instead.
+const canHear = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+let mic = null, micDenied = false, listenTimer = 0, listenId = 0;
+
+function askSay() {
+  const box = $("choices");
+  box.innerHTML = "";
+  box.style.setProperty("--n", 1);
+  const b = card(answer);
+  b.classList.add("solo");
+  b.onclick = () => { if (!locked) { if (firstTry) thinking.push((Date.now() - asked) / 1000); showName(b, answer); win(answer, b); } };
+  box.appendChild(b);
+  $("promptText").textContent = promptText();
+  $("micHint").hidden = canHear && !micDenied;
+  asked = Date.now();
+  ask();
+}
+
+async function openMic() {
+  if (mic) return mic;
+  if (!canHear || micDenied) return null;
+  try {
+    // iPhone: recording needs the audio session that also records
+    try { if (navigator.audioSession) navigator.audioSession.type = "play-and-record"; } catch (e) {}
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+    const c = audio();
+    const analyser = c.createAnalyser();
+    analyser.fftSize = 1024;
+    c.createMediaStreamSource(stream).connect(analyser);
+    mic = { stream, analyser, data: new Float32Array(analyser.fftSize) };
+  } catch (e) {
+    micDenied = true;
+    $("micHint").hidden = false;
+  }
+  return mic;
+}
+
+function stopListening() {
+  listenId++;
+  clearInterval(listenTimer);
+  $("speak").classList.remove("listening");
+  const solo = document.querySelector(".choice.solo");
+  if (solo) solo.style.setProperty("--vol", 0);
+  if (mic) {
+    mic.stream.getTracks().forEach(t => t.stop());
+    mic = null;
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {}
+  }
+}
+
+// Listen up to 7 seconds: speech is a loud stretch (over 0.2 s) after the first 0.3 s, which measure the
+// room; it ends after 0.7 s of quiet (or 3 s of talking). A short noise, a click or a bump, does not count.
+function listenFor(onSpoke, onSilent) {
+  const q = questionId, id = ++listenId;
+  openMic().then(m => {
+    if (q !== questionId || id !== listenId || !m) return;
+    const started = Date.now(), solo = document.querySelector(".choice.solo");
+    let floor = 0, loud = 0, quiet = 0, spoke = false;
+    $("speak").classList.add("listening");
+    listenTimer = setInterval(() => {
+      if (q !== questionId || id !== listenId) return clearInterval(listenTimer);
+      m.analyser.getFloatTimeDomainData(m.data);
+      let sum = 0;
+      for (const v of m.data) sum += v * v;
+      const level = Math.sqrt(sum / m.data.length), t = Date.now() - started;
+      if (t < 300) { floor = Math.max(floor, level); return; }
+      const threshold = Math.max(0.015, floor * 2.5);
+      if (solo) solo.style.setProperty("--vol", Math.min(1, level / (threshold * 3)).toFixed(2));
+      if (level > threshold) { loud += 50; quiet = 0; } else if (loud) quiet += 50;
+      if (loud >= 200) spoke = true;
+      if (!spoke && quiet >= 300) { loud = 0; quiet = 0; }
+      if (spoke && (quiet >= 700 || loud >= 3000)) { stopListening(); onSpoke(); }
+      else if (!spoke && !loud && t > 7000) { stopListening(); onSilent(); }
+    }, 50);
+  });
+}
+
+// After "What is it? Say it!": spoke → "Yes! The cow!" and a star. Silent → "The cow! Your turn!" and
+// listen once more (no star then); still silent → "The cow!" and on to the next picture.
+function hearChild() {
+  const q = questionId, solo = document.querySelector(".choice.solo");
+  if (!solo || locked) return;
+  listenFor(() => {
+    if (q !== questionId || locked) return;
+    if (firstTry) thinking.push((Date.now() - asked) / 1000);
+    showName(solo, answer);
+    win(answer, solo);
+  }, () => {
+    if (q !== questionId || locked) return;
+    showName(solo, answer);
+    if (firstTry) {
+      missed.push(answer.id);
+      firstTry = false;
+      $("promptText").textContent = T().yourTurn;
+      say([T().name(nameOf(answer), topic.bare), T().yourTurn], () => { if (q === questionId) setTimeout(() => { if (q === questionId) hearChild(); }, 250); });
+    } else {
+      locked = true;
+      questionId++;
+      results.push(false);
+      renderProgress();
+      $("promptText").textContent = T().name(nameOf(answer), topic.bare);
+      round++;
+      const g = gameId;
+      say(T().name(nameOf(answer), topic.bare), () => {
+        if (g === gameId) setTimeout(() => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); }, 600);
+      });
+    }
+  });
 }
 
 // ---------- Scores: every finished game, to see what is too easy or still tricky ----------
@@ -751,6 +874,7 @@ function renderScores() {
 }
 
 function finish() {
+  stopListening();
   saveScore();
   const key = bestKey(topic, mode);
   const best = +store.get(key, 0);
@@ -777,7 +901,8 @@ function start(m) {
   mode = m;
   if (m === "play" || m === "explore") return openPlay();
   round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
-  $("speak").textContent = mode === "listen" ? "👂" : "🔊";
+  $("speak").textContent = mode === "listen" ? "👂" : mode === "say" ? "🎤" : "🔊";
+  $("micHint").hidden = true;
   show("game");
   askQuestion();
 }
@@ -1052,6 +1177,8 @@ document.addEventListener("keydown", e => {
   else if (screen === "game" && e.key === " ") { e.preventDefault(); if (!locked) ask(); }
   else if (e.key === "Escape") { if (screen === "topic") goHome(); else if (screen !== "home") backToTopic(); }
 });
+// the microphone never stays open in the background
+addEventListener("visibilitychange", () => { if (document.hidden) stopListening(); });
 if ("speechSynthesis" in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
 // offline support when served from a website (not from a file or inside a preview frame)
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});

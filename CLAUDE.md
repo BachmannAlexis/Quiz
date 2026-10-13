@@ -16,7 +16,8 @@ description, the asset sources and the full rebuild commands.
   (`app/words.js`; `en`/`fr` on every item in `app/topics.js`, German and Italian names in `app/lang/de.js` and
   `it.js`). Names carry their article ("la quiche", "die Pommes", "l'Italia"); German and Italian plurals are marked
   `["…", "pl"]`. `says`, `like` and `unit` are arrays in the order en, fr, de, it.
-- **Privacy.** No ads, no accounts, no analytics. Anything kept is in `localStorage` on the device
+- **Privacy.** No ads, no accounts, no analytics. The microphone ("Say it!") only measures loudness on the device
+  while listening; never record, keep or send audio. Anything kept is in `localStorage` on the device
   (best scores, scores, language, drawings/photos choice).
 - **Secrets** (API keys) go in the environment settings, never in the repo or the chat.
 - After changing the list of app files, bump `VERSION` in `sw.js` (the service worker is network-first).
@@ -51,7 +52,7 @@ Each item: `{ id, en, fr, family, styles, ... }`.
 - `styles`: the groups the item belongs to (a topic's `groups` filter on them).
 - Optional: `many` (plural, "Where are…"), `says` + `like` (sound words, letters), `hears` (sound family for
   the listening game), `poison` (mushroom warning), `from` (dish → country id: "La quiche vient de France !").
-- Topic flags: `bare` (English name without "the"), `modes` (`name`, `listen`, `explore`, `play`), `groups`.
+- Topic flags: `bare` (English name without "the"), `modes` (`name`, `say`, `listen`, `explore`, `play`), `groups`.
 
 When adding items: add the picture (`pictures/<id>.svg` or a Noto mapping in `tools/make_pictures.py`), rebuild
 `pictures.js`, record the voice, optionally add a photo query in `tools/fetch_photos.py` and a pick in

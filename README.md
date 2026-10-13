@@ -16,6 +16,7 @@
 Pick a topic, then a game:
 
 - 🗣️ **Find the picture**: the voice asks "Where is the cello?" and the child taps the right picture among three. Its name then appears on the card.
+- 🎤 **Say it!** (every topic): one big picture, the voice asks "What is it? Say it!" and the child says its name out loud. The microphone only notices that the child spoke and then stopped (it measures loudness on the device; nothing is recorded or sent, and the word itself is not checked), then the voice cheers "Yes! The cow!". After 7 seconds of silence the voice says the name and asks "Your turn!". Without a microphone, a parent taps the picture once the child has said it.
 - 👂 **Listening games** (music, animals, dinosaurs, kitchen, letters, landscapes): an instrument plays, an animal calls, the voice asks "Who says roar?", a toaster pops or a kettle boils, or a place is heard (waves, wind, rain, birds, a city…), and the child finds the picture.
 - 👆 **Discover**: tap any picture to hear its name, then its sound: the instrument's tune, the place's sounds, the animal's real call, or what the animal or dinosaur says. Flowers, trees and mushrooms make no sound, so they say their name (and the poisonous mushrooms add a warning). The pictures at the top of each topic page can be tapped too. In music, the instrument can be played on 8 rainbow keys: one octave, do ré mi fa sol la si do (C to C), with the note names on the keys.
 

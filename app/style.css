@@ -242,6 +242,11 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 .choice.wrong { animation: shake .5s; opacity: .5; }
 @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-12px) rotate(-4deg); } 40%, 80% { transform: translateX(12px) rotate(4deg); } }
 @keyframes bounce { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.12) rotate(-4deg); } 70% { transform: scale(.96) rotate(3deg); } }
+/* Say it: one big picture that glows with the child's voice */
+.choice.solo { width: min(78vw, 46vh, 360px); margin: auto; box-shadow: var(--lift), 0 0 0 calc(var(--vol, 0) * 22px) color-mix(in srgb, var(--accent) 45%, transparent); transition: transform .15s, background-color .2s, box-shadow .08s; }
+.speak.listening { animation: listening 1.4s ease-in-out infinite; }
+@keyframes listening { 50% { box-shadow: 0 6px 0 rgba(42, 34, 69, 0.18), 0 0 0 10px color-mix(in srgb, var(--accent) 35%, transparent); } }
+.mic-hint { margin: 0 auto 8px; max-width: 26em; text-align: center; font-size: .95rem; opacity: .75; }
 .poison::after { content: "⚠️"; position: absolute; top: 7%; right: 8%; font-size: clamp(1rem, 4vw, 1.7rem); }
 
 /* ---------- End of a quiz ---------- */
