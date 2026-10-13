@@ -23,8 +23,9 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   const manyOf = item => lang === "en" || lang === "fr" ? item.many : !!(item.plural && item.plural[lang]);
   const extra = item => soundOf(item) ? T.says(item[lang], soundOf(item), likeOf(item)) : item.poison ? T.poison
     : item.blend ? T.blend(item.blend[0], item.blend[1], item[lang])
-    : item.from ? (c => T.from(item[lang], c[lang], manyOf(item), manyOf(c)))(COUNTRIES.find(c => c.id === item.from)) : "";
-  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.yourTurn, T.bravo, ...T.levels]);
+    : item.from ? (c => T.from(item[lang], c[lang], manyOf(item), manyOf(c)))(COUNTRIES.find(c => c.id === item.from))
+    : item.feel ? item.feel[k] : "";
+  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.yourTurn, T.bravo, ...T.levels]);
   for (const t of TOPICS) {
     common.add(t[lang]);
     for (const g of t.groups || []) common.add(g[lang]);
@@ -33,8 +34,8 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   for (const t of TOPICS) {
     const s = new Set();
     for (const item of t.items) {
-      s.add(t.id === "clock" ? T.showTime(item[lang]) : T.where(item[lang], manyOf(item), t.bare));
-      s.add(T.yes(item[lang], t.bare));
+      s.add(t.id === "clock" ? T.showTime(item[lang]) : t.id === "emotions" ? T.whoFeels(item[lang]) : T.where(item[lang], manyOf(item), t.bare));
+      s.add(t.id === "emotions" ? T.yesFeel(item[lang]) : T.yes(item[lang], t.bare));
       s.add(T.name(item[lang], t.bare));
       if (extra(item)) s.add(extra(item));
       if (soundOf(item)) s.add(t.id === "letters" ? T.whichLetter(soundOf(item)) : T.who(soundOf(item)));

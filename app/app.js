@@ -8,7 +8,7 @@ const CONFETTI = {
   instruments: ["🎵", "🎶", "⭐", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
   trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
   dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"], herbs: ["🌿", "🍃", "⭐", "✨"],
-  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"], syllables: ["🔤", "📖", "⭐", "✨"], clock: ["🕒", "⏰", "⭐", "✨"],
+  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"], syllables: ["🔤", "📖", "⭐", "✨"], clock: ["🕒", "⏰", "⭐", "✨"], emotions: ["😀", "🥰", "⭐", "✨"],
   numbers: ["🔢", "⭐", "🎉", "✨"], transport: ["🚗", "⭐", "🎉", "✨"], weather: ["☀️", "🌈", "⭐", "✨"],
   colors: ["🎨", "🌈", "⭐", "✨"], shapes: ["🔷", "⭐", "🎉", "✨"], clothes: ["👕", "⭐", "🎉", "✨"], jobs: ["👷", "⭐", "🎉", "✨"],
   dishes: ["🍕", "🍰", "⭐", "✨"], countries: ["🌍", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
@@ -349,6 +349,7 @@ function extra(item) {
   if (item.blend) return T().blend(item.blend[0], item.blend[1], nameOf(item)); // "m… a… ma!"
   if (item.poison) return T().poison;
   if (item.from) { const c = ITEMS.get(item.from); return T().from(nameOf(item), c[lang], manyOf(item), manyOf(c)); }
+  if (item.feel) return item.feel[li()]; // "I feel scared when there is thunder."
   return "";
 }
 
@@ -559,7 +560,8 @@ function renderProgress() {
 let results = []; // per round: true if found on the first try
 
 function promptText() {
-  if (mode === "say") return T().sayWhat;
+  if (mode === "say") return topic.id === "emotions" ? T().sayFeel : T().sayWhat;
+  if (mode !== "listen" && topic.id === "emotions") return T().whoFeels(nameOf(answer));
   if (mode !== "listen") return topic.id === "clock" ? T().showTime(nameOf(answer)) : T().where(nameOf(answer), manyOf(answer), topic.bare);
   if (isMusic()) return T().listen;
   if (answer.sound) return { scenery: T().whereAreWe, kitchen: T().whatIsIt, transport: T().whatIsIt, weather: T().whatWeather }[topic.id] || T().whoIsIt;
@@ -648,13 +650,16 @@ function pick(item, btn) {
   }
 }
 
+// "Yes! The cow!", or for a feeling "Yes! Happy!"
+const yesOf = item => topic.id === "emotions" ? T().yesFeel(nameOf(item)) : T().yes(nameOf(item), topic.bare);
+
 // Found (or said): cheer, "Yes! The cow! The cow says moo!", then the next question.
 function win(item, btn) {
   stopListening();
   locked = true;
   questionId++; // cancel any pending replay of the question
   btn.classList.add("right");
-  $("promptText").textContent = T().yes(nameOf(item), topic.bare);
+  $("promptText").textContent = yesOf(item);
   cheer();
   results.push(firstTry);
   if (firstTry) stars++;
@@ -665,7 +670,7 @@ function win(item, btn) {
   const next = () => { if (g === gameId) (round >= ROUNDS ? finish : askQuestion)(); };
   const hear = hasRecording(item) && mode !== "listen"; // found by name: now let them hear it
   // "Yes! The cow! The cow says moo!", then the next question
-  say([T().yes(nameOf(item), topic.bare), hasRecording(item) ? "" : extra(item)], () => {
+  say([yesOf(item), hasRecording(item) ? "" : extra(item)], () => {
     if (g !== gameId) return;
     if (hear) playInstrument(item);
     setTimeout(next, hear ? 3000 : 900);

@@ -7,6 +7,8 @@ Pictures from Noto Emoji (Apache-2.0) per NOTO below; the others are drawn for t
 import json, os, sys, urllib.parse
 
 NOTO = {
+    # emotions
+    "happy": "grinning-face-with-big-eyes", "sad": "crying-face", "angry": "angry-face", "scared": "fearful-face", "surprised": "astonished-face", "tired": "yawning-face", "sleepy": "sleeping-face", "disgusted": "nauseated-face", "shy": "face-with-peeking-eye", "excited": "star-struck", "worried": "worried-face", "calm": "relieved-face", "silly": "zany-face", "in-love": "smiling-face-with-hearts", "sick": "face-with-thermometer", "hurt": "face-with-head-bandage", "confused": "confused-face", "embarrassed": "flushed-face",
     # instruments
     "violin": "violin", "harp": "harp", "flute": "flute", "horn": "postal-horn", "trumpet": "trumpet",
     "trombone": "trombone", "drum": "drum", "bell": "bell", "piano": "musical-keyboard", "saxophone": "saxophone",

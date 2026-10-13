@@ -9,6 +9,10 @@ const LEVELS = {
       "pufferfish", "coral", "grasshopper", "beetle", "ox", "water-buffalo", "ram", "poodle", "cheetah", "leopard",
       "mole", "toad", "seagull", "robin", "blackbird", "woodpecker", "cuckoo", "hummingbird", "scorpion", "mosquito"],
   },
+  emotions: {
+    easy: ["happy", "sad", "angry", "scared", "surprised", "tired"],
+    hard: ["worried", "calm", "confused", "embarrassed"],
+  },
   instruments: {
     easy: ["violin", "guitar", "piano", "drum", "trumpet", "flute", "recorder", "harp", "xylophone", "bell",
       "triangle", "maracas", "tambourine", "accordion", "harmonica", "saxophone"],
