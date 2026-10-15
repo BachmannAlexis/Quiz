@@ -76,9 +76,14 @@ def spoken_form(text, lang, pack=None):
                       lambda m: f"{m.group(1)} [[ {sounds[m.group(2)]} ]] " if m.group(2) in sounds else m.group(0), text)
     return text
 
+PHONEME_VERSION = 2  # bump when the way [[ phonemes ]] are recorded changes: those clips are recorded again
+
 def record(voice, text, wav_path):
-    """Synthesize text; a sound written as [[ phonemes ]] is recorded on its own, stretched (a
-    letter's sound, "sss", must last), and joined to the rest with short pauses."""
+    """Synthesize text; a sound written as [[ phonemes ]] is recorded on its own, held a little longer (a
+    letter's sound, "sss", must last) and steadier (less random voicing), with soft edges so it does not click,
+    and joined to the rest with short pauses. Long marks (ː) are kept: they hold the sound naturally, where
+    stretching the whole sound a lot made it buzz."""
+    import numpy as np
     from piper import SynthesisConfig
     import io
     frames, params = [], None
@@ -87,18 +92,26 @@ def record(voice, text, wav_path):
         if k % 2 == 0 and "…" in piece and not re.search(r"\w", piece) and params:  # "k… a… t": a pause between sounds
             frames.append(b"\0\0" * int(params.framerate * 0.3))
         if not piece or (k % 2 == 0 and not re.search(r"\w", piece)): continue  # lone punctuation
-        if k % 2:  # phonemes: continuants (s, z, f, v, m, n, l) held longer than b + vowel
-            scale = 3.0 if len(piece.replace("ː", "")) == 1 else 2.0
-            piece = f"[[ {piece.replace('ː', '')} ]]"
+        phoneme = k % 2 == 1
+        if phoneme:  # a sound alone: one phoneme held longer than b + vowel
+            scale = 1.7 if len(piece.replace("ː", "")) == 1 else 1.5
+            config = SynthesisConfig(length_scale=scale, noise_scale=0.45, noise_w_scale=0.6)
+            piece = f"[[ {piece} ]]"
         else:
-            scale = LENGTH_SCALE
+            config = SynthesisConfig(length_scale=LENGTH_SCALE)
         buf = io.BytesIO()
         with wave.open(buf, "wb") as w:
-            voice.synthesize_wav(piece, w, syn_config=SynthesisConfig(length_scale=scale))
+            voice.synthesize_wav(piece, w, syn_config=config)
         buf.seek(0)
         with wave.open(buf) as w:
             params = w.getparams()
-            frames.append(w.readframes(w.getnframes()))
+            data = w.readframes(w.getnframes())
+            if phoneme:  # 15 ms fades
+                x = np.frombuffer(data, np.int16).astype(np.float32)
+                n = min(len(x) // 3, int(w.getframerate() * 0.015))
+                if n: x[:n] *= np.linspace(0, 1, n); x[-n:] *= np.linspace(1, 0, n)
+                data = x.astype(np.int16).tobytes()
+            frames.append(data)
             frames.append(b"\0\0" * int(w.getframerate() * 0.08))
     with wave.open(wav_path, "wb") as w:
         w.setparams(params)
@@ -141,7 +154,7 @@ def main(build, check, only, check_all=False):
             data = {}
             for text in sentences:
                 spoken = spoken_form(text, lang, pack)
-                key = f"{VOICES[lang]}|{LENGTH_SCALE}|{spoken}" + ("|stretched" if "[[" in spoken else "")
+                key = f"{VOICES[lang]}|{LENGTH_SCALE}|{spoken}" + (f"|phonemes{PHONEME_VERSION}" if "[[" in spoken else "")
                 h = hashlib.sha1(key.encode()).hexdigest()[:16]
                 wav, mp3 = os.path.join(cache, h + ".wav"), os.path.join(cache, f"{h}.{ENCODING}.mp3")
                 fresh = not os.path.exists(wav)

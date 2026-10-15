@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Download the real recordings used by Pikolo (animals, kitchen), with their licences.
+"""Download the real recordings used by Pikolo (animals, kitchen, transport, weather, landscapes, some instruments),
+with their licences.
 
 Usage: python3 tools/fetch_animals.py <build dir> [--no-commons]
 Writes <build>/commons/raw/<animal>.<ext> and <build>/commons/credits.json, which
@@ -60,6 +61,16 @@ BIGSOUNDBANK = {
     "rain": "rain-on-puddle-s1290", "umbrella": "rain-under-an-umbrella-s2679", "storm": "rain-and-storm-s0124",
     "lightning": "thunder-s2718", "wind": "strong-wind-1-s0146",
 }
+# landscapes and instruments: real recordings instead of rendered or synthesized sounds
+BIGSOUNDBANK.update({
+    "beach": "sea-waves-and-seagulls-s0267", "island": "small-waves-and-beach-1-s1446", "wave": "sea-waves-s0266",
+    "river": "small-stream-s0823", "waterfall": "small-waterfall-2-s0219", "forest": "forest-s0100",
+    "city": "city-center-1-s2762", "starry-sky": "song-of-nocturnal-insect-2-s0425", "jungle": "screaming-piha-s1762",
+    "lake": "pond-in-a-field-s0691", "countryside": "countryside-s0097", "snow": "steps-in-the-snow-3-s3363",
+    "mountain": "whistling-of-the-wind-1-s0147",
+    "gong": "gong-sweet-s1482", "rainstick": "rain-stick-s0464", "didgeridoo": "didgeridoo-s0296",
+})
+
 BSB = "https://bigsoundbank.com"
 
 # animal id -> Commons file. Used for the animals missing from BIGSOUNDBANK.

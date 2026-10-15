@@ -92,6 +92,9 @@ sheet next to existing ones before committing them.
 
 ## Long tasks in cloud sessions
 
+Run long jobs (voice recording, downloads, sound builds) in the background and keep answering the user: don't wait
+for them inside a turn with sleep loops; the job's completion notification brings you back.
+
 Background jobs (voice recording, photo downloads) and drawing agents can be cut off by usage limits or a
 restart. Commit and push often. When starting such work, schedule one check-in (`send_later`, about 5 hours
 ahead) that resumes it, and cancel it as soon as the work is done, so a check-in only happens when the work

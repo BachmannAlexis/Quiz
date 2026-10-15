@@ -134,6 +134,7 @@ HITS = {
 }
 
 NOTE_LEN = 1.6  # seconds of each play-mode note
+RECORDED_INSTRUMENTS = {"gong", "rainstick", "didgeridoo"}  # instruments from real recordings (tools/fetch_animals.py)
 NAMES = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 
 def midi(note):
@@ -157,7 +158,7 @@ def ffmpeg(inputs, parts, out, loud=True):
                    "aresample=44100,alimiter=limit=0.71:level=false[out]")
     args = [a for f in inputs for a in ("-i", f)]
     subprocess.run(["ffmpeg", "-v", "error", "-y", *args, "-filter_complex", ";".join(filters),
-                    "-map", "[out]", "-ac", "1", "-b:a", "64k", out], check=True)
+                    "-map", "[out]", "-ac", "1", "-b:a", "128k", out], check=True)  # 128 kbit/s: clean music
 
 def part(start, length, shift=0):
     pitch = f"asetrate=44100*{2 ** (shift / 12):.6f},aresample=44100," if shift else ""
@@ -194,7 +195,8 @@ def animal(src, out):
 
 def write_credits(root, credits):
     lines = ["# Sound credits", "",
-             "The animal and kitchen recordings in the sound packs (`app/sounds/`) are excerpts (about 3 seconds, levelled) of these real recordings",
+             "The animal, kitchen, transport, weather and landscape recordings, and the gong, rainstick and didgeridoo, in the sound packs",
+             "(`app/sounds/`) are excerpts (about 3 seconds, levelled) of these real recordings",
              "from [BigSoundBank](https://bigsoundbank.com) and [Wikimedia Commons](https://commons.wikimedia.org).",
              "Thank you to their authors.", "",
              "| Animal | Recording | Author | Licence |", "|---|---|---|---|"]
@@ -231,13 +233,18 @@ def main(build):
         commons = os.path.join(build, "commons", "credits.json")
         credits = json.load(open(commons)) if os.path.exists(commons) else {}
         for iid, c in credits.items():
-            animal(os.path.join(build, "commons", c["file"]), out(iid))
+            src = os.path.join(build, "commons", c["file"])
+            animal(src, out(iid))
             tunes[iid] = uri(out(iid))
+            if iid in RECORDED_INSTRUMENTS:  # a real gong, rainstick or didgeridoo: its play-mode sound from the recording too
+                start, _ = loudest(src, NOTE_LEN)
+                ffmpeg([src], [f"aresample=44100,atrim={start:.2f}:{start + NOTE_LEN:.2f},asetpts=PTS-STARTPTS,afade=t=in:d=0.02,afade=t=out:st={NOTE_LEN - .3:.2f}:d=0.3"], out(iid + ".note"))
+                notes[iid] = {"pitched": False, "samples": [uri(out(iid + ".note"))]}
         rendered = os.path.join(build, "rendered")
         for f in sorted(os.listdir(rendered)):
             m = re.fullmatch(r"(.+?)(\.note)?\.wav", f)
             iid, is_note = m.group(1), m.group(2)
-            if iid in PITCHED or iid in HITS: continue  # a better source covers it
+            if iid in PITCHED or iid in HITS or iid in credits: continue  # a better source (a real recording) covers it
             if is_note:
                 notes[iid] = {"pitched": iid in ("steel-drum", "theremin"), "samples": [single(os.path.join(rendered, f), iid + ".note", 0, NOTE_LEN)]}
             else:

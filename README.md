@@ -110,8 +110,9 @@ Where each instrument's sound comes from, best first:
 | [tonejs-instruments](https://github.com/nbrosowsky/tonejs-instruments), real recordings | violin, cello, guitar, bass guitar, saxophone, xylophone, harmonium |
 | [Sonic Pi](https://sonic-pi.net/) samples, real recordings | drum kit, cowbell, tabla, cajón |
 | MusyngKite sound bank (via npm `web-music-score-samples`) | pipe organ, accordion, harmonica, bagpipes, sitar, koto, shamisen, kalimba, banjo, ukulele, electric guitar, synthesizer, recorder, pan flute, ocarina, music box, bell, piccolo, cor anglais, bass clarinet, celesta, harpsichord, vibraphone, tubular bells, mandolin, alphorn, erhu, melodica, shakuhachi |
-| Synthesized by `tools/make_synth.py` | gong, theremin, didgeridoo, slide whistle, rainstick, wind chimes |
-| GeneralUser GS sound bank, rendered by `tools/render_gm.mjs` | steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle, jingle bells, and the landscape sounds (its sound-effects kit) |
+| Synthesized by `tools/make_synth.py`, with a room reverb | theremin, slide whistle, wind chimes |
+| GeneralUser GS sound bank, rendered by `tools/render_gm.mjs` | steel drum, taiko, djembe, bongos, maracas, tambourine, castanets, guiro, whistle, jingle bells, and the volcano, rainbow and coral reef sounds (its sound-effects kit) |
+| [BigSoundBank](https://bigsoundbank.com), real recordings (CC0, `tools/fetch_animals.py`) | gong, rainstick, didgeridoo, and the other landscape sounds (waves, streams, forest, city, night insects…) |
 
 To rebuild (needs Node, Python and ffmpeg):
 
