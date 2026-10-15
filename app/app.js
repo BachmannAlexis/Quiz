@@ -418,7 +418,35 @@ function setLook(l) {
   refreshPictures();
   if (l === "photos" && navigator.serviceWorker && navigator.serviceWorker.controller) offlineSoon();
 }
+// The phone's back button (or gesture) goes back one screen: from a game, the end or Discover to the topic, from
+// the topic to home, and closes an open sheet, instead of leaving the app. Each screen deeper than home adds a
+// history entry; leaving a screen with the app's own buttons removes it again.
+const DEPTH = { look: 0, home: 0, topic: 1, game: 2, play: 2, done: 2 };
+let depth = 0, skipPops = 0;
+function syncHistory(d) {
+  try {
+    while (depth < d) history.pushState({ pikolo: ++depth }, "");
+    if (depth > d) { skipPops++; history.go(d - depth); depth = d; }
+  } catch (e) {} // no history (some embedded previews): the buttons still work
+}
+addEventListener("popstate", e => {
+  if (skipPops) { skipPops--; return; }
+  const open = document.querySelector("dialog[open]");
+  if (open) { open.close(); return; } // back closes the open sheet (its own history entry is gone)
+  depth = (e.state && e.state.pikolo) || 0;
+  if (depth < 2 && DEPTH[screen] === 2) backToTopic();
+  if (depth < 1 && screen === "topic") goHome();
+});
+
+// a sheet (parents, language, scores) adds a history entry too, so back closes it
+function openSheet(d) {
+  d.showModal();
+  try { history.pushState({ pikolo: depth, sheet: 1 }, ""); } catch (e) { return; }
+  d.addEventListener("close", () => { if (history.state && history.state.sheet) { skipPops++; history.back(); } }, { once: true });
+}
+
 function show(name) {
+  syncHistory(DEPTH[name] || 0);
   screen = name;
   document.querySelectorAll(".screen").forEach(s => { s.hidden = s.id !== name; });
   document.body.classList.toggle("themed", name !== "home" && name !== "look");
@@ -1355,8 +1383,8 @@ LANGS.forEach(l => {
   b.onclick = () => { $("langs").close(); if (l !== lang) setLang(l); };
   $("langList").appendChild(b);
 });
-document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => $("langs").showModal());
-document.querySelector(".info-btn").onclick = () => { renderRecog(); renderOffline(); $("about").showModal(); };
+document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => openSheet($("langs")));
+document.querySelector(".info-btn").onclick = () => { renderRecog(); renderOffline(); openSheet($("about")); };
 $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
 $("voiceTest").onclick = () => {
@@ -1419,7 +1447,7 @@ function openLook() {
   $("look-" + l).onclick = () => { audio(); setLook(l); goHome(); };
 });
 $("lookBtn").onclick = openLook;
-$("scoresBtn").onclick = () => { renderScores(); $("scores").showModal(); };
+$("scoresBtn").onclick = () => { renderScores(); openSheet($("scores")); };
 $("clearScores").onclick = () => {
   if (!confirm(T().clearConfirm)) return;
   store.set("pikolo-scores", "[]"); store.set("pikolo-missed", "{}");
