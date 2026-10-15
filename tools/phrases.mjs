@@ -24,8 +24,13 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   const extra = item => soundOf(item) ? T.says(item[lang], soundOf(item), likeOf(item)) : item.poison ? T.poison
     : item.blend ? T.blend(item.blend[0], item.blend[1], item[lang])
     : item.from ? (c => T.from(item[lang], c[lang], manyOf(item), manyOf(c)))(COUNTRIES.find(c => c.id === item.from))
-    : item.feel ? item.feel[k] : "";
-  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.yourTurn, T.bravo, ...T.levels]);
+    : item.feel ? item.feel[k] : item.word ? T.soundAs(item[lang], item.word) : item.parts ? soundOut(item) : "";
+  // "lu… ne… lune !"; English sound by sound
+  const soundOut = item => {
+    const parts = item.parts.map(p => p.startsWith("/") ? `[[ ${p.slice(1)} ]]` : p);
+    return parts.length > 1 || item.parts[0].startsWith("/") ? T.soundOut(parts.join("… "), item[lang]) : T.name(item[lang], true);
+  };
+  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.sayRead, T.readIt, T.yourTurn, T.bravo, ...T.levels]);
   for (const t of TOPICS) {
     common.add(t[lang]);
     for (const g of t.groups || []) common.add(g[lang]);
@@ -34,7 +39,8 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   for (const t of TOPICS) {
     const s = new Set();
     for (const item of t.items) {
-      s.add(t.id === "clock" ? T.showTime(item[lang]) : t.id === "emotions" ? T.whoFeels(item[lang]) : T.where(item[lang], manyOf(item), t.bare));
+      if (item.only && item.only !== lang) continue; // sounds and words of another language
+      if (t.id !== "reading") s.add(t.id === "clock" ? T.showTime(item[lang]) : t.id === "emotions" ? T.whoFeels(item[lang]) : T.where(item[lang], manyOf(item), t.bare));
       s.add(t.id === "emotions" ? T.yesFeel(item[lang]) : T.yes(item[lang], t.bare));
       s.add(T.name(item[lang], t.bare));
       if (extra(item)) s.add(extra(item));
@@ -45,4 +51,7 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
     out[lang][t.id] = [...s];
   }
 }
+// how make_voice.py says each sound card ("« ou »" -> the sound u, not the word "ou")
+out._phonemes = {};
+for (const t of TOPICS) for (const i of t.items) if (i.grapheme) (out._phonemes[i.only] = out._phonemes[i.only] || {})[i[i.only]] = i.ipa;
 process.stdout.write(JSON.stringify(out, null, 1));

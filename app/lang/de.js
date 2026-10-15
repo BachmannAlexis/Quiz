@@ -26,5 +26,7 @@ addLanguage("de", {
   "scenery": {"topic": ["Landschaften", "Landschaften"], "items": {"mountain": "der Berg", "volcano": "der Vulkan", "beach": "der Strand", "island": "die Insel", "wave": "die große Welle", "desert": "die Wüste", "river": "der Fluss", "waterfall": "der Wasserfall", "forest": "der Wald", "meadow": "die Wiese", "cave": "die Höhle", "iceberg": "der Eisberg", "city": "die Stadt", "starry-sky": "der Sternenhimmel", "sunset": "der Sonnenuntergang", "rainbow": "der Regenbogen", "jungle": "der Dschungel", "savanna": "die Savanne", "lake": "der See", "coral-reef": "das Korallenriff", "canyon": "die Schlucht", "countryside": ["die Felder", "pl"], "snow": "der Schnee", "campsite": "der Campingplatz"}},
   "syllables": {"items": {}, "topic": ["Silben", "Silben"], "groups": {"stretch": "Lange Laute", "quick": "Kurze Laute"}},
   "clock": {"items": {}, "topic": ["Die Uhr", "Uhrzeiten"], "groups": {"oclock": "Volle Stunden", "half": "Halbe Stunden", "quarter": "Viertelstunden", "minutes": "Minuten"}},
-  "emotions": {"items": {}, "topic": ["Gefühle", "Gefühle"]}
+  "emotions": {"items": {}, "topic": ["Gefühle", "Gefühle"]},
+  "sounds": {"items": {}, "topic": ["Laute", "Laute"], "groups": {"vowel-sounds": "Selbstlaute", "consonant-sounds": "Mitlaute"}},
+  "reading": {"items": {}, "topic": ["Ich lese", "Wörter"]}
 });

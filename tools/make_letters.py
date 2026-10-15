@@ -4,11 +4,13 @@ the numbers 1 to 100 (pictures/number-*.svg: the digits above as many dots and s
 the colours (pictures/color-*.svg, a paint splash), the shapes (pictures/shape-*.svg) and the syllables
 (pictures/syl-*.svg, consonant in blue and vowel in red).
 
-Usage: python3 tools/make_letters.py
+Usage: python3 tools/make_letters.py [<@iconify-json/noto icons.json>]
+With icons.json it also draws the sound cards (pictures/snd-<lang>-*.svg): the spelling of a sound (vowel sounds in
+red, consonant sounds in blue) above the Noto picture of its keyword ("ou" and a wolf for "loup").
 Needs fonttools and brotli (pip install fonttools brotli). The letters are Fredoka, the app's font
 (embedded in app/font.css), turned into paths so the pictures need no font.
 """
-import base64, io, os, re
+import base64, io, json, os, re, subprocess, sys
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.pens.svgPathPen import SVGPathPen
@@ -61,6 +63,7 @@ def main():
     print("26 letters")
     syllables(f, cap)
     clocks(f, cap)
+    if len(sys.argv) > 1: soundcards(f, cap, sys.argv[1])
     for n in range(1, 11):
         color = COLORS[(n - 1) % len(COLORS)]
         digits = [glyph(f, ch) for ch in str(n)]
@@ -211,6 +214,34 @@ def syllables(f, cap):
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n  ' + "\n  ".join(parts) + "\n</svg>\n")
             n += 1
     print(n, "syllables")
+
+def soundcards(f, cap, icons_json):
+    """sound cards (pictures/snd-fr-ou.svg …), from the sounds in app/topics.js: the spelling, big, and the keyword picture"""
+    d = json.load(open(icons_json))
+    cards = json.loads(subprocess.run(["node", os.path.join(ROOT, "tools", "topic_ids.mjs")], capture_output=True, check=True, text=True).stdout)["_soundcards"]
+    for c in cards:
+        glyphs = [glyph(f, ch) for ch in c["grapheme"]]
+        h, gap = 60, 2
+        widths = [place(p, b, 0, 0, h, cap)[1] for p, b in glyphs]
+        total = sum(widths) + gap * (len(widths) - 1)
+        if total > 116:
+            h *= (116 - gap * (len(widths) - 1)) / sum(widths); widths = [w * h / 60 for w in widths]; total = 116
+        # fit between the top (6) and the picture (80): letters with a tail (g, q, p) sit higher and smaller
+        top = max(b[3] for _, b in glyphs) / cap * h; low = max(0, -min(b[1] for _, b in glyphs)) / cap * h
+        if top + low > 74:
+            k = 74 / (top + low); h *= k; widths = [w * k for w in widths]; top *= k; low *= k
+            total = sum(widths) + gap * (len(widths) - 1)
+        base = min(80 - low, 6 + top + (74 - top - low) / 2)
+        x, parts = (128 - total) / 2, []
+        for (p, b), w in zip(glyphs, widths):
+            parts.append(place(p, b, x, base, h, cap)[0]); x += w + gap
+        icon = d["icons"][c["noto"]]
+        w, hh = icon.get("width", d.get("width", 16)), icon.get("height", d.get("height", 16))
+        open(os.path.join(ROOT, "pictures", c["id"] + ".svg"), "w").write(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">\n'
+            f'  <g fill="{"#e53935" if c["vowel"] else "#1e63c9"}">{"".join(parts)}</g>\n'
+            f'  <svg x="44" y="84" width="40" height="40" viewBox="0 0 {w} {hh}">{icon["body"]}</svg>\n</svg>\n')
+    print(len(cards), "sound cards")
 
 def clocks(f, cap):
     """clock faces (pictures/clock-H-MM.svg) for the times in app/topics.js CLOCK: numbers 1 to 12, minute ticks,

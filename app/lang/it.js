@@ -26,5 +26,7 @@ addLanguage("it", {
   "scenery": {"topic": ["Paesaggi", "paesaggi"], "items": {"mountain": "la montagna", "volcano": "il vulcano", "beach": "la spiaggia", "island": "l'isola", "wave": "l'onda", "desert": "il deserto", "river": "il fiume", "waterfall": "la cascata", "forest": "il bosco", "meadow": "il prato", "cave": "la grotta", "iceberg": "l'iceberg", "city": "la città", "starry-sky": "il cielo stellato", "sunset": "il tramonto", "rainbow": "l'arcobaleno", "jungle": "la giungla", "savanna": "la savana", "lake": "il lago", "coral-reef": "la barriera corallina", "canyon": "il canyon", "countryside": "la campagna", "snow": "la neve", "campsite": "il campeggio"}},
   "syllables": {"items": {}, "topic": ["Sillabe", "sillabe"], "groups": {"stretch": "Suoni lunghi", "quick": "Suoni brevi"}},
   "clock": {"items": {}, "topic": ["L'orologio", "orari"], "groups": {"oclock": "Le ore esatte", "half": "Le mezz'ore", "quarter": "I quarti d'ora", "minutes": "I minuti"}},
-  "emotions": {"items": {}, "topic": ["Le emozioni", "emozioni"]}
+  "emotions": {"items": {}, "topic": ["Le emozioni", "emozioni"]},
+  "sounds": {"items": {}, "topic": ["I suoni", "suoni"], "groups": {"vowel-sounds": "Vocali", "consonant-sounds": "Consonanti"}},
+  "reading": {"items": {}, "topic": ["Leggo", "parole"]}
 });

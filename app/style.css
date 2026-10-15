@@ -251,6 +251,11 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 .choice.solo { width: min(78vw, 46vh, 360px); margin: auto; box-shadow: var(--lift), 0 0 0 calc(var(--vol, 0) * 22px) color-mix(in srgb, var(--accent) 45%, transparent); transition: transform .15s, background-color .2s, box-shadow .08s; }
 .speak.listening { animation: listening 1.4s ease-in-out infinite; }
 @keyframes listening { 50% { box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 40%, transparent), 0 0 0 12px color-mix(in srgb, var(--accent) 25%, transparent); } }
+/* reading: the word written big, in the app's font, small letters as children learn them */
+.read-word { display: inline-block; font-size: clamp(2.6rem, 13vw, 4.4rem); font-weight: 600; letter-spacing: .04em; color: var(--accent); line-height: 1.1; }
+.choice .word { display: none; }
+.choice.word-card .word { display: block; }
+.choice.word-card img, .choice.word-card .label { display: none; }
 .heard { margin: 0 auto 6px; min-height: 1.3em; text-align: center; font-size: .95rem; opacity: .6; }
 .mic-hint { margin: 0 auto 8px; max-width: 26em; text-align: center; font-size: .95rem; opacity: .75; }
 .poison::after { content: "⚠️"; position: absolute; top: 7%; right: 8%; font-size: clamp(1rem, 4vw, 1.7rem); }

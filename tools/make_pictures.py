@@ -135,6 +135,12 @@ def main(icons_json):
             pics[f[:-4]] = data_uri(open(os.path.join(root, "pictures", f)).read())
     # one pack per topic (app/pictures/<topic>.js), loaded when the topic opens, and a small one for the home screen
     groups = json.loads(subprocess.run(["node", os.path.join(root, "tools", "topic_ids.mjs")], capture_output=True, check=True, text=True).stdout)
+    # the words to read show the Noto picture named in topics.js
+    for quiz_id, name in groups.pop("_noto").items():
+        icon = d["icons"][name]
+        w, h = icon.get("width", d.get("width", 16)), icon.get("height", d.get("height", 16))
+        pics[quiz_id] = data_uri(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">{icon["body"]}</svg>')
+    groups.pop("_soundcards")
     missing = sorted({i for ids in groups.values() for i in ids} - set(pics))
     assert not missing, f"no picture for {missing}"
     out = os.path.join(root, "app", "pictures")

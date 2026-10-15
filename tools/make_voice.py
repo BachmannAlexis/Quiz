@@ -56,8 +56,14 @@ def syllable_phonemes(token, lang):
         return c(t) + ("ːː" if t in "mlrsfnv" else "ə")
     return None
 
+SOUND_PHONEMES = {}  # lang -> {"« ou »": "u"}, the sound cards (from tools/phrases.mjs)
+
 def spoken_form(text, lang, pack=None):
     """What the synthesizer reads, when the written sentence would be mispronounced."""
+    if pack == "sounds":  # a sound card is said as its sound: "« ou » comme loup !" -> "[[ u ]] comme loup !"
+        for written, ipa in sorted(SOUND_PHONEMES.get(lang, {}).items(), key=lambda kv: -len(kv[0])):
+            text = text.replace(written, f"[[ {ipa} ]]")
+        return text
     if pack == "syllables":
         return re.sub(r"(?<![\w'’])([A-Za-z]{1,2})(?![\w'’])",
                       lambda m: f"[[ {p} ]]" if (p := syllable_phonemes(m.group(1), lang)) else m.group(1), text)
@@ -78,6 +84,8 @@ def record(voice, text, wav_path):
     frames, params = [], None
     for k, piece in enumerate(re.split(r"\[\[(.*?)\]\]", text)):
         piece = piece.strip()
+        if k % 2 == 0 and "…" in piece and not re.search(r"\w", piece) and params:  # "k… a… t": a pause between sounds
+            frames.append(b"\0\0" * int(params.framerate * 0.3))
         if not piece or (k % 2 == 0 and not re.search(r"\w", piece)): continue  # lone punctuation
         if k % 2:  # phonemes: continuants (s, z, f, v, m, n, l) held longer than b + vowel
             scale = 3.0 if len(piece.replace("ː", "")) == 1 else 2.0
@@ -114,6 +122,7 @@ def main(build, check, only, check_all=False):
     from piper import PiperVoice
     phrases = json.loads(subprocess.run(["node", os.path.join(ROOT, "tools", "phrases.mjs")],
                                         capture_output=True, check=True, text=True).stdout)
+    SOUND_PHONEMES.update(phrases.pop("_phonemes", {}))
     cache = os.path.join(build, "voice-cache")
     os.makedirs(cache, exist_ok=True)
     report = []

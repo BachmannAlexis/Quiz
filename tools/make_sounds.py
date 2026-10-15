@@ -250,7 +250,7 @@ def main(build):
     if credits: write_credits(root, credits)
     # one pack per topic with sounds (app/sounds/<topic>.js), loaded when the topic opens
     groups = json.loads(subprocess.run(["node", os.path.join(root, "tools", "topic_ids.mjs")], capture_output=True, check=True, text=True).stdout)
-    groups.pop("home")
+    for k in ("home", "_noto", "_soundcards"): groups.pop(k)
     orphans = set(tunes) - {i for ids in groups.values() for i in ids}
     assert not orphans, f"sounds of no topic: {orphans}"
     out = os.path.join(root, "app", "sounds")

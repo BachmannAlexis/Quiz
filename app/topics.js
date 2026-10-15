@@ -1376,6 +1376,84 @@ const EMOTIONS = [
   { id: "embarrassed", en: "embarrassed", fr: "gêné", de: "verlegen", it: "imbarazzato", family: "feel-shy", feel: ["I feel embarrassed when everybody looks at me.", "Je suis gêné quand tout le monde me regarde.", "Ich bin verlegen, wenn mich alle anschauen.", "Sono imbarazzato quando tutti mi guardano."] },
 ];
 
+// ---------- Sounds and first words to read (phonics). Each language has its own: items carry `only` (their language).
+// [spelling, sound (IPA; the same sound is never asked together), keyword, Noto picture of the keyword, v(owel)/c(onsonant)]
+const SOUND_SETS = {
+  fr: [["ou", "u", "loup", "wolf", "v"], ["on", "ɔ̃", "ballon", "balloon", "v"], ["an", "ɑ̃", "éléphant", "elephant", "v"],
+    ["en", "ɑ̃", "dent", "tooth", "v"], ["in", "ɛ̃", "lapin", "rabbit", "v"], ["oi", "wa", "étoile", "star", "v"],
+    ["ai", "ɛ", "lait", "glass-of-milk", "v"], ["ei", "ɛ", "baleine", "spouting-whale", "v"], ["è", "ɛ", "chèvre", "goat", "v"],
+    ["é", "e", "bébé", "baby", "v"], ["eu", "ø", "feu", "fire", "v"], ["au", "o", "auto", "automobile", "v"],
+    ["eau", "o", "gâteau", "birthday-cake", "v"], ["ill", "ij", "abeille", "honeybee", "v"],
+    ["ch", "ʃ", "chat", "cat", "c"], ["gn", "ɲ", "champignon", "mushroom", "c"], ["qu", "k", "requin", "shark", "c"],
+    ["ph", "f", "phoque", "seal", "c"], ["gu", "ɡ", "guitare", "guitar", "c"]],
+  en: [["sh", "ʃ", "ship", "passenger-ship", "c"], ["ch", "tʃ", "chick", "baby-chick", "c"], ["th", "θ", "thumb", "thumbs-up", "c"],
+    ["ng", "ŋ", "ring", "ring", "c"], ["qu", "kw", "queen", "crown", "c"], ["ck", "k", "duck", "duck", "c"],
+    ["ee", "iː", "bee", "honeybee", "v"], ["oo", "uː", "moon", "full-moon", "v"], ["ai", "eɪ", "rain", "cloud-with-rain", "v"],
+    ["oa", "oʊ", "boat", "sailboat", "v"], ["ar", "ɑːɹ", "car", "automobile", "v"], ["or", "ɔːɹ", "fork", "fork-and-knife", "v"],
+    ["igh", "aɪ", "light", "light-bulb", "v"], ["ow", "aʊ", "cow", "cow-face", "v"], ["oi", "ɔɪ", "coin", "coin", "v"]],
+  de: [["sch", "ʃ", "Schaf", "ewe", "c"], ["ch", "x", "Buch", "open-book", "c"], ["ng", "ŋ", "Ring", "ring", "c"],
+    ["pf", "pf", "Pferd", "horse-face", "c"], ["sp", "ʃp", "Spinne", "spider", "c"], ["st", "ʃt", "Stern", "star", "c"],
+    ["ck", "k", "Socke", "socks", "c"], ["ei", "aɪ", "Eis", "soft-ice-cream", "v"], ["au", "aʊ", "Auto", "automobile", "v"],
+    ["eu", "ɔʏ", "Eule", "owl", "v"], ["äu", "ɔʏ", "Mäuse", "mouse-face", "v"], ["ie", "iː", "Biene", "honeybee", "v"],
+    ["ä", "ɛ", "Bär", "bear", "v"], ["ö", "øː", "Löwe", "lion", "v"], ["ü", "yː", "Tüte", "shopping-bags", "v"]],
+  it: [["gn", "ɲ", "ragno", "spider", "c"], ["gli", "ʎi", "aglio", "garlic", "c"], ["sci", "ʃi", "scimmia", "monkey", "c"],
+    ["sce", "ʃe", "pesce", "fish", "c"], ["chi", "ki", "chiave", "key", "c"], ["che", "ke", "barche", "sailboat", "c"],
+    ["ghi", "ɡi", "funghi", "mushroom", "c"], ["ghe", "ɡe", "ghepardo", "leopard", "c"], ["ce", "tʃe", "cervo", "deer", "c"],
+    ["ge", "dʒe", "gelato", "ice-cream", "c"], ["cia", "tʃa", "arancia", "tangerine", "c"], ["gio", "dʒo", "giostra", "carousel-horse", "c"],
+    ["qu", "kw", "quadro", "framed-picture", "c"]],
+};
+// First words to read: [word, how the voice sounds it out (syllables; English: sounds in IPA after "/"), Noto picture,
+// level: 1 simple syllables, 2 more letters, 3 with the sounds above]
+const READ_WORDS = {
+  fr: [["moto", "mo to", "motorcycle", 1], ["lune", "lu ne", "crescent-moon", 1], ["vélo", "vé lo", "bicycle", 1],
+    ["rose", "ro se", "rose", 1], ["tomate", "to ma te", "tomato", 1], ["banane", "ba na ne", "banana", 1], ["lama", "la ma", "llama", 1],
+    ["robot", "ro bot", "robot", 2], ["tulipe", "tu li pe", "tulip", 1], ["kiwi", "ki wi", "kiwi-fruit", 1], ["salade", "sa la de", "leafy-green", 1],
+    ["ananas", "a na nas", "pineapple", 2], ["pomme", "pom me", "red-apple", 2], ["tortue", "tor tue", "turtle", 2], ["sac", "sac", "backpack", 2],
+    ["chat", "chat", "cat", 3], ["loup", "loup", "wolf", 3], ["bateau", "ba teau", "sailboat", 3], ["poisson", "pois son", "fish", 3],
+    ["mouton", "mou ton", "ewe", 3], ["lapin", "la pin", "rabbit", 3], ["gâteau", "gâ teau", "birthday-cake", 3], ["feu", "feu", "fire", 3],
+    ["maison", "mai son", "house", 3], ["pain", "pain", "bread", 3], ["oiseau", "oi seau", "bird", 3], ["avion", "a vion", "airplane", 3],
+    ["cheval", "che val", "horse", 3], ["chien", "chien", "dog", 3], ["poule", "pou le", "chicken", 3]],
+  en: [["cat", "/k æ t", "cat", 1], ["dog", "/d ɒ ɡ", "dog", 1], ["sun", "/s ʌ n", "sun", 1], ["bus", "/b ʌ s", "bus", 1], ["pig", "/p ɪ ɡ", "pig", 1],
+    ["hat", "/h æ t", "top-hat", 1], ["bed", "/b ɛ d", "bed", 1], ["fox", "/f ɒ k s", "fox", 1], ["bat", "/b æ t", "bat", 1], ["pen", "/p ɛ n", "pen", 1],
+    ["web", "/w ɛ b", "spider-web", 1], ["map", "/m æ p", "world-map", 1], ["cup", "/k ʌ p", "teacup-without-handle", 1],
+    ["frog", "/f ɹ ɒ ɡ", "frog", 2], ["crab", "/k ɹ æ b", "crab", 2], ["drum", "/d ɹ ʌ m", "drum", 2], ["tent", "/t ɛ n t", "tent", 2],
+    ["fish", "/f ɪ ʃ", "fish", 3], ["ship", "/ʃ ɪ p", "passenger-ship", 3], ["duck", "/d ʌ k", "duck", 3], ["moon", "/m uː n", "full-moon", 3],
+    ["tree", "/t ɹ iː", "deciduous-tree", 3], ["boat", "/b oʊ t", "sailboat", 3], ["star", "/s t ɑːɹ", "star", 3], ["chick", "/tʃ ɪ k", "baby-chick", 3],
+    ["sheep", "/ʃ iː p", "ewe", 3], ["rain", "/ɹ eɪ n", "cloud-with-rain", 3], ["light", "/l aɪ t", "light-bulb", 3]],
+  de: [["Hut", "Hut", "top-hat", 1], ["Rose", "Ro se", "rose", 1], ["Tomate", "To ma te", "tomato", 1], ["Banane", "Ba na ne", "banana", 1],
+    ["Igel", "I gel", "hedgehog", 1], ["Nase", "Na se", "nose", 1], ["Auto", "Au to", "automobile", 2], ["Lama", "La ma", "llama", 1],
+    ["Kamel", "Ka mel", "camel", 1], ["Esel", "E sel", "donkey", 1], ["Sofa", "So fa", "couch-and-lamp", 1], ["Hose", "Ho se", "jeans", 1],
+    ["Tiger", "Ti ger", "tiger", 2], ["Pilz", "Pilz", "mushroom", 2], ["Ball", "Ball", "soccer-ball", 2], ["Ente", "En te", "duck", 2],
+    ["Schaf", "Schaf", "ewe", 3], ["Fisch", "Fisch", "fish", 3], ["Eis", "Eis", "soft-ice-cream", 3], ["Maus", "Maus", "mouse-face", 3],
+    ["Buch", "Buch", "open-book", 3], ["Biene", "Bie ne", "honeybee", 3], ["Schuh", "Schuh", "running-shoe", 3], ["Eule", "Eu le", "owl", 3],
+    ["Bär", "Bär", "bear", 3], ["Stern", "Stern", "star", 3], ["Spinne", "Spin ne", "spider", 3], ["Pferd", "Pferd", "horse", 3]],
+  it: [["casa", "ca sa", "house", 1], ["luna", "lu na", "crescent-moon", 1], ["mela", "me la", "red-apple", 1], ["rosa", "ro sa", "rose", 1],
+    ["pane", "pa ne", "bread", 1], ["nave", "na ve", "passenger-ship", 1], ["banana", "ba na na", "banana", 1], ["moto", "mo to", "motorcycle", 1],
+    ["rana", "ra na", "frog", 1], ["topo", "to po", "mouse-face", 1], ["limone", "li mo ne", "lemon", 1], ["cane", "ca ne", "dog", 1],
+    ["gufo", "gu fo", "owl", 1], ["pomodoro", "po mo do ro", "tomato", 2], ["formica", "for mi ca", "ant", 2], ["gatto", "gat to", "cat", 2],
+    ["ragno", "ra gno", "spider", 3], ["chiave", "chia ve", "key", 3], ["funghi", "fun ghi", "mushroom", 3], ["scimmia", "scim mia", "monkey", 3],
+    ["pesce", "pe sce", "fish", 3], ["gelato", "ge la to", "ice-cream", 3], ["aglio", "a glio", "garlic", 3], ["ghiaccio", "ghiac cio", "ice", 3],
+    ["occhiali", "oc chia li", "glasses", 3], ["cigno", "ci gno", "swan", 3]],
+};
+// how a sound or word is written on its card and in the sentences: « ou », “sh”, „sch“, «gn»
+const QUOTE = { fr: g => `« ${g} »`, en: g => `“${g}”`, de: g => `„${g}“`, it: g => `«${g}»` };
+const slug = s => s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/é/g, "e1").replace(/è/g, "e2").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/ß/g, "ss");
+const VOWEL_SOUNDS = "vowel-sounds", CONSONANT_SOUNDS = "consonant-sounds";
+const SOUND_CARDS = Object.entries(SOUND_SETS).flatMap(([l, list]) => list.map(([g, ipa, word, noto, kind]) => {
+  const n = QUOTE[l](g);
+  return { id: `snd-${l}-${slug(g)}`, en: n, fr: n, de: n, it: n, only: l, grapheme: g, ipa, word, noto,
+    family: `snd-${l}-${ipa}`, styles: [kind === "v" ? VOWEL_SOUNDS : CONSONANT_SOUNDS] };
+}));
+const SOUND_GROUPS = [
+  { id: "all",            pic: "snd-fr-ou", en: "All",        fr: "Tous" },
+  { id: VOWEL_SOUNDS,     pic: "snd-fr-ou", en: "Vowel sounds", fr: "Les voyelles" },
+  { id: CONSONANT_SOUNDS, pic: "snd-fr-ch", en: "Consonant sounds", fr: "Les consonnes" },
+];
+const READING = Object.entries(READ_WORDS).flatMap(([l, list]) => list.map(([w, parts, noto, lvl]) => ({
+  id: `read-${l}-${slug(w)}`, en: w, fr: w, de: w, it: w, only: l, parts: parts.startsWith("/") ? parts.slice(1).split(" ").map(p => "/" + p) : parts.split(" "),
+  noto, lvl, family: `read-${noto}`,
+})));
+
 // the pictures shown when choosing drawings or photos at the first start
 const LOOK_SAMPLES = ["lion", "sunflower", "strawberry"];
 
@@ -1395,6 +1473,8 @@ const TOPICS = [
   { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS, groups: NUMBER_GROUPS, modes: ["name", "say", "explore"] },
   { id: "clock",       pic: "clock-3-00", en: "The clock", fr: "L'heure",    unit: ["times", "heures"],             color: "#5d4037", tint: "#f1ebe7", items: CLOCK, groups: CLOCK_GROUPS, bare: true, modes: ["name", "say", "explore"] },
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "say", "explore"] },
+  { id: "sounds",      pic: "snd-fr-ou",  en: "Sounds",     fr: "Les sons",    unit: ["sounds", "sons"],              color: "#c2185b", tint: "#fce4ec", items: SOUND_CARDS, groups: SOUND_GROUPS, bare: true, modes: ["name", "say", "explore"] },
+  { id: "reading",     pic: "read-fr-lune", en: "I read",   fr: "Je lis",      unit: ["words", "mots"],               color: "#3949ab", tint: "#e8eaf6", items: READING, bare: true, modes: ["read", "say", "explore"] },
   { id: "emotions",    pic: "happy",      en: "Emotions",   fr: "Les émotions", unit: ["feelings", "émotions"],    color: "#d97706", tint: "#fff6e0", items: EMOTIONS, bare: true, modes: ["name", "say", "explore"] },
   { id: "sports",      pic: "soccer",     en: "Sports",     fr: "Les sports",  unit: ["sports", "sports"],           color: "#2b7de9", tint: "#e3effd", items: SPORTS, groups: SPORT_GROUPS, bare: true, modes: ["name", "say", "explore"] },
   { id: "transport",   pic: "car",        en: "Transport",  fr: "Les transports", unit: ["vehicles", "véhicules"],      color: "#e53935", tint: "#fdecea", items: TRANSPORT, groups: TRANSPORT_GROUPS, modes: ["name", "say", "listen", "explore"] },

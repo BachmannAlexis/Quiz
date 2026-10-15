@@ -4,7 +4,7 @@
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
 
-const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search" };
+const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book" };
 // an icon from the sprite in index.html (one line style for every control)
 const icon = (id, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
@@ -31,9 +31,11 @@ TOPICS.forEach(t => {
   levelOf[t.id] = +store.get("pikolo-level-" + t.id, 2);
   const L = (typeof LEVELS !== "undefined" && LEVELS[t.id]) || {};
   const easy = new Set(L.easy || []), hard = new Set(L.hard || []);
-  t.items.forEach(i => { i.level = easy.has(i.id) ? 1 : hard.has(i.id) ? 3 : 2; });
+  t.items.forEach(i => { i.level = easy.has(i.id) ? 1 : hard.has(i.id) ? 3 : i.lvl || 2; });
 });
 const choices = () => levelOf[topic.id] + 1;
+// a topic's items in the current language: sounds and words to read differ by language (`only`)
+const itemsOf = t => t.items.filter(i => !i.only || i.only === lang);
 const ITEMS = new Map(TOPICS.flatMap(t => t.items.map(i => [i.id, i])));
 let screen = "home";
 let deck = []; // items still to ask this game, so nothing repeats
@@ -53,7 +55,7 @@ const soundFamily = item => item.hears || item.family;
 const nameOf = item => item[lang];
 // the name without its article, shown on the cards: "la flûte à bec" -> "Flûte à bec", "der Hund" -> "Hund"
 const ARTICLE = { fr: /^(le |la |les |l')/, de: /^(der |die |das )/, it: /^(il |lo |la |i |gli |le |l')/ };
-const shortName = item => cap(ARTICLE[lang] ? item[lang].replace(ARTICLE[lang], "") : item[lang]);
+const shortName = item => item.parts || item.grapheme ? item[lang] : cap(ARTICLE[lang] ? item[lang].replace(ARTICLE[lang], "") : item[lang]);
 const soundOf = item => item.says && item.says[li()];
 const likeOf = item => item.like && item.like[li()];
 const unitOf = t => t.unit[li()];
@@ -352,7 +354,7 @@ function shuffle(arr) {
 const families = items => new Set(items.map(i => i.family)).size;
 function groupPool() {
   const g = groupOf[topic.id];
-  const group = g === "all" || !topic.groups ? topic.items : topic.items.filter(i => i.styles.includes(g));
+  const all = itemsOf(topic), group = g === "all" || !topic.groups ? all : all.filter(i => i.styles.includes(g));
   // the items of the chosen level and below; the whole group when that leaves too few kinds to choose from
   const pool = group.filter(i => i.level <= levelOf[topic.id]);
   return families(pool) >= choices() + 1 ? pool : group;
@@ -362,7 +364,7 @@ function groupPool() {
 function gamePool() {
   if (mode !== "listen") return groupPool();
   const pool = groupPool().filter(hasSound);
-  return new Set(pool.map(soundFamily)).size >= choices() ? pool : topic.items.filter(hasSound);
+  return new Set(pool.map(soundFamily)).size >= choices() ? pool : itemsOf(topic).filter(hasSound);
 }
 // what the voice adds after naming an item: an animal's or dinosaur's sound, or a mushroom warning
 function extra(item) {
@@ -371,7 +373,15 @@ function extra(item) {
   if (item.poison) return T().poison;
   if (item.from) { const c = ITEMS.get(item.from); return T().from(nameOf(item), c[lang], manyOf(item), manyOf(c)); }
   if (item.feel) return item.feel[li()]; // "I feel scared when there is thunder."
+  if (item.word) return T().soundAs(nameOf(item), item.word); // "« ou » comme loup !"
+  if (item.parts) return soundOut(item); // "lu… ne… lune !"
   return "";
+}
+
+// a word sounded out, then said: "lu… ne… lune !", English sound by sound ("[[ k ]]… [[ æ ]]… [[ t ]]… cat!")
+function soundOut(item) {
+  const parts = item.parts.map(p => p.startsWith("/") ? `[[ ${p.slice(1)} ]]` : p);
+  return parts.length > 1 || item.parts[0].startsWith("/") ? T().soundOut(parts.join("… "), nameOf(item)) : T().name(nameOf(item), true);
 }
 
 // ---------- Screens ----------
@@ -475,7 +485,7 @@ function renderHome() {
     const name = document.createElement("strong");
     name.textContent = t[lang];
     const count = document.createElement("small");
-    count.textContent = T().count(t.items.length, unitOf(t));
+    count.textContent = T().count(itemsOf(t).length, unitOf(t));
     b.append(picture(t.pic), name, count);
     const best = bestOf(t);
     if (best) {
@@ -575,7 +585,9 @@ function renderTopic() {
 // a game's title and subtitle; the listening game is named after what you hear
 function modeText(t, m) {
   const key = m === "listen" ? { instruments: "listenMusic", scenery: "listenScenery", dinosaurs: "listenDinosaurs", kitchen: "listenKitchen", letters: "listenLetters", transport: "listenTransport", weather: "listenWeather" }[t.id] || "listenAnimals"
-    : m === "name" ? { letters: "nameLetters", syllables: "nameSyllables" }[t.id] || m
+    : m === "name" ? { letters: "nameLetters", syllables: "nameSyllables", sounds: "nameSounds" }[t.id] || m
+    : m === "say" && (t.id === "sounds" || t.id === "reading") ? "sayRead"
+    : m === "explore" && (t.id === "sounds" || t.id === "reading") ? "exploreCards"
     : m === "explore" && t.id === "clock" ? "exploreClock" : m;
   return T().modes[key];
 }
@@ -612,7 +624,8 @@ function renderProgress() {
 let results = []; // per round: true if found on the first try
 
 function promptText() {
-  if (mode === "say") return topic.id === "emotions" ? T().sayFeel : T().sayWhat;
+  if (mode === "say") return topic.id === "emotions" ? T().sayFeel : topic.id === "sounds" || topic.id === "reading" ? T().sayRead : T().sayWhat;
+  if (mode === "read") return T().readIt;
   if (mode !== "listen" && topic.id === "emotions") return T().whoFeels(nameOf(answer));
   if (mode !== "listen") return topic.id === "clock" ? T().showTime(nameOf(answer)) : T().where(nameOf(answer), manyOf(answer), topic.bare);
   if (isMusic()) return T().listen;
@@ -626,7 +639,8 @@ function ask() {
   const btn = $("speak");
   btn.classList.remove("pulse"); void btn.offsetWidth; btn.classList.add("pulse");
   stopListening();
-  if (mode === "say") say(promptText(), () => { if (q === questionId) setTimeout(() => { if (q === questionId) hearChild(); }, 250); });
+  if (mode === "read") { if (!firstTry) say(soundOut(answer)); else if (round === 0) say(T().readIt); }
+  else if (mode === "say") say(promptText(), () => { if (q === questionId) setTimeout(() => { if (q === questionId) hearChild(); }, 250); });
   else if (mode === "listen" && hasRecording(answer)) say(promptText(), () => { if (q === questionId) playInstrument(answer); });
   else say(promptText());
 }
@@ -655,7 +669,7 @@ function askQuestion() {
   if (mode === "say") return askSay();
   // wrong choices come from other families, so pictures and sounds are easy to tell
   // apart; prefer the same group, and in the animal sound game animals with a sound
-  const fallback = mode === "listen" ? topic.items.filter(hasSound) : topic.items;
+  const fallback = mode === "listen" ? itemsOf(topic).filter(hasSound) : itemsOf(topic);
   const kind = mode === "listen" ? soundFamily : i => i.family;
   const others = [];
   for (const i of [...shuffle(pool), ...shuffle(fallback)]) {
@@ -670,11 +684,22 @@ function askQuestion() {
     box.appendChild(b);
   });
   $("promptText").textContent = promptText();
+  if (mode === "read") showWord($("promptText"), answer); // the word to read, written big; nothing said
   asked = Date.now();
   ask();
 }
 
+// a word to read, written big (in the reading game's question and on the "Say it!" card)
+function showWord(el, item) {
+  el.textContent = "";
+  const w = document.createElement("span");
+  w.className = "read-word";
+  w.textContent = nameOf(item);
+  el.appendChild(w);
+}
+
 function showName(btn, item) {
+  btn.classList.remove("word-card"); // a word read aloud: now its picture shows
   btn.querySelector(".label").textContent = shortName(item);
   btn.classList.add("named");
 }
@@ -742,6 +767,7 @@ function askSay() {
   box.style.setProperty("--n", 1);
   const b = card(answer);
   b.classList.add("solo");
+  if (answer.parts) { b.classList.add("word-card"); const w = document.createElement("span"); w.className = "word"; showWord(w, answer); b.appendChild(w); }
   b.onclick = () => { if (!locked) { if (firstTry) thinking.push((Date.now() - asked) / 1000); showName(b, answer); win(answer, b); } };
   box.appendChild(b);
   $("promptText").textContent = promptText();
@@ -785,8 +811,9 @@ function stopListening() {
   }
 }
 
-// Listen up to 7 seconds: speech is a loud stretch (over 0.2 s) after the first 0.3 s, which measure the
-// room; it ends after 0.7 s of quiet (or 3 s of talking). A short noise, a click or a bump, does not count.
+// Listen up to 7 seconds: speech is anything twice as loud as the room (measured in the first 0.3 s, then
+// followed) for over 0.15 s, so a soft voice counts; it ends after 0.7 s of quiet (or 3 s of talking).
+// A click or a bump, shorter than that, does not count.
 function listenFor(onSpoke, onSilent) {
   const q = questionId, id = ++listenId;
   openMic().then(m => {
@@ -802,11 +829,13 @@ function listenFor(onSpoke, onSilent) {
       let sum = 0;
       for (const v of m.data) sum += v * v;
       const level = Math.sqrt(sum / m.data.length), t = Date.now() - started;
-      if (t < 300) { floor = Math.max(floor, level); return; }
-      const threshold = Math.max(0.015, floor * 2.5);
-      if (solo) solo.style.setProperty("--vol", Math.min(1, level / (threshold * 3)).toFixed(2));
+      // the room's noise: its average over the first 0.3 s, then followed slowly while nobody speaks
+      if (t < 300) { floor += level / 6; return; }
+      const threshold = Math.max(0.004, floor * 2);
+      if (level <= threshold) floor = floor * 0.97 + level * 0.03;
+      if (solo) solo.style.setProperty("--vol", Math.min(1, level / (threshold * 2.5)).toFixed(2));
       if (level > threshold) { loud += 50; quiet = 0; } else if (loud) quiet += 50;
-      if (loud >= 200) spoke = true;
+      if (loud >= 150) spoke = true;
       if (!spoke && quiet >= 300) { loud = 0; quiet = 0; }
       if (spoke && (quiet >= 700 || loud >= 3000)) { stopListening(); onSpoke(); }
       else if (!spoke && !loud && t > 7000) { stopListening(); onSilent(); }
@@ -890,11 +919,11 @@ function loadModel(l) {
 // "flûte à bec", "la flûte à bec": lower case, no accents or punctuation
 const plainWords = text => text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9ß ]+/g, " ").split(" ").filter(Boolean);
 function startWords(m) {
-  const model = recogOn() && recog.models[lang];
+  const model = recogOn() && topic.id !== "sounds" && recog.models[lang]; // a sound alone is too short to check
   if (!model) return null;
   const names = new Set();
   // each name as the model may spell it: "la flûte à bec", "flûte à bec", "l'alto", "l alto", "vingt-et-un", "vingt et un"
-  topic.items.forEach(i => [shortName(i), nameOf(i)].forEach(n => {
+  itemsOf(topic).forEach(i => [shortName(i), nameOf(i)].forEach(n => {
     const t = n.toLowerCase().replace(/[’]/g, "'").replace(/[^\p{L}\p{N}' -]+/gu, " ").replace(/\s+/g, " ").trim();
     [t, t.replace(/-/g, " "), t.replace(/'/g, "' "), t.replace(/['-]/g, " ")].forEach(v => names.add(v.replace(/\s+/g, " ").trim()));
   }));
@@ -1147,7 +1176,7 @@ function sayItem() {
   bounce();
   if (hasRecording(playing)) say(T().name(nameOf(playing), topic.bare), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
   // letters and syllables: the sound first ("The letter S says sss, like snake!", "m… a… ma!")
-  else if (soundOf(playing) && topic.id === "letters" || playing.blend) say(extra(playing));
+  else if (soundOf(playing) && topic.id === "letters" || playing.blend || playing.word || playing.parts) say(extra(playing));
   else say([T().name(nameOf(playing), topic.bare), extra(playing)]);
 }
 
@@ -1333,6 +1362,8 @@ function setLang(l) {
   if (screen === "done") $("doneText").textContent = T().found(stars);
   offline.state = "";
   offlineSoon(); // the voice of the new language too
+  // sounds and words to read are not the same in the new language: back to the topic
+  if (topic.items.some(i => i.only) && ["game", "play", "done"].includes(screen)) backToTopic();
 }
 
 function toast(text) {
@@ -1416,7 +1447,7 @@ $("gameClose").onclick = backToTopic;
 $("playClose").onclick = backToTopic;
 $("again").onclick = () => start(mode);
 $("otherGame").onclick = backToTopic;
-$("speak").onclick = () => { if (!locked) ask(); };
+$("speak").onclick = () => { if (!locked) mode === "read" ? say(soundOut(answer)) : ask(); };
 $("bigPic").onclick = sayItem;
 KEY_COLORS.forEach((c, k) => {
   const key = document.createElement("div");
