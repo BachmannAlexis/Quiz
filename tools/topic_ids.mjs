@@ -13,7 +13,7 @@ vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(path.join(root, "app/topics.js"), "utf8"), ctx);
 const { TOPICS, LOOK_SAMPLES } = vm.runInContext("({ TOPICS, LOOK_SAMPLES })", ctx);
 const out = { home: [...new Set([...TOPICS.map(t => t.pic), ...LOOK_SAMPLES])] };
-for (const t of TOPICS) out[t.id] = [...new Set([...t.items.map(i => i.id), ...(t.groups || []).map(g => g.pic)])];
+for (const t of TOPICS) out[t.id] = [...new Set([...t.items.map(i => i.id), ...(t.groups || []).map(g => g.pic), ...(t.pics || [])])];
 // items drawn from a Noto picture named in topics.js (words to read), and the sound cards (spelling + keyword picture)
 const items = TOPICS.flatMap(t => t.items);
 out._noto = Object.fromEntries(items.filter(i => i.noto && !i.grapheme).map(i => [i.id, i.noto])); // words to read, space

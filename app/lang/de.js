@@ -30,5 +30,6 @@ addLanguage("de", {
   "sounds": {"items": {}, "topic": ["Laute", "Laute"], "groups": {"vowel-sounds": "Selbstlaute", "consonant-sounds": "Mitlaute"}},
   "reading": {"items": {}, "topic": ["Ich lese", "Wörter"]},
   "space": {"items": {}, "topic": ["Sonnensystem", "Dinge im Weltraum"], "groups": {"planets": "Die Planeten", "sky": "Am Himmel", "travel": "Raumfahrt"}},
-  "fantasy": {"items": {}, "topic": ["Märchen", "Figuren"], "groups": {"creatures": "Fabelwesen", "tale-people": "Figuren", "magic": "Zauberei"}}
+  "fantasy": {"items": {}, "topic": ["Märchen", "Figuren"], "groups": {"creatures": "Fabelwesen", "tale-people": "Figuren", "magic": "Zauberei"}},
+  "maths": {"items": {}, "topic": ["Mathe", "Spiele"]}
 });

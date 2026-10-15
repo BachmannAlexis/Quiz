@@ -4,7 +4,7 @@
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
 
-const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum" };
+const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum", add: "plus", subtract: "minus", line: "line" };
 // an icon from the sprite in index.html (one line style for every control)
 const icon = (id, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
@@ -489,7 +489,7 @@ function renderHome() {
     const name = document.createElement("strong");
     name.textContent = t[lang];
     const count = document.createElement("small");
-    count.textContent = T().count(itemsOf(t).length, unitOf(t));
+    count.textContent = T().count(t.math ? t.modes.length : itemsOf(t).length, unitOf(t));
     b.append(picture(t.pic), name, count);
     const best = bestOf(t);
     if (best) {
@@ -1154,8 +1154,10 @@ function start(m) {
   if (m === "play" || m === "explore") return openPlay();
   if (m === "puzzle") return startPuzzles();
   if (m === "drums") return openDrums();
+  if (topic.math) return startMath();
   round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
   $("speak").innerHTML = icon(mode === "listen" ? "ear" : mode === "say" ? "mic" : "speaker");
+  $("mathVisual").hidden = true;
   $("micHint").hidden = true;
   $("heard").textContent = "";
   if (m === "say" && recogOn()) loadModel(lang).catch(() => {});
@@ -1244,6 +1246,115 @@ function turnSolids() {
 }
 // a finger on a solid spins it
 addEventListener("pointermove", e => { if (e.buttons && e.target.classList && e.target.classList.contains("solid")) e.target._spin = e.movementX * .004; });
+
+// ---------- Maths: add, take away, and the number line (negative numbers too) ----------
+// The question as pictures (two groups; for taking away, some crossed out) or a frog jumping on a number line,
+// "2 + 3 = ?" written, the voice asking "2 plus 3?", and three numbers to choose from.
+let mathQ = null; // { a, b, c }
+const mathSign = n => (n < 0 ? "−" + -n : String(n)); // the minus sign as written
+function startMath() {
+  round = 0; stars = 0; results = []; thinking = []; missed = [];
+  $("speak").innerHTML = icon("speaker");
+  $("micHint").hidden = true; $("heard").textContent = "";
+  show("game");
+  mathQuestion();
+}
+function mathQuestion() {
+  locked = false; firstTry = true; questionId++;
+  renderProgress();
+  const all = mathQuestions(mode, levelOf[topic.id]);
+  let pick;
+  do pick = all[Math.floor(Math.random() * all.length)]; while (mathQ && all.length > 1 && pick[0] === mathQ.a && pick[1] === mathQ.b);
+  const [a, b] = pick, c = a + b;
+  mathQ = { a, b, c };
+  // the visual
+  const v = $("mathVisual"), counter = itemsOf(topic)[Math.floor(Math.random() * itemsOf(topic).length)];
+  v.hidden = false; v.innerHTML = ""; v.className = "math-visual " + mode;
+  if (mode === "line") v.appendChild(numberLine(a, b));
+  else {
+    const group = (n, crossFrom) => {
+      const g = document.createElement("div");
+      g.className = "math-group";
+      g.style.setProperty("--k", Math.ceil(Math.sqrt(n)));
+      for (let i = 0; i < n; i++) { const img = picture(counter.id); if (i >= crossFrom) img.classList.add("crossed"); const w = document.createElement("span"); w.appendChild(img); g.appendChild(w); }
+      return g;
+    };
+    if (b > 0) { v.appendChild(group(a, a)); const plus = document.createElement("b"); plus.textContent = "+"; v.appendChild(plus); v.appendChild(group(b, b)); }
+    else v.appendChild(group(a, a + b));
+  }
+  // the answers
+  const near = new Set([c]);
+  const lo = mode === "line" ? -10 : 0;
+  for (const d of shuffle([-2, -1, 1, 2, 3, -3])) if (near.size < 3 && c + d >= lo && c + d !== c) near.add(c + d);
+  const box = $("choices");
+  box.innerHTML = "";
+  box.style.setProperty("--n", 3);
+  shuffle([...near]).forEach(n => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "choice number-card";
+    btn.dataset.n = n;
+    btn.innerHTML = '<span class="num"></span><span class="label"></span>';
+    btn.querySelector(".num").textContent = mathSign(n);
+    btn.onclick = () => pickNumber(n, btn);
+    box.appendChild(btn);
+  });
+  $("promptText").textContent = `${mathSign(a)} ${b < 0 ? "−" : "+"} ${Math.abs(b)} = ?`;
+  asked = Date.now();
+  askMath();
+}
+const mathSay = q => (q.b < 0 ? T().minusQ(q.a, -q.b) : T().plusQ(q.a, q.b));
+function askMath() { say(mathSay(mathQ)); }
+function pickNumber(n, btn) {
+  if (locked) return;
+  const q = questionId;
+  if (firstTry) thinking.push((Date.now() - asked) / 1000);
+  if (n === mathQ.c) {
+    locked = true; questionId++;
+    btn.classList.add("right");
+    const { a, b, c } = mathQ;
+    $("promptText").textContent = `${mathSign(a)} ${b < 0 ? "−" : "+"} ${Math.abs(b)} = ${mathSign(c)}`;
+    $("mathVisual").classList.add("solved");
+    const frog = document.querySelector(".number-line .frog"), land = document.querySelector(".number-line .land");
+    if (frog) frog.style.transform = `translate(${frog.dataset.dx}px, 0)`; // the frog jumps
+    if (land) land.textContent = mathSign(c);
+    cheer(); confetti(10);
+    results.push(firstTry); if (firstTry) stars++;
+    renderProgress(); round++;
+    const g = gameId;
+    say(b < 0 ? T().minusYes(a, -b, c) : T().plusYes(a, b, c), () => {
+      if (g === gameId) setTimeout(() => { if (g === gameId) { $("mathVisual").classList.remove("solved"); (round >= ROUNDS ? finish : mathQuestion)(); } }, 900);
+    });
+  } else {
+    if (firstTry) missed.push(`${mathQ.a}${mathQ.b < 0 ? "-" : "+"}${Math.abs(mathQ.b)}`);
+    firstTry = false;
+    btn.classList.add("wrong"); btn.disabled = true;
+    boop();
+    say([T().name(String(n), true), T().no], () => { if (q === questionId) setTimeout(() => { if (q === questionId) askMath(); }, 400); });
+  }
+}
+// a number line with a frog on a, an arrow jumping b, and "?" where it lands (shown once solved)
+function numberLine(a, b) {
+  const lo = Math.min(0, a, a + b, levelOf[topic.id] === 1 ? 0 : -5), hi = Math.max(10, a, a + b), n = hi - lo;
+  const W = 340, x = v => 14 + (v - lo) * (W - 28) / n, NS = SVG_NS;
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${W} 120`); svg.setAttribute("class", "number-line");
+  const el = (name, attrs, text) => { const e = svgEl(name, attrs, svg); if (text !== undefined) e.textContent = text; return e; };
+  el("line", { x1: 6, y1: 86, x2: W - 6, y2: 86, stroke: "#5c5577", "stroke-width": 3, "stroke-linecap": "round" });
+  for (let v = lo; v <= hi; v++) {
+    el("line", { x1: x(v), y1: 80, x2: x(v), y2: 92, stroke: v === 0 ? "#2a2245" : "#9a93b5", "stroke-width": v === 0 ? 3 : 2 });
+    if (n <= 12 || v % 2 === 0 || v === a || v === a + b) el("text", { x: x(v), y: 110, "text-anchor": "middle", "font-size": n > 15 ? 10 : 12, "font-weight": v === 0 ? 700 : 500, fill: v < 0 ? "#c62828" : "#2a2245" }, mathSign(v));
+  }
+  // the jump: an arc from a to a + b
+  const x0 = x(a), x1 = x(a + b), top = 86 - Math.min(60, 16 + Math.abs(x1 - x0) * .4);
+  el("path", { d: `M${x0} 80 Q${(x0 + x1) / 2} ${top} ${x1} 80`, fill: "none", stroke: b > 0 ? "#2e7d32" : "#c62828", "stroke-width": 3, "stroke-dasharray": "6 5", "stroke-linecap": "round" });
+  el("circle", { cx: x1, cy: 80, r: 5, fill: b > 0 ? "#2e7d32" : "#c62828" });
+  el("text", { class: "land", x: x1, y: 68, "text-anchor": "middle", "font-size": 18, "font-weight": 700, fill: "#2a2245" }, "?");
+  const frog = el("image", { href: PICS["frog"] || "", x: x0 - 16, y: 46, width: 32, height: 32 });
+  frog.setAttribute("class", "frog");
+  frog.dataset.dx = x1 - x0;
+  return svg;
+}
 
 // ---------- Drums: a drum kit to tap, and a drum machine (4 sounds × 8 steps, looping) ----------
 // The sounds are the drum kit's play-mode samples: kick, snare, closed hi-hat, 3 toms, open cymbal, splash.
@@ -1749,7 +1860,7 @@ $("gameClose").onclick = backToTopic;
 $("playClose").onclick = backToTopic;
 $("again").onclick = () => start(mode);
 $("otherGame").onclick = backToTopic;
-$("speak").onclick = () => { if (!locked) mode === "read" ? say(soundOut(answer)) : ask(); };
+$("speak").onclick = () => { if (!locked) topic.math ? askMath() : mode === "read" ? say(soundOut(answer)) : ask(); };
 $("bigPic").onclick = sayItem;
 {
   let white = 0;

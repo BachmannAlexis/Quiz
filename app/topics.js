@@ -1518,6 +1518,26 @@ const FANTASY_GROUPS = [
   { id: MAGIC,       pic: "magic-wand", en: "Magic",    fr: "La magie" },
 ];
 
+// ---------- Maths: adding, taking away and the number line (with negative numbers). The items are the things counted.
+// mathQuestions(mode, level) lists the questions [a, b] (b < 0 takes away): the app picks from them and
+// tools/phrases.mjs records them all.
+const MATHS = [["math-apple", "red-apple"], ["math-star", "star"], ["math-ball", "soccer-ball"], ["math-fish", "tropical-fish"], ["math-flower", "blossom"]]
+  .map(([id, noto]) => ({ id, en: "", fr: "", de: "", it: "", family: id, noto }));
+function mathQuestions(mode, level) {
+  const out = [], range = (a, b) => Array.from({ length: b - a + 1 }, (_, k) => a + k);
+  if (mode === "add") {
+    const max = [5, 10, 20][level - 1];
+    for (const a of range(1, 10)) for (const b of range(1, 10)) if (a + b <= max && (level < 3 || a + b > 5)) out.push([a, b]);
+  } else if (mode === "subtract") {
+    const max = [5, 10, 15][level - 1];
+    for (const a of range(2, max)) for (const b of range(1, a)) if (level === 1 || a > 3) out.push([a, -b]);
+  } else { // the number line: forwards and backwards, below zero from the medium level
+    const [lo, hi, jump] = [[0, 10, 3], [-5, 10, 5], [-10, 10, 9]][level - 1];
+    for (const a of range(lo, hi)) for (const b of range(-jump, jump)) if (b && a + b >= lo && a + b <= hi) out.push([a, b]);
+  }
+  return out;
+}
+
 // the pictures shown when choosing drawings or photos at the first start
 const LOOK_SAMPLES = ["lion", "sunflower", "strawberry"];
 
@@ -1537,6 +1557,7 @@ const TOPICS = [
   { id: "numbers",     pic: "number-3",   en: "Numbers",    fr: "Chiffres",    unit: ["numbers", "chiffres"],        color: "#f08c00", tint: "#fff3dd", items: NUMBERS, groups: NUMBER_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "clock",       pic: "clock-3-00", en: "The clock", fr: "L'heure",    unit: ["times", "heures"],             color: "#5d4037", tint: "#f1ebe7", items: CLOCK, groups: CLOCK_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
+  { id: "maths",       pic: "math-apple", en: "Maths",      fr: "Les maths",   unit: ["games", "jeux"],               color: "#00897b", tint: "#e0f2f1", items: MATHS, math: true, pics: ["frog"], modes: ["add", "subtract", "line"] },
   { id: "fantasy",     pic: "unicorn",    en: "Fairy tales", fr: "Les contes", unit: ["characters", "personnages"],  color: "#8e24aa", tint: "#f3e5f5", items: FANTASY, groups: FANTASY_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "space",       pic: "saturn",     en: "Solar system", fr: "Le système solaire", unit: ["things in space", "objets de l'espace"], color: "#283593", tint: "#e8eaf6", items: SPACE, groups: SPACE_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
   { id: "sounds",      pic: "snd-fr-ou",  en: "Sounds",     fr: "Les sons",    unit: ["sounds", "sons"],              color: "#c2185b", tint: "#fce4ec", items: SOUND_CARDS, groups: SOUND_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
