@@ -56,9 +56,12 @@ Each item: `{ id, en, fr, family, styles, ... }`.
 - `family`: items with the same family never appear together as choices (look-alikes: lion/tiger,
   b/d/p, flags that look alike).
 - `styles`: the groups the item belongs to (a topic's `groups` filter on them).
+- Language-specific items carry `only: "fr"` (sounds and words to read differ by language); the app lists a topic's items
+  with `itemsOf(t)`. Sound cards: `grapheme`, `ipa` (said as that sound), `word` (keyword), `noto`; words to read: `parts`
+  (how the voice sounds them out), `noto`, `lvl`.
 - Optional: `many` (plural, "Where are…"), `says` + `like` (sound words, letters), `hears` (sound family for
   the listening game), `poison` (mushroom warning), `from` (dish → country id: "La quiche vient de France !").
-- Topic flags: `bare` (English name without "the"), `modes` (`name`, `say`, `listen`, `explore`, `play`), `groups`.
+- Topic flags: `bare` (English name without "the"), `modes` (`name`, `say`, `listen`, `explore`, `play`, `read`), `groups`.
 
 When adding items: add the picture (`pictures/<id>.svg` or a Noto mapping in `tools/make_pictures.py`), rebuild
 the picture packs, record the voice, optionally add a photo query in `tools/fetch_photos.py` and a pick in
@@ -69,7 +72,8 @@ letters, numbers, colours and shapes from `tools/make_letters.py`.
 
 - `tools/make_pictures.py <noto icons.json>` → `app/pictures/<topic>.js` (uses `tools/topic_ids.mjs`)
 - `tools/make_flags.py <circle-flags icons.json>` → `pictures/<country>.svg`
-- `tools/make_letters.py` (needs fontTools) → letters, numbers, colours, shapes
+- `tools/make_letters.py [<noto icons.json>]` (needs fontTools) → letters, numbers, colours, shapes, clocks, and with
+  icons.json the sound cards
 - `tools/make_voice.py <build> [--check | --check-all] [en|fr]` → voice packs; clips are cached, `--check`
   transcribes new clips with Whisper and lists doubtful ones in `<build>/voice-check*.txt`.
   `tools/phrases.mjs` lists every sentence the app can say; it must mirror `extra()` in `app/app.js`.
