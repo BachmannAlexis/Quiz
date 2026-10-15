@@ -27,7 +27,7 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 | Topic | Items | Groups |
 |---|---|---|
 | 🐄 Animals | 106, 26 of them with a real recording (cow, horse, rooster, owl, robin, bee…) and 24 with what they say ("the cow says moo") | farm, wild, sea, birds, bugs |
-| 🎻 Music | 78 instruments, the whole symphony orchestra and many more, each with a short tune in its style | orchestra, jazz, rock & pop, world |
+| 🎻 Music | 85 instruments, the whole symphony orchestra and many more, each with a short tune in its style; a piano with black keys, a drum kit and a drum machine | orchestra, jazz, rock & pop, world, latin, folk & country, electronic |
 | 🦖 Dinosaurs | 20 (with the mammoth, the sabre-toothed cat, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
 | 🌻 Flowers | 36 | |
 | 🌳 Trees | 28 | |

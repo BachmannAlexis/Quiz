@@ -108,6 +108,13 @@ PITCHED = {
     "melodica":        ("musyngkite", "022-harmonica", S("C5 E5 G5 E5 F5 D5 C5", .25, .26, last=1.0), "C5"),
     # a drone and a melody, as in Indian music
     "harmonium":       ("tonejs", "harmonium", [("C3", 0, 2.8), ("G3", 0, 2.8)] + S("C4 D4 E4 G4 E4 D4 C4", .3, .32, last=.9), "C4"),
+    "electric-piano":  ("musyngkite", "004-electric-piano-1", chord("C4 E4 A4", 0, .9) + chord("D4 F4 B4", 1.0, .9) + chord("C4 E4 G4 C5", 2.0, 1.4), "C4"),
+    "hammond-organ":   ("musyngkite", "016-drawbar-organ", S("C4 E4 G4 A4 G4 E4", .2, .22) + chord("F3 A3 C4", 1.2, 1.4), "C4"),
+    "bandoneon":       ("musyngkite", "023-tango-accordion", S("A3 A3 E4 A3 C4 B3 A3", .28, .26, last=1.1), "C4"),
+    "jazz-guitar":     ("musyngkite", "026-electric-guitar-jazz", chord("C3 E3 A3 D4", 0, .9, .04) + S("E4 G4 A4 C5 A4", .25, .3, 1.0, last=1.2), "C4"),
+    "dulcimer":        ("musyngkite", "015-dulcimer", S("D5 A4 D5 F#5 E5 D5 A4 D5", .18, .5, last=1.2), "C5"),
+    "shehnai":         ("musyngkite", "111-shanai", S("C5 D5 E5 G5 E5 D5 C5", .3, .32, last=1.2), "C5"),
+    "sousaphone":      ("musyngkite", "058-tuba", S("C2 G2 C2 G2 A2 B2 C3", .3, .26, last=.9), "C3"),
     "shakuhachi":      ("musyngkite", "077-shakuhachi", S("D5 F5 G5 A5 G5", .45, .5, last=1.6), "C5"),
 }
 

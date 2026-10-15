@@ -7,43 +7,48 @@
 // landscapes `hears`, a family for how they sound, and poisonous mushrooms have `poison`.
 
 // ---------- Instruments (sounds in sounds.js)
-const O = "orchestra", J = "jazz", R = "rock", W = "world";
+const O = "orchestra", J = "jazz", R = "rock", W = "world", LAT = "latin", FOLK = "folk", ELEC = "electronic";
 const INSTRUMENTS = [
   // strings
-  { id: "violin",          en: "violin",          fr: "le violon",            family: "bowed",   styles: [O] },
+  { id: "violin",          en: "violin",          fr: "le violon",            family: "bowed",   styles: [O, FOLK] },
   { id: "viola",              en: "viola",           fr: "l'alto",                 family: "bowed",    styles: [O] },
   { id: "cello",           en: "cello",           fr: "le violoncelle",       family: "bowed",   styles: [O] },
   { id: "double-bass",     en: "double bass",     fr: "la contrebasse",       family: "bowed",   styles: [O, J] },
   { id: "harp",            en: "harp",            fr: "la harpe",             family: "harp",    styles: [O] },
-  { id: "guitar",          en: "guitar",          fr: "la guitare",           family: "guitar",  styles: [R, W] },
-  { id: "electric-guitar", en: "electric guitar", fr: "la guitare électrique", family: "guitar", styles: [R] },
-  { id: "bass-guitar",     en: "bass guitar",     fr: "la guitare basse",     family: "guitar",  styles: [R] },
-  { id: "banjo",           en: "banjo",           fr: "le banjo",             family: "guitar",  styles: [J, W] },
-  { id: "ukulele",         en: "ukulele",         fr: "le ukulélé",           family: "guitar",  styles: [W] },
+  { id: "guitar",          en: "guitar",          fr: "la guitare",           family: "guitar",  styles: [R, W, LAT] },
+  { id: "electric-guitar", en: "electric guitar", fr: "la guitare électrique", family: "guitar", styles: [R, ELEC] },
+  { id: "bass-guitar",     en: "bass guitar",     fr: "la guitare basse",     family: "guitar",  styles: [R, ELEC] },
+  { id: "banjo",           en: "banjo",           fr: "le banjo",             family: "guitar",  styles: [J, W, FOLK] },
+  { id: "ukulele",         en: "ukulele",         fr: "le ukulélé",           family: "guitar",  styles: [W, FOLK] },
   { id: "sitar",           en: "sitar",           fr: "le sitar",             family: "guitar",  styles: [W] },
   { id: "shamisen",        en: "shamisen",        fr: "le shamisen",          family: "guitar",  styles: [W] },
   { id: "koto",            en: "koto",            fr: "le koto",              family: "harp",    styles: [W] },
-  { id: "mandolin",           en: "mandolin",        fr: "la mandoline",           family: "guitar",   styles: [W] },
+  { id: "mandolin",           en: "mandolin",        fr: "la mandoline",           family: "guitar",   styles: [W, FOLK] },
+  { id: "jazz-guitar",        en: "jazz guitar",     fr: "la guitare jazz",        family: "guitar",   styles: [J] },
+  { id: "dulcimer",           en: "hammered dulcimer", fr: "le tympanon",          family: "zither",   styles: [FOLK, W] },
   { id: "erhu",               en: "erhu",            fr: "l'erhu",                 family: "erhu",     styles: [W] },
   // keyboards
   { id: "piano",           en: "piano",           fr: "le piano",             family: "keys",    styles: [O, J, R] },
   { id: "pipe-organ",      en: "pipe organ",      fr: "l'orgue",              family: "keys",    styles: [O] },
-  { id: "synthesizer",     en: "synthesizer",     fr: "le synthétiseur",      family: "keys",    styles: [R] },
+  { id: "synthesizer",     en: "synthesizer",     fr: "le synthétiseur",      family: "keys",    styles: [R, ELEC] },
   { id: "celesta",            en: "celesta",         fr: "le célesta",             family: "keys",     styles: [O] },
   { id: "harpsichord",        en: "harpsichord",     fr: "le clavecin",            family: "keys",     styles: [O] },
-  { id: "theremin",           en: "theremin",        fr: "le thérémine",           family: "theremin", styles: [R] },
-  { id: "accordion",       en: "accordion",       fr: "l'accordéon",          family: "reed",    styles: [W] },
-  { id: "harmonica",       en: "harmonica",       fr: "l'harmonica",          family: "reed",    styles: [J, R] },
-  { id: "bagpipes",        en: "bagpipes",        fr: "la cornemuse",         family: "reed",    styles: [W], many: true },
+  { id: "electric-piano",     en: "electric piano",  fr: "le piano électrique",    family: "keys",     styles: [J, R, ELEC] },
+  { id: "hammond-organ",      en: "Hammond organ",   fr: "l'orgue Hammond",        family: "keys",     styles: [J, R] },
+  { id: "theremin",           en: "theremin",        fr: "le thérémine",           family: "theremin", styles: [R, ELEC] },
+  { id: "accordion",       en: "accordion",       fr: "l'accordéon",          family: "reed",    styles: [W, FOLK] },
+  { id: "harmonica",       en: "harmonica",       fr: "l'harmonica",          family: "reed",    styles: [J, R, FOLK] },
+  { id: "bagpipes",        en: "bagpipes",        fr: "la cornemuse",         family: "reed",    styles: [W, FOLK], many: true },
   { id: "harmonium",          en: "harmonium",       fr: "l'harmonium",            family: "reed",     styles: [W] },
-  { id: "melodica",           en: "melodica",        fr: "le mélodica",            family: "reed",     styles: [J, W] },
+  { id: "melodica",           en: "melodica",        fr: "le mélodica",            family: "keys",     styles: [J, W], hears: "reed" },
+  { id: "bandoneon",          en: "bandoneon",       fr: "le bandonéon",           family: "reed",     styles: [LAT, W] },
   // woodwinds
   { id: "flute",           en: "flute",           fr: "la flûte",             family: "flute",   styles: [O] },
   { id: "piccolo",            en: "piccolo",         fr: "le piccolo",             family: "flute",    styles: [O] },
-  { id: "recorder",        en: "recorder",        fr: "la flûte à bec",       family: "flute",   styles: [W] },
+  { id: "recorder",        en: "recorder",        fr: "la flûte à bec",       family: "flute",   styles: [W, FOLK] },
   { id: "pan-flute",       en: "pan flute",       fr: "la flûte de Pan",      family: "flute",   styles: [W] },
   { id: "ocarina",         en: "ocarina",         fr: "l'ocarina",            family: "flute",   styles: [W] },
-  { id: "whistle",         en: "whistle",         fr: "le sifflet",           family: "flute",   styles: [W] },
+  { id: "whistle",         en: "whistle",         fr: "le sifflet",           family: "flute",   styles: [W, FOLK] },
   { id: "slide-whistle",      en: "slide whistle",   fr: "la flûte à coulisse",    family: "flute",    styles: [W] },
   { id: "shakuhachi",         en: "shakuhachi",      fr: "le shakuhachi",          family: "flute",    styles: [W] },
   { id: "clarinet",        en: "clarinet",        fr: "la clarinette",        family: "pipe",    styles: [O, J] },
@@ -52,31 +57,33 @@ const INSTRUMENTS = [
   { id: "english-horn",       en: "cor anglais",     fr: "le cor anglais",         family: "pipe",     styles: [O] },
   { id: "bassoon",         en: "bassoon",         fr: "le basson",            family: "pipe",    styles: [O] },
   { id: "contrabassoon",      en: "contrabassoon",   fr: "le contrebasson",        family: "pipe",     styles: [O] },
+  { id: "shehnai",            en: "shehnai",         fr: "le shehnai",             family: "pipe",     styles: [W] },
   { id: "saxophone",       en: "saxophone",       fr: "le saxophone",         family: "pipe",    styles: [J] },
   // brass
-  { id: "trumpet",         en: "trumpet",         fr: "la trompette",         family: "brass",   styles: [O, J] },
+  { id: "trumpet",         en: "trumpet",         fr: "la trompette",         family: "brass",   styles: [O, J, LAT] },
   { id: "trombone",        en: "trombone",        fr: "le trombone",          family: "brass",   styles: [O, J] },
   { id: "horn",            en: "French horn",     fr: "le cor",               family: "brass",   styles: [O] },
   { id: "tuba",            en: "tuba",            fr: "le tuba",              family: "brass",   styles: [O, J] },
-  { id: "alphorn",            en: "alphorn",         fr: "le cor des Alpes",       family: "alphorn",  styles: [W] },
+  { id: "sousaphone",         en: "sousaphone",      fr: "le sousaphone",          family: "brass",    styles: [J] },
+  { id: "alphorn",            en: "alphorn",         fr: "le cor des Alpes",       family: "alphorn",  styles: [W, FOLK] },
   { id: "didgeridoo",         en: "didgeridoo",      fr: "le didgeridoo",          family: "didgeridoo",styles: [W] },
   // drums
   { id: "drum",            en: "drum",            fr: "le tambour",           family: "drum",    styles: [O] },
   { id: "bass-drum",       en: "bass drum",       fr: "la grosse caisse",     family: "drum",    styles: [O] },
   { id: "timpani",         en: "timpani",         fr: "les timbales",         family: "drum",    styles: [O], many: true },
-  { id: "drum-kit",        en: "drum kit",        fr: "la batterie",          family: "drum",    styles: [J, R] },
+  { id: "drum-kit",        en: "drum kit",        fr: "la batterie",          family: "drum",    styles: [J, R, ELEC] },
   { id: "djembe",          en: "djembe",          fr: "le djembé",            family: "drum",    styles: [W] },
-  { id: "bongos",          en: "bongos",          fr: "les bongos",           family: "drum",    styles: [W], many: true },
+  { id: "bongos",          en: "bongos",          fr: "les bongos",           family: "drum",    styles: [W, LAT], many: true },
   { id: "taiko",           en: "taiko drum",      fr: "le taiko",             family: "drum",    styles: [W] },
   { id: "tabla",           en: "tabla",           fr: "le tabla",             family: "drum",    styles: [W] },
-  { id: "cajon",              en: "cajón",           fr: "le cajón",               family: "drum",     styles: [W, R] },
+  { id: "cajon",              en: "cajón",           fr: "le cajón",               family: "drum",     styles: [W, R, LAT] },
   // tuned percussion
   { id: "xylophone",       en: "xylophone",       fr: "le xylophone",         family: "mallet",  styles: [O] },
   { id: "glockenspiel",    en: "glockenspiel",    fr: "le glockenspiel",      family: "mallet",  styles: [O] },
   { id: "marimba",            en: "marimba",         fr: "le marimba",             family: "mallet",   styles: [O, W] },
   { id: "vibraphone",         en: "vibraphone",      fr: "le vibraphone",          family: "mallet",   styles: [J] },
   { id: "kalimba",         en: "kalimba",         fr: "le kalimba",           family: "mallet",  styles: [W] },
-  { id: "steel-drum",      en: "steel drum",      fr: "le steel drum",        family: "mallet",  styles: [W] },
+  { id: "steel-drum",      en: "steel drum",      fr: "le steel drum",        family: "mallet",  styles: [W, LAT] },
   { id: "music-box",       en: "music box",       fr: "la boîte à musique",   family: "mallet",  styles: [W] },
   // metal
   { id: "bell",            en: "bell",            fr: "la cloche",            family: "metal",   styles: [O] },
@@ -88,12 +95,12 @@ const INSTRUMENTS = [
   { id: "jingle-bells",    en: "jingle bells",    fr: "les grelots",          family: "metal",   styles: [W], many: true },
   { id: "wind-chimes",        en: "wind chimes",     fr: "le carillon à vent",     family: "chimes",   styles: [W], many: true },
   // shakers and wood
-  { id: "maracas",         en: "maracas",         fr: "les maracas",          family: "shaker",  styles: [W], many: true },
-  { id: "tambourine",      en: "tambourine",      fr: "le tambourin",         family: "shaker",  styles: [R, W] },
+  { id: "maracas",         en: "maracas",         fr: "les maracas",          family: "shaker",  styles: [W, LAT], many: true },
+  { id: "tambourine",      en: "tambourine",      fr: "le tambourin",         family: "shaker",  styles: [R, W, LAT] },
   { id: "rainstick",          en: "rainstick",       fr: "le bâton de pluie",      family: "shaker",   styles: [W] },
   { id: "castanets",       en: "castanets",       fr: "les castagnettes",     family: "wood",    styles: [W], many: true },
-  { id: "claves",          en: "claves",          fr: "les claves",           family: "wood",    styles: [W], many: true },
-  { id: "guiro",           en: "guiro",           fr: "le guiro",             family: "wood",    styles: [W] },
+  { id: "claves",          en: "claves",          fr: "les claves",           family: "wood",    styles: [W, LAT], many: true },
+  { id: "guiro",           en: "guiro",           fr: "le guiro",             family: "wood",    styles: [W, LAT] },
   { id: "woodblock",       en: "wood block",      fr: "le wood-block",        family: "wood",    styles: [O, W] },
 ];
 
@@ -104,6 +111,9 @@ const STYLES = [
   { id: J,      pic: "saxophone",       en: "Jazz",       fr: "Jazz" },
   { id: R,      pic: "electric-guitar", en: "Rock & pop", fr: "Rock & pop" },
   { id: W,      pic: "djembe",          en: "World",      fr: "Monde" },
+  { id: LAT,    pic: "maracas",         en: "Latin",      fr: "Latino" },
+  { id: FOLK,   pic: "banjo",           en: "Folk & country", fr: "Folk et country" },
+  { id: ELEC,   pic: "synthesizer",     en: "Electronic", fr: "Électronique" },
 ];
 
 
@@ -1537,6 +1547,16 @@ function mathQuestions(mode, level) {
   }
   return out;
 }
+
+// the home screen's sections (names in app/words.js), in order; a topic not listed goes in the last one
+const SECTIONS = {
+  nature: ["animals", "dinosaurs", "flowers", "trees", "mushrooms", "scenery", "weather", "space"],
+  food: ["food", "herbs", "spices", "dishes", "kitchen"],
+  music: ["instruments"],
+  reading: ["letters", "sounds", "syllables", "reading"],
+  numbers: ["numbers", "maths", "clock", "shapes", "colors"],
+  world: ["emotions", "body", "clothes", "jobs", "sports", "transport", "countries", "fantasy"],
+};
 
 // the pictures shown when choosing drawings or photos at the first start
 const LOOK_SAMPLES = ["lion", "sunflower", "strawberry"];

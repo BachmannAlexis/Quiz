@@ -478,9 +478,24 @@ const bestKey = (t, m, l = levelOf[t.id]) => `quiz-best-${t.id}-${m}` + (l === 2
 function bestOf(t) { return Math.max(0, ...t.modes.flatMap(m => [1, 2, 3].map(l => +store.get(bestKey(t, m, l), 0)))); }
 
 function renderHome() {
-  const grid = $("topicGrid");
-  grid.innerHTML = "";
-  TOPICS.forEach(t => {
+  const home = $("topicGrid");
+  home.innerHTML = "";
+  // the topics in sections (nature, food, music…), so a parent finds them quickly
+  const listed = new Set(Object.values(SECTIONS).flat()), keys = Object.keys(SECTIONS);
+  for (const key of keys) {
+    const ts = TOPICS.filter(t => SECTIONS[key].includes(t.id) || (key === keys[keys.length - 1] && !listed.has(t.id)));
+    if (!ts.length) continue;
+    const h = document.createElement("h2");
+    h.className = "section-title";
+    h.textContent = T().sections[key];
+    const grid = document.createElement("div");
+    grid.className = "topic-grid";
+    home.append(h, grid);
+    ts.sort((a, b) => SECTIONS[key].indexOf(a.id) - SECTIONS[key].indexOf(b.id)).forEach(t => topicCard(t, grid));
+  }
+}
+function topicCard(t, grid) {
+  {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "topic-card";
@@ -500,7 +515,22 @@ function renderHome() {
     }
     b.onclick = () => { audio(); openTopic(t); say(t[lang]); };
     grid.appendChild(b);
+  }
+}
+
+// A parent gate for the parents' page, the scores and the drawings/photos choice: press and hold one second.
+// A quick tap only shows a hint, so a child does not end up there by chance.
+function holdToOpen(btn, open) {
+  let timer = 0, opened = false;
+  const cancel = () => { clearTimeout(timer); btn.classList.remove("holding"); };
+  btn.addEventListener("pointerdown", e => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    opened = false;
+    btn.classList.add("holding");
+    timer = setTimeout(() => { btn.classList.remove("holding"); opened = true; open(); }, 900);
   });
+  ["pointerup", "pointerleave", "pointercancel"].forEach(t => btn.addEventListener(t, cancel));
+  btn.onclick = () => { if (!opened) toast(T().holdForParents); opened = false; };
 }
 
 function openTopic(t) {
@@ -1835,7 +1865,7 @@ LANGS.forEach(l => {
   $("langList").appendChild(b);
 });
 document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => openSheet($("langs")));
-document.querySelector(".info-btn").onclick = () => { renderRecog(); renderOffline(); openSheet($("about")); };
+holdToOpen(document.querySelector(".info-btn"), () => { renderRecog(); renderOffline(); openSheet($("about")); });
 $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
 $("voiceTest").onclick = () => {
@@ -1906,8 +1936,8 @@ function openLook() {
 ["drawings", "photos"].forEach(l => {
   $("look-" + l).onclick = () => { audio(); setLook(l); goHome(); };
 });
-$("lookBtn").onclick = openLook;
-$("scoresBtn").onclick = () => { renderScores(); openSheet($("scores")); };
+holdToOpen($("lookBtn"), openLook);
+holdToOpen($("scoresBtn"), () => { renderScores(); openSheet($("scores")); });
 $("clearScores").onclick = () => {
   if (!confirm(T().clearConfirm)) return;
   store.set("pikolo-scores", "[]"); store.set("pikolo-missed", "{}");

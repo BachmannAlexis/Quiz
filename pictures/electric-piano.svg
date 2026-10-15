@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <ellipse cx="64" cy="121" rx="46" ry="4" fill="#000" opacity=".12"/>
+<g stroke="#546e7a" stroke-width="6" stroke-linecap="round"><path d="M28 72 L98 118 M100 72 L30 118"/></g>
+<g stroke="#90a4ae" stroke-width="2.5" stroke-linecap="round"><path d="M29 73 L97 117 M99 73 L31 117"/></g>
+<circle cx="64" cy="95" r="5" fill="#37474f"/>
+<g fill="#37474f"><rect x="20" y="115" width="18" height="6" rx="3"/><rect x="90" y="115" width="18" height="6" rx="3"/></g>
+<rect x="4" y="46" width="120" height="30" rx="5" fill="#c62828"/>
+<rect x="4" y="44" width="120" height="14" rx="5" fill="#e53935"/>
+<rect x="10" y="47" width="22" height="3" rx="1.5" fill="#ffcdd2" opacity=".7"/>
+<g fill="#212121"><circle cx="44" cy="51" r="4"/><circle cx="56" cy="51" r="4"/><circle cx="68" cy="51" r="4"/></g>
+<g stroke="#fafafa" stroke-width="1.6" stroke-linecap="round"><path d="M44 51 l0 -3M56 51 l2.5 -2M68 51 l-2.5 -2"/></g>
+<g fill="#fff59d"><rect x="80" y="49" width="6" height="4" rx="1"/><rect x="90" y="49" width="6" height="4" rx="1"/></g>
+<rect x="102" y="48" width="16" height="6" rx="1.5" fill="#212121"/><rect x="104" y="49.5" width="8" height="3" fill="#ef5350"/>
+<rect x="4" y="58" width="6" height="18" rx="2" fill="#b71c1c"/><rect x="118" y="58" width="6" height="18" rx="2" fill="#b71c1c"/>
+<rect x="10" y="58" width="108" height="18" fill="#fafafa"/>
+  <path d="M15.1 58v18M20.3 58v18M25.4 58v18M30.6 58v18M35.7 58v18M40.9 58v18M46.0 58v18M51.1 58v18M56.3 58v18M61.4 58v18M66.6 58v18M71.7 58v18M76.9 58v18M82.0 58v18M87.1 58v18M92.3 58v18M97.4 58v18M102.6 58v18M107.7 58v18M112.9 58v18" stroke="#9e9e9e" stroke-width="1"/>
+  <g fill="#212121"><rect x="13.6" y="58" width="3.1" height="10.8"/><rect x="18.7" y="58" width="3.1" height="10.8"/><rect x="29.0" y="58" width="3.1" height="10.8"/><rect x="34.2" y="58" width="3.1" height="10.8"/><rect x="39.3" y="58" width="3.1" height="10.8"/><rect x="49.6" y="58" width="3.1" height="10.8"/><rect x="54.7" y="58" width="3.1" height="10.8"/><rect x="65.0" y="58" width="3.1" height="10.8"/><rect x="70.2" y="58" width="3.1" height="10.8"/><rect x="75.3" y="58" width="3.1" height="10.8"/><rect x="85.6" y="58" width="3.1" height="10.8"/><rect x="90.7" y="58" width="3.1" height="10.8"/><rect x="101.0" y="58" width="3.1" height="10.8"/><rect x="106.2" y="58" width="3.1" height="10.8"/><rect x="111.3" y="58" width="3.1" height="10.8"/></g>
+<rect x="10" y="74" width="108" height="2" fill="#bdbdbd"/>
+</svg>

@@ -19,7 +19,7 @@ const LEVELS = {
     hard: ["double-bass", "bass-guitar", "sitar", "shamisen", "koto", "oboe", "bassoon", "pan-flute", "ocarina",
       "timpani", "taiko", "tabla", "glockenspiel", "kalimba", "steel-drum", "cowbell", "claves", "guiro", "woodblock",
       "viola", "english-horn", "bass-clarinet", "contrabassoon", "celesta", "harpsichord", "vibraphone", "tubular-bells", "erhu",
-      "shakuhachi", "harmonium", "theremin"],
+      "shakuhachi", "harmonium", "theremin", "hammond-organ", "bandoneon", "dulcimer", "shehnai", "sousaphone"],
   },
   dinosaurs: {
     easy: ["t-rex", "triceratops", "stegosaurus", "diplodocus", "brachiosaurus", "pterodactyl", "mammoth", "dinosaur-egg"],
