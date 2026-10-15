@@ -300,18 +300,29 @@ function tone(freq, start, len, wave = "sine", vol = 0.25) {
   o.connect(g).connect(a.destination);
   o.start(t); o.stop(t + len + 0.05);
 }
-function stopSound() { if (current) { try { current.stop(); } catch (e) {} current = null; } }
+// the sound playing now (a tune or a play-mode note); a new one stops it, with a short fade so it does not click
+function stopSound() {
+  if (!current) return;
+  const { src, gain } = current, t = audio().currentTime;
+  current = null;
+  try { gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, t + 0.04); src.stop(t + 0.05); } catch (e) {}
+}
+function startSound(buffer, rate = 1) {
+  const c = audio(), src = c.createBufferSource(), gain = c.createGain();
+  src.buffer = buffer;
+  src.playbackRate.value = rate;
+  src.connect(gain).connect(c.destination);
+  src.start();
+  current = { src, gain };
+}
 function playInstrument(inst) {
   stopSound();
   const token = ++playToken;
   // waits for the recording if it is still loading; a newer play request wins
   recording(inst.id).then(b => {
     if (token !== playToken) return;
-    const src = audio().createBufferSource();
-    src.buffer = b;
-    src.connect(audio().destination);
-    src.start();
-    current = src;
+    stopSound();
+    startSound(b);
   }, () => {
     // no recording (sounds.js could not load): an animal still says its sound with the voice
     if (token === playToken && inst.says) say(extra(inst));
@@ -323,17 +334,16 @@ const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#7cb342", "#26a69a", "#1e8
 const KEY_NAMES = { en: ["C", "D", "E", "F", "G", "A", "B", "C"], fr: ["do", "ré", "mi", "fa", "sol", "la", "si", "do"],
   de: ["C", "D", "E", "F", "G", "A", "H", "C"], it: ["do", "re", "mi", "fa", "sol", "la", "si", "do"] };
 function playNote(inst, k) {
-  stopSound(); playToken++;
+  stopSound();
+  const token = ++playToken;
   const info = NOTES[inst.id];
   // several sounds (drum kit, tabla): one per key; one sound: tuned up and down
   const many = info.samples.length > 1;
   const steps = many ? 0 : info.pitched ? KEY_STEPS[k] : KEY_STEPS[k] / 2;
   recording(inst.id + "#" + (many ? k % info.samples.length : 0)).then(b => {
-    const src = audio().createBufferSource();
-    src.buffer = b;
-    src.playbackRate.value = Math.pow(2, steps / 12);
-    src.connect(audio().destination);
-    src.start();
+    if (token !== playToken) return; // a newer key was pressed meanwhile
+    stopSound();
+    startSound(b, Math.pow(2, steps / 12));
   }, () => {});
 }
 function cheer() { [523, 659, 784, 1047].forEach((n, i) => tone(n, i * 0.09, 0.25, "triangle", 0.2)); }
