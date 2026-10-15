@@ -568,17 +568,17 @@ const KITCHEN_GROUPS = [
 
 // ---------- ABC: look-alike letters share a family, so they are never asked together.
 // `says`: the sound the letter makes, in English and French (for the listening game);
-// `like`: a word that starts with it. Letters that sound alike share `hears`.
+// `like`: a word that starts with that sound (French Y: "pyjama", where it says i). H is silent in French and Italian. Letters that sound alike share `hears`.
 const LETTER_SOUNDS = {
   A: ["ah", "a", "apple", "abeille"], B: ["buh", "beu", "banana", "banane"], C: ["kuh", "keu", "cat", "carotte"],
   D: ["duh", "deu", "dog", "dauphin"], E: ["eh", "eu", "egg", ""], F: ["fff", "fff", "fish", "fraise"],
-  G: ["guh", "gueu", "goat", "gorille"], H: ["huh", "", "horse", ""], I: ["ih", "i", "", "igloo"],
+  G: ["guh", "gueu", "goat", "gorille"], H: ["huh", "", "horse", ""], I: ["ih", "i", "insect", "igloo"],
   J: ["juh", "jeu", "jellyfish", "jungle"], K: ["kuh", "keu", "kangaroo", "kangourou"], L: ["lll", "lll", "lion", "lion"],
-  M: ["mmm", "mmm", "mouse", "mouton"], N: ["nnn", "nnn", "nest", "nénuphar"], O: ["aw", "o", "octopus", "ours"],
-  P: ["puh", "peu", "pig", "pomme"], Q: ["kwuh", "keu", "queen", ""], R: ["ruh", "reu", "rabbit", "renard"],
-  S: ["sss", "sss", "snake", "serpent"], T: ["tuh", "teu", "tiger", "tortue"], U: ["uh", "u", "umbrella", ""],
-  V: ["vvv", "vvv", "violin", "vache"], W: ["wuh", "oua", "whale", ""], X: ["ks", "ks", "fox", "xylophone"],
-  Y: ["yuh", "i", "yellow", "yaourt"], Z: ["zzz", "zzz", "zebra", "zèbre"],
+  M: ["mmm", "mmm", "mouse", "mouton"], N: ["nnn", "nnn", "nest", "nénuphar"], O: ["aw", "o", "octopus", "orange"],
+  P: ["puh", "peu", "pig", "pomme"], Q: ["kwuh", "keu", "queen", "quatre"], R: ["ruh", "reu", "rabbit", "renard"],
+  S: ["sss", "sss", "snake", "serpent"], T: ["tuh", "teu", "tiger", "tortue"], U: ["uh", "u", "umbrella", "usine"],
+  V: ["vvv", "vvv", "violin", "vache"], W: ["wuh", "oua", "whale", "wapiti"], X: ["ks", "ks", "fox", "xylophone"],
+  Y: ["yuh", "i", "yellow", "pyjama"], Z: ["zzz", "zzz", "zebra", "zèbre"],
 };
 // Phonics: children learn the sound of each letter before its name, starting with the vowels and the sounds
 // that can be stretched (mmm, sss), then the short ones (b, t); the groups follow that order.
@@ -588,9 +588,9 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
   return {
     id: "letter-" + c.toLowerCase(), en: "letter " + c, fr: "la lettre " + c,
     family: ["BDPRQ", "MNW", "EF", "OCGQ", "IJLT", "UV", "KXY"].find(f => f.includes(c)) || c,
-    hears: "CKQ".includes(c) ? "k" : "IY".includes(c) ? "i" : c,
+    hears: "CKQ".includes(c) ? "k" : "IY".includes(c) ? "i" : "FV".includes(c) ? "f" : c, // German V says fff
     styles: ["AEIOUY".includes(c) ? VOWELS : "FLMNRSVZ".includes(c) ? STRETCH : QUICK],
-    ...(en && fr ? { says: [en, fr], like: [likeEn, likeFr] } : {}),
+    ...(en || fr ? { says: [en, fr], like: [likeEn, likeFr] } : {}),
   };
 });
 
@@ -613,22 +613,20 @@ const SYLLABLE_GROUPS = [
 ];
 
 // ---------- Numbers: the digit and as many dots (pictures/number-*.svg)
-// the names of 1 to 100, by the rules of each language ("vingt et un", "soixante et onze", "quatre-vingt-onze")
+// the names of 1 to 100, by the rules of each language ("vingt et un", "septante et un", "nonante-neuf")
 const EN_NUM = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen",
   "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
 const EN_TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
 const FR_NUM = ["", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize",
   "quatorze", "quinze", "seize"];
-const FR_TENS = ["", "dix", "vingt", "trente", "quarante", "cinquante", "soixante"];
+// Swiss French: septante, huitante, nonante (septante et un, huitante-deux…)
+const FR_TENS = ["", "dix", "vingt", "trente", "quarante", "cinquante", "soixante", "septante", "huitante", "nonante"];
 const enNumber = n => n === 100 ? "a hundred" : n < 20 ? EN_NUM[n] : EN_TENS[Math.floor(n / 10)] + (n % 10 ? "-" + EN_NUM[n % 10] : "");
 function frNumber(n) {
   const t = Math.floor(n / 10), u = n % 10;
   if (n === 100) return "cent";
   if (n <= 16) return FR_NUM[n];
   if (n < 20) return "dix-" + FR_NUM[u];
-  if (t === 7) return n === 71 ? "soixante et onze" : "soixante-" + frNumber(n - 60);
-  if (t === 8) return u ? "quatre-vingt-" + FR_NUM[u] : "quatre-vingts";
-  if (t === 9) return "quatre-vingt-" + frNumber(n - 80);
   return FR_TENS[t] + (u === 0 ? "" : u === 1 ? " et un" : "-" + FR_NUM[u]);
 }
 const UNITS = "units", TEENS = "teens", TO50 = "to50", TO100 = "to100", TENS = "tens";

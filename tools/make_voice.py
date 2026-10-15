@@ -32,10 +32,10 @@ LETTER_PHONEMES = {
            "teu": "tø", "u": "y", "vvv": "vːː", "oua": "wa", "ks": "ks", "zzz": "zːːː"},
     "de": {"a": "a", "be": "bə", "ce": "tsə", "de": "də", "e": "e", "ef": "ɛf", "ge": "ɡə", "ha": "hə", "i": "i", "je": "jə",
            "ke": "kə", "el": "ɛl", "em": "ɛm", "en": "ɛn", "o": "o", "pe": "pə", "kwe": "kvə", "er": "ɛʁ", "sss": "sːːː", "te": "tə",
-           "u": "u", "vau": "faʊ", "we": "və", "ks": "ks", "ü": "y", "zett": "tsɛt", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
+           "u": "u", "vau": "faʊ", "we": "və", "ks": "ks", "ü": "y", "zett": "tsɛt", "re": "ʁə", "ts": "ts", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
     "it": {"a": "a", "bi": "bi", "ci": "tʃi", "di": "di", "e": "e", "effe": "ˈɛffe", "gi": "dʒi", "i": "i", "elle": "ˈɛlle",
            "emme": "ˈɛmme", "enne": "ˈɛnne", "o": "o", "pi": "pi", "cu": "ku", "erre": "ˈɛrre", "sss": "sːːː", "ti": "ti", "u": "u",
-           "vu": "vu", "zeta": "ˈdzɛːta", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
+           "vu": "vu", "zeta": "ˈdzɛːta", "rrr": "rːː", "dz": "dz", "vvv": "vːː", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
 }
 
 # Syllables (app/topics.js SYLLABLES) are read as sounds: a consonant alone is stretched ("mmm") or said with a
