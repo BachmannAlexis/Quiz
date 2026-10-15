@@ -324,7 +324,9 @@ function playInstrument(inst) {
   });
 }
 // Play-mode keys: one octave of the major scale, do ré mi fa sol la si do, in rainbow colours.
-const KEY_STEPS = [0, 2, 4, 5, 7, 9, 11, 12];
+// Play-mode keyboard: one octave like a piano, 8 white keys (do to do) and 5 black keys on top.
+const PIANO = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(step => ({ step, black: [1, 3, 6, 8, 10].includes(step) }));
+const KEY_STEPS = PIANO.map(k => k.step);
 const KEY_COLORS = ["#e53935", "#fb8c00", "#fdd835", "#7cb342", "#26a69a", "#1e88e5", "#5e35b1", "#e53935"];
 const KEY_NAMES = { en: ["C", "D", "E", "F", "G", "A", "B", "C"], fr: ["do", "ré", "mi", "fa", "sol", "la", "si", "do"],
   de: ["C", "D", "E", "F", "G", "A", "H", "C"], it: ["do", "re", "mi", "fa", "sol", "la", "si", "do"] };
@@ -1194,7 +1196,7 @@ function openPlay() {
   $("keys").hidden = !isMusic();
   if (isClock) return openClock();
   $("keys").hidden = !isMusic();
-  [...$("keys").children].forEach((key, k) => { key.textContent = KEY_NAMES[lang][k]; });
+  [...$("keys").querySelectorAll(".key.white span")].forEach((label, w) => { label.textContent = KEY_NAMES[lang][w]; });
   const grid = $("grid");
   grid.innerHTML = "";
   groupPool().forEach(item => {
@@ -1293,8 +1295,9 @@ function moveClock(e) {
     const m = Math.round(deg / 6) % 60, now = ((clockTime % 60) + 60) % 60;
     clockTime += ((m - now) % 60 + 90) % 60 - 30;
   } else {
-    const turn = Math.floor(clockTime / 720) * 720;
-    clockTime = turn + Math.round(deg * 2);
+    // the hour hand moves the hour only: the minutes stay, so the minute hand does not spin round
+    const m = ((clockTime % 60) + 60) % 60, h = ((Math.round((deg - m / 2) / 30) % 12) + 12) % 12;
+    clockTime = h * 60 + m;
   }
   const step = Math.round(clockTime / 5);
   if (step !== Math.round(clockDrag.last / 5)) { tone(1400, 0, 0.03, "square", 0.05); clockDrag.last = clockTime; }
@@ -1449,13 +1452,22 @@ $("again").onclick = () => start(mode);
 $("otherGame").onclick = backToTopic;
 $("speak").onclick = () => { if (!locked) mode === "read" ? say(soundOut(answer)) : ask(); };
 $("bigPic").onclick = sayItem;
-KEY_COLORS.forEach((c, k) => {
-  const key = document.createElement("div");
-  key.className = "key";
-  key.dataset.k = k;
-  key.style.background = c;
-  $("keys").appendChild(key);
-});
+{
+  let white = 0;
+  PIANO.forEach((p, k) => {
+    const key = document.createElement("div");
+    key.dataset.k = k;
+    if (p.black) {
+      key.className = "key black";
+      key.style.left = `calc(${white} * 100% / 8 - 3.6%)`; // between the white key before and the one after
+    } else {
+      key.className = "key white";
+      key.style.setProperty("--c", KEY_COLORS[white++]);
+      key.appendChild(document.createElement("span"));
+    }
+    $("keys").appendChild(key);
+  });
+}
 $("keys").addEventListener("pointerdown", e => { e.preventDefault(); $("keys").releasePointerCapture?.(e.pointerId); press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 $("keys").addEventListener("pointermove", e => { if (pressed.has(e.pointerId)) press(e.pointerId, keyAt(e.clientX, e.clientY)); });
 ["pointerup", "pointercancel", "pointerleave"].forEach(t => $("keys").addEventListener(t, release));
