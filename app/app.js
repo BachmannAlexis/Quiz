@@ -4,16 +4,9 @@
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
 
-const CONFETTI = {
-  instruments: ["🎵", "🎶", "⭐", "✨"], animals: ["🐾", "⭐", "🎉", "✨"], flowers: ["🌸", "🌼", "⭐", "✨"],
-  trees: ["🍃", "🍂", "⭐", "✨"], mushrooms: ["🍄", "⭐", "🎉", "✨"], scenery: ["☀️", "☁️", "⭐", "✨"],
-  dinosaurs: ["🦖", "🦕", "⭐", "✨"], food: ["🍓", "🥕", "⭐", "✨"], spices: ["🌿", "⭐", "🎉", "✨"], herbs: ["🌿", "🍃", "⭐", "✨"],
-  kitchen: ["🍪", "⭐", "🎉", "✨"], letters: ["🔤", "⭐", "🎉", "✨"], syllables: ["🔤", "📖", "⭐", "✨"], clock: ["🕒", "⏰", "⭐", "✨"], emotions: ["😀", "🥰", "⭐", "✨"],
-  numbers: ["🔢", "⭐", "🎉", "✨"], transport: ["🚗", "⭐", "🎉", "✨"], weather: ["☀️", "🌈", "⭐", "✨"],
-  colors: ["🎨", "🌈", "⭐", "✨"], shapes: ["🔷", "⭐", "🎉", "✨"], clothes: ["👕", "⭐", "🎉", "✨"], jobs: ["👷", "⭐", "🎉", "✨"],
-  dishes: ["🍕", "🍰", "⭐", "✨"], countries: ["🌍", "⭐", "🎉", "✨"], body: ["💪", "⭐", "🎉", "✨"], sports: ["🏆", "⚽", "⭐", "✨"],
-};
-const MODE_ICONS = { name: "🗣️", say: "🎤", listen: "👂", play: "🎹", explore: "👆" };
+const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search" };
+// an icon from the sprite in index.html (one line style for every control)
+const icon = (id, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
 // ---------- State ----------
 const $ = id => document.getElementById(id);
@@ -488,7 +481,7 @@ function renderHome() {
     if (best) {
       const badge = document.createElement("span");
       badge.className = "best";
-      badge.textContent = `⭐ ${best}`;
+      badge.innerHTML = `${icon("star", "gold")} ${best}`;
       b.appendChild(badge);
     }
     b.onclick = () => { audio(); openTopic(t); say(t[lang]); };
@@ -508,7 +501,7 @@ function openTopic(t) {
   show("topic");
 }
 
-const LEVEL_DOTS = ["🟢", "🟡", "🔴"];
+const LEVEL_DOTS = ["🟢", "🟡", "🔴"]; // in the scores text
 function renderTopic() {
   $("topicTitle").textContent = topic[lang];
   const hero = $("topicHero");
@@ -552,7 +545,8 @@ function renderTopic() {
     b.type = "button";
     b.className = "chip level";
     b.setAttribute("aria-pressed", k + 1 === levelOf[topic.id]);
-    b.textContent = `${LEVEL_DOTS[k]} ${name}`;
+    b.innerHTML = `<span class="dot l${k + 1}"></span>`;
+    b.append(name);
     b.onclick = () => {
       levelOf[topic.id] = k + 1;
       store.set("pikolo-level-" + topic.id, String(k + 1));
@@ -568,7 +562,7 @@ function renderTopic() {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "mode";
-    b.innerHTML = `<span class="mode-icon">${MODE_ICONS[m]}</span><span class="mode-text"><strong></strong><small></small></span><span class="mode-go">›</span>`;
+    b.innerHTML = `<span class="mode-icon">${icon(m === "explore" && topic.id === "clock" ? "clock" : MODE_ICONS[m])}</span><span class="mode-text"><strong></strong><small></small></span><span class="mode-go">${icon("chevron")}</span>`;
     b.querySelector("strong").textContent = title;
     b.querySelector("small").textContent = sub;
     const best = +store.get(bestKey(topic, m), 0);
@@ -1108,7 +1102,7 @@ function finish() {
   row.innerHTML = "";
   results.forEach(ok => {
     const s = document.createElement("span");
-    s.textContent = "⭐";
+    s.innerHTML = icon("star");
     if (!ok) s.className = "off";
     row.appendChild(s);
   });
@@ -1125,7 +1119,7 @@ function start(m) {
   mode = m;
   if (m === "play" || m === "explore") return openPlay();
   round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
-  $("speak").textContent = mode === "listen" ? "👂" : mode === "say" ? "🎤" : "🔊";
+  $("speak").innerHTML = icon(mode === "listen" ? "ear" : mode === "say" ? "mic" : "speaker");
   $("micHint").hidden = true;
   $("heard").textContent = "";
   if (m === "say" && recogOn()) loadModel(lang).catch(() => {});
@@ -1309,7 +1303,7 @@ function release(e) {
 // ---------- Language, parents sheet, sharing ----------
 function translate() {
   document.documentElement.lang = lang;
-  document.querySelectorAll(".lang-btn").forEach(b => { b.textContent = T().flag; b.setAttribute("aria-label", T().chooseLang); });
+  document.querySelectorAll(".lang-btn").forEach(b => { b.innerHTML = `${icon("globe")}<span>${lang.toUpperCase()}</span>`; b.setAttribute("aria-label", T().chooseLang); });
   document.querySelectorAll("[data-t]").forEach(el => { el.textContent = T()[el.dataset.t]; });
   document.querySelectorAll("[data-t-html]").forEach(el => { el.innerHTML = T()[el.dataset.tHtml]; });
   document.querySelectorAll("[data-t-label]").forEach(el => el.setAttribute("aria-label", T()[el.dataset.tLabel]));
@@ -1369,15 +1363,18 @@ async function share() {
   }
 }
 
+// Confetti: small paper pieces in the topic's colour, gold and three bright colours, falling behind the cards
 function confetti(n) {
-  const bits = CONFETTI[topic.id] || ["⭐", "🎉", "✨"];
-  for (let i = 0; i < n; i++) {
+  const colors = [topic.color, "#ffb400", "#22a565", "#1e88e5", "#ff5a7a"];
+  for (let i = 0; i < Math.min(n, 36); i++) {
     const s = document.createElement("span");
-    s.className = "confetti";
-    s.textContent = bits[i % bits.length];
-    s.style.left = Math.random() * 90 + "vw";
-    s.style.animationDuration = 1.5 + Math.random() * 1.5 + "s";
-    s.style.animationDelay = Math.random() * 0.5 + "s";
+    s.className = "confetti" + (i % 3 === 0 ? " round" : "");
+    s.style.background = colors[i % colors.length];
+    s.style.left = Math.random() * 96 + "vw";
+    s.style.setProperty("--spin", (Math.random() < .5 ? -1 : 1) * (360 + Math.random() * 540) + "deg");
+    s.style.setProperty("--drift", (Math.random() * 30 - 15) + "vw");
+    s.style.animationDuration = 1.6 + Math.random() * 1.4 + "s";
+    s.style.animationDelay = Math.random() * 0.4 + "s";
     document.body.appendChild(s);
     setTimeout(() => s.remove(), 3600);
   }
