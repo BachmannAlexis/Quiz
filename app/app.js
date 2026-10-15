@@ -4,7 +4,7 @@
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
 
-const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book" };
+const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum" };
 // an icon from the sprite in index.html (one line style for every control)
 const icon = (id, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
@@ -375,6 +375,7 @@ function extra(item) {
   if (item.poison) return T().poison;
   if (item.from) { const c = ITEMS.get(item.from); return T().from(nameOf(item), c[lang], manyOf(item), manyOf(c)); }
   if (item.feel) return item.feel[li()]; // "I feel scared when there is thunder."
+  if (item.fact) return item.fact[li()]; // "Jupiter is the biggest planet."
   if (item.word) return T().soundAs(nameOf(item), item.word); // "« ou » comme loup !"
   if (item.parts) return soundOut(item); // "lu… ne… lune !"
   return "";
@@ -417,6 +418,7 @@ function refreshPictures() {
   document.querySelectorAll("img[data-pic]").forEach(img => setPicture(img, img.dataset.pic));
 }
 function picture(id, cls) {
+  if (SOLIDS[id]) return solidCanvas(id); // a cube, sphere… turning in 3D
   const img = document.createElement("img");
   img.alt = "";
   img.draggable = false;
@@ -436,7 +438,7 @@ function setLook(l) {
 // The phone's back button (or gesture) goes back one screen: from a game, the end or Discover to the topic, from
 // the topic to home, and closes an open sheet, instead of leaving the app. Each screen deeper than home adds a
 // history entry; leaving a screen with the app's own buttons removes it again.
-const DEPTH = { look: 0, home: 0, topic: 1, game: 2, play: 2, done: 2 };
+const DEPTH = { look: 0, home: 0, topic: 1, game: 2, play: 2, done: 2, puzzle: 2, drums: 2 };
 let depth = 0, skipPops = 0;
 function syncHistory(d) {
   try {
@@ -607,6 +609,7 @@ function backToTopic() {
 }
 function stopEverything() {
   gameId++; questionId++; playToken++;
+  stopBeat();
   stopListening();
   stopSound();
   hush();
@@ -1040,7 +1043,7 @@ function saveScore() {
   const sorted = [...thinking].sort((a, b) => a - b);
   const sec = sorted.length ? Math.round(sorted[sorted.length >> 1] * 10) / 10 : 0;
   const all = readJSON("pikolo-scores", []);
-  all.push({ t: topic.id, m: mode, g: groupOf[topic.id], l: levelOf[topic.id], s: stars, sec, at: Date.now() });
+  all.push({ t: topic.id, m: mode, g: groupOf[topic.id], l: levelOf[topic.id], s: Math.round(stars * ROUNDS / (results.length || ROUNDS)), sec, at: Date.now() });
   store.set("pikolo-scores", JSON.stringify(all.slice(-500)));
   const miss = readJSON("pikolo-missed", {});
   miss[topic.id] = miss[topic.id] || {};
@@ -1128,7 +1131,7 @@ function finish() {
   const key = bestKey(topic, mode);
   const best = +store.get(key, 0);
   if (stars > best) store.set(key, String(stars));
-  $("doneText").textContent = T().found(stars);
+  $("doneText").textContent = T().found(stars, results.length);
   const row = $("doneStars");
   row.innerHTML = "";
   results.forEach(ok => {
@@ -1149,6 +1152,8 @@ function start(m) {
   gameId++;
   mode = m;
   if (m === "play" || m === "explore") return openPlay();
+  if (m === "puzzle") return startPuzzles();
+  if (m === "drums") return openDrums();
   round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
   $("speak").innerHTML = icon(mode === "listen" ? "ear" : mode === "say" ? "mic" : "speaker");
   $("micHint").hidden = true;
@@ -1158,12 +1163,306 @@ function start(m) {
   askQuestion();
 }
 
+// ---------- 3D shapes: the solids drawn live in 3D, turning slowly; the big one in Discover spins with a finger ----------
+const SOLIDS = { "shape-cube": ["cube", "#fb8c00"], "shape-sphere": ["sphere", "#26c6da"], "shape-cylinder": ["cylinder", "#1e88e5"],
+  "shape-cone": ["cone", "#e53935"], "shape-pyramid": ["pyramid", "#fdd835"] };
+// each solid as faces (lists of [x, y, z] points), about 1 unit across, centred
+function solidMesh(kind) {
+  const ring = (n, r, y) => Array.from({ length: n }, (_, k) => [r * Math.cos(2 * Math.PI * k / n), y, r * Math.sin(2 * Math.PI * k / n)]);
+  if (kind === "cube") {
+    const v = [-.72, .72], P = (x, y, z) => [v[x], v[y], v[z]];
+    return [[P(0,0,0), P(1,0,0), P(1,1,0), P(0,1,0)], [P(0,0,1), P(1,0,1), P(1,1,1), P(0,1,1)], [P(0,0,0), P(0,1,0), P(0,1,1), P(0,0,1)],
+      [P(1,0,0), P(1,1,0), P(1,1,1), P(1,0,1)], [P(0,0,0), P(1,0,0), P(1,0,1), P(0,0,1)], [P(0,1,0), P(1,1,0), P(1,1,1), P(0,1,1)]];
+  }
+  if (kind === "pyramid") {
+    const b = [[-.82, -.7, -.82], [.82, -.7, -.82], [.82, -.7, .82], [-.82, -.7, .82]], top = [0, .95, 0];
+    return [b, ...b.map((p, k) => [p, b[(k + 1) % 4], top])];
+  }
+  if (kind === "cone") {
+    const b = ring(32, .88, -.72), top = [0, .98, 0];
+    return [b, ...b.map((p, k) => [p, b[(k + 1) % 32], top])];
+  }
+  if (kind === "cylinder") {
+    const lo = ring(32, .76, -.78), hi = ring(32, .76, .78);
+    return [lo, hi, ...lo.map((p, k) => [p, lo[(k + 1) % 32], hi[(k + 1) % 32], hi[k]])];
+  }
+  const faces = [], R = .95; // sphere
+  for (let i = 0; i < 14; i++) for (let j = 0; j < 28; j++) {
+    const pt = (a, b) => { const t = Math.PI * a / 14, f = 2 * Math.PI * b / 28; return [R * Math.sin(t) * Math.cos(f), R * Math.cos(t), R * Math.sin(t) * Math.sin(f)]; };
+    faces.push([pt(i, j), pt(i + 1, j), pt(i + 1, j + 1), pt(i, j + 1)]);
+  }
+  return faces;
+}
+const solidMeshes = {};
+function drawSolid(cv) {
+  const [kind, color] = SOLIDS[cv.dataset.pic], faces = solidMeshes[kind] || (solidMeshes[kind] = solidMesh(kind));
+  const c = cv.getContext("2d"), w = cv.width, S = w * .36, ay = cv._ay, ax = .42;
+  const rot = ([x, y, z]) => { const x1 = x * Math.cos(ay) + z * Math.sin(ay), z1 = -x * Math.sin(ay) + z * Math.cos(ay);
+    return [x1, y * Math.cos(ax) - z1 * Math.sin(ax), y * Math.sin(ax) + z1 * Math.cos(ax)]; };
+  const rgb = [1, 3, 5].map(i => parseInt(color.slice(i, i + 2), 16)), L = [-.45, .65, .62];
+  const drawn = faces.map(f => {
+    const p = f.map(rot), [a, b, d] = p, u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], v = [d[0] - a[0], d[1] - a[1], d[2] - a[2]];
+    let n = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
+    const mid = p.reduce((m, q) => [m[0] + q[0] / p.length, m[1] + q[1] / p.length, m[2] + q[2] / p.length], [0, 0, 0]);
+    if (n[0] * mid[0] + n[1] * mid[1] + n[2] * mid[2] < 0) n = n.map(x => -x); // outward
+    const len = Math.hypot(...n) || 1;
+    return { p, z: mid[2], facing: n[2] / len, light: (n[0] * L[0] + n[1] * L[1] + n[2] * L[2]) / len };
+  }).filter(f => f.facing > -0.02).sort((a, b) => a.z - b.z);
+  c.clearRect(0, 0, w, w);
+  // a soft shadow under the solid
+  c.fillStyle = "rgba(42, 34, 69, .1)"; c.beginPath(); c.ellipse(w / 2, w * .9, w * .3, w * .05, 0, 0, 2 * Math.PI); c.fill();
+  for (const f of drawn) {
+    const k = .5 + .5 * Math.max(0, f.light), spec = Math.max(0, f.light) ** 12 * 60;
+    c.fillStyle = `rgb(${rgb.map(x => Math.min(255, x * k + spec) | 0).join(",")})`;
+    c.strokeStyle = kind === "cube" || kind === "pyramid" ? "rgba(42, 34, 69, .25)" : c.fillStyle;
+    c.lineWidth = kind === "cube" || kind === "pyramid" ? w / 140 : 1;
+    c.beginPath();
+    f.p.forEach(([x, y, z], i) => { const g = 3.4 / (3.4 - z); c[i ? "lineTo" : "moveTo"](w / 2 + x * g * S, w * .47 - y * g * S); });
+    c.closePath(); c.fill(); c.stroke();
+  }
+}
+const solids = new Set();
+let solidLoop = 0;
+function solidCanvas(id) {
+  const cv = document.createElement("canvas");
+  cv.className = "solid";
+  cv.dataset.pic = id;
+  cv.width = cv.height = 256;
+  cv._ay = Math.random() * 6; cv._spin = 0;
+  drawSolid(cv);
+  solids.add(cv);
+  if (!solidLoop) solidLoop = requestAnimationFrame(turnSolids);
+  return cv;
+}
+function turnSolids() {
+  for (const cv of solids) {
+    if (!cv.isConnected) { solids.delete(cv); continue; }
+    cv._ay += .012 + cv._spin; cv._spin *= .94;
+    drawSolid(cv);
+  }
+  solidLoop = solids.size ? requestAnimationFrame(turnSolids) : 0;
+}
+// a finger on a solid spins it
+addEventListener("pointermove", e => { if (e.buttons && e.target.classList && e.target.classList.contains("solid")) e.target._spin = e.movementX * .004; });
+
+// ---------- Drums: a drum kit to tap, and a drum machine (4 sounds × 8 steps, looping) ----------
+// The sounds are the drum kit's play-mode samples: kick, snare, closed hi-hat, 3 toms, open cymbal, splash.
+const PAD_COLORS = ["#e53935", "#1e88e5", "#fdd835", "#43a047", "#00897b", "#6d4c41", "#fb8c00", "#8e24aa"];
+const BEAT_ROWS = [2, 1, 0, 6]; // hi-hat, snare, bass drum, cymbal (top to bottom, like drum notation)
+const BEAT_DEMO = { 2: [0, 1, 2, 3, 4, 5, 6, 7], 1: [2, 6], 0: [0, 3, 4], 6: [] };
+const beat = { steps: {}, tempo: 100, playing: false, step: 0, next: 0, timer: 0 };
+function hitDrum(k, when) {
+  return recording("drum-kit#" + k).then(b => {
+    const c = audio(), src = c.createBufferSource();
+    src.buffer = b; src.connect(c.destination); src.start(when || 0);
+  }, () => {});
+}
+function openDrums() {
+  const pads = $("pads");
+  pads.innerHTML = "";
+  T().drumNames.forEach((name, k) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "pad pad-" + k;
+    b.style.setProperty("--c", PAD_COLORS[k]);
+    b.setAttribute("aria-label", name);
+    b.innerHTML = "<span></span>";
+    b.querySelector("span").textContent = name;
+    b.addEventListener("pointerdown", e => { e.preventDefault(); audio(); hitDrum(k); b.classList.remove("hit"); void b.offsetWidth; b.classList.add("hit"); });
+    pads.appendChild(b);
+  });
+  loadSounds(TOPICS.find(t => t.id === "instruments")).then(() => recording("drum-kit#0")).catch(() => {});
+  if (!Object.keys(beat.steps).length) demoBeat();
+  drawBeat();
+  show("drums");
+}
+function drawBeat() {
+  const grid = $("beatGrid");
+  grid.innerHTML = "";
+  BEAT_ROWS.forEach(k => {
+    const row = document.createElement("div");
+    row.className = "beat-row";
+    const dot = document.createElement("span");
+    dot.className = "beat-dot";
+    dot.style.background = PAD_COLORS[k];
+    dot.title = T().drumNames[k];
+    row.appendChild(dot);
+    for (let i = 0; i < 8; i++) {
+      const cell = document.createElement("button");
+      cell.type = "button";
+      cell.className = "beat-cell" + (beat.steps[k] && beat.steps[k].has(i) ? " on" : "") + (i % 4 === 0 ? " first" : "");
+      cell.style.setProperty("--c", PAD_COLORS[k]);
+      cell.dataset.i = i;
+      cell.setAttribute("aria-label", `${T().drumNames[k]} ${i + 1}`);
+      cell.onclick = () => {
+        const set = beat.steps[k] || (beat.steps[k] = new Set());
+        if (set.has(i)) set.delete(i); else { set.add(i); hitDrum(k); }
+        cell.classList.toggle("on", set.has(i));
+      };
+      row.appendChild(cell);
+    }
+    grid.appendChild(row);
+  });
+  $("beatTempo").textContent = beat.tempo;
+  $("beatPlay").innerHTML = icon(beat.playing ? "stop" : "play");
+}
+function demoBeat() { beat.steps = Object.fromEntries(Object.entries(BEAT_DEMO).map(([k, v]) => [k, new Set(v)])); }
+// a small scheduler: every 25 ms, the steps due in the next 0.1 s are queued on the audio clock, so the beat stays even
+function startBeat() {
+  const c = audio();
+  beat.playing = true; beat.step = 0; beat.next = c.currentTime + 0.05;
+  beat.timer = setInterval(() => {
+    while (beat.next < c.currentTime + 0.1) {
+      const i = beat.step;
+      for (const k of BEAT_ROWS) if (beat.steps[k] && beat.steps[k].has(i)) hitDrum(k, beat.next);
+      const delay = Math.max(0, (beat.next - c.currentTime) * 1000);
+      setTimeout(() => document.querySelectorAll(".beat-cell").forEach(cell => cell.classList.toggle("now", +cell.dataset.i === i)), delay);
+      beat.next += 60 / beat.tempo / 2; // eighth notes
+      beat.step = (beat.step + 1) % 8;
+    }
+  }, 25);
+  drawBeat();
+}
+function stopBeat() {
+  clearInterval(beat.timer);
+  beat.playing = false;
+  document.querySelectorAll(".beat-cell.now").forEach(c => c.classList.remove("now"));
+  if ($("beatPlay")) $("beatPlay").innerHTML = icon("play");
+}
+$("beatPlay").onclick = () => { audio(); beat.playing ? stopBeat() : startBeat(); };
+$("beatSlower").onclick = () => { beat.tempo = Math.max(60, beat.tempo - 10); $("beatTempo").textContent = beat.tempo; };
+$("beatFaster").onclick = () => { beat.tempo = Math.min(180, beat.tempo + 10); $("beatTempo").textContent = beat.tempo; };
+$("beatClear").onclick = () => { beat.steps = {}; drawBeat(); };
+$("beatDemo").onclick = () => { demoBeat(); drawBeat(); };
+$("drumsClose").onclick = backToTopic;
+
+// ---------- Puzzles: a picture cut into pieces (2×2 easy, 3×3 medium, 4×4 hard), five pictures a game ----------
+// Drag a piece to its place (the picture shows faintly on the board), or tap a piece then its place.
+// A picture finished without a wrong drop earns a star.
+const PUZZLES = 5;
+let puzzle = null; // { item, n, placed, held, drag }
+function startPuzzles() {
+  round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
+  show("puzzle");
+  nextPuzzle();
+  say(T().puzzleGo);
+}
+function puzzleProgress() {
+  const bar = $("puzzleProgress");
+  bar.innerHTML = "";
+  for (let i = 0; i < PUZZLES; i++) {
+    const seg = document.createElement("i");
+    seg.className = i < results.length ? (results[i] ? "star" : "ok") : i === results.length ? "now" : "";
+    bar.appendChild(seg);
+  }
+}
+function nextPuzzle() {
+  if (!deck.length) deck = shuffle(groupPool().filter(i => i !== lastAnswer));
+  const item = deck.pop(), n = levelOf[topic.id] + 1, src = srcOf(item.id) || PICS[item.id];
+  lastAnswer = item;
+  puzzle = { item, n, placed: 0, held: null, clean: true };
+  firstTry = true; locked = false; questionId++;
+  puzzleProgress();
+  const board = $("puzzleBoard"), tray = $("puzzleTray");
+  board.innerHTML = ""; tray.innerHTML = "";
+  board.style.setProperty("--n", n);
+  board.style.setProperty("--pic", `url("${src}")`);
+  board.classList.toggle("photo", look === "photos" && !!photos[item.id]);
+  for (let i = 0; i < n * n; i++) {
+    const slot = document.createElement("div");
+    slot.className = "slot";
+    slot.dataset.i = i;
+    slot.onclick = () => { if (puzzle.held) dropPiece(puzzle.held, slot); };
+    board.appendChild(slot);
+  }
+  shuffle([...Array(n * n).keys()]).forEach(i => {
+    const piece = document.createElement("div");
+    piece.className = "piece";
+    piece.dataset.i = i;
+    piece.style.setProperty("--x", i % n);
+    piece.style.setProperty("--y", Math.floor(i / n));
+    piece.style.setProperty("--n", n);
+    piece.style.backgroundImage = `url("${src}")`;
+    piece.addEventListener("pointerdown", e => grabPiece(e, piece));
+    tray.appendChild(piece);
+  });
+}
+function grabPiece(e, piece) {
+  if (piece.classList.contains("done")) return;
+  e.preventDefault();
+  audio();
+  document.querySelectorAll(".piece.held").forEach(p => p.classList.remove("held"));
+  piece.classList.add("held");
+  puzzle.held = piece;
+  const r = piece.getBoundingClientRect(), start = { x: e.clientX, y: e.clientY };
+  let moved = false;
+  const move = ev => {
+    if (ev.pointerId !== e.pointerId) return;
+    if (!moved && Math.hypot(ev.clientX - start.x, ev.clientY - start.y) < 8) return;
+    moved = true;
+    piece.classList.add("dragging");
+    piece.style.transform = `translate(${ev.clientX - start.x}px, ${ev.clientY - start.y}px)`;
+  };
+  const up = ev => {
+    if (ev.pointerId !== e.pointerId) return;
+    removeEventListener("pointermove", move); removeEventListener("pointerup", up); removeEventListener("pointercancel", up);
+    piece.classList.remove("dragging");
+    piece.style.transform = "";
+    if (!moved) return; // a tap: the piece is held, a tap on its place puts it there
+    piece.style.visibility = "hidden";
+    const under = document.elementFromPoint(ev.clientX, ev.clientY);
+    piece.style.visibility = "";
+    const slot = under && under.closest && under.closest(".slot");
+    if (slot) dropPiece(piece, slot);
+  };
+  addEventListener("pointermove", move); addEventListener("pointerup", up); addEventListener("pointercancel", up);
+}
+function dropPiece(piece, slot) {
+  if (slot.classList.contains("filled")) return;
+  if (slot.dataset.i !== piece.dataset.i) { // not its place: back to the tray, gently
+    puzzle.clean = false;
+    boop();
+    piece.classList.add("wrong");
+    setTimeout(() => piece.classList.remove("wrong"), 450);
+    return;
+  }
+  tone(660 + puzzle.placed * 40, 0, 0.12, "triangle", 0.15);
+  slot.classList.add("filled");
+  slot.style.setProperty("--x", piece.style.getPropertyValue("--x"));
+  slot.style.setProperty("--y", piece.style.getPropertyValue("--y"));
+  piece.classList.add("done");
+  piece.classList.remove("held");
+  puzzle.held = null;
+  if (++puzzle.placed < puzzle.n * puzzle.n) return;
+  // finished: the picture whole, its name, then the next one
+  const item = puzzle.item, g = gameId;
+  $("puzzleBoard").classList.add("complete");
+  results.push(puzzle.clean);
+  if (puzzle.clean) stars++;
+  puzzleProgress();
+  cheer();
+  confetti(14);
+  say([yesOf(item), hasRecording(item) ? "" : extra(item)], () => {
+    if (g !== gameId) return;
+    if (hasRecording(item)) playInstrument(item);
+    setTimeout(() => {
+      if (g !== gameId) return;
+      $("puzzleBoard").classList.remove("complete");
+      results.length >= PUZZLES ? finish() : nextPuzzle();
+    }, hasRecording(item) ? 2500 : 900);
+  });
+}
+$("puzzleClose").onclick = backToTopic;
+
 // ---------- Play and discover ----------
 let playing = null; // item on the stage
 
 function selectItem(item, speak = true) {
   playing = item;
   setPicture($("bigPic").querySelector("img"), item.id);
+  $("bigPic").querySelector("canvas.solid")?.remove();
+  $("bigPic").querySelector("img").hidden = !!SOLIDS[item.id];
+  if (SOLIDS[item.id]) $("bigPic").appendChild(solidCanvas(item.id));
   $("bigPic").classList.toggle("poison", !!item.poison);
   $("bigName").textContent = shortName(item);
   document.querySelectorAll(".thumb").forEach(t => t.setAttribute("aria-pressed", t.dataset.id === item.id));

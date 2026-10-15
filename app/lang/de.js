@@ -28,5 +28,7 @@ addLanguage("de", {
   "clock": {"items": {}, "topic": ["Die Uhr", "Uhrzeiten"], "groups": {"oclock": "Volle Stunden", "half": "Halbe Stunden", "quarter": "Viertelstunden", "minutes": "Minuten"}},
   "emotions": {"items": {}, "topic": ["Gefühle", "Gefühle"]},
   "sounds": {"items": {}, "topic": ["Laute", "Laute"], "groups": {"vowel-sounds": "Selbstlaute", "consonant-sounds": "Mitlaute"}},
-  "reading": {"items": {}, "topic": ["Ich lese", "Wörter"]}
+  "reading": {"items": {}, "topic": ["Ich lese", "Wörter"]},
+  "space": {"items": {}, "topic": ["Sonnensystem", "Dinge im Weltraum"], "groups": {"planets": "Die Planeten", "sky": "Am Himmel", "travel": "Raumfahrt"}},
+  "fantasy": {"items": {}, "topic": ["Märchen", "Figuren"], "groups": {"creatures": "Fabelwesen", "tale-people": "Figuren", "magic": "Zauberei"}}
 });

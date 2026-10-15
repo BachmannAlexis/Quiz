@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><clipPath id="urcl"><circle cx="64" cy="64" r="44"/></clipPath>
+  <clipPath id="urfr"><rect x="64" y="0" width="64" height="128"/></clipPath></defs>
+  <g transform="rotate(-8 64 64)">
+    <ellipse cx="64" cy="64" rx="14" ry="60" fill="none" stroke="#b2dfdb" stroke-width="4"/>
+  </g>
+  <circle cx="64" cy="64" r="44" fill="#7fdbe0"/>
+  <g clip-path="url(#urcl)">
+    <rect x="44" y="0" width="10" height="128" fill="#9ae6ea" transform="rotate(-8 64 64)"/>
+    <path d="M20 64a44 44 0 1 0 88 0a44 44 0 1 0 -88 0ZM12 56a44 44 0 1 0 88 0a44 44 0 1 0 -88 0Z" fill="#2a8f99" fill-opacity=".22" fill-rule="evenodd"/>
+  </g>
+  <g transform="rotate(-8 64 64)" clip-path="url(#urfr)">
+    <ellipse cx="64" cy="64" rx="14" ry="60" fill="none" stroke="#e0f7f5" stroke-width="4"/>
+  </g>
+  <path d="M30 46 C34 36 42 28 52 24" fill="none" stroke="#e6fbfc" stroke-width="4" stroke-linecap="round"/>
+</svg>

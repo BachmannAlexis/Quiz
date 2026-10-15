@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><clipPath id="bhtop"><rect x="0" y="0" width="128" height="64"/></clipPath><clipPath id="bhbot"><rect x="0" y="64" width="128" height="64"/></clipPath></defs>
+  <circle cx="64" cy="64" r="40" fill="none" stroke="#ff8f00" stroke-width="10"/>
+  <circle cx="64" cy="64" r="34" fill="none" stroke="#ffd54f" stroke-width="5"/>
+  <g clip-path="url(#bhtop)">
+    <ellipse cx="64" cy="64" rx="60" ry="16" fill="none" stroke="#ff6f00" stroke-width="10"/>
+    <ellipse cx="64" cy="64" rx="48" ry="11" fill="none" stroke="#ffb300" stroke-width="7"/>
+  </g>
+  <circle cx="64" cy="64" r="31" fill="#111"/>
+  <g clip-path="url(#bhbot)">
+    <ellipse cx="64" cy="64" rx="60" ry="16" fill="none" stroke="#ff6f00" stroke-width="10"/>
+    <ellipse cx="64" cy="64" rx="48" ry="11" fill="none" stroke="#ffb300" stroke-width="7"/>
+    <ellipse cx="64" cy="64" rx="38" ry="7" fill="none" stroke="#fff3c4" stroke-width="4"/>
+  </g>
+  <path d="M10 60 C10 70 40 76 50 77" fill="none" stroke="#fff3c4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M40 34 C46 30 54 28 60 28" fill="none" stroke="#fff8e1" stroke-width="3" stroke-linecap="round"/>
+</svg>

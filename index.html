@@ -38,6 +38,10 @@
     <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></symbol>
     <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 5.5L16 12l-6.5 6.5"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5c3-1.3 6-1.3 9 .8 3-2.1 6-2.1 9-.8v13c-3-1.3-6-1.3-9 .8-3-2.1-6-2.1-9-.8z"/><path d="M12 6.3v13.5"/></symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h4a2 2 0 1 1 4 0h4v4a2 2 0 1 1 0 4v4h-4a2 2 0 1 0-4 0H4v-4a2 2 0 1 0 0-4z"/></symbol>
+    <symbol id="i-drum" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="9" rx="8" ry="3.5"/><path d="M4 9v7c0 1.9 3.6 3.5 8 3.5s8-1.6 8-3.5V9"/><path d="M8 3.5l3 4M16 3.5l-3 4"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2" fill="currentColor"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   </defs>
 </svg>
@@ -113,6 +117,38 @@
     <div class="choices" id="choices"></div>
     <p class="mic-hint" id="micHint" data-t="noMic" hidden></p>
     <p class="heard" id="heard" aria-live="polite"></p>
+  </section>
+
+  <!-- Puzzle: the picture in pieces -->
+  <section class="screen" id="puzzle" hidden>
+    <header class="bar">
+      <button class="icon-btn" type="button" id="puzzleClose" data-t-label="close"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <div class="progress" id="puzzleProgress" aria-hidden="true"></div>
+      <span class="bar-spacer"></span>
+    </header>
+    <div class="puzzle-board" id="puzzleBoard"></div>
+    <div class="puzzle-tray" id="puzzleTray"></div>
+  </section>
+
+  <!-- Drums: a drum kit to play and a drum machine -->
+  <section class="screen" id="drums" hidden>
+    <header class="bar">
+      <button class="icon-btn" type="button" id="drumsClose" data-t-label="close"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <h1 class="bar-title" data-t="drumsTitle"></h1>
+      <span class="bar-spacer"></span>
+    </header>
+    <div class="pads" id="pads"></div>
+    <div class="beat">
+      <div class="beat-tools">
+        <button class="speak beat-play" type="button" id="beatPlay" data-t-label="beatPlay"></button>
+        <button class="icon-btn" type="button" id="beatSlower" data-t-label="beatSlower">−</button>
+        <span class="beat-tempo" id="beatTempo"></span>
+        <button class="icon-btn" type="button" id="beatFaster" data-t-label="beatFaster">+</button>
+        <button class="pill" type="button" id="beatClear" data-t="beatClear"></button>
+        <button class="pill" type="button" id="beatDemo" data-t="beatDemo"></button>
+      </div>
+      <div class="beat-grid" id="beatGrid"></div>
+    </div>
   </section>
 
   <!-- End of a quiz -->

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><clipPath id="vecl"><circle cx="64" cy="64" r="54"/></clipPath></defs>
+  <circle cx="64" cy="64" r="54" fill="#f7e2a0"/>
+  <g clip-path="url(#vecl)" fill="none" stroke-linecap="round">
+    <path d="M14 30 C40 40 70 30 90 46 C104 58 116 56 124 50" stroke="#e9c46f" stroke-width="12" stroke-opacity=".8"/>
+    <path d="M6 70 C24 58 40 66 54 64 C70 62 78 76 96 74 C108 72 116 80 120 88" stroke="#e2b55c" stroke-width="10" stroke-opacity=".8"/>
+    <path d="M24 98 C40 90 60 104 80 98 C92 94 100 100 108 104" stroke="#e9c46f" stroke-width="9" stroke-opacity=".8"/>
+    <path d="M34 48 C44 44 52 52 62 50" stroke="#fdf3d2" stroke-width="5"/>
+    <path d="M66 86 C74 82 82 88 90 86" stroke="#fdf3d2" stroke-width="5"/>
+    <path d="M10 64a54 54 0 1 0 108 0a54 54 0 1 0 -108 0ZM1 55a54 54 0 1 0 108 0a54 54 0 1 0 -108 0Z" fill="#b8822e" fill-opacity=".3" fill-rule="evenodd" stroke="none"/>
+  </g>
+  <path d="M20 46 C26 30 40 18 56 14" fill="none" stroke="#fffbe8" stroke-width="5" stroke-linecap="round"/>
+</svg>

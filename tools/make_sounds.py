@@ -183,7 +183,8 @@ def loudest(src, length):
     x = np.frombuffer(raw, np.float32)
     win, hop = int(length * 8000), 800
     if len(x) <= win: return 0.0, len(x) / 8000
-    energy = np.convolve(x * x, np.ones(win), "valid")[::hop]
+    c = np.concatenate([[0], np.cumsum(x.astype(np.float64) ** 2)])
+    energy = (c[win:] - c[:-win])[::hop]  # the energy of every window, from a running sum (fast on long recordings)
     return float(np.argmax(energy) * hop / 8000), length
 
 def animal(src, out):

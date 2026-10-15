@@ -28,5 +28,7 @@ addLanguage("it", {
   "clock": {"items": {}, "topic": ["L'orologio", "orari"], "groups": {"oclock": "Le ore esatte", "half": "Le mezz'ore", "quarter": "I quarti d'ora", "minutes": "I minuti"}},
   "emotions": {"items": {}, "topic": ["Le emozioni", "emozioni"]},
   "sounds": {"items": {}, "topic": ["I suoni", "suoni"], "groups": {"vowel-sounds": "Vocali", "consonant-sounds": "Consonanti"}},
-  "reading": {"items": {}, "topic": ["Leggo", "parole"]}
+  "reading": {"items": {}, "topic": ["Leggo", "parole"]},
+  "space": {"items": {}, "topic": ["Il sistema solare", "cose nello spazio"], "groups": {"planets": "I pianeti", "sky": "Nel cielo", "travel": "Viaggi nello spazio"}},
+  "fantasy": {"items": {}, "topic": ["Le fiabe", "personaggi"], "groups": {"creatures": "Creature", "tale-people": "Personaggi", "magic": "Magia"}}
 });

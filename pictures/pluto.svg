@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><clipPath id="plcl"><circle cx="64" cy="64" r="38"/></clipPath></defs>
+  <circle cx="64" cy="64" r="38" fill="#b98a66"/>
+  <g clip-path="url(#plcl)">
+    <path d="M20 44 C30 36 44 40 46 50 C46 58 34 62 24 58 Z" fill="#8d5f40"/>
+    <path d="M30 86 C40 82 50 88 46 96 L28 100 Z" fill="#8d5f40"/>
+    <path d="M66 98 C66 86 54 80 54 68 C54 58 66 54 72 64 C76 52 92 54 92 66 C92 80 76 88 66 98 Z" fill="#f5e6d0"/>
+    <path d="M66 98 C66 86 54 80 54 68 C54 62 60 60 62 66 C62 76 68 86 66 98 Z" fill="#e7cfb1"/>
+    <path d="M26 64a38 38 0 1 0 76 0a38 38 0 1 0 -76 0ZM19 57a38 38 0 1 0 76 0a38 38 0 1 0 -76 0Z" fill="#5a3520" fill-opacity=".22" fill-rule="evenodd"/>
+  </g>
+  <path d="M36 50 C40 40 48 34 56 32" fill="none" stroke="#e3c3a6" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

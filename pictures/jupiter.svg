@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><clipPath id="jucl"><circle cx="64" cy="64" r="58"/></clipPath></defs>
+  <circle cx="64" cy="64" r="58" fill="#f3e2c4"/>
+  <g clip-path="url(#jucl)">
+    <rect x="0" y="4" width="128" height="14" fill="#b98a5e"/>
+    <path d="M0 30 C30 26 60 34 128 28 V40 C80 44 40 38 0 42 Z" fill="#c9895a"/>
+    <path d="M0 50 H128 V58 H0 Z" fill="#e6c79a"/>
+    <path d="M0 66 C40 62 80 70 128 64 V80 C80 84 40 78 0 82 Z" fill="#a8693f"/>
+    <path d="M0 92 H128 V100 H0 Z" fill="#d6ab7c"/>
+    <rect x="0" y="108" width="128" height="20" fill="#b98a5e"/>
+    <ellipse cx="82" cy="80" rx="16" ry="10" fill="#f3e2c4"/>
+    <ellipse cx="82" cy="80" rx="13" ry="7.5" fill="#d84315"/>
+    <ellipse cx="80" cy="78.5" rx="6" ry="3" fill="#ef6c3a"/>
+    <path d="M6 64a58 58 0 1 0 116 0a58 58 0 1 0 -116 0ZM-4 54a58 58 0 1 0 116 0a58 58 0 1 0 -116 0Z" fill="#5d3a1a" fill-opacity=".22" fill-rule="evenodd"/>
+  </g>
+  <path d="M14 46 C20 28 34 14 52 9" fill="none" stroke="#fffaf0" stroke-width="4" stroke-linecap="round"/>
+</svg>

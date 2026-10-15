@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><clipPath id="mecl"><circle cx="64" cy="64" r="44"/></clipPath></defs>
+  <circle cx="64" cy="64" r="44" fill="#9e9e9e"/>
+  <g clip-path="url(#mecl)">
+    <path d="M20 64a44 44 0 1 0 88 0a44 44 0 1 0 -88 0ZM12 56a44 44 0 1 0 88 0a44 44 0 1 0 -88 0Z" fill="#7d7d7d" fill-opacity=".35" fill-rule="evenodd"/>
+    <circle cx="48" cy="46" r="9" fill="#6e6e6e"/><circle cx="49" cy="47" r="6.5" fill="#858585"/>
+    <circle cx="76" cy="40" r="5" fill="#6e6e6e"/><circle cx="77" cy="41" r="3.4" fill="#8a8a8a"/>
+    <circle cx="70" cy="70" r="11" fill="#666"/><circle cx="71" cy="71.5" r="8" fill="#7a7a7a"/>
+    <circle cx="40" cy="76" r="5.5" fill="#6e6e6e"/><circle cx="41" cy="77" r="3.6" fill="#888"/>
+    <circle cx="90" cy="60" r="4" fill="#5e5e5e"/>
+    <circle cx="58" cy="92" r="6" fill="#5e5e5e"/><circle cx="59" cy="93" r="4" fill="#707070"/>
+    <circle cx="32" cy="56" r="3" fill="#777"/><circle cx="86" cy="86" r="3.5" fill="#555"/>
+  </g>
+  <path d="M34 46 C40 32 52 25 64 24" fill="none" stroke="#d6d6d6" stroke-width="4" stroke-linecap="round"/>
+</svg>
