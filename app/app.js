@@ -273,7 +273,8 @@ function loadSounds(t = topic) { return hasSoundPack(t) ? loadAsset("sounds", t.
 // play-mode sounds by "id#k".
 function recording(id) {
   const [iid, k] = id.split("#");
-  return loadSounds(topicOf[iid] || topic).then(() => {
+  const have = k !== undefined && NOTES[iid] && NOTES[iid].samples[k]; // already here (the drums' own pack)
+  return (have ? Promise.resolve() : loadSounds(topicOf[iid] || topic)).then(() => {
     const uri = k === undefined ? SOUNDS[iid] : (NOTES[iid] || { samples: [] }).samples[k];
     if (!buffers[id] && uri) {
       const bin = atob(uri.split(",")[1]);
@@ -1407,8 +1408,11 @@ const BEATS = [
   { id: "techno", tempo: 128, steps: { 10: [0], 6: every(2, 4), 2: every(0, 2), 8: [4, 12], 0: every(0, 4) } },
 ];
 const beat = { steps: {}, tempo: 100, style: null, playing: false, step: 0, next: 0, timer: 0 };
+// the pads come in their own small pack (app/sounds/drums.js), so they play before the music pack has loaded
+let drumsReady = null;
+const loadDrums = () => drumsReady || (drumsReady = loadAsset("sounds", "drums").catch(e => { drumsReady = null; throw e; }));
 function hitDrum(k, when) {
-  return recording("drum-kit#" + k).then(b => {
+  return loadDrums().then(() => recording("drum-kit#" + k)).then(b => {
     const c = audio(), src = c.createBufferSource();
     src.buffer = b; src.connect(c.destination); src.start(when || 0);
   }, () => {});
@@ -1427,7 +1431,7 @@ function openDrums() {
     b.addEventListener("pointerdown", e => { e.preventDefault(); audio(); hitDrum(k); b.classList.remove("hit"); void b.offsetWidth; b.classList.add("hit"); });
     pads.appendChild(b);
   });
-  loadSounds(TOPICS.find(t => t.id === "instruments")).then(() => recording("drum-kit#0")).catch(() => {});
+  loadDrums().then(() => Promise.all(PAD_COLORS.map((_, k) => recording("drum-kit#" + k)))).catch(() => {}); // decode them all now
   if (!Object.keys(beat.steps).length) loadBeat(BEATS[0]);
   drawBeat();
   show("drums");
