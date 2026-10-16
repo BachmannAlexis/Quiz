@@ -1395,28 +1395,84 @@ const PAD_COLORS = ["#e53935", "#1e88e5", "#fdd835", "#43a047", "#00897b", "#6d4
 // the drum machine: one bar of 16 steps (sixteenth notes), a row for every drum, high to low like drum notation:
 // crash, cymbal, splash, hi-hat, triangle, cowbell, clap, snare, high tom, tom, floor tom, bass drum
 const BEAT_ROWS = [10, 6, 7, 2, 11, 9, 8, 1, 3, 4, 5, 0], BEAT_STEPS = 16;
-const every = (from, step) => Array.from({ length: Math.ceil((BEAT_STEPS - from) / step) }, (_, k) => from + k * step);
-// rhythms in different styles: drum -> steps, a tempo and a kit (the sounds of the 12 pads: the acoustic kit,
-// or electro, hip-hop or jazz, app/sounds/drums.js)
+const CRASH = 10, SNARE = 1, TOMS = [3, 4, 5], KICK = 0;
+// Rhythms in different styles, written as drummers count them: one string of 16 steps per drum, "X" an accent,
+// "x" a normal hit, "o" a ghost note (very soft), "." a rest. Each style has its tempo, its kit (the sounds of the
+// 12 pads: acoustic, or electro, hip-hop or jazz, app/sounds/drums.js), a swing (how late the off-beat eighths come,
+// as a part of a step: 0.66 is a shuffle) and a fill, the bar that leads into the next phrase (every 4th bar).
+// Drums: 10 crash, 6 cymbal (open hi-hat or ride), 7 splash (a scratch in the hip-hop kit), 2 hi-hat, 11 triangle,
+// 9 cowbell, 8 clap, 1 snare, 3 4 5 toms, 0 bass drum.
 const BEATS = [
-  { id: "rock",   tempo: 100, steps: { 10: [0], 2: every(0, 2), 1: [4, 12], 3: [13], 4: [14], 5: [15], 0: [0, 8, 10] } },
-  { id: "disco",  tempo: 120, kit: "electro", steps: { 6: every(2, 4), 2: every(0, 4), 8: [4, 12], 0: every(0, 4) } },
-  { id: "hiphop", tempo: 90,  kit: "hiphop", steps: { 2: every(0, 2), 1: [4, 12], 0: [0, 3, 7, 10] } },
-  { id: "reggae", tempo: 76,  kit: "hiphop", steps: { 2: every(2, 4), 11: [6, 14], 1: [8], 0: [8] } },
-  { id: "funk",   tempo: 104, steps: { 2: every(0, 1), 1: [4, 7, 12, 15], 0: [0, 3, 6, 10] } },
-  { id: "samba",  tempo: 116, kit: "jazz", steps: { 2: every(0, 1), 8: [3, 6, 10, 13], 9: [0, 2, 5, 8, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
-  { id: "bossa",  tempo: 130, kit: "jazz", steps: { 2: every(0, 2), 11: [0], 1: [0, 3, 6, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
-  { id: "techno", tempo: 128, kit: "electro", steps: { 10: [0], 6: every(2, 4), 2: every(0, 2), 8: [4, 12], 0: every(0, 4) } },
+  { id: "rock", tempo: 100,
+    groove: { 2: "X.x.X.x.X.x.X.x.", 1: "....X.......X...", 0: "X.......X.X....." },
+    fill:   { 2: "X.x.X.x.X.x.....", 1: "....X.......XoXX", 3: "..........XX....", 5: "..............XX", 0: "X.......X......." } },
+  { id: "pop", tempo: 96,
+    groove: { 2: "X.x.X.x.X.x.X.x.", 8: "....X.......X...", 1: "....X.......X...", 0: "X......XX.....x." },
+    fill:   { 2: "X.x.X.x.........", 8: "....X...........", 1: "....X...X.x.X.XX", 0: "X......XX......." } },
+  { id: "funk", tempo: 104,
+    groove: { 2: "XoxoXoxoXoxoXoxo", 1: "....X..o.o..X..o", 0: "X.x...X...x..X.." },
+    fill:   { 2: "XoxoXoxo........", 1: "....X..o.oXoXoXX", 3: "........X.......", 0: "X.x...X...x....." } },
+  { id: "disco", tempo: 120, kit: "electro",
+    groove: { 6: "..X...X...X...X.", 2: "X...X...X...X...", 8: "....X.......X...", 0: "X...X...X...X..." },
+    fill:   { 6: "..X...X.........", 2: "X...X...........", 8: "....X...X.X.XXXX", 0: "X...X...X...X..." } },
+  { id: "hiphop", tempo: 90, kit: "hiphop", swing: 0.3,
+    groove: { 2: "X.x.X.x.X.x.X.x.", 1: "....X.......X...", 7: "..............X.", 0: "X..x...X..X....." },
+    fill:   { 2: "X.x.X.x.X.x.X.x.", 1: "....X.......X..X", 7: "..........X.X.X.", 0: "X..x...X..X....." } },
+  { id: "trap", tempo: 140, kit: "hiphop",
+    groove: { 2: "x.x.x.x.xxxxx.x.", 8: "........X.......", 0: "X......X..X....." },
+    fill:   { 2: "xxxxxxxxxxxxxxxx", 8: "........X.......", 7: "............X.X.", 0: "X......X........" } },
+  { id: "reggae", tempo: 76, kit: "hiphop", swing: 0.2,
+    groove: { 2: "x.X.x.X.x.X.x.X.", 11: "......x.......x.", 1: "........X.......", 0: "........X......." },
+    fill:   { 2: "x.X.x.X.........", 1: "........X...X.X.", 3: "..........X.....", 5: "..............XX", 0: "........X......." } },
+  { id: "shuffle", tempo: 96, kit: "jazz", swing: 0.66,
+    groove: { 6: "X.x.X.x.X.x.X.x.", 2: "....X.......X...", 1: "..o.X.o...o.X.o.", 0: "X.......X......." },
+    fill:   { 6: "X.x.X.x.........", 2: "....X...........", 1: "..o.X.o.X.x.X.XX", 0: "X.......X......." } },
+  { id: "samba", tempo: 116, kit: "jazz",
+    groove: { 2: "xxXxxxXxxxXxxxXx", 8: "...X..X...X..X..", 9: "X.X..X..X.X..X..", 0: "X..xX..xX..xX..x" },
+    fill:   { 2: "xxXxxxXx........", 1: "........oxoxXXXX", 9: "X.X..X..........", 0: "X..xX..xX..xX..x" } },
+  { id: "bossa", tempo: 130, kit: "jazz",
+    groove: { 2: "x.x.x.x.x.x.x.x.", 1: "X..X..X...X..X..", 0: "X..xX..xX..xX..x" },
+    fill:   { 2: "x.x.x.x.........", 1: "X..X..X...X.oxXX", 0: "X..xX..xX..xX..x" } },
+  { id: "salsa", tempo: 100, kit: "jazz",
+    groove: { 9: "X.x.X.x.X.x.X.x.", 8: "X..X..X...X.X...", 3: "......X.......X.", 4: ".......x.......x", 0: "...X.......X...." },
+    fill:   { 9: "X.x.X.x.........", 8: "X..X..X.........", 3: "........XX......", 4: "..........XX....", 5: "............XXXX", 0: "...X........X..." } },
+  { id: "afrobeat", tempo: 110,
+    groove: { 2: "XxXxXxXxXxXxXxXx", 9: "X.X.XX.XX.X.XX.X", 1: "...o..X...o..X.o", 0: "X.....X.X.....X." },
+    fill:   { 2: "XxXxXxXx........", 9: "X.X.XX.X........", 1: "...o..X.X.x.XoXX", 0: "X.....X.X......." } },
+  { id: "march", tempo: 110,
+    groove: { 10: "X.......X.......", 1: "X.xxX.x.X.xxX.X.", 0: "X.......X......." },
+    fill:   { 10: "X...............", 1: "X.xxX.x.xxxxXXXX", 0: "X.......X......." } },
+  { id: "techno", tempo: 128, kit: "electro",
+    groove: { 6: "..X...X...X...X.", 2: "x.x.x.x.x.x.x.x.", 8: "....X.......X...", 0: "X...X...X...X..." },
+    fill:   { 6: "..X...X...X.....", 2: "x.x.x.x.x.x.....", 8: "....X...X.X.XXXX", 0: "X...X...X...X..." } },
+  { id: "dnb", tempo: 172, kit: "electro",
+    groove: { 2: "x.x.x.x.x.x.x.x.", 1: "....X.......X...", 0: "X.........X....." },
+    fill:   { 2: "x.x.x.x.........", 1: "....X..X.XX.XXXX", 0: "X.........X....." } },
 ];
-const beat = { steps: {}, tempo: 100, style: null, kit: "", playing: false, step: 0, next: 0, timer: 0 };
+// a pattern as drum -> Map(step -> loudness)
+const VELOCITY = { X: 1, x: 0.72, o: 0.32 };
+const parseBeat = rows => Object.fromEntries(Object.entries(rows).map(([k, s]) =>
+  [k, new Map([...s].map((c, i) => [i, VELOCITY[c]]).filter(([, v]) => v))]));
+// the fill for the child's own rhythm: the first half as it is, then the toms going down
+function ownFill() {
+  const fill = Object.fromEntries(Object.entries(beat.steps).map(([k, m]) => [k, new Map([...m].filter(([i]) => i < 8))]));
+  TOMS.forEach((k, n) => { fill[k] = new Map([[8 + n * 2, 1], [9 + n * 2, 0.72]]); });
+  fill[SNARE] = new Map([...(fill[SNARE] || []), [14, 1], [15, 1]]);
+  return fill;
+}
+const beat = { steps: {}, fill: null, tempo: 100, swing: 0, style: null, kit: "", playing: false, step: 0, bar: 0,
+  fillNow: false, crashNext: false, next: 0, timer: 0 };
 const kitId = () => "drum-kit" + (beat.kit ? "-" + beat.kit : "");
 // the pads come in their own small pack (app/sounds/drums.js), so they play before the music pack has loaded
 let drumsReady = null;
 const loadDrums = () => drumsReady || (drumsReady = loadAsset("sounds", "drums").catch(e => { drumsReady = null; throw e; }));
-function hitDrum(k, when) {
+function hitDrum(k, when, loud = 1) {
   return loadDrums().then(() => recording(kitId() + "#" + k)).then(b => {
     const c = audio(), src = c.createBufferSource();
-    src.buffer = b; src.connect(c.destination); src.start(when || 0);
+    src.buffer = b;
+    if (loud < 1) { const g = c.createGain(); g.gain.value = loud; src.connect(g); g.connect(c.destination); }
+    else src.connect(c.destination);
+    src.start(when || 0);
   }, () => {});
 }
 function openDrums() {
@@ -1453,15 +1509,17 @@ function drawBeat() {
     for (let i = 0; i < BEAT_STEPS; i++) {
       const cell = document.createElement("button");
       cell.type = "button";
-      cell.className = "beat-cell" + (beat.steps[k] && beat.steps[k].has(i) ? " on" : "") + (i % 4 === 0 ? " first" : "");
+      const loud = beat.steps[k] && beat.steps[k].get(i);
+      cell.className = "beat-cell" + (loud ? " on" : "") + (loud && loud < 0.5 ? " ghost" : loud && loud < 1 ? " soft" : "") + (i % 4 === 0 ? " first" : "");
       cell.style.setProperty("--c", PAD_COLORS[k]);
       cell.dataset.i = i;
       cell.setAttribute("aria-label", `${T().drumNames[k]} ${i + 1}`);
       cell.onclick = () => {
-        const set = beat.steps[k] || (beat.steps[k] = new Set());
-        if (set.has(i)) set.delete(i); else { set.add(i); hitDrum(k); }
-        beat.style = null; // the child's own rhythm now
-        cell.classList.toggle("on", set.has(i));
+        const steps = beat.steps[k] || (beat.steps[k] = new Map());
+        if (steps.has(i)) steps.delete(i); else { steps.set(i, 1); hitDrum(k); }
+        beat.style = null; beat.fill = null; // the child's own rhythm now
+        cell.classList.remove("soft", "ghost");
+        cell.classList.toggle("on", steps.has(i));
       };
       row.appendChild(cell);
     }
@@ -1481,8 +1539,9 @@ function drawBeat() {
   });
 }
 function loadBeat(b) {
-  beat.steps = Object.fromEntries(Object.entries(b.steps).map(([k, v]) => [k, new Set(v)]));
-  beat.tempo = b.tempo; beat.style = b.id; beat.kit = b.kit || "";
+  beat.steps = parseBeat(b.groove); beat.fill = parseBeat(b.fill);
+  beat.tempo = b.tempo; beat.swing = b.swing || 0; beat.style = b.id; beat.kit = b.kit || "";
+  beat.bar = 0; beat.crashNext = true; // a crash on the first beat
   decodeKit();
 }
 // decode the 12 sounds of the kit now, so the first beat is on time
@@ -1490,15 +1549,25 @@ const decodeKit = () => loadDrums().then(() => Promise.all(PAD_COLORS.map((_, k)
 // a small scheduler: every 25 ms, the steps due in the next 0.1 s are queued on the audio clock, so the beat stays even
 function startBeat() {
   const c = audio();
-  beat.playing = true; beat.step = 0; beat.next = c.currentTime + 0.05;
+  beat.playing = true; beat.step = 0; beat.bar = 0; beat.next = c.currentTime + 0.05;
+  let bar = beat.steps;
   beat.timer = setInterval(() => {
     while (beat.next < c.currentTime + 0.1) {
-      const i = beat.step;
-      for (const k of BEAT_ROWS) if (beat.steps[k] && beat.steps[k].has(i)) hitDrum(k, beat.next);
-      const delay = Math.max(0, (beat.next - c.currentTime) * 1000);
+      const i = beat.step, sixteenth = 60 / beat.tempo / 4;
+      if (i === 0) { // a new bar: the groove, or the fill every 4th bar (and when the Fill button asked for one)
+        const fill = beat.fillNow || (beat.style && beat.bar % 4 === 3);
+        bar = fill ? beat.fill || ownFill() : beat.steps;
+        if (beat.crashNext) hitDrum(CRASH, beat.next);
+        beat.crashNext = fill; beat.fillNow = false;
+        $("beatFill").classList.toggle("on", fill);
+      }
+      const at = beat.next + (i % 4 === 2 ? beat.swing * sixteenth : 0); // swing: the off-beat eighth comes late
+      for (const k of BEAT_ROWS) { const loud = bar[k] && bar[k].get(i); if (loud) hitDrum(+k, at, loud); }
+      const delay = Math.max(0, (at - c.currentTime) * 1000);
       setTimeout(() => document.querySelectorAll(".beat-cell").forEach(cell => cell.classList.toggle("now", +cell.dataset.i === i)), delay);
-      beat.next += 60 / beat.tempo / 4; // sixteenth notes
+      beat.next += sixteenth;
       beat.step = (beat.step + 1) % BEAT_STEPS;
+      if (beat.step === 0) beat.bar++;
     }
   }, 25);
   drawBeat();
@@ -1512,7 +1581,8 @@ function stopBeat() {
 $("beatPlay").onclick = () => { audio(); beat.playing ? stopBeat() : startBeat(); };
 $("beatSlower").onclick = () => { beat.tempo = Math.max(60, beat.tempo - 10); $("beatTempo").textContent = beat.tempo; };
 $("beatFaster").onclick = () => { beat.tempo = Math.min(180, beat.tempo + 10); $("beatTempo").textContent = beat.tempo; };
-$("beatClear").onclick = () => { beat.steps = {}; beat.style = null; drawBeat(); };
+$("beatClear").onclick = () => { beat.steps = {}; beat.fill = null; beat.style = null; drawBeat(); };
+$("beatFill").onclick = () => { audio(); beat.fillNow = true; if (!beat.playing) startBeat(); };
 $("drumsBack").onclick = backToTopic;
 
 // ---------- Puzzles: a picture cut into pieces (2×2 easy, 3×3 medium, 4×4 hard), five pictures a game ----------

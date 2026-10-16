@@ -292,8 +292,11 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 @keyframes hit { 40% { transform: scale(.9); filter: brightness(1.15); } }
 .pads { margin-bottom: 1.6em; }
 .beat { margin-top: auto; padding: 14px; border-radius: 24px; background: var(--surface); box-shadow: var(--lift), var(--edge); display: flex; flex-direction: column; gap: 12px; }
-.beat-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.beat-play { width: 56px; height: 56px; }
+.beat-tools { display: flex; align-items: center; gap: 4px; }
+.beat-tools > * { flex-shrink: 0; }
+.beat-tools .icon-btn { width: 42px; height: 42px; }
+.beat-tools .pill { padding-left: 10px; padding-right: 10px; }
+.beat-tools .beat-play { width: 52px; height: 52px; min-width: 0; padding: 0; flex-shrink: 0; }
 .beat-play .ic { width: 28px; height: 28px; }
 .beat-tempo { min-width: 2.4em; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
 .beat-grid { display: flex; flex-direction: column; gap: 4px; }
@@ -307,6 +310,9 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 .beat-cell.first { background: rgba(42, 34, 69, .12); }
 .beat-cell.first:not(:nth-child(2)) { margin-left: 4px; } /* a small gap between the four beats */
 .beat-cell.on { background: var(--c); }
+.beat-cell.on.soft { background: color-mix(in srgb, var(--c) 70%, #fff); }
+.beat-cell.on.ghost { background: color-mix(in srgb, var(--c) 35%, #fff); }
+.beat-fill.on { background: var(--accent); color: #fff; }
 .beat-cell.now { transform: scale(1.12); box-shadow: 0 0 0 3px rgba(42, 34, 69, .18); }
 
 /* ---------- Puzzles ---------- */
