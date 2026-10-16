@@ -120,9 +120,13 @@ PITCHED = {
 
 # Percussion and other recordings played as they are: id -> (tune [(file, start, length)], play-mode sounds).
 # One play-mode sound is pitched up and down by the keys; several are spread over the keys.
+# "a+b" layers two recordings into one sound.
 V, P = "vsco/", "sonicpi/"
-KIT = [P + "drum_heavy_kick", P + "drum_snare_hard", P + "drum_cymbal_closed", P + "drum_tom_hi_hard",
-       P + "drum_tom_mid_hard", P + "drum_tom_lo_hard", P + "drum_cymbal_open", P + "drum_splash_hard"]
+# the bass drum: the deep kick layered with a punchy one, whose click and body a phone speaker can play
+# (the deep kick alone is almost all below 150 Hz, which small speakers do not reproduce)
+KIT = [P + "drum_heavy_kick+" + P + "bd_tek", P + "drum_snare_hard", P + "drum_cymbal_closed", P + "drum_tom_hi_hard",
+       P + "drum_tom_mid_hard", P + "drum_tom_lo_hard", P + "drum_cymbal_open", P + "drum_splash_hard",
+       P + "perc_snap", P + "drum_cowbell", P + "drum_cymbal_hard", P + "elec_triangle"]  # clap, cowbell, crash, triangle
 TABLA = [P + n for n in ["tabla_ghe1", "tabla_na", "tabla_tun1", "tabla_dhec", "tabla_te1", "tabla_ke1", "tabla_ghe2", "tabla_tas1"]]
 HITS = {
     "timpani":   ([(V + "timpaniRoll/C3", 0, 1.4), (V + "timpani/F2", 1.35, 1.0), (V + "timpani/F2", 1.85, 1.6)], [V + "timpani/F2"]),
@@ -233,10 +237,18 @@ def main(build):
             tunes[iid] = uri(out(iid))
             src, shift = nearest(d, root)
             notes[iid] = {"pitched": True, "samples": [single(src, iid + ".note", shift)]}
+        def layers(spec, start, length):  # "a+b" -> both recordings at the same time
+            return [(find(build, f), part(start, length)) for f in spec.split("+")]
         for iid, (tune, sounds) in HITS.items():
-            ffmpeg([find(build, f) for f, _, _ in tune], [part(st, ln) for _, st, ln in tune], out(iid))
+            parts = [l for f, st, ln in tune for l in layers(f, st, ln)]
+            ffmpeg([f for f, _ in parts], [c for _, c in parts], out(iid))
             tunes[iid] = uri(out(iid))
-            notes[iid] = {"pitched": False, "samples": [single(find(build, f), f"{iid}.note{k}", 0, 1.2) for k, f in enumerate(sounds)]}
+            samples = []
+            for k, spec in enumerate(sounds):
+                ls = layers(spec, 0, 1.2)
+                ffmpeg([f for f, _ in ls], [c for _, c in ls], out(f"{iid}.note{k}"))
+                samples.append(uri(out(f"{iid}.note{k}")))
+            notes[iid] = {"pitched": False, "samples": samples}
         # animal recordings (BigSoundBank, Wikimedia Commons)
         commons = os.path.join(build, "commons", "credits.json")
         credits = json.load(open(commons)) if os.path.exists(commons) else {}

@@ -1389,9 +1389,10 @@ function numberLine(a, b) {
 
 // ---------- Drums: a drum kit to tap, and a drum machine (4 sounds × 8 steps, looping) ----------
 // The sounds are the drum kit's play-mode samples: kick, snare, closed hi-hat, 3 toms, open cymbal, splash.
-const PAD_COLORS = ["#e53935", "#1e88e5", "#fdd835", "#43a047", "#00897b", "#6d4c41", "#fb8c00", "#8e24aa"];
-const BEAT_ROWS = [2, 1, 0, 6]; // hi-hat, snare, bass drum, cymbal (top to bottom, like drum notation)
-const BEAT_DEMO = { 2: [0, 1, 2, 3, 4, 5, 6, 7], 1: [2, 6], 0: [0, 3, 4], 6: [] };
+const PAD_COLORS = ["#e53935", "#1e88e5", "#fdd835", "#43a047", "#00897b", "#6d4c41", "#fb8c00", "#8e24aa",
+  "#ec407a", "#78909c", "#ffb300", "#26c6da"];
+const BEAT_ROWS = [2, 1, 8, 0, 6]; // hi-hat, snare, clap, bass drum, cymbal (top to bottom, like drum notation)
+const BEAT_DEMO = { 2: [0, 1, 2, 3, 4, 5, 6, 7], 1: [2, 6], 8: [6], 0: [0, 3, 4], 6: [] };
 const beat = { steps: {}, tempo: 100, playing: false, step: 0, next: 0, timer: 0 };
 function hitDrum(k, when) {
   return recording("drum-kit#" + k).then(b => {
