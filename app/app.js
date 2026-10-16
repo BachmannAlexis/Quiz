@@ -1391,9 +1391,22 @@ function numberLine(a, b) {
 // The sounds are the drum kit's play-mode samples: kick, snare, closed hi-hat, 3 toms, open cymbal, splash.
 const PAD_COLORS = ["#e53935", "#1e88e5", "#fdd835", "#43a047", "#00897b", "#6d4c41", "#fb8c00", "#8e24aa",
   "#ec407a", "#78909c", "#ffb300", "#26c6da"];
-const BEAT_ROWS = [2, 1, 8, 0, 6]; // hi-hat, snare, clap, bass drum, cymbal (top to bottom, like drum notation)
-const BEAT_DEMO = { 2: [0, 1, 2, 3, 4, 5, 6, 7], 1: [2, 6], 8: [6], 0: [0, 3, 4], 6: [] };
-const beat = { steps: {}, tempo: 100, playing: false, step: 0, next: 0, timer: 0 };
+// the drum machine: one bar of 16 steps (sixteenth notes), a row per drum (top to bottom, like drum notation:
+// cymbal, hi-hat, snare, clap, cowbell, bass drum)
+const BEAT_ROWS = [6, 2, 1, 8, 9, 0], BEAT_STEPS = 16;
+const every = (from, step) => Array.from({ length: Math.ceil((BEAT_STEPS - from) / step) }, (_, k) => from + k * step);
+// rhythms in different styles: drum -> steps, and a tempo
+const BEATS = [
+  { id: "rock",   tempo: 100, steps: { 2: every(0, 2), 1: [4, 12], 0: [0, 8, 10] } },
+  { id: "disco",  tempo: 120, steps: { 6: every(2, 4), 2: every(0, 4), 8: [4, 12], 0: every(0, 4) } },
+  { id: "hiphop", tempo: 90,  steps: { 2: every(0, 2), 1: [4, 12], 0: [0, 3, 7, 10] } },
+  { id: "reggae", tempo: 76,  steps: { 2: every(2, 4), 1: [8], 0: [8] } },
+  { id: "funk",   tempo: 104, steps: { 2: every(0, 1), 1: [4, 7, 12, 15], 0: [0, 3, 6, 10] } },
+  { id: "samba",  tempo: 116, steps: { 2: every(0, 1), 8: [3, 6, 10, 13], 9: [0, 2, 5, 8, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
+  { id: "bossa",  tempo: 130, steps: { 2: every(0, 2), 1: [0, 3, 6, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
+  { id: "techno", tempo: 128, steps: { 6: every(2, 4), 2: every(0, 2), 8: [4, 12], 0: every(0, 4) } },
+];
+const beat = { steps: {}, tempo: 100, style: null, playing: false, step: 0, next: 0, timer: 0 };
 function hitDrum(k, when) {
   return recording("drum-kit#" + k).then(b => {
     const c = audio(), src = c.createBufferSource();
@@ -1415,7 +1428,7 @@ function openDrums() {
     pads.appendChild(b);
   });
   loadSounds(TOPICS.find(t => t.id === "instruments")).then(() => recording("drum-kit#0")).catch(() => {});
-  if (!Object.keys(beat.steps).length) demoBeat();
+  if (!Object.keys(beat.steps).length) loadBeat(BEATS[0]);
   drawBeat();
   show("drums");
 }
@@ -1430,7 +1443,7 @@ function drawBeat() {
     dot.style.background = PAD_COLORS[k];
     dot.title = T().drumNames[k];
     row.appendChild(dot);
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < BEAT_STEPS; i++) {
       const cell = document.createElement("button");
       cell.type = "button";
       cell.className = "beat-cell" + (beat.steps[k] && beat.steps[k].has(i) ? " on" : "") + (i % 4 === 0 ? " first" : "");
@@ -1440,6 +1453,7 @@ function drawBeat() {
       cell.onclick = () => {
         const set = beat.steps[k] || (beat.steps[k] = new Set());
         if (set.has(i)) set.delete(i); else { set.add(i); hitDrum(k); }
+        beat.style = null; // the child's own rhythm now
         cell.classList.toggle("on", set.has(i));
       };
       row.appendChild(cell);
@@ -1448,8 +1462,21 @@ function drawBeat() {
   });
   $("beatTempo").textContent = beat.tempo;
   $("beatPlay").innerHTML = icon(beat.playing ? "stop" : "play");
+  const styles = $("beatStyles");
+  styles.innerHTML = "";
+  BEATS.forEach(b => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "pill" + (beat.style === b.id ? " on" : "");
+    chip.textContent = T().beatStyles[b.id];
+    chip.onclick = () => { loadBeat(b); drawBeat(); if (!beat.playing) { audio(); startBeat(); } };
+    styles.appendChild(chip);
+  });
 }
-function demoBeat() { beat.steps = Object.fromEntries(Object.entries(BEAT_DEMO).map(([k, v]) => [k, new Set(v)])); }
+function loadBeat(b) {
+  beat.steps = Object.fromEntries(Object.entries(b.steps).map(([k, v]) => [k, new Set(v)]));
+  beat.tempo = b.tempo; beat.style = b.id;
+}
 // a small scheduler: every 25 ms, the steps due in the next 0.1 s are queued on the audio clock, so the beat stays even
 function startBeat() {
   const c = audio();
@@ -1460,8 +1487,8 @@ function startBeat() {
       for (const k of BEAT_ROWS) if (beat.steps[k] && beat.steps[k].has(i)) hitDrum(k, beat.next);
       const delay = Math.max(0, (beat.next - c.currentTime) * 1000);
       setTimeout(() => document.querySelectorAll(".beat-cell").forEach(cell => cell.classList.toggle("now", +cell.dataset.i === i)), delay);
-      beat.next += 60 / beat.tempo / 2; // eighth notes
-      beat.step = (beat.step + 1) % 8;
+      beat.next += 60 / beat.tempo / 4; // sixteenth notes
+      beat.step = (beat.step + 1) % BEAT_STEPS;
     }
   }, 25);
   drawBeat();
@@ -1475,8 +1502,7 @@ function stopBeat() {
 $("beatPlay").onclick = () => { audio(); beat.playing ? stopBeat() : startBeat(); };
 $("beatSlower").onclick = () => { beat.tempo = Math.max(60, beat.tempo - 10); $("beatTempo").textContent = beat.tempo; };
 $("beatFaster").onclick = () => { beat.tempo = Math.min(180, beat.tempo + 10); $("beatTempo").textContent = beat.tempo; };
-$("beatClear").onclick = () => { beat.steps = {}; drawBeat(); };
-$("beatDemo").onclick = () => { demoBeat(); drawBeat(); };
+$("beatClear").onclick = () => { beat.steps = {}; beat.style = null; drawBeat(); };
 $("drumsBack").onclick = backToTopic;
 
 // ---------- Puzzles: a picture cut into pieces (2×2 easy, 3×3 medium, 4×4 hard), five pictures a game ----------

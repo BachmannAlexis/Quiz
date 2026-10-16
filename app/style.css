@@ -297,11 +297,15 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 .beat-play .ic { width: 28px; height: 28px; }
 .beat-tempo { min-width: 2.4em; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
 .beat-grid { display: flex; flex-direction: column; gap: 6px; }
-.beat-row { display: flex; align-items: center; gap: 4px; }
+.beat-row { display: flex; align-items: center; gap: 3px; }
+.beat-styles { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -14px; padding: 2px 14px; }
+.beat-styles .pill { flex-shrink: 0; }
+.beat-styles .pill.on { background: var(--accent, #6c47ff); color: #fff; }
 .beat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-right: 4px; }
-.beat-cell { flex: 1; aspect-ratio: 1; max-height: 52px; border: 0; border-radius: 10px; cursor: pointer; padding: 0;
+.beat-cell { flex: 1; min-width: 0; aspect-ratio: 1; max-height: 40px; border: 0; border-radius: 6px; cursor: pointer; padding: 0;
   background: rgba(42, 34, 69, .07); transition: background-color .1s, transform .1s; }
 .beat-cell.first { background: rgba(42, 34, 69, .12); }
+.beat-cell.first:not(:nth-child(2)) { margin-left: 4px; } /* a small gap between the four beats */
 .beat-cell.on { background: var(--c); }
 .beat-cell.now { transform: scale(1.12); box-shadow: 0 0 0 3px rgba(42, 34, 69, .18); }
 

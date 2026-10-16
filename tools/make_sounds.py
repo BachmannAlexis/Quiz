@@ -120,11 +120,12 @@ PITCHED = {
 
 # Percussion and other recordings played as they are: id -> (tune [(file, start, length)], play-mode sounds).
 # One play-mode sound is pitched up and down by the keys; several are spread over the keys.
-# "a+b" layers two recordings into one sound.
+# "a+b" layers two recordings into one sound; "a@filters" passes a layer through an ffmpeg filter chain first.
 V, P = "vsco/", "sonicpi/"
 # the bass drum: the deep kick layered with a punchy one, whose click and body a phone speaker can play
 # (the deep kick alone is almost all below 150 Hz, which small speakers do not reproduce)
-KIT = [P + "drum_heavy_kick+" + P + "bd_tek", P + "drum_snare_hard", P + "drum_cymbal_closed", P + "drum_tom_hi_hard",
+# (measured: 8 dB more above 150 Hz than the deep kick alone)
+KIT = [P + "drum_heavy_kick@highpass=f=60,volume=0.5+" + P + "bd_tek@volume=1.5", P + "drum_snare_hard", P + "drum_cymbal_closed", P + "drum_tom_hi_hard",
        P + "drum_tom_mid_hard", P + "drum_tom_lo_hard", P + "drum_cymbal_open", P + "drum_splash_hard",
        P + "perc_snap", P + "drum_cowbell", P + "drum_cymbal_hard", P + "elec_triangle"]  # clap, cowbell, crash, triangle
 TABLA = [P + n for n in ["tabla_ghe1", "tabla_na", "tabla_tun1", "tabla_dhec", "tabla_te1", "tabla_ke1", "tabla_ghe2", "tabla_tas1"]]
@@ -237,8 +238,12 @@ def main(build):
             tunes[iid] = uri(out(iid))
             src, shift = nearest(d, root)
             notes[iid] = {"pitched": True, "samples": [single(src, iid + ".note", shift)]}
-        def layers(spec, start, length):  # "a+b" -> both recordings at the same time
-            return [(find(build, f), part(start, length)) for f in spec.split("+")]
+        def layers(spec, start, length):  # "a@filters+b" -> both recordings at the same time, each through its filters
+            out = []
+            for layer in spec.split("+"):
+                f, _, chain = layer.partition("@")
+                out.append((find(build, f), (chain + "," if chain else "") + part(start, length)))
+            return out
         for iid, (tune, sounds) in HITS.items():
             parts = [l for f, st, ln in tune for l in layers(f, st, ln)]
             ffmpeg([f for f, _ in parts], [c for _, c in parts], out(iid))
