@@ -120,7 +120,8 @@ PITCHED = {
 
 # Percussion and other recordings played as they are: id -> (tune [(file, start, length)], play-mode sounds).
 # One play-mode sound is pitched up and down by the keys; several are spread over the keys.
-# "a+b" layers two recordings into one sound; "a@filters" passes a layer through an ffmpeg filter chain first.
+# "a+b" layers two recordings into one sound; "a@filters" passes a layer through an ffmpeg filter chain first;
+# "a~5" pitches it 5 semitones up.
 V, P = "vsco/", "sonicpi/"
 # the bass drum: the deep kick layered with a punchy one, whose click and body a phone speaker can play
 # (the deep kick alone is almost all below 150 Hz, which small speakers do not reproduce)
@@ -128,6 +129,19 @@ V, P = "vsco/", "sonicpi/"
 KIT = [P + "drum_heavy_kick@highpass=f=60,volume=0.5+" + P + "bd_tek@volume=1.5", P + "drum_snare_hard", P + "drum_cymbal_closed", P + "drum_tom_hi_hard",
        P + "drum_tom_mid_hard", P + "drum_tom_lo_hard", P + "drum_cymbal_open", P + "drum_splash_hard",
        P + "perc_snap", P + "drum_cowbell", P + "drum_cymbal_hard", P + "elec_triangle"]  # clap, cowbell, crash, triangle
+# The drum machine's other kits, one per family of styles (app.js BEATS): the same 12 pads, other sounds.
+# Each bass drum keeps a punchy layer that phone speakers can play.
+DRUM_KITS = {
+    "electro": [P + "bd_haus+" + P + "bd_808@volume=0.7", P + "elec_snare", P + "hat_zild", P + "elec_fuzz_tom~5",
+                P + "elec_fuzz_tom", P + "elec_fuzz_tom~-5", P + "hat_metal", P + "elec_cymbal", P + "perc_snap2",
+                P + "elec_bell", P + "drum_cymbal_hard", P + "elec_triangle"],
+    "hiphop":  [P + "bd_fat+" + P + "bd_boom@volume=0.6", P + "sn_dub", P + "hat_cab", P + "drum_tom_hi_soft",
+                P + "drum_tom_mid_soft", P + "drum_tom_lo_soft", P + "hat_psych", P + "vinyl_scratch", P + "perc_snap",
+                P + "drum_cowbell", P + "drum_cymbal_soft", P + "elec_triangle"],
+    "jazz":    [P + "bd_jazz+" + P + "bd_tek@volume=0.6", P + "drum_snare_soft", P + "hat_gem", P + "drum_tom_hi_soft",
+                P + "drum_tom_mid_soft", P + "drum_tom_lo_soft", P + "ride_via", P + "drum_splash_soft", P + "perc_snap",
+                P + "drum_cowbell", P + "ride_tri", P + "elec_triangle"],
+}
 TABLA = [P + n for n in ["tabla_ghe1", "tabla_na", "tabla_tun1", "tabla_dhec", "tabla_te1", "tabla_ke1", "tabla_ghe2", "tabla_tas1"]]
 HITS = {
     "timpani":   ([(V + "timpaniRoll/C3", 0, 1.4), (V + "timpani/F2", 1.35, 1.0), (V + "timpani/F2", 1.85, 1.6)], [V + "timpani/F2"]),
@@ -238,22 +252,26 @@ def main(build):
             tunes[iid] = uri(out(iid))
             src, shift = nearest(d, root)
             notes[iid] = {"pitched": True, "samples": [single(src, iid + ".note", shift)]}
-        def layers(spec, start, length):  # "a@filters+b" -> both recordings at the same time, each through its filters
+        def layers(spec, start, length):  # "a@filters+b~3" -> both recordings at the same time, each through its filters
             out = []
             for layer in spec.split("+"):
                 f, _, chain = layer.partition("@")
-                out.append((find(build, f), (chain + "," if chain else "") + part(start, length)))
+                f, _, shift = f.partition("~")
+                out.append((find(build, f), (chain + "," if chain else "") + part(start, length, int(shift or 0))))
             return out
+        def kit_samples(name, specs):
+            samples = []
+            for k, spec in enumerate(specs):
+                ls = layers(spec, 0, 1.2)
+                ffmpeg([f for f, _ in ls], [c for _, c in ls], out(f"{name}.note{k}"))
+                samples.append(uri(out(f"{name}.note{k}")))
+            return samples
+        kits = {"drum-kit-" + name: {"pitched": False, "samples": kit_samples("drum-kit-" + name, specs)} for name, specs in DRUM_KITS.items()}
         for iid, (tune, sounds) in HITS.items():
             parts = [l for f, st, ln in tune for l in layers(f, st, ln)]
             ffmpeg([f for f, _ in parts], [c for _, c in parts], out(iid))
             tunes[iid] = uri(out(iid))
-            samples = []
-            for k, spec in enumerate(sounds):
-                ls = layers(spec, 0, 1.2)
-                ffmpeg([f for f, _ in ls], [c for _, c in ls], out(f"{iid}.note{k}"))
-                samples.append(uri(out(f"{iid}.note{k}")))
-            notes[iid] = {"pitched": False, "samples": samples}
+            notes[iid] = {"pitched": False, "samples": kit_samples(iid, sounds)}
         # animal recordings (BigSoundBank, Wikimedia Commons)
         commons = os.path.join(build, "commons", "credits.json")
         credits = json.load(open(commons)) if os.path.exists(commons) else {}
@@ -299,7 +317,7 @@ def main(build):
     # the drum pads in a small pack of their own, so the drums play at once (the music pack is several MB)
     with open(os.path.join(out, "drums.js"), "w") as f:
         f.write("// Generated by tools/make_sounds.py — the drum kit's pads (also in instruments.js), see README for credits.\n")
-        f.write("addSounds(" + json.dumps({"sounds": {}, "notes": {"drum-kit": notes["drum-kit"]}}, indent=0) + ");\n")
+        f.write("addSounds(" + json.dumps({"sounds": {}, "notes": {"drum-kit": notes["drum-kit"], **kits}}, indent=0) + ");\n")
     import make_packs; make_packs.main()  # the new versions for app/packs.js
     print(len(tunes), "sounds,", len(notes), "with play-mode notes")
 

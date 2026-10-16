@@ -1396,23 +1396,25 @@ const PAD_COLORS = ["#e53935", "#1e88e5", "#fdd835", "#43a047", "#00897b", "#6d4
 // crash, cymbal, splash, hi-hat, triangle, cowbell, clap, snare, high tom, tom, floor tom, bass drum
 const BEAT_ROWS = [10, 6, 7, 2, 11, 9, 8, 1, 3, 4, 5, 0], BEAT_STEPS = 16;
 const every = (from, step) => Array.from({ length: Math.ceil((BEAT_STEPS - from) / step) }, (_, k) => from + k * step);
-// rhythms in different styles: drum -> steps, and a tempo
+// rhythms in different styles: drum -> steps, a tempo and a kit (the sounds of the 12 pads: the acoustic kit,
+// or electro, hip-hop or jazz, app/sounds/drums.js)
 const BEATS = [
   { id: "rock",   tempo: 100, steps: { 10: [0], 2: every(0, 2), 1: [4, 12], 3: [13], 4: [14], 5: [15], 0: [0, 8, 10] } },
-  { id: "disco",  tempo: 120, steps: { 6: every(2, 4), 2: every(0, 4), 8: [4, 12], 0: every(0, 4) } },
-  { id: "hiphop", tempo: 90,  steps: { 2: every(0, 2), 1: [4, 12], 0: [0, 3, 7, 10] } },
-  { id: "reggae", tempo: 76,  steps: { 2: every(2, 4), 11: [6, 14], 1: [8], 0: [8] } },
+  { id: "disco",  tempo: 120, kit: "electro", steps: { 6: every(2, 4), 2: every(0, 4), 8: [4, 12], 0: every(0, 4) } },
+  { id: "hiphop", tempo: 90,  kit: "hiphop", steps: { 2: every(0, 2), 1: [4, 12], 0: [0, 3, 7, 10] } },
+  { id: "reggae", tempo: 76,  kit: "hiphop", steps: { 2: every(2, 4), 11: [6, 14], 1: [8], 0: [8] } },
   { id: "funk",   tempo: 104, steps: { 2: every(0, 1), 1: [4, 7, 12, 15], 0: [0, 3, 6, 10] } },
-  { id: "samba",  tempo: 116, steps: { 2: every(0, 1), 8: [3, 6, 10, 13], 9: [0, 2, 5, 8, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
-  { id: "bossa",  tempo: 130, steps: { 2: every(0, 2), 11: [0], 1: [0, 3, 6, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
-  { id: "techno", tempo: 128, steps: { 10: [0], 6: every(2, 4), 2: every(0, 2), 8: [4, 12], 0: every(0, 4) } },
+  { id: "samba",  tempo: 116, kit: "jazz", steps: { 2: every(0, 1), 8: [3, 6, 10, 13], 9: [0, 2, 5, 8, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
+  { id: "bossa",  tempo: 130, kit: "jazz", steps: { 2: every(0, 2), 11: [0], 1: [0, 3, 6, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
+  { id: "techno", tempo: 128, kit: "electro", steps: { 10: [0], 6: every(2, 4), 2: every(0, 2), 8: [4, 12], 0: every(0, 4) } },
 ];
-const beat = { steps: {}, tempo: 100, style: null, playing: false, step: 0, next: 0, timer: 0 };
+const beat = { steps: {}, tempo: 100, style: null, kit: "", playing: false, step: 0, next: 0, timer: 0 };
+const kitId = () => "drum-kit" + (beat.kit ? "-" + beat.kit : "");
 // the pads come in their own small pack (app/sounds/drums.js), so they play before the music pack has loaded
 let drumsReady = null;
 const loadDrums = () => drumsReady || (drumsReady = loadAsset("sounds", "drums").catch(e => { drumsReady = null; throw e; }));
 function hitDrum(k, when) {
-  return loadDrums().then(() => recording("drum-kit#" + k)).then(b => {
+  return loadDrums().then(() => recording(kitId() + "#" + k)).then(b => {
     const c = audio(), src = c.createBufferSource();
     src.buffer = b; src.connect(c.destination); src.start(when || 0);
   }, () => {});
@@ -1431,7 +1433,7 @@ function openDrums() {
     b.addEventListener("pointerdown", e => { e.preventDefault(); audio(); hitDrum(k); b.classList.remove("hit"); void b.offsetWidth; b.classList.add("hit"); });
     pads.appendChild(b);
   });
-  loadDrums().then(() => Promise.all(PAD_COLORS.map((_, k) => recording("drum-kit#" + k)))).catch(() => {}); // decode them all now
+  decodeKit();
   if (!Object.keys(beat.steps).length) loadBeat(BEATS[0]);
   drawBeat();
   show("drums");
@@ -1480,8 +1482,11 @@ function drawBeat() {
 }
 function loadBeat(b) {
   beat.steps = Object.fromEntries(Object.entries(b.steps).map(([k, v]) => [k, new Set(v)]));
-  beat.tempo = b.tempo; beat.style = b.id;
+  beat.tempo = b.tempo; beat.style = b.id; beat.kit = b.kit || "";
+  decodeKit();
 }
+// decode the 12 sounds of the kit now, so the first beat is on time
+const decodeKit = () => loadDrums().then(() => Promise.all(PAD_COLORS.map((_, k) => recording(kitId() + "#" + k)))).catch(() => {});
 // a small scheduler: every 25 ms, the steps due in the next 0.1 s are queued on the audio clock, so the beat stays even
 function startBeat() {
   const c = audio();
