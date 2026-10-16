@@ -51,7 +51,7 @@ const PACKS = {
   "pictures/trees.js": ["e1eef3455e", 67688],
   "pictures/weather.js": ["92b996cae3", 53376],
   "sounds/animals.js": ["5ba1a460eb", 1566947],
-  "sounds/drums.js": ["742d3b0638", 185834],
+  "sounds/drums.js": ["cbbba894c5", 657077],
   "sounds/instruments.js": ["ee1b3e8e33", 8376653],
   "sounds/kitchen.js": ["9bd6dd5aa1", 637032],
   "sounds/maths.js": ["9af7260697", 66062],
