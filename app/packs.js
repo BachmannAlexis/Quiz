@@ -42,7 +42,7 @@ const PACKS = {
   "pictures/reading.js": ["5d6f666f77", 388351],
   "pictures/scenery.js": ["0591c51873", 97213],
   "pictures/shapes.js": ["87d303ca6e", 6676],
-  "pictures/sounds.js": ["0fed1855d2", 360892],
+  "pictures/sounds.js": ["9b75cded8e", 634873],
   "pictures/space.js": ["a50b3aa2f3", 68967],
   "pictures/spices.js": ["e090316e49", 119365],
   "pictures/sports.js": ["8c08b5df6b", 329616],

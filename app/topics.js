@@ -1398,22 +1398,38 @@ const SOUND_SETS = {
     ["é", "e", "bébé", "baby", "v"], ["eu", "ø", "feu", "fire", "v"], ["au", "o", "auto", "automobile", "v"],
     ["eau", "o", "gâteau", "birthday-cake", "v"], ["ill", "ij", "abeille", "honeybee", "v"],
     ["ch", "ʃ", "chat", "cat", "c"], ["gn", "ɲ", "champignon", "mushroom", "c"], ["qu", "k", "requin", "shark", "c"],
-    ["ph", "f", "phoque", "seal", "c"], ["gu", "ɡ", "guitare", "guitar", "c"]],
+    ["ph", "f", "phoque", "seal", "c"], ["gu", "ɡ", "guitare", "guitar", "c"],
+    ["ain", "ɛ̃", "main", "raised-hand", "v"], ["ein", "ɛ̃", "peinture", "artist-palette", "v"], ["oin", "wɛ̃", "poing", "oncoming-fist", "v"],
+    ["ien", "jɛ̃", "chien", "dog", "v"], ["er", "e", "panier", "basket", "v"], ["ez", "e", "nez", "nose", "v"],
+    ["ê", "ɛ", "fenêtre", "window", "v"], ["œu", "œ", "cœur", "red-heart", "v"], ["eil", "ɛj", "soleil", "sun", "v"],
+    ["ail", "aj", "ail", "garlic", "v"], ["euil", "œj", "écureuil", "chipmunk", "v"], ["y", "ij", "crayon", "pencil", "v"],
+    ["ç", "s", "garçon", "boy", "c"], ["ce", "s", "cerise", "cherries", "c"], ["gi", "ʒ", "girafe", "giraffe", "c"]],
   en: [["sh", "ʃ", "ship", "passenger-ship", "c"], ["ch", "tʃ", "chick", "baby-chick", "c"], ["th", "θ", "thumb", "thumbs-up", "c"],
     ["ng", "ŋ", "ring", "ring", "c"], ["qu", "kw", "queen", "crown", "c"], ["ck", "k", "duck", "duck", "c"],
     ["ee", "iː", "bee", "honeybee", "v"], ["oo", "uː", "moon", "full-moon", "v"], ["ai", "eɪ", "rain", "cloud-with-rain", "v"],
     ["oa", "oʊ", "boat", "sailboat", "v"], ["ar", "ɑːɹ", "car", "automobile", "v"], ["or", "ɔːɹ", "fork", "fork-and-knife", "v"],
-    ["igh", "aɪ", "light", "light-bulb", "v"], ["ow", "aʊ", "cow", "cow-face", "v"], ["oi", "ɔɪ", "coin", "coin", "v"]],
+    ["igh", "aɪ", "light", "light-bulb", "v"], ["ow", "aʊ", "cow", "cow-face", "v"], ["oi", "ɔɪ", "coin", "coin", "v"],
+    ["ie", "aɪ", "pie", "pie", "v"], ["ue", "uː", "blueberries", "blueberries", "v"], ["ew", "uː", "newspaper", "newspaper", "v"],
+    ["ay", "eɪ", "crayon", "crayon", "v"], ["ea", "iː", "peach", "peach", "v"], ["ou", "aʊ", "house", "house", "v"],
+    ["er", "ɚ", "hammer", "hammer", "v"], ["ir", "ɜːɹ", "bird", "bird", "v"], ["ur", "ɜːɹ", "turtle", "turtle", "v"],
+    ["aw", "ɔː", "paw", "paw-prints", "v"], ["wh", "w", "whale", "spouting-whale", "c"], ["ph", "f", "phone", "mobile-phone", "c"],
+    ["kn", "n", "knife", "kitchen-knife", "c"]],
   de: [["sch", "ʃ", "Schaf", "ewe", "c"], ["ch", "x", "Buch", "open-book", "c"], ["ng", "ŋ", "Ring", "ring", "c"],
     ["pf", "pf", "Pferd", "horse-face", "c"], ["sp", "ʃp", "Spinne", "spider", "c"], ["st", "ʃt", "Stern", "star", "c"],
     ["ck", "k", "Socke", "socks", "c"], ["ei", "aɪ", "Eis", "soft-ice-cream", "v"], ["au", "aʊ", "Auto", "automobile", "v"],
     ["eu", "ɔʏ", "Eule", "owl", "v"], ["äu", "ɔʏ", "Mäuse", "mouse-face", "v"], ["ie", "iː", "Biene", "honeybee", "v"],
-    ["ä", "ɛ", "Bär", "bear", "v"], ["ö", "øː", "Löwe", "lion", "v"], ["ü", "yː", "Tüte", "shopping-bags", "v"]],
+    ["ä", "ɛ", "Bär", "bear", "v"], ["ö", "øː", "Löwe", "lion", "v"], ["ü", "yː", "Tüte", "shopping-bags", "v"],
+    ["ai", "aɪ", "Hai", "shark", "v"], ["ee", "eː", "Tee", "teacup-without-handle", "v"], ["oo", "oː", "Boot", "canoe", "v"],
+    ["ah", "aː", "Zahn", "tooth", "v"], ["oh", "oː", "Ohr", "ear", "v"], ["uh", "uː", "Kuh", "cow-face", "v"],
+    ["chs", "ks", "Fuchs", "fox", "c"], ["qu", "kv", "Qualle", "jellyfish", "c"], ["tz", "ts", "Katze", "cat", "c"],
+    ["ß", "s", "Fuß", "foot", "c"]],
   it: [["gn", "ɲ", "ragno", "spider", "c"], ["gli", "ʎi", "aglio", "garlic", "c"], ["sci", "ʃi", "scimmia", "monkey", "c"],
     ["sce", "ʃe", "pesce", "fish", "c"], ["chi", "ki", "chiave", "key", "c"], ["che", "ke", "barche", "sailboat", "c"],
     ["ghi", "ɡi", "funghi", "mushroom", "c"], ["ghe", "ɡe", "ghepardo", "leopard", "c"], ["ce", "tʃe", "cervo", "deer", "c"],
     ["ge", "dʒe", "gelato", "ice-cream", "c"], ["cia", "tʃa", "arancia", "tangerine", "c"], ["gio", "dʒo", "giostra", "carousel-horse", "c"],
-    ["qu", "kw", "quadro", "framed-picture", "c"]],
+    ["qu", "kw", "quadro", "framed-picture", "c"], ["ci", "tʃi", "cipolla", "onion", "c"], ["gi", "dʒi", "giraffa", "giraffe", "c"],
+    ["cio", "tʃo", "cioccolato", "chocolate-bar", "c"], ["gia", "dʒa", "giacca", "coat", "c"], ["sca", "ska", "scarpa", "running-shoe", "c"],
+    ["sco", "sko", "scoiattolo", "chipmunk", "c"], ["scu", "sku", "scuola", "school", "c"], ["cqu", "kkw", "acqua", "droplet", "c"]],
 };
 // First words to read: [word, how the voice sounds it out (syllables; English: sounds in IPA after "/"), Noto picture,
 // level: 1 simple syllables, 2 more letters, 3 with the sounds above]
@@ -1450,7 +1466,7 @@ const READ_WORDS = {
 };
 // how a sound or word is written on its card and in the sentences: « ou », “sh”, „sch“, «gn»
 const QUOTE = { fr: g => `« ${g} »`, en: g => `“${g}”`, de: g => `„${g}“`, it: g => `«${g}»` };
-const slug = s => s.toLowerCase().replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/é/g, "e1").replace(/è/g, "e2").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/ß/g, "ss");
+const slug = s => s.toLowerCase().replace(/œ/g, "oe").replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/é/g, "e1").replace(/è/g, "e2").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/ß/g, "ss");
 const VOWEL_SOUNDS = "vowel-sounds", CONSONANT_SOUNDS = "consonant-sounds";
 const SOUND_CARDS = Object.entries(SOUND_SETS).flatMap(([l, list]) => list.map(([g, ipa, word, noto, kind]) => {
   const n = QUOTE[l](g);
