@@ -109,9 +109,9 @@
   <!-- Quiz -->
   <section class="screen" id="game" hidden>
     <header class="bar">
-      <button class="icon-btn" type="button" id="gameClose" data-t-label="close"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <button class="icon-btn" type="button" id="gameBack" data-t-label="back"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></button>
       <div class="progress" id="progress" aria-hidden="true"></div>
-      <span class="bar-spacer"></span>
+      <button class="icon-btn home-btn" type="button" data-t-label="toHome"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
     </header>
     <div class="question">
       <button class="speak" type="button" id="speak" data-t-label="repeat"></button>
@@ -126,9 +126,9 @@
   <!-- Puzzle: the picture in pieces -->
   <section class="screen" id="puzzle" hidden>
     <header class="bar">
-      <button class="icon-btn" type="button" id="puzzleClose" data-t-label="close"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <button class="icon-btn" type="button" id="puzzleBack" data-t-label="back"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></button>
       <div class="progress" id="puzzleProgress" aria-hidden="true"></div>
-      <span class="bar-spacer"></span>
+      <button class="icon-btn home-btn" type="button" data-t-label="toHome"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
     </header>
     <div class="puzzle-board" id="puzzleBoard"></div>
     <div class="puzzle-tray" id="puzzleTray"></div>
@@ -137,9 +137,9 @@
   <!-- Drums: a drum kit to play and a drum machine -->
   <section class="screen" id="drums" hidden>
     <header class="bar">
-      <button class="icon-btn" type="button" id="drumsClose" data-t-label="close"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <button class="icon-btn" type="button" id="drumsBack" data-t-label="back"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></button>
       <h1 class="bar-title" data-t="drumsTitle"></h1>
-      <span class="bar-spacer"></span>
+      <button class="icon-btn home-btn" type="button" data-t-label="toHome"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
     </header>
     <div class="pads" id="pads"></div>
     <div class="beat">
@@ -157,6 +157,11 @@
 
   <!-- End of a quiz -->
   <section class="screen" id="done" hidden>
+    <header class="bar">
+      <button class="icon-btn" type="button" id="doneBack" data-t-label="back"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></button>
+      <span class="bar-title"></span>
+      <button class="icon-btn home-btn" type="button" data-t-label="toHome"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </header>
     <div class="done-card">
       <svg class="trophy" aria-hidden="true"><use href="#i-star"/></svg>
       <h2 class="done-title" data-t="bravo"></h2>
@@ -173,9 +178,9 @@
   <!-- Play and discover -->
   <section class="screen" id="play" hidden>
     <header class="bar">
-      <button class="icon-btn" type="button" id="playClose" data-t-label="close"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <button class="icon-btn" type="button" id="playBack" data-t-label="back"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg></button>
       <h1 class="bar-title" id="playTitle"></h1>
-      <span class="bar-spacer"></span>
+      <button class="icon-btn home-btn" type="button" data-t-label="toHome"><svg class="ic" aria-hidden="true"><use href="#i-close"/></svg></button>
     </header>
     <div class="stage">
       <button class="big" type="button" id="bigPic" data-t-label="hearAgain"><img alt=""></button>

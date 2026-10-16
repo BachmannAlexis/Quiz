@@ -331,7 +331,8 @@ button:focus-visible, .pill:focus-visible { outline: 4px solid var(--accent); ou
 .piece.done { visibility: hidden; }
 
 /* ---------- End of a quiz ---------- */
-#done { justify-content: center; }
+#done { justify-content: flex-start; }
+#done .done-card { margin: auto 0; } /* the bar at the top, the card in the middle of the rest */
 .done-card {
   background: var(--surface);
   border-radius: 36px;

@@ -1475,7 +1475,7 @@ $("beatSlower").onclick = () => { beat.tempo = Math.max(60, beat.tempo - 10); $(
 $("beatFaster").onclick = () => { beat.tempo = Math.min(180, beat.tempo + 10); $("beatTempo").textContent = beat.tempo; };
 $("beatClear").onclick = () => { beat.steps = {}; drawBeat(); };
 $("beatDemo").onclick = () => { demoBeat(); drawBeat(); };
-$("drumsClose").onclick = backToTopic;
+$("drumsBack").onclick = backToTopic;
 
 // ---------- Puzzles: a picture cut into pieces (2×2 easy, 3×3 medium, 4×4 hard), five pictures a game ----------
 // Drag a piece to its place (the picture shows faintly on the board), or tap a piece then its place.
@@ -1593,7 +1593,7 @@ function dropPiece(piece, slot) {
     }, hasRecording(item) ? 2500 : 900);
   });
 }
-$("puzzleClose").onclick = backToTopic;
+$("puzzleBack").onclick = backToTopic;
 
 // ---------- Play and discover ----------
 let playing = null; // item on the stage
@@ -1886,8 +1886,11 @@ $("voiceTest").onclick = () => {
   setTimeout(() => { if (!/start|✓/.test(status.textContent)) { lines.push(T().voiceSilent); show(); } }, 5000);
 };
 $("topicBack").onclick = goHome;
-$("gameClose").onclick = backToTopic;
-$("playClose").onclick = backToTopic;
+$("gameBack").onclick = backToTopic;
+$("playBack").onclick = backToTopic;
+$("doneBack").onclick = backToTopic;
+// the cross on every screen of a topic goes straight home
+document.querySelectorAll(".home-btn").forEach(b => { b.onclick = goHome; });
 $("again").onclick = () => start(mode);
 $("otherGame").onclick = backToTopic;
 $("speak").onclick = () => { if (!locked) topic.math ? askMath() : mode === "read" ? say(soundOut(answer)) : ask(); };
@@ -1947,24 +1950,25 @@ $("clearScores").onclick = () => {
 // Children press long, slide a little or rest a palm, and the browser then drops the tap (a finger that
 // slides a few pixels turns into a scroll). So a picture in a game answers as soon as a finger lands on
 // it, and other buttons take a touch that ends less than 32 px from where it started. The browser's own
-// click that may follow is ignored.
-let firing = false, lastTap = { btn: null, at: 0 };
+// click that may follow is ignored, also when the tap opened another screen and that click would land on
+// a button of the new screen (a topic card would otherwise start the game under the finger).
+let firing = false, lastTap = { btn: null, at: 0, touch: false };
 const touches = new Map(); // touch identifier -> { btn, x, y }
-function fire(btn) {
+function fire(btn, touch) {
   if (btn.disabled || !btn.isConnected) return;
-  lastTap = { btn, at: Date.now() };
+  lastTap = { btn, at: Date.now(), touch };
   firing = true;
   try { btn.click(); } finally { firing = false; }
 }
 const buttonOf = target => target && target.closest ? target.closest("button") : null;
 addEventListener("click", e => {
   const btn = buttonOf(e.target);
-  if (!firing && btn && btn === lastTap.btn && Date.now() - lastTap.at < 800) { e.stopImmediatePropagation(); e.preventDefault(); }
+  if (!firing && btn && (btn === lastTap.btn || lastTap.touch) && Date.now() - lastTap.at < 800) { e.stopImmediatePropagation(); e.preventDefault(); }
 }, true);
 addEventListener("pointerdown", e => {
   if (e.pointerType === "mouse" && e.button !== 0) return;
   const btn = buttonOf(e.target);
-  if (btn && btn.closest("#choices")) fire(btn);
+  if (btn && btn.closest("#choices")) fire(btn, e.pointerType !== "mouse");
 }, true);
 addEventListener("touchstart", e => {
   for (const t of e.changedTouches) {
@@ -1976,7 +1980,7 @@ addEventListener("touchend", e => {
   for (const t of e.changedTouches) {
     const d = touches.get(t.identifier);
     touches.delete(t.identifier);
-    if (d && Math.hypot(t.clientX - d.x, t.clientY - d.y) < 32) fire(d.btn);
+    if (d && Math.hypot(t.clientX - d.x, t.clientY - d.y) < 32) { fire(d.btn, true); if (e.cancelable) e.preventDefault(); }
   }
 }, true);
 addEventListener("touchcancel", e => { for (const t of e.changedTouches) touches.delete(t.identifier); }, true);
