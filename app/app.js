@@ -1391,20 +1391,20 @@ function numberLine(a, b) {
 // The sounds are the drum kit's play-mode samples: kick, snare, closed hi-hat, 3 toms, open cymbal, splash.
 const PAD_COLORS = ["#e53935", "#1e88e5", "#fdd835", "#43a047", "#00897b", "#6d4c41", "#fb8c00", "#8e24aa",
   "#ec407a", "#78909c", "#ffb300", "#26c6da"];
-// the drum machine: one bar of 16 steps (sixteenth notes), a row per drum (top to bottom, like drum notation:
-// cymbal, hi-hat, snare, clap, cowbell, bass drum)
-const BEAT_ROWS = [6, 2, 1, 8, 9, 0], BEAT_STEPS = 16;
+// the drum machine: one bar of 16 steps (sixteenth notes), a row for every drum, high to low like drum notation:
+// crash, cymbal, splash, hi-hat, triangle, cowbell, clap, snare, high tom, tom, floor tom, bass drum
+const BEAT_ROWS = [10, 6, 7, 2, 11, 9, 8, 1, 3, 4, 5, 0], BEAT_STEPS = 16;
 const every = (from, step) => Array.from({ length: Math.ceil((BEAT_STEPS - from) / step) }, (_, k) => from + k * step);
 // rhythms in different styles: drum -> steps, and a tempo
 const BEATS = [
-  { id: "rock",   tempo: 100, steps: { 2: every(0, 2), 1: [4, 12], 0: [0, 8, 10] } },
+  { id: "rock",   tempo: 100, steps: { 10: [0], 2: every(0, 2), 1: [4, 12], 3: [13], 4: [14], 5: [15], 0: [0, 8, 10] } },
   { id: "disco",  tempo: 120, steps: { 6: every(2, 4), 2: every(0, 4), 8: [4, 12], 0: every(0, 4) } },
   { id: "hiphop", tempo: 90,  steps: { 2: every(0, 2), 1: [4, 12], 0: [0, 3, 7, 10] } },
-  { id: "reggae", tempo: 76,  steps: { 2: every(2, 4), 1: [8], 0: [8] } },
+  { id: "reggae", tempo: 76,  steps: { 2: every(2, 4), 11: [6, 14], 1: [8], 0: [8] } },
   { id: "funk",   tempo: 104, steps: { 2: every(0, 1), 1: [4, 7, 12, 15], 0: [0, 3, 6, 10] } },
   { id: "samba",  tempo: 116, steps: { 2: every(0, 1), 8: [3, 6, 10, 13], 9: [0, 2, 5, 8, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
-  { id: "bossa",  tempo: 130, steps: { 2: every(0, 2), 1: [0, 3, 6, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
-  { id: "techno", tempo: 128, steps: { 6: every(2, 4), 2: every(0, 2), 8: [4, 12], 0: every(0, 4) } },
+  { id: "bossa",  tempo: 130, steps: { 2: every(0, 2), 11: [0], 1: [0, 3, 6, 10, 13], 0: [0, 3, 4, 7, 8, 11, 12, 15] } },
+  { id: "techno", tempo: 128, steps: { 10: [0], 6: every(2, 4), 2: every(0, 2), 8: [4, 12], 0: every(0, 4) } },
 ];
 const beat = { steps: {}, tempo: 100, style: null, playing: false, step: 0, next: 0, timer: 0 };
 function hitDrum(k, when) {
@@ -1442,6 +1442,7 @@ function drawBeat() {
     dot.className = "beat-dot";
     dot.style.background = PAD_COLORS[k];
     dot.title = T().drumNames[k];
+    dot.onpointerdown = () => { audio(); hitDrum(k); }; // the dot plays its drum, to know which row is which
     row.appendChild(dot);
     for (let i = 0; i < BEAT_STEPS; i++) {
       const cell = document.createElement("button");
