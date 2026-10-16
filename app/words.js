@@ -9,6 +9,7 @@ const TEXT = {
     where: (n, many, bare) => `Where ${many ? "are" : "is"} ${bare ? "" : "the "}${n}?`, listen: "Listen! Who is playing?",
     who: sound => `Who says ${sound}?`, says: (n, sound, like) => `The ${n} says ${sound}${like ? `, like ${like}` : ""}!`,
     whichLetter: sound => `Listen! Which letter says ${sound}?`,
+    quiet: (n, like) => `The ${n} makes no sound, like in ${like}!`,
     whereAreWe: "Listen! Where are we?", whoIsIt: "Listen! Who is it?", whatIsIt: "Listen! What is it?", whatWeather: "Listen! What is the weather like?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     showTime: time => `Show me ${time}!`, // the clock game
@@ -102,6 +103,7 @@ const TEXT = {
     where: (n, many) => `Où ${many || n.startsWith("les ") ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
     who: sound => `Qui fait ${sound} ?`, says: (n, sound, like) => `${cap(n)} fait ${sound}${like ? `, comme ${like}` : ""} !`,
     whichLetter: sound => `Écoute ! Quelle lettre fait ${sound} ?`,
+    quiet: (n, like) => `${cap(n)} ne fait pas de bruit, comme dans ${like} !`,
     whereAreWe: "Écoute ! Où sommes-nous ?", whoIsIt: "Écoute ! Qui est-ce ?", whatIsIt: "Écoute ! Qu'est-ce que c'est ?", whatWeather: "Écoute ! Quel temps fait-il ?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     showTime: time => `Montre-moi ${time} !`,
@@ -195,6 +197,7 @@ const TEXT = {
     where: (n, many) => `Wo ${many ? "sind" : "ist"} ${n}?`, listen: "Hör zu! Wer spielt?",
     who: sound => `Wer macht ${sound}?`, says: (n, sound, like) => `${cap(n)} macht ${sound}${like ? `, wie ${like}` : ""}!`,
     whichLetter: sound => `Hör zu! Welcher Buchstabe macht ${sound}?`,
+    quiet: (n, like) => `${cap(n)} ist stumm, wie in ${like}!`,
     whereAreWe: "Hör zu! Wo sind wir?", whoIsIt: "Hör zu! Wer ist das?", whatIsIt: "Hör zu! Was ist das?", whatWeather: "Hör zu! Wie ist das Wetter?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     showTime: time => `Zeig mir ${time}!`,
@@ -289,6 +292,7 @@ const TEXT = {
     where: (n, many) => many ? `Dove sono ${n}?` : `Dov'è ${n}?`, listen: "Ascolta! Chi suona?",
     who: sound => `Chi fa ${sound}?`, says: (n, sound, like) => `${cap(n)} fa ${sound}${like ? `, come ${like}` : ""}!`,
     whichLetter: sound => `Ascolta! Quale lettera fa ${sound}?`,
+    quiet: (n, like) => `${cap(n)} non fa nessun suono, come in ${like}!`,
     whereAreWe: "Ascolta! Dove siamo?", whoIsIt: "Ascolta! Chi è?", whatIsIt: "Ascolta! Che cos'è?", whatWeather: "Ascolta! Che tempo fa?",
     blend: (c, v, syllable) => `${c}… ${v}… ${syllable}!`, // a syllable sounded out, then blended
     showTime: time => `Mostrami ${time}!`,

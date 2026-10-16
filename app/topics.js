@@ -578,7 +578,8 @@ const KITCHEN_GROUPS = [
 
 // ---------- ABC: look-alike letters share a family, so they are never asked together.
 // `says`: the sound the letter makes, in English and French (for the listening game);
-// `like`: a word that starts with that sound (French Y: "pyjama", where it says i). H is silent in French and Italian. Letters that sound alike share `hears`.
+// `like`: a word that starts with that sound (French Y: "pyjama", where it says i). Letters that sound alike share `hears`.
+// H is silent in French and Italian: there `quiet` gives a word where it is heard not ("Le H ne fait pas de bruit, comme dans hibou !").
 const LETTER_SOUNDS = {
   A: ["ah", "a", "apple", "abeille"], B: ["buh", "beu", "banana", "banane"], C: ["kuh", "keu", "cat", "carotte"],
   D: ["duh", "deu", "dog", "dauphin"], E: ["eh", "eu", "egg", ""], F: ["fff", "fff", "fish", "fraise"],
@@ -598,9 +599,11 @@ const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(c => {
   return {
     id: "letter-" + c.toLowerCase(), en: "letter " + c, fr: "la lettre " + c,
     family: ["BDPRQ", "MNW", "EF", "OCGQ", "IJLT", "UV", "KXY"].find(f => f.includes(c)) || c,
-    hears: "CKQ".includes(c) ? "k" : "IY".includes(c) ? "i" : "FV".includes(c) ? "f" : c, // German V says fff
+    // German V says fff; Italian J says gi (jeans) and W says u (kiwi)
+    hears: "CKQ".includes(c) ? "k" : "IY".includes(c) ? "i" : "FV".includes(c) ? "f" : "GJ".includes(c) ? "g" : "UW".includes(c) ? "u" : c,
     styles: ["AEIOUY".includes(c) ? VOWELS : "FLMNRSVZ".includes(c) ? STRETCH : QUICK],
     ...(en || fr ? { says: [en, fr], like: [likeEn, likeFr] } : {}),
+    ...(c === "H" ? { quiet: ["", "hibou", "", "hotel"] } : {}),
   };
 });
 

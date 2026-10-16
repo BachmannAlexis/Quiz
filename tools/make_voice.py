@@ -35,7 +35,7 @@ LETTER_PHONEMES = {
            "u": "u", "vau": "faʊ", "we": "və", "ks": "ks", "ü": "y", "zett": "tsɛt", "re": "ʁə", "ts": "ts", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
     "it": {"a": "a", "bi": "bi", "ci": "tʃi", "di": "di", "e": "e", "effe": "ˈɛffe", "gi": "dʒi", "i": "i", "elle": "ˈɛlle",
            "emme": "ˈɛmme", "enne": "ˈɛnne", "o": "o", "pi": "pi", "cu": "ku", "erre": "ˈɛrre", "sss": "sːːː", "ti": "ti", "u": "u",
-           "vu": "vu", "zeta": "ˈdzɛːta", "rrr": "rːː", "dz": "dz", "vvv": "vːː", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
+           "vu": "vu", "zeta": "ˈdzɛːta", "rrr": "rːː", "dz": "dz", "ca": "ka", "ks": "ks", "vvv": "vːː", "fff": "fːː", "lll": "lːː", "mmm": "mːː", "nnn": "nːː"},
 }
 
 # Syllables (app/topics.js SYLLABLES) are read as sounds: a consonant alone is stretched ("mmm") or said with a

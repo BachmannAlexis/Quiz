@@ -371,6 +371,7 @@ function gamePool() {
 // what the voice adds after naming an item: an animal's or dinosaur's sound, or a mushroom warning
 function extra(item) {
   if (soundOf(item)) return T().says(nameOf(item), soundOf(item), likeOf(item));
+  if (item.quiet && item.quiet[li()]) return T().quiet(nameOf(item), item.quiet[li()]); // the silent H
   if (item.blend) return T().blend(item.blend[0], item.blend[1], nameOf(item)); // "m… a… ma!"
   if (item.poison) return T().poison;
   if (item.from) { const c = ITEMS.get(item.from); return T().from(nameOf(item), c[lang], manyOf(item), manyOf(c)); }
@@ -1618,7 +1619,7 @@ function sayItem() {
   bounce();
   if (hasRecording(playing)) say(T().name(nameOf(playing), topic.bare), () => { if (q === questionId) { bounce(); playInstrument(playing); } });
   // letters and syllables: the sound first ("The letter S says sss, like snake!", "m… a… ma!")
-  else if (soundOf(playing) && topic.id === "letters" || playing.blend || playing.word || playing.parts) say(extra(playing));
+  else if ((soundOf(playing) || playing.quiet) && topic.id === "letters" || playing.blend || playing.word || playing.parts) say(extra(playing));
   else say([T().name(nameOf(playing), topic.bare), extra(playing)]);
 }
 
