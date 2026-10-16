@@ -12,7 +12,7 @@ vm.createContext(ctx);
 const LANGS = ["en", "fr", "de", "it"];
 for (const f of ["app/topics.js", "app/words.js", "app/lang/de.js", "app/lang/it.js"])
   if (fs.existsSync(path.join(root, f))) vm.runInContext(fs.readFileSync(path.join(root, f), "utf8"), ctx);
-const { TOPICS, TEXT, cap, COUNTRIES, clockNames } = vm.runInContext("({ TOPICS, TEXT, cap, COUNTRIES, clockNames })", ctx);
+const { TOPICS, TEXT, cap, COUNTRIES, clockNames, mathQuestions } = vm.runInContext("({ TOPICS, TEXT, cap, COUNTRIES, clockNames, mathQuestions })", ctx);
 
 const out = {};
 for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
@@ -30,7 +30,7 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
     const parts = item.parts.map(p => p.startsWith("/") ? `[[ ${p.slice(1)} ]]` : p);
     return parts.length > 1 || item.parts[0].startsWith("/") ? T.soundOut(parts.join("… "), item[lang]) : T.name(item[lang], true);
   };
-  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.sayRead, T.readIt, T.yourTurn, T.bravo, ...T.levels]);
+  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.sayRead, T.readIt, T.yourTurn, T.bravo, T.puzzleGo, ...T.levels]);
   for (const t of TOPICS) {
     common.add(t[lang]);
     for (const g of t.groups || []) common.add(g[lang]);
@@ -38,6 +38,16 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   out[lang] = { common: [...common] };
   for (const t of TOPICS) {
     const s = new Set();
+    // maths: every question and answer of every mode and level, and the numbers a child can tap (pickNumber)
+    if (t.math) {
+      for (const m of t.modes) for (const level of [1, 2, 3]) for (const [a, b] of mathQuestions(m, level)) {
+        s.add(b < 0 ? T.minusQ(a, -b) : T.plusQ(a, b));
+        s.add(b < 0 ? T.minusYes(a, -b, a + b) : T.plusYes(a, b, a + b));
+      }
+      for (let n = -10; n <= 23; n++) s.add(T.name(String(n), true));
+      out[lang][t.id] = [...s];
+      continue;
+    }
     for (const item of t.items) {
       if (item.only && item.only !== lang) continue; // sounds and words of another language
       if (t.id !== "reading") s.add(t.id === "clock" ? T.showTime(item[lang]) : t.id === "emotions" ? T.whoFeels(item[lang]) : T.where(item[lang], manyOf(item), t.bare));

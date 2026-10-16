@@ -67,6 +67,9 @@ def spoken_form(text, lang, pack=None):
     if pack == "syllables":
         return re.sub(r"(?<![\w'’])([A-Za-z]{1,2})(?![\w'’])",
                       lambda m: f"[[ {p} ]]" if (p := syllable_phonemes(m.group(1), lang)) else m.group(1), text)
+    if pack == "maths":  # "-3 plus 5?": the minus of a negative number said as a word
+        minus = {"en": "minus", "fr": "moins", "de": "minus", "it": "meno"}[lang]
+        return re.sub(r"(?<!\w)-(\d)", minus + r" \1", text)
     if lang == "en":
         text = text.replace("T. rex", "T-Rex")
     # "The letter S says sss", "Das S macht sss", "La S fa sss": the sound as phonemes
