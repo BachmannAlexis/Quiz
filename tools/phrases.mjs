@@ -38,11 +38,11 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
   out[lang] = { common: [...common] };
   for (const t of TOPICS) {
     const s = new Set();
-    // maths: every question and answer of every mode and level, and the numbers a child can tap (pickNumber)
+    // maths: the pieces of every question and answer of every mode and level, and the numbers a child can tap (pickNumber)
     if (t.math) {
       for (const m of t.modes) for (const level of [1, 2, 3]) for (const [a, b] of mathQuestions(m, level)) {
-        s.add(b < 0 ? T.minusQ(a, -b) : T.plusQ(a, b));
-        s.add(b < 0 ? T.minusYes(a, -b, a + b) : T.plusYes(a, b, a + b));
+        for (const part of b < 0 ? T.minusQ(a, -b) : T.plusQ(a, b)) s.add(part); // said in pieces
+        for (const part of b < 0 ? T.minusYes(a, -b, a + b) : T.plusYes(a, b, a + b)) s.add(part);
       }
       for (let n = -10; n <= 23; n++) s.add(T.name(String(n), true));
       out[lang][t.id] = [...s];
