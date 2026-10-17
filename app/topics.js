@@ -1567,6 +1567,12 @@ function mathQuestions(mode, level) {
   return out;
 }
 
+// ---------- Castles: a little strategy game, dogs against cats (app.js "Castles"). The items are the two teams.
+const CASTLE_TEAMS = [
+  { id: "team-dogs", en: "the dogs", fr: "les chiens", family: "team-dogs", noto: "dog-face", many: true },
+  { id: "team-cats", en: "the cats", fr: "les chats", family: "team-cats", noto: "cat-face", many: true },
+];
+
 // the home screen's sections (names in app/words.js), in order; a topic not listed goes in the last one
 const SECTIONS = {
   nature: ["animals", "dinosaurs", "flowers", "trees", "mushrooms", "scenery", "weather", "space"],
@@ -1575,6 +1581,7 @@ const SECTIONS = {
   reading: ["letters", "sounds", "syllables", "reading"],
   numbers: ["numbers", "maths", "clock", "shapes", "colors"],
   world: ["emotions", "body", "clothes", "jobs", "sports", "transport", "countries", "fantasy"],
+  games: ["castles"],
 };
 
 // the pictures shown when choosing drawings or photos at the first start
@@ -1597,6 +1604,7 @@ const TOPICS = [
   { id: "clock",       pic: "clock-3-00", en: "The clock", fr: "L'heure",    unit: ["times", "heures"],             color: "#5d4037", tint: "#f1ebe7", items: CLOCK, groups: CLOCK_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "maths",       pic: "math-apple", en: "Maths",      fr: "Les maths",   unit: ["games", "jeux"],               color: "#00897b", tint: "#e0f2f1", items: MATHS, math: true, pics: ["frog"], modes: ["add", "subtract", "line"] },
+  { id: "castles",     pic: "castle",     en: "Castles",    fr: "Les châteaux", unit: ["games", "jeux"],             color: "#6d4c41", tint: "#efebe9", items: CASTLE_TEAMS, game: true, pics: ["castle"], modes: ["castle", "castle2"] },
   { id: "fantasy",     pic: "unicorn",    en: "Fairy tales", fr: "Les contes", unit: ["characters", "personnages"],  color: "#8e24aa", tint: "#f3e5f5", items: FANTASY, groups: FANTASY_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "space",       pic: "saturn",     en: "Solar system", fr: "Le système solaire", unit: ["things in space", "objets de l'espace"], color: "#283593", tint: "#e8eaf6", items: SPACE, groups: SPACE_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
   { id: "sounds",      pic: "snd-fr-ou",  en: "Sounds",     fr: "Les sons",    unit: ["sounds", "sons"],              color: "#c2185b", tint: "#fce4ec", items: SOUND_CARDS, groups: SOUND_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },

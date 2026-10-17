@@ -31,5 +31,6 @@ addLanguage("de", {
   "reading": {"items": {}, "topic": ["Ich lese", "Wörter"]},
   "space": {"items": {}, "topic": ["Sonnensystem", "Dinge im Weltraum"], "groups": {"planets": "Die Planeten", "sky": "Am Himmel", "travel": "Raumfahrt"}},
   "fantasy": {"items": {}, "topic": ["Märchen", "Figuren"], "groups": {"creatures": "Fabelwesen", "tale-people": "Figuren", "magic": "Zauberei"}},
-  "maths": {"items": {}, "topic": ["Mathe", "Spiele"]}
+  "maths": {"items": {}, "topic": ["Mathe", "Spiele"]},
+  "castles": {"items": {"team-dogs": ["die Hunde", "pl"], "team-cats": ["die Katzen", "pl"]}, "topic": ["Burgen", "Spiele"]}
 });

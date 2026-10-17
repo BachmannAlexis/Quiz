@@ -49,6 +49,12 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
       out[lang][t.id] = [...s];
       continue;
     }
+    // Castles: the game's sentences, no names to find
+    if (t.game) {
+      for (const k of ["castleGo", "castleCaught", "castleWin", "castleLose", "castleDogs", "castleCats", "castleDogsWin", "castleCatsWin"]) s.add(T[k]);
+      out[lang][t.id] = [...s];
+      continue;
+    }
     for (const item of t.items) {
       if (item.only && item.only !== lang) continue; // sounds and words of another language
       if (t.id !== "reading") s.add(t.id === "clock" ? T.showTime(item[lang]) : t.id === "emotions" ? T.whoFeels(item[lang]) : T.where(item[lang], manyOf(item), t.bare));
