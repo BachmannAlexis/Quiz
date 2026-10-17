@@ -4,7 +4,7 @@
 //   they are until a new version replaces them.
 // - The speech models (app/vosk/*.tar.gz) are kept by Vosk itself, so not a second time here.
 // Bump VERSION when this file or the list of app files changes.
-const VERSION = "pikolo-27";
+const VERSION = "pikolo-26";
 const CACHE = "pikolo"; // one cache across versions: what was downloaded stays for offline use
 const SHELL = [
   "./", "index.html", "manifest.webmanifest",

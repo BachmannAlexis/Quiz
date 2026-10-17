@@ -31,6 +31,5 @@ addLanguage("it", {
   "reading": {"items": {}, "topic": ["Leggo", "parole"]},
   "space": {"items": {}, "topic": ["Il sistema solare", "cose nello spazio"], "groups": {"planets": "I pianeti", "sky": "Nel cielo", "travel": "Viaggi nello spazio"}},
   "fantasy": {"items": {}, "topic": ["Le fiabe", "personaggi"], "groups": {"creatures": "Creature", "tale-people": "Personaggi", "magic": "Magia"}},
-  "maths": {"items": {}, "topic": ["La matematica", "giochi"]},
-  "castles": {"items": {"team-dogs": ["i cani", "pl"], "team-cats": ["i gatti", "pl"]}, "topic": ["Castelli", "giochi"]}
+  "maths": {"items": {}, "topic": ["La matematica", "giochi"]}
 });

@@ -4,7 +4,7 @@
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
 
-const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum", castle: "flag", castle2: "two", add: "plus", subtract: "minus", line: "line" };
+const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum", add: "plus", subtract: "minus", line: "line" };
 // an icon from the sprite in index.html (one line style for every control)
 const icon = (id, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
@@ -440,7 +440,7 @@ function setLook(l) {
 // The phone's back button (or gesture) goes back one screen: from a game, the end or Discover to the topic, from
 // the topic to home, and closes an open sheet, instead of leaving the app. Each screen deeper than home adds a
 // history entry; leaving a screen with the app's own buttons removes it again.
-const DEPTH = { look: 0, home: 0, topic: 1, game: 2, play: 2, done: 2, puzzle: 2, drums: 2, castle: 2 };
+const DEPTH = { look: 0, home: 0, topic: 1, game: 2, play: 2, done: 2, puzzle: 2, drums: 2 };
 let depth = 0, skipPops = 0;
 function syncHistory(d) {
   try {
@@ -506,7 +506,7 @@ function topicCard(t, grid) {
     const name = document.createElement("strong");
     name.textContent = t[lang];
     const count = document.createElement("small");
-    count.textContent = T().count(t.math || t.game ? t.modes.length : itemsOf(t).length, unitOf(t));
+    count.textContent = T().count(t.math ? t.modes.length : itemsOf(t).length, unitOf(t));
     b.append(picture(t.pic), name, count);
     const best = bestOf(t);
     if (best) {
@@ -1186,7 +1186,6 @@ function start(m) {
   if (m === "play" || m === "explore") return openPlay();
   if (m === "puzzle") return startPuzzles();
   if (m === "drums") return openDrums();
-  if (m === "castle" || m === "castle2") return openCastle(m === "castle2");
   if (topic.math) return startMath();
   round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
   $("speak").innerHTML = icon(mode === "listen" ? "ear" : mode === "say" ? "mic" : "speaker");
@@ -1197,164 +1196,6 @@ function start(m) {
   show("game");
   askQuestion();
 }
-
-// ---------- Castles: a little strategy game. Dogs (bottom) against cats (top) on a 5 x 5 board. Each team has four
-// animals and a castle with its flag in the middle of its back row. An animal moves one square up, down, left or
-// right; moving onto an animal of the other team catches it, and it goes back to its castle. The first to bring an
-// animal onto the other team's flag wins. Against the computer (it plays the cats, as strong as the level) or two
-// players on the same screen.
-const BOARD = 5, FLAG = [{ x: 2, y: 4 }, { x: 2, y: 0 }], HOME_ROW = [4, 0], TEAM_IDS = ["team-dogs", "team-cats"];
-const castle = { pieces: [], turn: 0, two: false, picked: -1, over: false };
-const castleStart = () => [0, 1].flatMap(team => [0, 1, 3, 4].map(x => ({ team, x, y: HOME_ROW[team] })));
-const at = (pieces, x, y) => pieces.findIndex(p => p.x === x && p.y === y);
-const won = pieces => [0, 1].find(team => pieces.some(p => p.team === team && p.x === FLAG[1 - team].x && p.y === FLAG[1 - team].y));
-function castleMoves(pieces, team) {
-  const out = [];
-  pieces.forEach((p, i) => {
-    if (p.team !== team) return;
-    for (const [dx, dy] of [[0, 1], [0, -1], [1, 0], [-1, 0]]) {
-      const x = p.x + dx, y = p.y + dy, o = at(pieces, x, y);
-      if (x >= 0 && y >= 0 && x < BOARD && y < BOARD && (o < 0 || pieces[o].team !== team)) out.push({ i, x, y });
-    }
-  });
-  return out;
-}
-// a move on a copy of the board; a caught animal goes back to a free square of its castle row (else the nearest free one)
-function castleApply(pieces, m) {
-  const next = pieces.map(p => ({ ...p }));
-  const caught = at(next, m.x, m.y);
-  next[m.i].x = m.x; next[m.i].y = m.y;
-  if (caught >= 0) {
-    const team = next[caught].team, row = HOME_ROW[team];
-    const free = [];
-    for (let y = 0; y < BOARD; y++) for (let x = 0; x < BOARD; x++) if (at(next, x, y) < 0 && !(x === FLAG[team].x && y === FLAG[team].y)) free.push({ x, y });
-    free.sort((a, b) => Math.abs(a.y - row) - Math.abs(b.y - row) || Math.abs(a.x - 2) - Math.abs(b.x - 2));
-    Object.assign(next[caught], free[0]);
-  }
-  return { pieces: next, caught: caught >= 0 ? caught : -1 };
-}
-// how good the board is for a team: animals near the other flag count a lot, the other team's near ours as much
-function castleScore(pieces, team) {
-  const w = won(pieces);
-  if (w !== undefined) return w === team ? 1000 : -1000;
-  let s = 0;
-  for (const p of pieces) {
-    const f = FLAG[1 - p.team], d = Math.abs(p.x - f.x) + Math.abs(p.y - f.y);
-    s += (p.team === team ? 1 : -1.1) * (7 - d) ** 2;
-  }
-  return s;
-}
-function castleSearch(pieces, team, depth, alpha, beta) {
-  if (depth === 0 || won(pieces) !== undefined) return castleScore(pieces, team);
-  let best = -Infinity;
-  for (const m of castleMoves(pieces, team)) {
-    const v = -castleSearch(castleApply(pieces, m).pieces, 1 - team, depth - 1, -beta, -alpha);
-    if (v > best) best = v;
-    if (best > alpha) alpha = best;
-    if (alpha >= beta) break;
-  }
-  return best;
-}
-// the computer's move: easy plays mostly at random (but takes a flag it can reach), medium looks one move ahead,
-// hard four
-function castleAI(pieces, team, level) {
-  const moves = castleMoves(pieces, team);
-  const win = moves.find(m => won(castleApply(pieces, m).pieces) === team);
-  if (win) return win;
-  if (level === 1 && Math.random() < 0.6) return moves[Math.floor(Math.random() * moves.length)];
-  const depth = level === 3 ? 4 : 2;
-  let best = null, bestV = -Infinity;
-  for (const m of shuffle(moves)) {
-    const v = -castleSearch(castleApply(pieces, m).pieces, 1 - team, depth - 1, -Infinity, Infinity);
-    if (v > bestV) { bestV = v; best = m; }
-  }
-  return best;
-}
-function openCastle(two) {
-  Object.assign(castle, { pieces: castleStart(), turn: 0, two, picked: -1, over: false });
-  $("castleEnd").hidden = true;
-  show("castle");
-  drawCastle(true);
-  say(two ? T().castleDogs : T().castleGo);
-}
-function drawCastle(fresh) {
-  const board = $("castleBoard");
-  if (fresh) {
-    board.innerHTML = "";
-    for (let y = 0; y < BOARD; y++) for (let x = 0; x < BOARD; x++) {
-      const sq = document.createElement("button");
-      sq.type = "button";
-      sq.className = "sq" + ((x + y) % 2 ? " dark" : "");
-      sq.dataset.x = x; sq.dataset.y = y;
-      const flag = FLAG.findIndex(f => f.x === x && f.y === y);
-      if (flag >= 0) {
-        sq.classList.add("flag", "team-" + flag);
-        sq.appendChild(picture("castle", "castle-pic"));
-        sq.insertAdjacentHTML("beforeend", icon("flag", "castle-flag"));
-      }
-      sq.onclick = () => castleTap(x, y);
-      board.appendChild(sq);
-    }
-    castle.pieces.forEach((p, i) => {
-      const el = document.createElement("div");
-      el.className = "animal team-" + p.team;
-      el.dataset.i = i;
-      el.appendChild(picture(TEAM_IDS[p.team]));
-      board.appendChild(el);
-    });
-  }
-  const targets = castle.picked >= 0 ? castleMoves(castle.pieces, castle.turn).filter(m => m.i === castle.picked) : [];
-  board.querySelectorAll(".sq").forEach(sq => sq.classList.toggle("target", targets.some(m => m.x === +sq.dataset.x && m.y === +sq.dataset.y)));
-  board.querySelectorAll(".animal").forEach(el => {
-    const p = castle.pieces[+el.dataset.i];
-    el.style.transform = `translate(${p.x * 100}%, ${p.y * 100}%)`;
-    el.classList.toggle("picked", +el.dataset.i === castle.picked);
-    el.classList.toggle("can", !castle.over && p.team === castle.turn && (castle.two || p.team === 0));
-  });
-  const turn = $("castleTurn");
-  turn.innerHTML = "";
-  turn.appendChild(picture(TEAM_IDS[castle.turn]));
-  turn.className = "castle-turn team-" + castle.turn;
-}
-function castleTap(x, y) {
-  if (castle.over || (!castle.two && castle.turn !== 0)) return;
-  const i = at(castle.pieces, x, y);
-  if (i >= 0 && castle.pieces[i].team === castle.turn) { castle.picked = i; tone(660, 0, 0.08, "triangle", 0.15); drawCastle(); return; }
-  const m = castle.picked >= 0 && castleMoves(castle.pieces, castle.turn).find(m => m.i === castle.picked && m.x === x && m.y === y);
-  if (m) castleMove(m);
-}
-function castleMove(m) {
-  const g = gameId;
-  const { pieces, caught } = castleApply(castle.pieces, m);
-  castle.pieces = pieces; castle.picked = -1;
-  tone(caught >= 0 ? 330 : 520, 0, 0.12, "triangle", 0.18);
-  const w = won(pieces);
-  if (w !== undefined) {
-    castle.over = true; drawCastle();
-    setTimeout(() => { if (g === gameId) castleEnd(w); }, 450);
-    return;
-  }
-  castle.turn = 1 - castle.turn;
-  drawCastle();
-  if (caught >= 0) { boop(); say(T().castleCaught); }
-  else if (castle.two) say(castle.turn ? T().castleCats : T().castleDogs);
-  if (!castle.two && castle.turn === 1) setTimeout(() => {
-    if (g !== gameId || castle.over) return;
-    castleMove(castleAI(castle.pieces, 1, levelOf[topic.id] || 2));
-  }, caught >= 0 ? 1400 : 700);
-}
-function castleEnd(winner) {
-  const dogsWon = winner === 0;
-  if (dogsWon || castle.two) { cheer(); confetti(30); } else boop();
-  say(castle.two ? (dogsWon ? T().castleDogsWin : T().castleCatsWin) : dogsWon ? T().castleWin : T().castleLose);
-  const pic = $("castleEndPic");
-  pic.innerHTML = "";
-  pic.appendChild(picture(TEAM_IDS[winner]));
-  pic.insertAdjacentHTML("beforeend", icon("flag", "castle-flag team-" + (1 - winner)));
-  $("castleEnd").hidden = false;
-}
-$("castleAgain").onclick = () => openCastle(castle.two);
-$("castleBack").onclick = backToTopic;
 
 // ---------- 3D shapes: the solids drawn live in 3D, turning slowly; the big one in Discover spins with a finger ----------
 const SOLIDS = { "shape-cube": ["cube", "#fb8c00"], "shape-sphere": ["sphere", "#26c6da"], "shape-cylinder": ["cylinder", "#1e88e5"],
