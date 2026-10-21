@@ -1245,7 +1245,9 @@ function unicornSVG(f) {
 </svg>`;
 }
 const RAINBOW = ["#ff5252", "#ffa726", "#ffee58", "#66bb6a", "#42a5f5", "#ab47bc"];
-const UNI_LEVELS = { 1: { need: 2, speed: 0.17, target: 0.65 }, 2: { need: 3, speed: 0.22, target: 0.5 }, 3: { need: 4, speed: 0.28, target: 0.4 } };
+// per level: how many to catch per stripe, how fast they come, how many are the right one, and the lives (hearts)
+const UNI_LEVELS = { 1: { need: 2, speed: 0.17, target: 0.65, lives: 5 }, 2: { need: 3, speed: 0.22, target: 0.5, lives: 4 },
+  3: { need: 4, speed: 0.28, target: 0.4, lives: 3 } };
 // What there is to learn, as four themes: the colours of the rainbow (in their order), numbers, letters and shapes.
 // Each theme asks for six things, one per stripe of the rainbow, from a pool that grows with the level. In the
 // Colours, Numbers, ABC and Shapes topics the game plays that theme; in Fairy tales the child picks one.
@@ -1271,7 +1273,7 @@ function openUnicorn() {
   show("unicorn");
   const level = levelOf[topic.id] || 2;
   Object.assign(uni, { lvl: UNI_LEVELS[level], level, theme: null, targets: [], got: 0, stripes: 0, stars: [], sparks: [], clouds: [], spawn: 0.8, t: 0,
-    pause: 0, done: false, said: 0, x: 0, y: 0, tx: null, ty: null, vx: 0, vy: 0, face: 1, flip: 1, ang: 0, phase: 0, speed: 0, id: ++uni.id, w: 0, h: 0 });
+    pause: 0, done: false, over: false, lives: UNI_LEVELS[level].lives, hurt: 0, said: 0, x: 0, y: 0, tx: null, ty: null, vx: 0, vy: 0, face: 1, flip: 1, ang: 0, phase: 0, speed: 0, id: ++uni.id, w: 0, h: 0 });
   $("uniEnd").hidden = true;
   loadPack(lang, "unicorn"); // the game's sentences
   const fit = () => {
@@ -1348,7 +1350,8 @@ function uniStep(dt) {
     life: 0.9, max: 0.9, c: RAINBOW[Math.floor(Math.random() * 6)], r: 2 + Math.random() * 3 + Math.min(2, speed / 400) });
   for (const c of uni.clouds) { c.x -= c.v * dt; if (c.x < -120 * c.s) { c.x = w + 120 * c.s; c.y = h * (0.12 + Math.random() * 0.6); } }
   if (uni.pause > 0) uni.pause -= dt;
-  else if (!uni.done && uni.theme) {
+  if (uni.hurt > 0) uni.hurt -= dt;
+  if (!uni.done && !uni.over && uni.theme && uni.pause <= 0) {
     uni.spawn -= dt;
     if (uni.spawn <= 0) {
       // the thing to catch, or another one of the same theme; numbers, letters and shapes come in any colour
@@ -1367,17 +1370,30 @@ function uniStep(dt) {
     s.y += Math.sin(s.ph) * 22 * dt + (s.bounce ? 160 * dt : 0);
     if (s.bounce || s.gone) continue;
     if (Math.hypot(s.x - hx, s.y - hy) < s.r + reach) {
-      if (s.v === uni.targets[uni.stripes] && !uni.done) uniCatch(s);
+      if (uni.done || uni.over) continue;
+      if (s.v === uni.targets[uni.stripes]) uniCatch(s);
       else {
         s.bounce = true; s.vx = 260; s.spin = 9; tone(330, 0, 0.12, "sine", 0.12); tone(247, 0.08, 0.16, "sine", 0.1);
-        // say gently what it was, and what to catch (not too often)
-        if (!uni.done && uni.t - uni.said > 4) { uni.said = uni.t; say([uniIs(s.v), uniAsk(uni.targets[uni.stripes])]); }
+        if (uni.hurt <= 0) uniHurt(s.v);
       }
     }
   }
   uni.stars = uni.stars.filter(s => !s.gone && s.x > -60 && s.x < w + 80 && s.y < h + 60);
   for (const p of uni.sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += (p.g || 0) * dt; p.life -= dt; }
   uni.sparks = uni.sparks.filter(p => p.life > 0);
+}
+// a wrong catch costs a heart (then the unicorn blinks a moment and cannot lose another); the voice says gently what
+// it was and what to catch. No hearts left: start again.
+function uniHurt(v) {
+  uni.lives--; uni.hurt = 1.6; uni.broke = { at: uni.t, i: uni.lives };
+  tone(392, 0.05, 0.18, "triangle", 0.12); tone(294, 0.2, 0.3, "triangle", 0.12);
+  uniBurst(uni.w / 2 - (uni.lvl.lives - 1) * 15 + uni.lives * 30, 98, "#ff6b9a", 14, 120);
+  if (uni.lives > 0) { uni.said = uni.t; say([uniIs(v), uniAsk(uni.targets[uni.stripes])]); return; }
+  uni.over = true;
+  uni.stars.forEach(o => { o.bounce = true; o.vx = 200; o.spin = 6; });
+  say([uniIs(v), T().uniOver]);
+  const g = gameId;
+  setTimeout(() => { if (g === gameId) $("uniEnd").hidden = false; }, 1800);
 }
 function uniBurst(x, y, colour, n, speed) {
   for (let i = 0; i < n; i++) {
@@ -1393,6 +1409,7 @@ function uniCatch(s) {
   if (uni.got < uni.lvl.need) { say(String(uni.got)); return; } // counting: "1… 2…"
   // a stripe of the rainbow
   uni.stripes++; uni.got = 0; uni.pause = 2.6;
+  uni.lives = Math.min(uni.lvl.lives, uni.lives + 1); // a stripe gives a heart back
   uni.stars.forEach(o => { o.bounce = true; o.vx = 200; o.spin = 6; });
   cheer();
   const g = gameId;
@@ -1520,6 +1537,8 @@ function uniDraw(ctx) {
     // a little stretch with speed, and a breath of up and down while it hovers
     const stretch = Math.min(0.08, (uni.speed || 0) / 6000), bob = Math.sin(uni.t * 2.2) * Math.max(0, 4 - (uni.speed || 0) / 60);
     ctx.save(); ctx.translate(uni.x, uni.y + bob); ctx.rotate(uni.ang || 0);
+    if (uni.hurt > 0) ctx.globalAlpha = 0.45 + 0.55 * (Math.sin(uni.t * 28) > 0 ? 1 : 0); // it blinks after a wrong catch
+    if (uni.over) ctx.rotate(0.25);
     if (uni.done) ctx.rotate(Math.sin(uni.t * 3) * 0.15);
     ctx.scale((uni.flip ?? 1) * (1 + stretch), 1 - stretch * 0.6);
     ctx.drawImage(img, -size / 2, -size * 0.45, size, size * 194 / 214);
@@ -1537,6 +1556,16 @@ function uniDraw(ctx) {
       if (i < uni.got) uniStar(ctx, x, 44, 11, RAINBOW[stripe], 0, false);
       else { ctx.fillStyle = "rgba(59,45,92,.18)"; ctx.beginPath(); ctx.arc(x, 44, 6, 0, 7); ctx.fill(); }
     }
+  }
+  // the hearts (lives), under it; a lost one pops and stays as a pale outline
+  if (uni.theme && !uni.done) for (let i = 0; i < uni.lvl.lives; i++) {
+    const x = w / 2 - (uni.lvl.lives - 1) * 15 + i * 30, full = i < uni.lives;
+    const pop = uni.broke && uni.broke.i === i ? Math.max(0, 1 - (uni.t - uni.broke.at) * 3) : 0;
+    ctx.save(); ctx.translate(x, 98); ctx.scale(1 + pop * 0.8, 1 + pop * 0.8);
+    uniShape(ctx, "heart", 13);
+    if (full) { ctx.fillStyle = "#ff4f86"; ctx.shadowColor = "rgba(255,79,134,.5)"; ctx.shadowBlur = 6; ctx.fill(); ctx.shadowBlur = 0; ctx.lineWidth = 2.5; ctx.strokeStyle = "#fff"; ctx.stroke(); }
+    else { ctx.lineWidth = 2.5; ctx.strokeStyle = "rgba(255,79,134,.45)"; ctx.stroke(); }
+    ctx.restore();
   }
 }
 $("uniAgain").onclick = () => { gameId++; openUnicorn(); };
