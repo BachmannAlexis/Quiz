@@ -89,7 +89,7 @@ const PACKS = {
   "voice/de/syllables.json": ["a73248b234", 1953268],
   "voice/de/transport.json": ["51d82813e0", 1084206],
   "voice/de/trees.json": ["8e1b87c766", 782075],
-  "voice/de/unicorn.json": ["16894db83f", 878355],
+  "voice/de/unicorn.json": ["df1c531064", 879919],
   "voice/de/weather.json": ["a20441b319", 515894],
   "voice/en/animals.json": ["9b917ad6bf", 3447067],
   "voice/en/body.json": ["771363dee7", 1114489],
@@ -155,7 +155,7 @@ const PACKS = {
   "voice/fr/syllables.json": ["af4505dd41", 2657042],
   "voice/fr/transport.json": ["0b315be4c1", 1166125],
   "voice/fr/trees.json": ["b59dd0fd75", 789640],
-  "voice/fr/unicorn.json": ["a03f949940", 1210153],
+  "voice/fr/unicorn.json": ["83fee0789b", 1210677],
   "voice/fr/weather.json": ["492b6aa047", 596347],
   "voice/it/animals.json": ["59b70e37a4", 3159988],
   "voice/it/body.json": ["c06e5cad15", 1056429],
@@ -188,6 +188,6 @@ const PACKS = {
   "voice/it/syllables.json": ["6e9afc93d3", 1961503],
   "voice/it/transport.json": ["599794f6d2", 1096068],
   "voice/it/trees.json": ["a68c9b74e5", 718652],
-  "voice/it/unicorn.json": ["00e241ddc3", 1072299],
+  "voice/it/unicorn.json": ["cd8442b79f", 1076299],
   "voice/it/weather.json": ["b42427a073", 547429]
 };
