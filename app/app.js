@@ -1246,6 +1246,20 @@ function unicornSVG(f) {
 }
 const RAINBOW = ["#ff5252", "#ffa726", "#ffee58", "#66bb6a", "#42a5f5", "#ab47bc"];
 const UNI_LEVELS = { 1: { need: 2, speed: 0.17, target: 0.65 }, 2: { need: 3, speed: 0.22, target: 0.5 }, 3: { need: 4, speed: 0.28, target: 0.4 } };
+// What there is to learn, as four themes: the colours of the rainbow (in their order), numbers, letters and shapes.
+// Each theme asks for six things, one per stripe of the rainbow, from a pool that grows with the level. In the
+// Colours, Numbers, ABC and Shapes topics the game plays that theme; in Fairy tales the child picks one.
+const UNI_SHAPES = ["circle", "square", "triangle", "heart", "star", "moon", "diamond", "hexagon"];
+const UNI_THEMES = {
+  colours: { pool: () => [0, 1, 2, 3, 4, 5], ordered: true },
+  numbers: { pool: l => Array.from({ length: [5, 9, 10][l - 1] }, (_, k) => k + 1) },
+  letters: { pool: l => [...["AEIOUMSL", "AEIOUMSLBDPRTNF", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"][l - 1]] },
+  shapes: { pool: l => UNI_SHAPES.slice(0, [6, 7, 8][l - 1]) },
+};
+const UNI_TOPIC_THEME = { colors: "colours", numbers: "numbers", letters: "letters", shapes: "shapes" };
+// what the voice says to ask for v, and to name a v caught by mistake
+const uniAsk = v => uni.theme === "colours" ? T().uniCatch[v] : uni.theme === "numbers" ? T().uniCatchNum(v) : uni.theme === "letters" ? T().uniCatchLetter(v) : T().uniShapes[v][0];
+const uniIs = v => uni.theme === "colours" ? T().uniIsColour[v] : uni.theme === "numbers" ? T().uniIsNum(v) : uni.theme === "letters" ? T().uniIsLetter(v) : T().uniShapes[v][1];
 const uni = { frames: [], id: 0 };
 function uniFrames() {
   if (uni.frames.length) return;
@@ -1255,10 +1269,11 @@ function openUnicorn() {
   uniFrames();
   const cv = $("uniCanvas");
   show("unicorn");
-  const lvl = UNI_LEVELS[levelOf[topic.id] || 2];
-  Object.assign(uni, { lvl, colour: 0, got: 0, stripes: 0, stars: [], sparks: [], clouds: [], spawn: 0.8, t: 0, pause: 0, done: false,
-    x: 0, y: 0, tx: null, ty: null, vy: 0, id: ++uni.id, w: 0, h: 0 });
+  const level = levelOf[topic.id] || 2;
+  Object.assign(uni, { lvl: UNI_LEVELS[level], level, theme: null, targets: [], got: 0, stripes: 0, stars: [], sparks: [], clouds: [], spawn: 0.8, t: 0,
+    pause: 0, done: false, said: 0, x: 0, y: 0, tx: null, ty: null, vy: 0, id: ++uni.id, w: 0, h: 0 });
   $("uniEnd").hidden = true;
+  loadPack(lang, "unicorn"); // the game's sentences
   const fit = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 2), r = cv.getBoundingClientRect();
     cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
@@ -1268,7 +1283,9 @@ function openUnicorn() {
   uni.fit = fit;
   uni.x = uni.w * 0.3; uni.y = uni.h * 0.55;
   for (let k = 0; k < 6; k++) uni.clouds.push({ x: Math.random() * uni.w, y: uni.h * (0.12 + Math.random() * 0.6), s: 0.6 + Math.random() * 0.8, v: 8 + Math.random() * 14 });
-  say([T().uniGo, T().uniCatch[0]]);
+  const theme = UNI_TOPIC_THEME[topic.id] || uni.lastTheme;
+  if (theme) uniBegin(theme);
+  else { $("uniPick").hidden = false; say(T().uniPick); }
   const id = uni.id;
   let last = performance.now();
   const loop = now => {
@@ -1279,12 +1296,20 @@ function openUnicorn() {
   };
   requestAnimationFrame(loop);
 }
+function uniBegin(theme) {
+  $("uniPick").hidden = true;
+  const pool = UNI_THEMES[theme].pool(uni.level);
+  Object.assign(uni, { theme, pool, targets: UNI_THEMES[theme].ordered ? pool : shuffle([...pool]).slice(0, 6), spawn: 0.8 });
+  if (!UNI_TOPIC_THEME[topic.id]) uni.lastTheme = theme;
+  say([T().uniGo, uniAsk(uni.targets[0])]);
+}
+document.querySelectorAll("#uniPick button").forEach(b => { b.onclick = () => { audio(); uniBegin(b.dataset.theme); }; });
 // where the finger is (the unicorn flies a little above it, so the finger does not hide it)
 function uniPoint(e) {
   const r = $("uniCanvas").getBoundingClientRect();
   uni.tx = e.clientX - r.left; uni.ty = e.clientY - r.top - 46;
   // a tap on the big star at the top says the colour again
-  if (e.type === "pointerdown" && Math.hypot(e.clientX - r.left - uni.w / 2, e.clientY - r.top - 44) < 34 && !uni.done) say(T().uniCatch[uni.colour]);
+  if (e.type === "pointerdown" && uni.theme && Math.hypot(e.clientX - r.left - uni.w / 2, e.clientY - r.top - 44) < 34 && !uni.done) say(uniAsk(uni.targets[uni.stripes]));
 }
 $("uniCanvas").addEventListener("pointerdown", e => { e.preventDefault(); audio(); uniPoint(e); });
 $("uniCanvas").addEventListener("pointermove", e => { if (e.buttons || e.pointerType !== "mouse") uniPoint(e); });
@@ -1306,12 +1331,14 @@ function uniStep(dt) {
     life: 0.9, max: 0.9, c: RAINBOW[Math.floor(Math.random() * 6)], r: 2 + Math.random() * 3 });
   for (const c of uni.clouds) { c.x -= c.v * dt; if (c.x < -120 * c.s) { c.x = w + 120 * c.s; c.y = h * (0.12 + Math.random() * 0.6); } }
   if (uni.pause > 0) uni.pause -= dt;
-  else if (!uni.done) {
+  else if (!uni.done && uni.theme) {
     uni.spawn -= dt;
     if (uni.spawn <= 0) {
-      const target = Math.random() < uni.lvl.target;
-      const others = RAINBOW.map((_, i) => i).filter(i => i !== uni.colour);
-      uni.stars.push({ x: w + 40, y: h * (0.28 + Math.random() * 0.62), r: Math.max(26, Math.min(40, w * 0.08)), c: target ? uni.colour : others[Math.floor(Math.random() * others.length)],
+      // the thing to catch, or another one of the same theme; numbers, letters and shapes come in any colour
+      const want = uni.targets[uni.stripes], others = uni.pool.filter(v => v !== want);
+      const v = Math.random() < uni.lvl.target ? want : others[Math.floor(Math.random() * others.length)];
+      uni.stars.push({ x: w + 40, y: h * (0.28 + Math.random() * 0.62), r: Math.max(28, Math.min(42, w * 0.085)), v,
+        c: uni.theme === "colours" ? v : Math.floor(Math.random() * 6),
         ph: Math.random() * 6, rot: 0, spin: 0, vx: -uni.lvl.speed * w * (0.85 + Math.random() * 0.3), bounce: false });
       uni.spawn = 0.75 + Math.random() * 0.6;
     }
@@ -1323,8 +1350,12 @@ function uniStep(dt) {
     s.y += Math.sin(s.ph) * 22 * dt + (s.bounce ? 160 * dt : 0);
     if (s.bounce || s.gone) continue;
     if (Math.hypot(s.x - hx, s.y - hy) < s.r + reach) {
-      if (s.c === uni.colour && !uni.done) uniCatch(s);
-      else { s.bounce = true; s.vx = 260; s.spin = 9; tone(330, 0, 0.12, "sine", 0.12); tone(247, 0.08, 0.16, "sine", 0.1); }
+      if (s.v === uni.targets[uni.stripes] && !uni.done) uniCatch(s);
+      else {
+        s.bounce = true; s.vx = 260; s.spin = 9; tone(330, 0, 0.12, "sine", 0.12); tone(247, 0.08, 0.16, "sine", 0.1);
+        // say gently what it was, and what to catch (not too often)
+        if (!uni.done && uni.t - uni.said > 4) { uni.said = uni.t; say([uniIs(s.v), uniAsk(uni.targets[uni.stripes])]); }
+      }
     }
   }
   uni.stars = uni.stars.filter(s => !s.gone && s.x > -60 && s.x < w + 80 && s.y < h + 60);
@@ -1342,9 +1373,9 @@ function uniCatch(s) {
   uniBurst(s.x, s.y, RAINBOW[s.c], 26, 220);
   [1047, 1319, 1568].forEach((f, i) => tone(f, i * 0.06, 0.18, "triangle", 0.14));
   uni.got++;
-  if (uni.got < uni.lvl.need) return;
+  if (uni.got < uni.lvl.need) { say(String(uni.got)); return; } // counting: "1… 2…"
   // a stripe of the rainbow
-  uni.stripes++; uni.got = 0; uni.pause = 2.2;
+  uni.stripes++; uni.got = 0; uni.pause = 2.6;
   uni.stars.forEach(o => { o.bounce = true; o.vx = 200; o.spin = 6; });
   cheer();
   const g = gameId;
@@ -1353,8 +1384,8 @@ function uniCatch(s) {
     setTimeout(() => { if (g === gameId) uniParty(); }, 700);
     return;
   }
-  uni.colour = uni.stripes;
-  say([T().bravo, T().uniCatch[uni.colour]]);
+  uni.said = uni.t;
+  say([String(uni.got || uni.lvl.need), T().bravo, uniAsk(uni.targets[uni.stripes])]);
 }
 function uniParty() {
   confetti(36);
@@ -1383,6 +1414,51 @@ function uniStar(ctx, x, y, r, colour, rot, face) {
     ctx.beginPath(); ctx.arc(0, r * 0.06, r * 0.16, 0.15 * Math.PI, 0.85 * Math.PI); ctx.lineWidth = r * 0.07; ctx.strokeStyle = "#3b2d5c"; ctx.lineCap = "round"; ctx.stroke();
     ctx.fillStyle = "rgba(255,120,170,.55)";
     ctx.beginPath(); ctx.arc(-r * 0.32, r * 0.12, r * 0.08, 0, 7); ctx.arc(r * 0.32, r * 0.12, r * 0.08, 0, 7); ctx.fill();
+  }
+  ctx.restore();
+}
+// a shape's outline, about 2r across
+function uniShape(ctx, kind, r) {
+  ctx.beginPath();
+  if (kind === "circle") ctx.arc(0, 0, r * 0.9, 0, 7);
+  else if (kind === "square") ctx.roundRect(-r * 0.8, -r * 0.8, r * 1.6, r * 1.6, r * 0.2);
+  else if (kind === "triangle") { ctx.moveTo(0, -r * 0.95); ctx.lineTo(r * 0.95, r * 0.75); ctx.lineTo(-r * 0.95, r * 0.75); ctx.closePath(); }
+  else if (kind === "heart") { ctx.moveTo(0, r * 0.85); ctx.bezierCurveTo(-r * 1.3, 0, -r * 0.7, -r * 1.05, 0, -r * 0.4); ctx.bezierCurveTo(r * 0.7, -r * 1.05, r * 1.3, 0, 0, r * 0.85); }
+  else if (kind === "moon") { ctx.arc(0, 0, r * 0.9, 0.35 * Math.PI, 1.65 * Math.PI); ctx.arc(r * 0.45, -r * 0.05, r * 0.7, 1.4 * Math.PI, 0.6 * Math.PI, true); ctx.closePath(); }
+  else if (kind === "diamond") { ctx.moveTo(0, -r); ctx.lineTo(r * 0.7, 0); ctx.lineTo(0, r); ctx.lineTo(-r * 0.7, 0); ctx.closePath(); }
+  else if (kind === "hexagon") for (let i = 0; i < 6; i++) { const a = Math.PI / 6 + i * Math.PI / 3; ctx.lineTo(Math.cos(a) * r * 0.92, Math.sin(a) * r * 0.92); }
+  else for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.5 : r; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+  ctx.closePath();
+}
+// a happy face, for stars and shapes
+function uniFace(ctx, r, dy = 0) {
+  ctx.fillStyle = "#3b2d5c";
+  ctx.beginPath(); ctx.arc(-r * 0.18, dy - r * 0.05, r * 0.07, 0, 7); ctx.arc(r * 0.18, dy - r * 0.05, r * 0.07, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, dy + r * 0.06, r * 0.16, 0.15 * Math.PI, 0.85 * Math.PI); ctx.lineWidth = r * 0.07; ctx.strokeStyle = "#3b2d5c"; ctx.lineCap = "round"; ctx.stroke();
+  ctx.fillStyle = "rgba(255,120,170,.55)";
+  ctx.beginPath(); ctx.arc(-r * 0.32, dy + r * 0.12, r * 0.08, 0, 7); ctx.arc(r * 0.32, dy + r * 0.12, r * 0.08, 0, 7); ctx.fill();
+}
+let uniFont = "";
+// one thing to catch: a colour star, a number on a star, a letter in a bubble or a smiling shape
+function uniItem(ctx, x, y, r, v, c, rot) {
+  const colour = c < 0 ? "#9575cd" : RAINBOW[c]; // c -1: the model at the top, in a neutral colour (any colour is right)
+  if (uni.theme === "colours") return uniStar(ctx, x, y, r, colour, rot, true);
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  const g = ctx.createRadialGradient(-r * 0.3, -r * 0.35, r * 0.1, 0, 0, r * 1.1);
+  g.addColorStop(0, "#ffffff"); g.addColorStop(0.4, colour); g.addColorStop(1, colour);
+  if (uni.theme === "shapes") uniShape(ctx, v, r);
+  else if (uni.theme === "numbers") uniShape(ctx, "star", r * 1.08);
+  else { ctx.beginPath(); ctx.arc(0, 0, r * 0.95, 0, 7); }
+  ctx.fillStyle = g; ctx.shadowColor = colour; ctx.shadowBlur = r * 0.45; ctx.fill(); ctx.shadowBlur = 0;
+  ctx.lineJoin = "round"; ctx.lineWidth = Math.max(2, r * 0.09); ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.stroke();
+  if (uni.theme === "shapes") uniFace(ctx, r, v === "triangle" ? r * 0.2 : v === "heart" ? -r * 0.05 : 0);
+  else { // the number or the letter, big and white with a dark edge
+    uniFont = uniFont || getComputedStyle(document.body).fontFamily;
+    ctx.font = `700 ${Math.round(r * (uni.theme === "numbers" ? 0.95 : 1.15))}px ${uniFont}`;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    const t = String(v), ty = r * (uni.theme === "numbers" ? 0.1 : 0.06);
+    ctx.lineWidth = r * 0.16; ctx.strokeStyle = "#3b2d5c"; ctx.strokeText(t, 0, ty);
+    ctx.fillStyle = "#ffffff"; ctx.fillText(t, 0, ty);
   }
   ctx.restore();
 }
@@ -1420,7 +1496,7 @@ function uniDraw(ctx) {
     else { ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill(); }
   }
   ctx.globalAlpha = 1;
-  for (const s of uni.stars) uniStar(ctx, s.x, s.y, s.r, RAINBOW[s.c], s.rot + Math.sin(s.ph) * 0.12, true);
+  for (const s of uni.stars) uniItem(ctx, s.x, s.y, s.r, s.v, s.c, s.rot + Math.sin(s.ph) * 0.12);
   // the unicorn, tilted as it climbs or dives
   const size = uniSize(), img = uni.frames[Math.floor(uni.t * 10) % 8];
   if (img && img.complete) {
@@ -1430,15 +1506,15 @@ function uniDraw(ctx) {
     ctx.restore();
   }
   // at the top: the colour to catch, and how many are still to catch
-  if (!uni.done) {
-    const pulse = 1 + 0.08 * Math.sin(uni.t * 5);
+  if (!uni.done && uni.theme) {
+    const pulse = 1 + 0.08 * Math.sin(uni.t * 5), want = uni.targets[uni.stripes], stripe = uni.theme === "colours" ? want : uni.stripes;
     ctx.fillStyle = "rgba(255,255,255,.75)";
     const bw = 64 + uni.lvl.need * 26;
     ctx.beginPath(); ctx.roundRect(w / 2 - bw / 2, 14, bw, 60, 30); ctx.fill();
-    uniStar(ctx, w / 2 - bw / 2 + 34, 44, 24 * pulse, RAINBOW[uni.colour], 0, true);
+    uniItem(ctx, w / 2 - bw / 2 + 34, 44, 24 * pulse, want, uni.theme === "colours" ? want : -1, 0);
     for (let i = 0; i < uni.lvl.need; i++) {
       const x = w / 2 - bw / 2 + 74 + i * 26;
-      if (i < uni.got) uniStar(ctx, x, 44, 11, RAINBOW[uni.colour], 0, false);
+      if (i < uni.got) uniStar(ctx, x, 44, 11, RAINBOW[stripe], 0, false);
       else { ctx.fillStyle = "rgba(59,45,92,.18)"; ctx.beginPath(); ctx.arc(x, 44, 6, 0, 7); ctx.fill(); }
     }
   }

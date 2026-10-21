@@ -31,7 +31,7 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
     const parts = item.parts.map(p => p.startsWith("/") ? `[[ ${p.slice(1)} ]]` : p);
     return parts.length > 1 || item.parts[0].startsWith("/") ? T.soundOut(parts.join("… "), item[lang]) : T.name(item[lang], true);
   };
-  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.sayRead, T.readIt, T.yourTurn, T.bravo, T.puzzleGo, T.uniGo, T.uniDone, ...T.uniCatch, ...T.levels]);
+  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.sayRead, T.readIt, T.yourTurn, T.bravo, T.puzzleGo, ...T.levels]);
   for (const t of TOPICS) {
     common.add(t[lang]);
     for (const g of t.groups || []) common.add(g[lang]);
@@ -61,6 +61,16 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
     if (t.id === "clock") for (let h = 1; h <= 12; h++) for (let m = 0; m < 60; m += 5) s.add(T.name(clockNames(h, m)[k], true));
     out[lang][t.id] = [...s];
   }
+}
+// the rainbow unicorn's pack: every theme's asks and names, for every level, and counting
+for (const lang of Object.keys(out).filter(l => !l.startsWith("_"))) {
+  const T = TEXT[lang], s = new Set([T.uniGo, T.uniDone, T.uniPick, T.bravo]);
+  for (const c of T.uniCatch) s.add(c);
+  for (const c of T.uniIsColour) s.add(c);
+  for (let n = 1; n <= 10; n++) { s.add(T.uniCatchNum(n)); s.add(T.uniIsNum(n)); s.add(String(n)); }
+  for (const c of "ABCDEFGHIJKLMNOPQRSTUVWXYZ") { s.add(T.uniCatchLetter(c)); s.add(T.uniIsLetter(c)); }
+  for (const [ask, is] of Object.values(T.uniShapes)) { s.add(ask); s.add(is); }
+  out[lang].unicorn = [...s];
 }
 // how make_voice.py says each sound card ("« ou »" -> the sound u, not the word "ou")
 out._phonemes = {};
