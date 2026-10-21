@@ -31,7 +31,7 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
     const parts = item.parts.map(p => p.startsWith("/") ? `[[ ${p.slice(1)} ]]` : p);
     return parts.length > 1 || item.parts[0].startsWith("/") ? T.soundOut(parts.join("… "), item[lang]) : T.name(item[lang], true);
   };
-  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.sayRead, T.readIt, T.yourTurn, T.bravo, T.puzzleGo, ...T.levels]);
+  const common = new Set([T.listen, T.whereAreWe, T.whoIsIt, T.whatIsIt, T.whatWeather, T.no, T.bravoSaid, T.voiceSample, T.sayWhat, T.sayFeel, T.sayRead, T.readIt, T.yourTurn, T.bravo, T.puzzleGo, T.uniGo, T.uniDone, ...T.uniCatch, ...T.levels]);
   for (const t of TOPICS) {
     common.add(t[lang]);
     for (const g of t.groups || []) common.add(g[lang]);

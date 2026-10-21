@@ -4,7 +4,7 @@
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
 
-const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum", add: "plus", subtract: "minus", line: "line" };
+const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum", unicorn: "star", add: "plus", subtract: "minus", line: "line" };
 // an icon from the sprite in index.html (one line style for every control)
 const icon = (id, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
@@ -440,7 +440,7 @@ function setLook(l) {
 // The phone's back button (or gesture) goes back one screen: from a game, the end or Discover to the topic, from
 // the topic to home, and closes an open sheet, instead of leaving the app. Each screen deeper than home adds a
 // history entry; leaving a screen with the app's own buttons removes it again.
-const DEPTH = { look: 0, home: 0, topic: 1, game: 2, play: 2, done: 2, puzzle: 2, drums: 2 };
+const DEPTH = { look: 0, home: 0, topic: 1, game: 2, play: 2, done: 2, puzzle: 2, drums: 2, unicorn: 2 };
 let depth = 0, skipPops = 0;
 function syncHistory(d) {
   try {
@@ -1186,6 +1186,7 @@ function start(m) {
   if (m === "play" || m === "explore") return openPlay();
   if (m === "puzzle") return startPuzzles();
   if (m === "drums") return openDrums();
+  if (m === "unicorn") return openUnicorn();
   if (topic.math) return startMath();
   round = 0; stars = 0; results = []; lastAnswer = null; deck = []; thinking = []; missed = [];
   $("speak").innerHTML = icon(mode === "listen" ? "ear" : mode === "say" ? "mic" : "speaker");
@@ -1196,6 +1197,254 @@ function start(m) {
   show("game");
   askQuestion();
 }
+
+// ---------- The rainbow unicorn (Fairy tales): the child flies a unicorn with a finger and catches the stars of the
+// colour the voice asks for; each colour adds a stripe to the rainbow, and a full rainbow is a party. Nothing is ever
+// lost: a star of another colour just bounces away.
+// A flying unicorn facing right, as SVG. f in [0, 1): the animation phase (wings flap, legs gallop).
+function unicornSVG(f) {
+  const s = Math.sin(f * 2 * Math.PI), c = Math.cos(f * 2 * Math.PI);
+  const wing = -18 + 26 * (s * 0.5 + 0.5);          // wing angle, degrees
+  const legA = 22 * s, legB = -22 * s;              // front and back legs swing
+  const leg = (x, y, a, back) => `<g transform="rotate(${a.toFixed(1)} ${x} ${y})">
+      <path d="M${x - 7} ${y} q-1 22 1 30 h12 q2 -8 1 -30z" fill="${back ? "#ece6fb" : "#ffffff"}" stroke="#cbbde8" stroke-width="2"/>
+      <rect x="${x - 7.5}" y="${y + 27}" width="15" height="9" rx="4" fill="#b39ddb"/></g>`;
+  const mane = ["#ff7eb6", "#ffb74d", "#fff176", "#81c784", "#64b5f6", "#ba68c8"];
+  // the tail: six curls, one per colour, from the top (pink) to the bottom (purple)
+  const tail = mane.map((col, k) => { const y = 78 + k * 5, w = 1 - k * 0.07, sw = 3 * c * (1 - k / 8);
+    return `<path d="M60 ${y} q${-22 * w} ${-12 + sw} ${-34 * w} ${2 + k * 2} q${8 * w} 4 ${18 * w} 2 q${-12 * w} ${8 + sw} ${-14 * w} ${16} q${18 * w} -2 ${30 * w} ${-20 - k}z" fill="${col}" stroke="rgba(255,255,255,.6)" stroke-width="1.2"/>`; }).join("");
+  // the mane: six locks down the neck, smaller towards the shoulder
+  const hair = mane.map((col, k) => { const x = 150 - k * 5.5, y = 26 + k * 7, l = 1 - k * 0.1, sw = 3 * s * (k / 5);
+    return `<path d="M${x} ${y} q${-16 * l} ${4 + sw} ${-20 * l} ${22 * l} q${8 * l} -4 ${14 * l} -2 q-4 ${8 * l} -2 ${14 * l} q${12 * l} -10 ${14 * l} ${-32 * l}z" fill="${col}" stroke="rgba(255,255,255,.6)" stroke-width="1.2"/>`; }).join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -24 214 194">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#efe8ff"/></linearGradient>
+    <linearGradient id="horn" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffb300"/><stop offset="1" stop-color="#fff59d"/></linearGradient>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d1c4e9"/></linearGradient>
+  </defs>
+  ${leg(80, 108, legB, true)}${leg(128, 108, legA, true)}
+  ${tail}
+  <ellipse cx="102" cy="94" rx="50" ry="30" fill="url(#body)" stroke="#cbbde8" stroke-width="2.5"/>
+  ${leg(92, 112, legA, false)}${leg(138, 110, legB, false)}
+  <path d="M128 84 q4 -34 18 -50 q22 -4 30 14 q-6 22 -22 44z" fill="url(#body)" stroke="#cbbde8" stroke-width="2.5"/>
+  <path d="M146 30 q18 -10 34 4 q12 10 14 26 q2 12 -10 15 q-14 3 -26 -6 q-14 -10 -12 -39z" fill="#ffffff" stroke="#cbbde8" stroke-width="2.5"/>
+  <ellipse cx="188" cy="64" rx="3" ry="2" fill="#cbbde8"/>
+  <path d="M158 24 l-6 -20 l14 14z" fill="#ffffff" stroke="#cbbde8" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M166 22 l14 -40 l4 44z" fill="url(#horn)" stroke="#f9a825" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M170 12 l10 2 M173 3 l8 2 M176 -6 l5 1" stroke="#f9a825" stroke-width="2" stroke-linecap="round"/>
+  ${hair}
+  <path d="M168 44 q6 6 12 0" fill="none" stroke="#4a3b6b" stroke-width="3" stroke-linecap="round"/>
+  <path d="M169 44 l-3 3 M174 47 l0 4 M179 44 l3 3" stroke="#4a3b6b" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="180" cy="56" rx="7" ry="4.5" fill="#ffb3d1" opacity=".8"/>
+  <path d="M184 66 q4 3 8 -1" fill="none" stroke="#b07fa8" stroke-width="2" stroke-linecap="round"/>
+  <g transform="rotate(${wing.toFixed(1)} 112 78)">
+    <path d="M112 78 q-6 -44 -46 -62 q8 18 4 26 q-12 -6 -22 -6 q10 12 10 20 q-12 -2 -20 2 q16 10 28 22 q18 6 46 -2z" fill="url(#wing)" stroke="#b9a7e0" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M100 70 q-14 -20 -34 -30 M98 74 q-16 -10 -36 -12 M96 78 q-14 -2 -30 2" fill="none" stroke="#c9b8ef" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <path d="M118 70 l3 -7 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3z" fill="#fff59d" opacity=".9"/>
+</svg>`;
+}
+const RAINBOW = ["#ff5252", "#ffa726", "#ffee58", "#66bb6a", "#42a5f5", "#ab47bc"];
+const UNI_LEVELS = { 1: { need: 2, speed: 0.17, target: 0.65 }, 2: { need: 3, speed: 0.22, target: 0.5 }, 3: { need: 4, speed: 0.28, target: 0.4 } };
+const uni = { frames: [], id: 0 };
+function uniFrames() {
+  if (uni.frames.length) return;
+  for (let k = 0; k < 8; k++) { const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(unicornSVG(k / 8)); uni.frames.push(img); }
+}
+function openUnicorn() {
+  uniFrames();
+  const cv = $("uniCanvas");
+  show("unicorn");
+  const lvl = UNI_LEVELS[levelOf[topic.id] || 2];
+  Object.assign(uni, { lvl, colour: 0, got: 0, stripes: 0, stars: [], sparks: [], clouds: [], spawn: 0.8, t: 0, pause: 0, done: false,
+    x: 0, y: 0, tx: null, ty: null, vy: 0, id: ++uni.id, w: 0, h: 0 });
+  $("uniEnd").hidden = true;
+  const fit = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2), r = cv.getBoundingClientRect();
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    uni.w = r.width; uni.h = r.height; uni.dpr = dpr;
+  };
+  fit();
+  uni.fit = fit;
+  uni.x = uni.w * 0.3; uni.y = uni.h * 0.55;
+  for (let k = 0; k < 6; k++) uni.clouds.push({ x: Math.random() * uni.w, y: uni.h * (0.12 + Math.random() * 0.6), s: 0.6 + Math.random() * 0.8, v: 8 + Math.random() * 14 });
+  say([T().uniGo, T().uniCatch[0]]);
+  const id = uni.id;
+  let last = performance.now();
+  const loop = now => {
+    if (id !== uni.id || screen !== "unicorn") return;
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    uniStep(dt); uniDraw(cv.getContext("2d"));
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+// where the finger is (the unicorn flies a little above it, so the finger does not hide it)
+function uniPoint(e) {
+  const r = $("uniCanvas").getBoundingClientRect();
+  uni.tx = e.clientX - r.left; uni.ty = e.clientY - r.top - 46;
+  // a tap on the big star at the top says the colour again
+  if (e.type === "pointerdown" && Math.hypot(e.clientX - r.left - uni.w / 2, e.clientY - r.top - 44) < 34 && !uni.done) say(T().uniCatch[uni.colour]);
+}
+$("uniCanvas").addEventListener("pointerdown", e => { e.preventDefault(); audio(); uniPoint(e); });
+$("uniCanvas").addEventListener("pointermove", e => { if (e.buttons || e.pointerType !== "mouse") uniPoint(e); });
+addEventListener("resize", () => { if (screen === "unicorn" && uni.fit) uni.fit(); });
+const uniSize = () => Math.min(uni.w * 0.34, 170);
+function uniStep(dt) {
+  const { w, h } = uni;
+  uni.t += dt;
+  // the unicorn follows the finger, smoothly; alone, it floats up and down
+  // (when the rainbow is full, it dances a loop above it)
+  const tx = uni.done ? w / 2 + Math.cos(uni.t * 1.8) * w * 0.3 : uni.tx ?? w * 0.3;
+  const ty = uni.done ? h * 0.42 + Math.sin(uni.t * 3.6) * h * 0.1 : uni.ty ?? h * 0.55 + Math.sin(uni.t * 1.6) * 30;
+  const k = 1 - Math.exp(-dt * 7), oy = uni.y;
+  uni.x += (Math.max(uniSize() / 2, Math.min(w - uniSize() / 2, tx)) - uni.x) * k;
+  uni.y += (Math.max(110, Math.min(h - 40, ty)) - uni.y) * k;
+  uni.vy = (uni.y - oy) / Math.max(dt, 1e-3);
+  // sparkles behind it, in the colours of the rainbow
+  if (Math.random() < dt * 40) uni.sparks.push({ x: uni.x - uniSize() * 0.42, y: uni.y + (Math.random() - 0.5) * 18, vx: -60 - Math.random() * 60, vy: (Math.random() - 0.5) * 40,
+    life: 0.9, max: 0.9, c: RAINBOW[Math.floor(Math.random() * 6)], r: 2 + Math.random() * 3 });
+  for (const c of uni.clouds) { c.x -= c.v * dt; if (c.x < -120 * c.s) { c.x = w + 120 * c.s; c.y = h * (0.12 + Math.random() * 0.6); } }
+  if (uni.pause > 0) uni.pause -= dt;
+  else if (!uni.done) {
+    uni.spawn -= dt;
+    if (uni.spawn <= 0) {
+      const target = Math.random() < uni.lvl.target;
+      const others = RAINBOW.map((_, i) => i).filter(i => i !== uni.colour);
+      uni.stars.push({ x: w + 40, y: h * (0.28 + Math.random() * 0.62), r: Math.max(26, Math.min(40, w * 0.08)), c: target ? uni.colour : others[Math.floor(Math.random() * others.length)],
+        ph: Math.random() * 6, rot: 0, spin: 0, vx: -uni.lvl.speed * w * (0.85 + Math.random() * 0.3), bounce: false });
+      uni.spawn = 0.75 + Math.random() * 0.6;
+    }
+  }
+  // stars float in from the right; touching one catches it
+  const hx = uni.x + uniSize() * 0.18, hy = uni.y - uniSize() * 0.05, reach = uniSize() * 0.36;
+  for (const s of uni.stars) {
+    s.x += s.vx * dt; s.ph += dt * 2.4; s.rot += s.spin * dt;
+    s.y += Math.sin(s.ph) * 22 * dt + (s.bounce ? 160 * dt : 0);
+    if (s.bounce || s.gone) continue;
+    if (Math.hypot(s.x - hx, s.y - hy) < s.r + reach) {
+      if (s.c === uni.colour && !uni.done) uniCatch(s);
+      else { s.bounce = true; s.vx = 260; s.spin = 9; tone(330, 0, 0.12, "sine", 0.12); tone(247, 0.08, 0.16, "sine", 0.1); }
+    }
+  }
+  uni.stars = uni.stars.filter(s => !s.gone && s.x > -60 && s.x < w + 80 && s.y < h + 60);
+  for (const p of uni.sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += (p.g || 0) * dt; p.life -= dt; }
+  uni.sparks = uni.sparks.filter(p => p.life > 0);
+}
+function uniBurst(x, y, colour, n, speed) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, v = speed * (0.4 + Math.random() * 0.8);
+    uni.sparks.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, g: 120, life: 1.1, max: 1.1, c: colour, r: 3 + Math.random() * 4, star: Math.random() < 0.5 });
+  }
+}
+function uniCatch(s) {
+  s.gone = true;
+  uniBurst(s.x, s.y, RAINBOW[s.c], 26, 220);
+  [1047, 1319, 1568].forEach((f, i) => tone(f, i * 0.06, 0.18, "triangle", 0.14));
+  uni.got++;
+  if (uni.got < uni.lvl.need) return;
+  // a stripe of the rainbow
+  uni.stripes++; uni.got = 0; uni.pause = 2.2;
+  uni.stars.forEach(o => { o.bounce = true; o.vx = 200; o.spin = 6; });
+  cheer();
+  const g = gameId;
+  if (uni.stripes === RAINBOW.length) {
+    uni.done = true;
+    setTimeout(() => { if (g === gameId) uniParty(); }, 700);
+    return;
+  }
+  uni.colour = uni.stripes;
+  say([T().bravo, T().uniCatch[uni.colour]]);
+}
+function uniParty() {
+  confetti(36);
+  say(T().uniDone);
+  const g = gameId;
+  for (let k = 0; k < 6; k++) setTimeout(() => {
+    if (g !== gameId) return;
+    uniBurst(uni.w * (0.2 + Math.random() * 0.6), uni.h * (0.2 + Math.random() * 0.4), RAINBOW[k], 40, 260);
+    tone(784 + k * 110, 0, 0.3, "triangle", 0.12);
+  }, 300 + k * 380);
+  setTimeout(() => { if (g === gameId) $("uniEnd").hidden = false; }, 2600);
+}
+function uniStar(ctx, x, y, r, colour, rot, face) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  ctx.beginPath();
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.5 : r; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+  ctx.closePath();
+  const g = ctx.createRadialGradient(-r * 0.25, -r * 0.3, r * 0.1, 0, 0, r);
+  g.addColorStop(0, "#ffffff"); g.addColorStop(0.35, colour); g.addColorStop(1, colour);
+  ctx.fillStyle = g; ctx.lineJoin = "round"; ctx.lineWidth = Math.max(2, r * 0.09); ctx.strokeStyle = "rgba(255,255,255,.95)";
+  ctx.shadowColor = colour; ctx.shadowBlur = r * 0.5;
+  ctx.fill(); ctx.shadowBlur = 0; ctx.stroke();
+  if (face) { // a happy face
+    ctx.fillStyle = "#3b2d5c";
+    ctx.beginPath(); ctx.arc(-r * 0.18, -r * 0.05, r * 0.07, 0, 7); ctx.arc(r * 0.18, -r * 0.05, r * 0.07, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(0, r * 0.06, r * 0.16, 0.15 * Math.PI, 0.85 * Math.PI); ctx.lineWidth = r * 0.07; ctx.strokeStyle = "#3b2d5c"; ctx.lineCap = "round"; ctx.stroke();
+    ctx.fillStyle = "rgba(255,120,170,.55)";
+    ctx.beginPath(); ctx.arc(-r * 0.32, r * 0.12, r * 0.08, 0, 7); ctx.arc(r * 0.32, r * 0.12, r * 0.08, 0, 7); ctx.fill();
+  }
+  ctx.restore();
+}
+function uniCloud(ctx, x, y, s) {
+  ctx.fillStyle = "rgba(255,255,255,.92)";
+  ctx.beginPath();
+  for (const [dx, dy, r] of [[0, 0, 26], [28, -12, 30], [58, 0, 24], [30, 10, 26], [-22, 8, 18], [78, 10, 16]]) { ctx.moveTo(x + (dx + r) * s, y + dy * s); ctx.arc(x + dx * s, y + dy * s, r * s, 0, 7); }
+  ctx.fill();
+}
+function uniDraw(ctx) {
+  const { w, h, dpr } = uni;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // the sky
+  const sky = ctx.createLinearGradient(0, 0, 0, h);
+  sky.addColorStop(0, "#9fd8ff"); sky.addColorStop(0.6, "#e6dcff"); sky.addColorStop(1, "#ffd6ea");
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+  // the rainbow, a stripe per colour caught (the others as a faint outline)
+  const cx = w / 2, cy = h * 1.02, R = Math.min(w * 0.62, h * 0.78), band = Math.max(10, R * 0.07);
+  ctx.lineCap = "butt";
+  RAINBOW.forEach((col, k) => {
+    ctx.beginPath(); ctx.arc(cx, cy, R - k * band, Math.PI, 2 * Math.PI);
+    ctx.lineWidth = band + 1;
+    ctx.strokeStyle = k < uni.stripes ? col : "rgba(255,255,255,.28)";
+    if (k === uni.stripes && !uni.done) ctx.strokeStyle = `rgba(255,255,255,${0.35 + 0.15 * Math.sin(uni.t * 4)})`;
+    ctx.stroke();
+  });
+  for (const c of uni.clouds) uniCloud(ctx, c.x, c.y, c.s);
+  // the hills
+  ctx.fillStyle = "#b9e4a8";
+  ctx.beginPath(); ctx.moveTo(0, h); ctx.quadraticCurveTo(w * 0.25, h - 70, w * 0.55, h - 26); ctx.quadraticCurveTo(w * 0.8, h - 70, w, h - 36); ctx.lineTo(w, h); ctx.fill();
+  // the sparkles
+  for (const p of uni.sparks) {
+    ctx.globalAlpha = Math.max(0, p.life / p.max);
+    if (p.star) uniStar(ctx, p.x, p.y, p.r * 1.6, p.c, p.life * 4, false);
+    else { ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill(); }
+  }
+  ctx.globalAlpha = 1;
+  for (const s of uni.stars) uniStar(ctx, s.x, s.y, s.r, RAINBOW[s.c], s.rot + Math.sin(s.ph) * 0.12, true);
+  // the unicorn, tilted as it climbs or dives
+  const size = uniSize(), img = uni.frames[Math.floor(uni.t * 10) % 8];
+  if (img && img.complete) {
+    ctx.save(); ctx.translate(uni.x, uni.y); ctx.rotate(Math.max(-0.35, Math.min(0.35, uni.vy / 900)));
+    if (uni.done) ctx.rotate(Math.sin(uni.t * 3) * 0.15);
+    ctx.drawImage(img, -size / 2, -size * 0.45, size, size * 194 / 214);
+    ctx.restore();
+  }
+  // at the top: the colour to catch, and how many are still to catch
+  if (!uni.done) {
+    const pulse = 1 + 0.08 * Math.sin(uni.t * 5);
+    ctx.fillStyle = "rgba(255,255,255,.75)";
+    const bw = 64 + uni.lvl.need * 26;
+    ctx.beginPath(); ctx.roundRect(w / 2 - bw / 2, 14, bw, 60, 30); ctx.fill();
+    uniStar(ctx, w / 2 - bw / 2 + 34, 44, 24 * pulse, RAINBOW[uni.colour], 0, true);
+    for (let i = 0; i < uni.lvl.need; i++) {
+      const x = w / 2 - bw / 2 + 74 + i * 26;
+      if (i < uni.got) uniStar(ctx, x, 44, 11, RAINBOW[uni.colour], 0, false);
+      else { ctx.fillStyle = "rgba(59,45,92,.18)"; ctx.beginPath(); ctx.arc(x, 44, 6, 0, 7); ctx.fill(); }
+    }
+  }
+}
+$("uniAgain").onclick = () => { gameId++; openUnicorn(); };
+$("uniBack").onclick = backToTopic;
 
 // ---------- 3D shapes: the solids drawn live in 3D, turning slowly; the big one in Discover spins with a finger ----------
 const SOLIDS = { "shape-cube": ["cube", "#fb8c00"], "shape-sphere": ["sphere", "#26c6da"], "shape-cylinder": ["cylinder", "#1e88e5"],
