@@ -1263,7 +1263,7 @@ const uniIs = v => uni.theme === "colours" ? T().uniIsColour[v] : uni.theme === 
 const uni = { frames: [], id: 0 };
 function uniFrames() {
   if (uni.frames.length) return;
-  for (let k = 0; k < 8; k++) { const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(unicornSVG(k / 8)); uni.frames.push(img); }
+  for (let k = 0; k < 16; k++) { const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(unicornSVG(k / 16)); uni.frames.push(img); }
 }
 function openUnicorn() {
   uniFrames();
@@ -1271,7 +1271,7 @@ function openUnicorn() {
   show("unicorn");
   const level = levelOf[topic.id] || 2;
   Object.assign(uni, { lvl: UNI_LEVELS[level], level, theme: null, targets: [], got: 0, stripes: 0, stars: [], sparks: [], clouds: [], spawn: 0.8, t: 0,
-    pause: 0, done: false, said: 0, x: 0, y: 0, tx: null, ty: null, vy: 0, id: ++uni.id, w: 0, h: 0 });
+    pause: 0, done: false, said: 0, x: 0, y: 0, tx: null, ty: null, vx: 0, vy: 0, face: 1, flip: 1, ang: 0, phase: 0, speed: 0, id: ++uni.id, w: 0, h: 0 });
   $("uniEnd").hidden = true;
   loadPack(lang, "unicorn"); // the game's sentences
   const fit = () => {
@@ -1322,13 +1322,30 @@ function uniStep(dt) {
   // (when the rainbow is full, it dances a loop above it)
   const tx = uni.done ? w / 2 + Math.cos(uni.t * 1.8) * w * 0.3 : uni.tx ?? w * 0.3;
   const ty = uni.done ? h * 0.42 + Math.sin(uni.t * 3.6) * h * 0.1 : uni.ty ?? h * 0.55 + Math.sin(uni.t * 1.6) * 30;
-  const k = 1 - Math.exp(-dt * 7), oy = uni.y;
-  uni.x += (Math.max(uniSize() / 2, Math.min(w - uniSize() / 2, tx)) - uni.x) * k;
-  uni.y += (Math.max(110, Math.min(h - 40, ty)) - uni.y) * k;
-  uni.vy = (uni.y - oy) / Math.max(dt, 1e-3);
-  // sparkles behind it, in the colours of the rainbow
-  if (Math.random() < dt * 40) uni.sparks.push({ x: uni.x - uniSize() * 0.42, y: uni.y + (Math.random() - 0.5) * 18, vx: -60 - Math.random() * 60, vy: (Math.random() - 0.5) * 40,
-    life: 0.9, max: 0.9, c: RAINBOW[Math.floor(Math.random() * 6)], r: 2 + Math.random() * 3 });
+  // Flight: a soft spring pulls it towards the finger (it speeds up, slows down and overshoots a little, as a
+  // flying animal does), with a top speed, so a far tap makes it fly there rather than jump
+  const size = uniSize();
+  const gx = Math.max(size / 2, Math.min(w - size / 2, tx)) - uni.x, gy = Math.max(110, Math.min(h - 40, ty)) - uni.y;
+  const K = 34, D = 2 * Math.sqrt(K) * 0.78;
+  uni.vx = (uni.vx || 0) + (K * gx - D * (uni.vx || 0)) * dt;
+  uni.vy = (uni.vy || 0) + (K * gy - D * (uni.vy || 0)) * dt;
+  const top = Math.max(w, h) * 1.6, speed = Math.hypot(uni.vx, uni.vy);
+  if (speed > top) { uni.vx *= top / speed; uni.vy *= top / speed; }
+  uni.x += uni.vx * dt; uni.y += uni.vy * dt;
+  // it turns round to fly left (a quick, soft turn), banks with its speed and noses up or down as it climbs or dives
+  if (uni.vx < -90) uni.face = -1; else if (uni.vx > 90) uni.face = 1;
+  uni.face = uni.face || 1;
+  uni.flip = (uni.flip ?? 1) + (uni.face - (uni.flip ?? 1)) * (1 - Math.exp(-dt * 12));
+  const lean = Math.max(-0.45, Math.min(0.45, Math.atan2(uni.vy, Math.abs(uni.vx) + 260) * 0.9)) * uni.face;
+  uni.ang = (uni.ang || 0) + (lean - (uni.ang || 0)) * (1 - Math.exp(-dt * 8));
+  // the wings beat faster when it speeds up or climbs, and slowly when it glides
+  uni.phase = ((uni.phase || 0) + dt * (0.9 + Math.min(2.2, speed / 260) + Math.max(0, -uni.vy) / 500)) % 1;
+  uni.speed = speed;
+  // sparkles from its tail, in the colours of the rainbow, more of them when it flies fast
+  const tailX = uni.x - uni.face * size * 0.42, tailY = uni.y + size * 0.05;
+  if (Math.random() < dt * (24 + speed / 12)) uni.sparks.push({ x: tailX, y: tailY + (Math.random() - 0.5) * 18,
+    vx: -uni.face * (40 + Math.random() * 60) - uni.vx * 0.15, vy: (Math.random() - 0.5) * 40 - uni.vy * 0.1,
+    life: 0.9, max: 0.9, c: RAINBOW[Math.floor(Math.random() * 6)], r: 2 + Math.random() * 3 + Math.min(2, speed / 400) });
   for (const c of uni.clouds) { c.x -= c.v * dt; if (c.x < -120 * c.s) { c.x = w + 120 * c.s; c.y = h * (0.12 + Math.random() * 0.6); } }
   if (uni.pause > 0) uni.pause -= dt;
   else if (!uni.done && uni.theme) {
@@ -1344,7 +1361,7 @@ function uniStep(dt) {
     }
   }
   // stars float in from the right; touching one catches it
-  const hx = uni.x + uniSize() * 0.18, hy = uni.y - uniSize() * 0.05, reach = uniSize() * 0.36;
+  const hx = uni.x + (uni.face || 1) * uniSize() * 0.18, hy = uni.y - uniSize() * 0.05, reach = uniSize() * 0.36;
   for (const s of uni.stars) {
     s.x += s.vx * dt; s.ph += dt * 2.4; s.rot += s.spin * dt;
     s.y += Math.sin(s.ph) * 22 * dt + (s.bounce ? 160 * dt : 0);
@@ -1498,10 +1515,13 @@ function uniDraw(ctx) {
   ctx.globalAlpha = 1;
   for (const s of uni.stars) uniItem(ctx, s.x, s.y, s.r, s.v, s.c, s.rot + Math.sin(s.ph) * 0.12);
   // the unicorn, tilted as it climbs or dives
-  const size = uniSize(), img = uni.frames[Math.floor(uni.t * 10) % 8];
+  const size = uniSize(), img = uni.frames[Math.floor((uni.phase || 0) * uni.frames.length) % uni.frames.length];
   if (img && img.complete) {
-    ctx.save(); ctx.translate(uni.x, uni.y); ctx.rotate(Math.max(-0.35, Math.min(0.35, uni.vy / 900)));
+    // a little stretch with speed, and a breath of up and down while it hovers
+    const stretch = Math.min(0.08, (uni.speed || 0) / 6000), bob = Math.sin(uni.t * 2.2) * Math.max(0, 4 - (uni.speed || 0) / 60);
+    ctx.save(); ctx.translate(uni.x, uni.y + bob); ctx.rotate(uni.ang || 0);
     if (uni.done) ctx.rotate(Math.sin(uni.t * 3) * 0.15);
+    ctx.scale((uni.flip ?? 1) * (1 + stretch), 1 - stretch * 0.6);
     ctx.drawImage(img, -size / 2, -size * 0.45, size, size * 194 / 214);
     ctx.restore();
   }
