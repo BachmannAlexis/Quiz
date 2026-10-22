@@ -1301,22 +1301,32 @@ function openUnicorn() {
 function uniBegin(theme) {
   $("uniPick").hidden = true;
   const pool = UNI_THEMES[theme].pool(uni.level);
-  Object.assign(uni, { theme, pool, targets: UNI_THEMES[theme].ordered ? pool : shuffle([...pool]).slice(0, 6), spawn: 0.8 });
+  Object.assign(uni, { theme, pool, targets: UNI_THEMES[theme].ordered ? pool : shuffle([...pool]).slice(0, 6), spawn: 0.8,
+    flyers: [], pops: [], filled: 0, slotPop: {}, begun: uni.t, hinted: false });
   if (!UNI_TOPIC_THEME[topic.id]) uni.lastTheme = theme;
   say([T().uniGo, uniAsk(uni.targets[0])]);
 }
-document.querySelectorAll("#uniPick button").forEach(b => { b.onclick = () => { audio(); uniBegin(b.dataset.theme); }; });
+document.querySelectorAll("#uniPick button").forEach(b => { b.onclick = () => {
+  audio(); [784, 1047].forEach((f, i) => tone(f, i * 0.07, 0.15, "triangle", 0.14));
+  b.classList.add("chosen"); setTimeout(() => { b.classList.remove("chosen"); uniBegin(b.dataset.theme); }, 260);
+}; });
 // where the finger is (the unicorn flies a little above it, so the finger does not hide it)
 function uniPoint(e) {
   const r = $("uniCanvas").getBoundingClientRect();
   uni.tx = e.clientX - r.left; uni.ty = e.clientY - r.top - 46;
   // a tap on the big star at the top says the colour again
-  if (e.type === "pointerdown" && uni.theme && Math.hypot(e.clientX - r.left - uni.w / 2, e.clientY - r.top - 44) < 34 && !uni.done) say(uniAsk(uni.targets[uni.stripes]));
+  const hud = uniHud();
+  if (e.type === "pointerdown" && uni.theme && Math.hypot(e.clientX - r.left - hud.targetX, e.clientY - r.top - hud.y) < 40 && !uni.done) say(uniAsk(uni.targets[uni.stripes]));
 }
-$("uniCanvas").addEventListener("pointerdown", e => { e.preventDefault(); audio(); uniPoint(e); });
+$("uniCanvas").addEventListener("pointerdown", e => { e.preventDefault(); audio(); uni.touched = true; uniPoint(e); });
 $("uniCanvas").addEventListener("pointermove", e => { if (e.buttons || e.pointerType !== "mouse") uniPoint(e); });
 addEventListener("resize", () => { if (screen === "unicorn" && uni.fit) uni.fit(); });
 const uniSize = () => Math.min(uni.w * 0.34, 170);
+// where the panel at the top is: the thing to catch and its slots
+function uniHud() {
+  const need = uni.lvl ? uni.lvl.need : 3, bw = 84 + need * 34, x0 = uni.w / 2 - bw / 2;
+  return { x0, bw, y: 50, targetX: x0 + 40, slotX: i => x0 + 92 + i * 34 };
+}
 function uniStep(dt) {
   const { w, h } = uni;
   uni.t += dt;
@@ -1379,6 +1389,15 @@ function uniStep(dt) {
     }
   }
   uni.stars = uni.stars.filter(s => !s.gone && s.x > -60 && s.x < w + 80 && s.y < h + 60);
+  for (const f of uni.flyers || []) {
+    f.t += dt / 0.55;
+    if (f.t >= 1 && !f.done) { f.done = true; uni.filled = Math.max(uni.filled, f.i + 1); uni.slotPop[f.i] = uni.t; tone(1568, 0, 0.08, "sine", 0.1); }
+  }
+  if (uni.flyers) uni.flyers = uni.flyers.filter(f => !f.done);
+  for (const p of uni.pops || []) p.t += dt;
+  if (uni.pops) uni.pops = uni.pops.filter(p => p.t < 1);
+  // no touch yet: after a while the voice explains the gesture (the ghost finger shows it all along)
+  if (uni.theme && !uni.touched && !uni.hinted && uni.t - uni.begun > 6) { uni.hinted = true; say(T().uniHow); }
   for (const p of uni.sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += (p.g || 0) * dt; p.life -= dt; }
   uni.sparks = uni.sparks.filter(p => p.life > 0);
 }
@@ -1387,7 +1406,7 @@ function uniStep(dt) {
 function uniHurt(v) {
   uni.lives--; uni.hurt = 1.6; uni.broke = { at: uni.t, i: uni.lives };
   tone(392, 0.05, 0.18, "triangle", 0.12); tone(294, 0.2, 0.3, "triangle", 0.12);
-  uniBurst(uni.w / 2 - (uni.lvl.lives - 1) * 15 + uni.lives * 30, 98, "#ff6b9a", 14, 120);
+  uniBurst(uni.w / 2 - (uni.lvl.lives - 1) * 15 + uni.lives * 30, uniHud().y + 58, "#ff6b9a", 14, 120);
   if (uni.lives > 0) { uni.said = uni.t; say([uniIs(v), uniAsk(uni.targets[uni.stripes])]); return; }
   uni.over = true;
   uni.stars.forEach(o => { o.bounce = true; o.vx = 200; o.spin = 6; });
@@ -1406,9 +1425,12 @@ function uniCatch(s) {
   uniBurst(s.x, s.y, RAINBOW[s.c], 26, 220);
   [1047, 1319, 1568].forEach((f, i) => tone(f, i * 0.06, 0.18, "triangle", 0.14));
   uni.got++;
+  const hud = uniHud();
+  uni.flyers.push({ x: s.x, y: s.y, i: uni.got - 1, t: 0, c: uni.theme === "colours" ? s.v : uni.stripes });
+  uni.pops.push({ x: s.x, y: s.y - s.r, text: String(uni.got), t: 0 });
   if (uni.got < uni.lvl.need) { say(String(uni.got)); return; } // counting: "1… 2…"
   // a stripe of the rainbow
-  uni.stripes++; uni.got = 0; uni.pause = 2.6;
+  uni.stripes++; uni.got = 0; uni.pause = 2.6; uni.flyers = []; uni.filled = 0;
   uni.lives = Math.min(uni.lvl.lives, uni.lives + 1); // a stripe gives a heart back
   uni.stars.forEach(o => { o.bounce = true; o.vx = 200; o.spin = 6; });
   cheer();
@@ -1545,23 +1567,52 @@ function uniDraw(ctx) {
     ctx.restore();
   }
   // at the top: the colour to catch, and how many are still to catch
+  const hud = uniHud();
   if (!uni.done && uni.theme) {
-    const pulse = 1 + 0.08 * Math.sin(uni.t * 5), want = uni.targets[uni.stripes], stripe = uni.theme === "colours" ? want : uni.stripes;
-    ctx.fillStyle = "rgba(255,255,255,.75)";
-    const bw = 64 + uni.lvl.need * 26;
-    ctx.beginPath(); ctx.roundRect(w / 2 - bw / 2, 14, bw, 60, 30); ctx.fill();
-    uniItem(ctx, w / 2 - bw / 2 + 34, 44, 24 * pulse, want, uni.theme === "colours" ? want : -1, 0);
+    const pulse = 1 + 0.07 * Math.sin(uni.t * 5), want = uni.targets[uni.stripes], stripe = uni.theme === "colours" ? want : uni.stripes;
+    ctx.save();
+    ctx.shadowColor = "rgba(59,45,92,.18)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4;
+    ctx.fillStyle = "rgba(255,255,255,.9)";
+    ctx.beginPath(); ctx.roundRect(hud.x0, hud.y - 36, hud.bw, 72, 36); ctx.fill();
+    ctx.restore();
+    uniItem(ctx, hud.targetX, hud.y, 29 * pulse, want, uni.theme === "colours" ? want : -1, 0);
+    // the slots to fill, as star outlines; a caught one flies in and fills its slot with a pop
     for (let i = 0; i < uni.lvl.need; i++) {
-      const x = w / 2 - bw / 2 + 74 + i * 26;
-      if (i < uni.got) uniStar(ctx, x, 44, 11, RAINBOW[stripe], 0, false);
-      else { ctx.fillStyle = "rgba(59,45,92,.18)"; ctx.beginPath(); ctx.arc(x, 44, 6, 0, 7); ctx.fill(); }
+      const x = hud.slotX(i), pop = uni.slotPop[i] ? Math.max(0, 1 - (uni.t - uni.slotPop[i]) * 4) : 0;
+      if (i < uni.filled) uniStar(ctx, x, hud.y, 13 * (1 + pop * 0.5), RAINBOW[stripe], 0, false);
+      else { ctx.save(); ctx.translate(x, hud.y); uniShape(ctx, "star", 13); ctx.lineWidth = 2.5; ctx.strokeStyle = "rgba(59,45,92,.22)"; ctx.setLineDash([3, 3]); ctx.stroke(); ctx.restore(); }
     }
+    for (const f of uni.flyers) { // the flight to the slot, along a curve
+      const e = f.t * f.t * (3 - 2 * f.t), tx = hud.slotX(f.i), mx = (f.x + tx) / 2, my = Math.min(f.y, hud.y) - 80;
+      const x = (1 - e) * (1 - e) * f.x + 2 * (1 - e) * e * mx + e * e * tx, y = (1 - e) * (1 - e) * f.y + 2 * (1 - e) * e * my + e * e * hud.y;
+      uniStar(ctx, x, y, 22 - 9 * e, RAINBOW[f.c], f.t * 6, false);
+    }
+  }
+  // the count, big, where the star was caught
+  for (const p of uni.pops || []) {
+    ctx.save(); ctx.globalAlpha = Math.min(1, 2.2 * (1 - p.t)); ctx.translate(p.x, p.y - p.t * 50); ctx.scale(0.8 + p.t * 0.6, 0.8 + p.t * 0.6);
+    uniFont = uniFont || getComputedStyle(document.body).fontFamily;
+    ctx.font = `700 40px ${uniFont}`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.lineWidth = 7; ctx.strokeStyle = "#3b2d5c"; ctx.strokeText(p.text, 0, 0); ctx.fillStyle = "#ffd54f"; ctx.fillText(p.text, 0, 0);
+    ctx.restore();
+  }
+  // the ghost finger: shows how to fly the unicorn until the child touches the screen
+  if (uni.theme && !uni.touched && !uni.done) {
+    const a = uni.t * 1.4, fx = uni.w * 0.3 + Math.cos(a) * uni.w * 0.18, fy = uni.h * 0.55 + Math.sin(a * 2) * 60 + 60;
+    uni.tx = fx; uni.ty = fy - 46;
+    const ring = (uni.t * 1.5) % 1;
+    ctx.save();
+    ctx.strokeStyle = `rgba(255,255,255,${0.8 * (1 - ring)})`; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(fx, fy, 18 + ring * 22, 0, 7); ctx.stroke();
+    ctx.shadowColor = "rgba(59,45,92,.3)"; ctx.shadowBlur = 10; ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.beginPath(); ctx.arc(fx, fy, 18, 0, 7); ctx.fill();
+    ctx.restore();
   }
   // the hearts (lives), under it; a lost one pops and stays as a pale outline
   if (uni.theme && !uni.done) for (let i = 0; i < uni.lvl.lives; i++) {
     const x = w / 2 - (uni.lvl.lives - 1) * 15 + i * 30, full = i < uni.lives;
     const pop = uni.broke && uni.broke.i === i ? Math.max(0, 1 - (uni.t - uni.broke.at) * 3) : 0;
-    ctx.save(); ctx.translate(x, 98); ctx.scale(1 + pop * 0.8, 1 + pop * 0.8);
+    ctx.save(); ctx.translate(x, hud.y + 58); ctx.scale(1 + pop * 0.8, 1 + pop * 0.8);
     uniShape(ctx, "heart", 13);
     if (full) { ctx.fillStyle = "#ff4f86"; ctx.shadowColor = "rgba(255,79,134,.5)"; ctx.shadowBlur = 6; ctx.fill(); ctx.shadowBlur = 0; ctx.lineWidth = 2.5; ctx.strokeStyle = "#fff"; ctx.stroke(); }
     else { ctx.lineWidth = 2.5; ctx.strokeStyle = "rgba(255,79,134,.45)"; ctx.stroke(); }

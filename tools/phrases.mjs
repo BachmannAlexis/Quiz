@@ -64,7 +64,7 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
 }
 // the rainbow unicorn's pack: every theme's asks and names, for every level, and counting
 for (const lang of Object.keys(out).filter(l => !l.startsWith("_"))) {
-  const T = TEXT[lang], s = new Set([T.uniGo, T.uniDone, T.uniPick, T.uniOver, T.bravo]);
+  const T = TEXT[lang], s = new Set([T.uniGo, T.uniDone, T.uniPick, T.uniOver, T.uniHow, T.bravo]);
   for (const c of T.uniCatch) s.add(c);
   for (const c of T.uniIsColour) s.add(c);
   for (let n = 1; n <= 10; n++) { s.add(T.uniCatchNum(n)); s.add(T.uniIsNum(n)); s.add(String(n)); }
