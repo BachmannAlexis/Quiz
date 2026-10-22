@@ -1302,7 +1302,7 @@ function uniBegin(theme) {
   $("uniPick").hidden = true;
   const pool = UNI_THEMES[theme].pool(uni.level);
   Object.assign(uni, { theme, pool, targets: UNI_THEMES[theme].ordered ? pool : shuffle([...pool]).slice(0, 6), spawn: 0.8,
-    flyers: [], pops: [], filled: 0, slotPop: {}, begun: uni.t, hinted: false });
+    flyers: [], pops: [], filled: 0, slotPop: {}, begun: uni.t, hinted: false, ease: 1, miss: 0, recap: 0, recapSound: 0 });
   if (!UNI_TOPIC_THEME[topic.id]) uni.lastTheme = theme;
   say([T().uniGo, uniAsk(uni.targets[0])]);
 }
@@ -1366,10 +1366,11 @@ function uniStep(dt) {
     if (uni.spawn <= 0) {
       // the thing to catch, or another one of the same theme; numbers, letters and shapes come in any colour
       const want = uni.targets[uni.stripes], others = uni.pool.filter(v => v !== want);
-      const v = Math.random() < uni.lvl.target ? want : others[Math.floor(Math.random() * others.length)];
-      uni.stars.push({ x: w + 40, y: h * (0.28 + Math.random() * 0.62), r: Math.max(28, Math.min(42, w * 0.085)), v,
+      // the game adapts: after mistakes it slows down and sends more of the right ones, after a clean stripe a little more lively
+      const ease = uni.ease || 1, v = Math.random() < Math.min(0.85, uni.lvl.target + (1 - ease) * 0.6) ? want : others[Math.floor(Math.random() * others.length)];
+      uni.stars.push({ x: w + 40, y: h * (0.28 + Math.random() * 0.62), r: Math.max(28, Math.min(42, w * 0.085)) * (uni.theme === "numbers" ? 1.15 : 1), v,
         c: uni.theme === "colours" ? v : Math.floor(Math.random() * 6),
-        ph: Math.random() * 6, rot: 0, spin: 0, vx: -uni.lvl.speed * w * (0.85 + Math.random() * 0.3), bounce: false });
+        ph: Math.random() * 6, rot: 0, spin: 0, vx: -uni.lvl.speed * ease * w * (0.85 + Math.random() * 0.3), bounce: false });
       uni.spawn = 0.75 + Math.random() * 0.6;
     }
   }
@@ -1405,6 +1406,8 @@ function uniStep(dt) {
 // it was and what to catch. No hearts left: start again.
 function uniHurt(v) {
   uni.lives--; uni.hurt = 1.6; uni.broke = { at: uni.t, i: uni.lives };
+  uni.miss = (uni.miss || 0) + 1;
+  if (uni.miss >= 2) uni.ease = Math.max(0.7, (uni.ease || 1) * 0.85);
   tone(392, 0.05, 0.18, "triangle", 0.12); tone(294, 0.2, 0.3, "triangle", 0.12);
   uniBurst(uni.w / 2 - (uni.lvl.lives - 1) * 15 + uni.lives * 30, uniHud().y + 58, "#ff6b9a", 14, 120);
   if (uni.lives > 0) { uni.said = uni.t; say([uniIs(v), uniAsk(uni.targets[uni.stripes])]); return; }
@@ -1432,6 +1435,8 @@ function uniCatch(s) {
   // a stripe of the rainbow
   uni.stripes++; uni.got = 0; uni.pause = 2.6; uni.flyers = []; uni.filled = 0;
   uni.lives = Math.min(uni.lvl.lives, uni.lives + 1); // a stripe gives a heart back
+  if (!uni.miss) uni.ease = Math.min(1.15, (uni.ease || 1) * 1.05);
+  uni.miss = 0;
   uni.stars.forEach(o => { o.bounce = true; o.vx = 200; o.spin = 6; });
   cheer();
   const g = gameId;
@@ -1445,7 +1450,9 @@ function uniCatch(s) {
 }
 function uniParty() {
   confetti(36);
-  say(T().uniDone);
+  // the recap: the six things caught pop in one after another (numbers are read out)
+  uni.recap = uni.t;
+  say(uni.theme === "numbers" ? [T().uniDone, ...uni.targets.map(String)] : T().uniDone);
   const g = gameId;
   for (let k = 0; k < 6; k++) setTimeout(() => {
     if (g !== gameId) return;
@@ -1503,18 +1510,27 @@ function uniItem(ctx, x, y, r, v, c, rot) {
   const g = ctx.createRadialGradient(-r * 0.3, -r * 0.35, r * 0.1, 0, 0, r * 1.1);
   g.addColorStop(0, "#ffffff"); g.addColorStop(0.4, colour); g.addColorStop(1, colour);
   if (uni.theme === "shapes") uniShape(ctx, v, r);
-  else if (uni.theme === "numbers") uniShape(ctx, "star", r * 1.08);
-  else { ctx.beginPath(); ctx.arc(0, 0, r * 0.95, 0, 7); }
+  else { ctx.beginPath(); ctx.arc(0, 0, r * (uni.theme === "numbers" ? 1.05 : 0.95), 0, 7); }
   ctx.fillStyle = g; ctx.shadowColor = colour; ctx.shadowBlur = r * 0.45; ctx.fill(); ctx.shadowBlur = 0;
   ctx.lineJoin = "round"; ctx.lineWidth = Math.max(2, r * 0.09); ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.stroke();
   if (uni.theme === "shapes") uniFace(ctx, r, v === "triangle" ? r * 0.2 : v === "heart" ? -r * 0.05 : 0);
   else { // the number or the letter, big and white with a dark edge
     uniFont = uniFont || getComputedStyle(document.body).fontFamily;
-    ctx.font = `700 ${Math.round(r * (uni.theme === "numbers" ? 0.95 : 1.15))}px ${uniFont}`;
+    const num = uni.theme === "numbers";
+    ctx.font = `700 ${Math.round(r * (num ? 0.9 : 1.15))}px ${uniFont}`;
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    const t = String(v), ty = r * (uni.theme === "numbers" ? 0.1 : 0.06);
+    const t = String(v), ty = r * (num ? -0.18 : 0.06);
     ctx.lineWidth = r * 0.16; ctx.strokeStyle = "#3b2d5c"; ctx.strokeText(t, 0, ty);
     ctx.fillStyle = "#ffffff"; ctx.fillText(t, 0, ty);
+    if (num) { // as many dots as the number says, in rows of five: the numeral and its quantity together
+      const rows = v > 5 ? [5, v - 5] : [v], d = r * 0.21;
+      rows.forEach((n, row) => {
+        for (let i = 0; i < n; i++) {
+          ctx.beginPath(); ctx.arc((i - (n - 1) / 2) * d, r * (rows.length > 1 ? 0.42 + row * 0.24 : 0.52), r * 0.075, 0, 7);
+          ctx.fillStyle = "#fff"; ctx.fill(); ctx.lineWidth = r * 0.035; ctx.strokeStyle = "#3b2d5c"; ctx.stroke();
+        }
+      });
+    }
   }
   ctx.restore();
 }
@@ -1588,6 +1604,14 @@ function uniDraw(ctx) {
       uniStar(ctx, x, y, 22 - 9 * e, RAINBOW[f.c], f.t * 6, false);
     }
   }
+  // the recap at the end: what was caught, in a row
+  if (uni.done && uni.recap) uni.targets.forEach((v, i) => {
+    const at = uni.t - uni.recap - 0.5 - i * 0.42;
+    if (at < 0) return;
+    if (!uni.recapSound || uni.recapSound <= i) { uni.recapSound = i + 1; tone(784 + i * 98, 0, 0.18, "triangle", 0.12); }
+    const pop = Math.min(1, at * 5), r = Math.min(30, uni.w / 16) * (pop < 1 ? pop * 1.2 : 1);
+    uniItem(ctx, uni.w / 2 + (i - 2.5) * Math.min(64, uni.w / 6.6), uni.h * 0.2, r, v, uni.theme === "colours" ? v : i, 0);
+  });
   // the count, big, where the star was caught
   for (const p of uni.pops || []) {
     ctx.save(); ctx.globalAlpha = Math.min(1, 2.2 * (1 - p.t)); ctx.translate(p.x, p.y - p.t * 50); ctx.scale(0.8 + p.t * 0.6, 0.8 + p.t * 0.6);
