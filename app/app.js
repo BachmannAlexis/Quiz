@@ -1273,7 +1273,7 @@ function openUnicorn() {
   show("unicorn");
   const level = levelOf[topic.id] || 2;
   Object.assign(uni, { lvl: UNI_LEVELS[level], level, theme: null, targets: [], got: 0, stripes: 0, stars: [], sparks: [], clouds: [], spawn: 0.8, t: 0,
-    pause: 0, done: false, over: false, lives: UNI_LEVELS[level].lives, hurt: 0, said: 0, x: 0, y: 0, tx: null, ty: null, vx: 0, vy: 0, face: 1, flip: 1, ang: 0, phase: 0, speed: 0, id: ++uni.id, w: 0, h: 0 });
+    pause: 0, done: false, over: false, loop: 0, happy: 0, stripeAt: {}, broke: null, recap: 0, lives: UNI_LEVELS[level].lives, hurt: 0, said: 0, x: 0, y: 0, tx: null, ty: null, vx: 0, vy: 0, face: 1, flip: 1, ang: 0, phase: 0, speed: 0, id: ++uni.id, w: 0, h: 0 });
   $("uniEnd").hidden = true;
   loadPack(lang, "unicorn"); // the game's sentences
   const fit = () => {
@@ -1322,6 +1322,21 @@ $("uniCanvas").addEventListener("pointerdown", e => { e.preventDefault(); audio(
 $("uniCanvas").addEventListener("pointermove", e => { if (e.buttons || e.pointerType !== "mouse") uniPoint(e); });
 addEventListener("resize", () => { if (screen === "unicorn" && uni.fit) uni.fit(); });
 const uniSize = () => Math.min(uni.w * 0.34, 170);
+// a short buzz on phones that can (a catch, a lost heart, a stripe)
+const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} };
+// a soft music box tune in C major pentatonic, played from the game loop (so it stops with the game); a button mutes it
+const UNI_TUNE = [72, 76, 79, 76, 81, 79, 76, 74, 72, 74, 76, 79, 76, 74, 72, -1];
+const uniMusicOn = () => { try { return localStorage.getItem("pikolo-uni-music") !== "off"; } catch (e) { return true; } };
+function uniMusic(dt) {
+  if (!uniMusicOn() || uni.over) return;
+  uni.beat = (uni.beat || 0) - dt;
+  if (uni.beat > 0) return;
+  uni.beat += 0.4;
+  const k = (uni.note = ((uni.note || 0) + 1) % UNI_TUNE.length), n = UNI_TUNE[k];
+  const f = m => 440 * 2 ** ((m - 69) / 12);
+  if (n > 0) tone(f(n), 0, 0.5, "sine", 0.035);
+  if (k % 4 === 0) tone(f(n > 0 ? n - 24 : 48), 0, 0.9, "triangle", 0.025);
+}
 // where the panel at the top is: the thing to catch and its slots
 function uniHud() {
   const need = uni.lvl ? uni.lvl.need : 3, bw = 84 + need * 34, x0 = uni.w / 2 - bw / 2;
@@ -1330,6 +1345,7 @@ function uniHud() {
 function uniStep(dt) {
   const { w, h } = uni;
   uni.t += dt;
+  uniMusic(dt);
   // the unicorn follows the finger, smoothly; alone, it floats up and down
   // (when the rainbow is full, it dances a loop above it)
   const tx = uni.done ? w / 2 + Math.cos(uni.t * 1.8) * w * 0.3 : uni.tx ?? w * 0.3;
@@ -1401,11 +1417,12 @@ function uniStep(dt) {
   if (uni.theme && !uni.touched && !uni.hinted && uni.t - uni.begun > 6) { uni.hinted = true; say(T().uniHow); }
   for (const p of uni.sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += (p.g || 0) * dt; p.life -= dt; }
   uni.sparks = uni.sparks.filter(p => p.life > 0);
+  if (uni.sparks.length > 360) uni.sparks.splice(0, uni.sparks.length - 360); // light enough for small phones
 }
 // a wrong catch costs a heart (then the unicorn blinks a moment and cannot lose another); the voice says gently what
 // it was and what to catch. No hearts left: start again.
 function uniHurt(v) {
-  uni.lives--; uni.hurt = 1.6; uni.broke = { at: uni.t, i: uni.lives };
+  uni.lives--; uni.hurt = 1.6; uni.broke = { at: uni.t, i: uni.lives }; buzz([30, 40, 30]);
   uni.miss = (uni.miss || 0) + 1;
   if (uni.miss >= 2) uni.ease = Math.max(0.7, (uni.ease || 1) * 0.85);
   tone(392, 0.05, 0.18, "triangle", 0.12); tone(294, 0.2, 0.3, "triangle", 0.12);
@@ -1428,6 +1445,7 @@ function uniCatch(s) {
   uniBurst(s.x, s.y, RAINBOW[s.c], 26, 220);
   [1047, 1319, 1568].forEach((f, i) => tone(f, i * 0.06, 0.18, "triangle", 0.14));
   uni.got++;
+  uni.happy = uni.t; buzz(15);
   const hud = uniHud();
   uni.flyers.push({ x: s.x, y: s.y, i: uni.got - 1, t: 0, c: uni.theme === "colours" ? s.v : uni.stripes });
   uni.pops.push({ x: s.x, y: s.y - s.r, text: String(uni.got), t: 0 });
@@ -1435,6 +1453,7 @@ function uniCatch(s) {
   // a stripe of the rainbow
   uni.stripes++; uni.got = 0; uni.pause = 2.6; uni.flyers = []; uni.filled = 0;
   (uni.stripeAt = uni.stripeAt || {})[uni.stripes - 1] = uni.t;
+  uni.loop = uni.t; buzz([20, 60, 20, 60, 60]);
   uni.lives = Math.min(uni.lvl.lives, uni.lives + 1); // a stripe gives a heart back
   if (!uni.miss) uni.ease = Math.min(1.15, (uni.ease || 1) * 1.05);
   uni.miss = 0;
@@ -1603,6 +1622,9 @@ function uniDraw(ctx) {
     if (uni.hurt > 0) ctx.globalAlpha = 0.45 + 0.55 * (Math.sin(uni.t * 28) > 0 ? 1 : 0); // it blinks after a wrong catch
     if (uni.over) ctx.rotate(0.25);
     if (uni.done) ctx.rotate(Math.sin(uni.t * 3) * 0.15);
+    // a loop-the-loop of joy for a stripe, a little bounce for a catch
+    if (uni.loop && uni.t >= uni.loop && uni.t - uni.loop < 0.9) { const q = (uni.t - uni.loop) / 0.9; ctx.rotate(-(uni.flip ?? 1) * 2 * Math.PI * q * q * (3 - 2 * q)); }
+    if (uni.happy && uni.t >= uni.happy && uni.t - uni.happy < 0.3) { const q = Math.sin((uni.t - uni.happy) / 0.3 * Math.PI); ctx.scale(1 + q * 0.12, 1 + q * 0.12); }
     ctx.scale((uni.flip ?? 1) * (1 + stretch), 1 - stretch * 0.6);
     ctx.drawImage(img, -size / 2, -size * 0.45, size, size * 194 / 214);
     ctx.restore();
@@ -1669,6 +1691,9 @@ function uniDraw(ctx) {
   }
 }
 $("uniAgain").onclick = () => { gameId++; openUnicorn(); };
+const uniMusicButton = () => $("uniMusic").classList.toggle("off", !uniMusicOn());
+$("uniMusic").onclick = () => { try { localStorage.setItem("pikolo-uni-music", uniMusicOn() ? "off" : "on"); } catch (e) {} uniMusicButton(); };
+uniMusicButton();
 // another game: in Fairy tales the theme picker, elsewhere the topic's other games
 $("uniOther").onclick = () => { gameId++; if (UNI_TOPIC_THEME[topic.id]) backToTopic(); else { uni.lastTheme = null; openUnicorn(); } };
 $("uniBack").onclick = backToTopic;

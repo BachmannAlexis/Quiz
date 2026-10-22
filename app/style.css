@@ -606,3 +606,7 @@ canvas.solid { display: block; width: 74%; height: 74%; touch-action: none; }
 .uni-pick svg { width: 70%; height: 70%; }
 .uni-pick span { font-size: 2.6rem; font-weight: 700; letter-spacing: .02em; background: linear-gradient(90deg, #ff5252, #ffa726, #66bb6a, #42a5f5, #ab47bc);
   -webkit-background-clip: text; background-clip: text; color: transparent; }
+.uni-music { position: absolute; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); z-index: 1; width: 44px; height: 44px; opacity: .85; }
+.uni-music .mute { display: none; }
+.uni-music.off { opacity: .7; }
+.uni-music.off .mute { display: inline; }
