@@ -1321,7 +1321,7 @@ function uniPoint(e) {
 $("uniCanvas").addEventListener("pointerdown", e => { e.preventDefault(); audio(); uni.touched = true; uniPoint(e); });
 $("uniCanvas").addEventListener("pointermove", e => { if (e.buttons || e.pointerType !== "mouse") uniPoint(e); });
 addEventListener("resize", () => { if (screen === "unicorn" && uni.fit) uni.fit(); });
-const uniSize = () => Math.min(uni.w * 0.34, 170);
+const uniSize = () => Math.min(uni.w * 0.34, uni.h * 0.3, 240); // bigger on tablets
 // a short buzz on phones that can (a catch, a lost heart, a stripe)
 const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} };
 // a soft music box tune in C major pentatonic, played from the game loop (so it stops with the game); a button mutes it
@@ -1384,7 +1384,7 @@ function uniStep(dt) {
       const want = uni.targets[uni.stripes], others = uni.pool.filter(v => v !== want);
       // the game adapts: after mistakes it slows down and sends more of the right ones, after a clean stripe a little more lively
       const ease = uni.ease || 1, v = Math.random() < Math.min(0.85, uni.lvl.target + (1 - ease) * 0.6) ? want : others[Math.floor(Math.random() * others.length)];
-      uni.stars.push({ x: w + 40, y: h * (0.28 + Math.random() * 0.62), r: Math.max(28, Math.min(42, w * 0.085)) * (uni.theme === "numbers" ? 1.15 : 1), v,
+      uni.stars.push({ x: w + 40, y: h * (0.28 + Math.random() * 0.62), r: Math.max(28, Math.min(58, w * 0.085, h * 0.065)) * (uni.theme === "numbers" ? 1.15 : 1), v,
         c: uni.theme === "colours" ? v : Math.floor(Math.random() * 6),
         ph: Math.random() * 6, rot: 0, spin: 0, vx: -uni.lvl.speed * ease * w * (0.85 + Math.random() * 0.3), bounce: false });
       uni.spawn = 0.75 + Math.random() * 0.6;
@@ -1631,7 +1631,7 @@ function uniDraw(ctx) {
   }
   // at the top: the colour to catch, and how many are still to catch
   const hud = uniHud();
-  if (!uni.done && uni.theme) {
+  if (!uni.done && !uni.over && uni.theme) {
     const pulse = 1 + 0.07 * Math.sin(uni.t * 5), want = uni.targets[uni.stripes], stripe = uni.theme === "colours" ? want : uni.stripes;
     ctx.save();
     ctx.shadowColor = "rgba(59,45,92,.18)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4;
