@@ -1434,6 +1434,7 @@ function uniCatch(s) {
   if (uni.got < uni.lvl.need) { say(String(uni.got)); return; } // counting: "1… 2…"
   // a stripe of the rainbow
   uni.stripes++; uni.got = 0; uni.pause = 2.6; uni.flyers = []; uni.filled = 0;
+  (uni.stripeAt = uni.stripeAt || {})[uni.stripes - 1] = uni.t;
   uni.lives = Math.min(uni.lvl.lives, uni.lives + 1); // a stripe gives a heart back
   if (!uni.miss) uni.ease = Math.min(1.15, (uni.ease || 1) * 1.05);
   uni.miss = 0;
@@ -1547,15 +1548,39 @@ function uniDraw(ctx) {
   const sky = ctx.createLinearGradient(0, 0, 0, h);
   sky.addColorStop(0, "#9fd8ff"); sky.addColorStop(0.6, "#e6dcff"); sky.addColorStop(1, "#ffd6ea");
   ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+  const sun = ctx.createRadialGradient(w * 0.12, h * 0.1, 0, w * 0.12, h * 0.1, Math.max(w, h) * 0.35);
+  sun.addColorStop(0, "rgba(255,248,200,.85)"); sun.addColorStop(1, "rgba(255,248,200,0)");
+  ctx.fillStyle = sun; ctx.fillRect(0, 0, w, h);
+  if (!uni.twinkles) uni.twinkles = Array.from({ length: 26 }, () => ({ x: Math.random(), y: Math.random() * 0.5, p: Math.random() * 6, s: 1.5 + Math.random() * 2.5 }));
+  for (const t of uni.twinkles) {
+    const a = 0.25 + 0.5 * (0.5 + 0.5 * Math.sin(uni.t * 2 + t.p));
+    ctx.save(); ctx.globalAlpha = a; ctx.translate(t.x * w, t.y * h); ctx.fillStyle = "#fff";
+    ctx.beginPath(); for (let i = 0; i < 8; i++) { const r = i % 2 ? t.s * 0.35 : t.s * 2; const ang = i * Math.PI / 4; ctx.lineTo(Math.cos(ang) * r, Math.sin(ang) * r); }
+    ctx.fill(); ctx.restore();
+  }
+  if (!uni.far) uni.far = Array.from({ length: 4 }, () => ({ x: Math.random() * w, y: h * (0.08 + Math.random() * 0.3), s: 0.32 + Math.random() * 0.18 }));
+  ctx.save(); ctx.globalAlpha = 0.55;
+  for (const c of uni.far) { c.x -= 3 * (1 / 60); if (c.x < -60) c.x = w + 60; uniCloud(ctx, c.x, c.y, c.s); }
+  ctx.restore();
   // the rainbow, a stripe per colour caught (the others as a faint outline)
   const cx = w / 2, cy = h * 1.02, R = Math.min(w * 0.62, h * 0.78), band = Math.max(10, R * 0.07);
   ctx.lineCap = "butt";
   RAINBOW.forEach((col, k) => {
-    ctx.beginPath(); ctx.arc(cx, cy, R - k * band, Math.PI, 2 * Math.PI);
+    const r = R - k * band;
+    ctx.beginPath(); ctx.arc(cx, cy, r, Math.PI, 2 * Math.PI);
     ctx.lineWidth = band + 1;
-    ctx.strokeStyle = k < uni.stripes ? col : "rgba(255,255,255,.28)";
-    if (k === uni.stripes && !uni.done) ctx.strokeStyle = `rgba(255,255,255,${0.35 + 0.15 * Math.sin(uni.t * 4)})`;
+    ctx.strokeStyle = k === uni.stripes && !uni.done ? `rgba(255,255,255,${0.35 + 0.15 * Math.sin(uni.t * 4)})` : "rgba(255,255,255,.28)";
     ctx.stroke();
+    if (k >= uni.stripes) return;
+    // a new stripe sweeps in from the left, a sparkle at its tip
+    const at = uni.stripeAt && uni.stripeAt[k], p = at === undefined ? 1 : Math.min(1, (uni.t - at) / 0.9), e = 1 - (1 - p) ** 3;
+    ctx.beginPath(); ctx.arc(cx, cy, r, Math.PI, Math.PI + Math.PI * e);
+    ctx.strokeStyle = col; ctx.stroke();
+    if (p < 1) {
+      const a = Math.PI + Math.PI * e, x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
+      uniStar(ctx, x, y, band * 0.9, "#ffffff", uni.t * 8, false);
+      if (Math.random() < 0.6) uni.sparks.push({ x, y, vx: (Math.random() - 0.5) * 80, vy: -20 - Math.random() * 60, g: 60, life: 0.7, max: 0.7, c: col, r: 2 + Math.random() * 3, star: true });
+    }
   });
   for (const c of uni.clouds) uniCloud(ctx, c.x, c.y, c.s);
   // the hills
@@ -1644,6 +1669,8 @@ function uniDraw(ctx) {
   }
 }
 $("uniAgain").onclick = () => { gameId++; openUnicorn(); };
+// another game: in Fairy tales the theme picker, elsewhere the topic's other games
+$("uniOther").onclick = () => { gameId++; if (UNI_TOPIC_THEME[topic.id]) backToTopic(); else { uni.lastTheme = null; openUnicorn(); } };
 $("uniBack").onclick = backToTopic;
 
 // ---------- 3D shapes: the solids drawn live in 3D, turning slowly; the big one in Discover spins with a finger ----------

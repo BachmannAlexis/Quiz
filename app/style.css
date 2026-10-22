@@ -584,8 +584,14 @@ canvas.solid { display: block; width: 74%; height: 74%; touch-action: none; }
 .uni-bar { position: relative; z-index: 1; padding: 12px 16px 0; pointer-events: none; }
 .uni-bar .bar-spacer { flex: 1; }
 .uni-bar button { pointer-events: auto; }
-.uni-end { position: absolute; left: 0; right: 0; bottom: 18%; display: flex; justify-content: center; z-index: 1; animation: enter .4s ease-out; }
-.uni-end .btn { font-size: 1.3rem; padding: 16px 40px; }
+.uni-end { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px calc(28px + env(safe-area-inset-bottom)); display: flex; justify-content: center;
+  gap: 22px; z-index: 1; background: linear-gradient(transparent, rgba(59, 45, 92, .28)); animation: enter .4s ease-out; }
+.uni-big { width: 118px; border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; padding: 0;
+  color: #fff; font-weight: 700; font-size: 1rem; text-shadow: 0 1px 3px rgba(59, 45, 92, .5); }
+.uni-big svg { width: 96px; height: 96px; padding: 24px; box-sizing: border-box; border-radius: 50%; background: #8e24aa; color: #fff;
+  box-shadow: 0 6px 0 #5e1675, 0 12px 24px rgba(59, 45, 92, .35); animation: bob 2.2s ease-in-out infinite; }
+.uni-big.alt svg { background: #fff; color: #8e24aa; box-shadow: 0 6px 0 #d1c4e9, 0 12px 24px rgba(59, 45, 92, .25); animation-delay: .5s; }
+.uni-big:active svg { transform: translateY(4px); box-shadow: 0 2px 0 #5e1675; }
 .uni-pick { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 150px)); justify-content: center; align-content: center;
   gap: 18px; z-index: 1; padding: 80px 24px 24px; }
 .uni-pick button { aspect-ratio: 1; border: 0; border-radius: 34px; background: #fff; box-shadow: var(--lift), var(--edge);
