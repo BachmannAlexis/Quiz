@@ -1322,6 +1322,55 @@ $("uniCanvas").addEventListener("pointerdown", e => { e.preventDefault(); audio(
 $("uniCanvas").addEventListener("pointermove", e => { if (e.buttons || e.pointerType !== "mouse") uniPoint(e); });
 addEventListener("resize", () => { if (screen === "unicorn" && uni.fit) uni.fit(); });
 const uniSize = () => Math.min(uni.w * 0.34, uni.h * 0.3, 240); // bigger on tablets
+// ---- Steering. Three ways besides a finger in the sky: the joystick on the screen (bottom left), a game
+// controller (stick or d-pad) and the arrow keys. They give a direction (x, y from -1 to 1): the unicorn flies
+// that way, faster the further it is pushed, and glides to a stop when let go. Until the child plays, the
+// joystick moves by itself to show how.
+const uniKeys = new Set();
+addEventListener("keydown", e => { if (screen === "unicorn" && /^Arrow|^[wasd]$/i.test(e.key)) { uniKeys.add(e.key.toLowerCase()); uni.touched = true; e.preventDefault(); } });
+addEventListener("keyup", e => uniKeys.delete(e.key.toLowerCase()));
+function uniPad() {
+  const pads = navigator.getGamepads ? [...navigator.getGamepads()].filter(Boolean) : [];
+  for (const g of pads) {
+    let x = g.axes[0] || 0, y = g.axes[1] || 0;
+    const b = i => g.buttons[i] && g.buttons[i].pressed;
+    if (b(14)) x = -1; if (b(15)) x = 1; if (b(12)) y = -1; if (b(13)) y = 1;
+    if (Math.hypot(x, y) > 0.2) { uni.touched = true; return { x, y }; }
+  }
+  return null;
+}
+function uniSteer() {
+  let v = uni.stick;
+  if (!v && uniKeys.size) {
+    const k = c => uniKeys.has(c);
+    v = { x: (k("arrowright") || k("d") ? 1 : 0) - (k("arrowleft") || k("a") ? 1 : 0), y: (k("arrowdown") || k("s") ? 1 : 0) - (k("arrowup") || k("w") ? 1 : 0) };
+    if (!v.x && !v.y) v = null; else { const n = Math.hypot(v.x, v.y); v = { x: v.x / n, y: v.y / n }; }
+  }
+  if (!v) v = uniPad();
+  const demo = !v && uni.theme && !uni.touched && !uni.done;
+  if (demo) v = { x: Math.cos(uni.t * 1.3) * 0.8, y: Math.sin(uni.t * 2.6) * 0.6 };
+  if (v) { uni.tx = uni.x + v.x * 220; uni.ty = uni.y + v.y * 220; }
+  else if (uni.steering) { uni.tx = uni.x + uni.vx * 0.12; uni.ty = uni.y + uni.vy * 0.12; } // let go: glide to a stop
+  uni.steering = !!v && !demo;
+  // the joystick on the screen shows the direction, and only while there is something to catch
+  const stick = $("uniStick"), show = !!uni.theme && !uni.done && !uni.over;
+  if (stick.hidden === show) stick.hidden = !show;
+  stick.classList.toggle("hint", demo);
+  const knob = v || { x: 0, y: 0 };
+  stick.firstElementChild.style.transform = `translate(${(knob.x * 74).toFixed(1)}%, ${(knob.y * 74).toFixed(1)}%)`;
+}
+{
+  const stick = $("uniStick");
+  const move = e => {
+    const r = stick.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+    const d = Math.hypot(dx, dy), max = r.width * 0.36, k = d > max ? max / d : 1;
+    uni.stick = { x: dx * k / max, y: dy * k / max };
+  };
+  stick.addEventListener("pointerdown", e => { e.preventDefault(); e.stopPropagation(); audio(); uni.touched = true; stick.setPointerCapture?.(e.pointerId); stick.classList.add("held"); move(e); });
+  stick.addEventListener("pointermove", e => { if (stick.classList.contains("held")) move(e); });
+  const up = () => { stick.classList.remove("held"); uni.stick = null; };
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach(t => stick.addEventListener(t, up));
+}
 // a short buzz on phones that can (a catch, a lost heart, a stripe)
 const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} };
 // a soft music box tune in C major pentatonic, played from the game loop (so it stops with the game); a button mutes it
@@ -1348,6 +1397,7 @@ function uniStep(dt) {
   uniMusic(dt);
   // the unicorn follows the finger, smoothly; alone, it floats up and down
   // (when the rainbow is full, it dances a loop above it)
+  uniSteer();
   const tx = uni.done ? w / 2 + Math.cos(uni.t * 1.8) * w * 0.3 : uni.tx ?? w * 0.3;
   const ty = uni.done ? h * 0.42 + Math.sin(uni.t * 3.6) * h * 0.1 : uni.ty ?? h * 0.55 + Math.sin(uni.t * 1.6) * 30;
   // Flight: a soft spring pulls it towards the finger (it speeds up, slows down and overshoots a little, as a
@@ -1665,18 +1715,6 @@ function uniDraw(ctx) {
     uniFont = uniFont || getComputedStyle(document.body).fontFamily;
     ctx.font = `700 40px ${uniFont}`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.lineWidth = 7; ctx.strokeStyle = "#3b2d5c"; ctx.strokeText(p.text, 0, 0); ctx.fillStyle = "#ffd54f"; ctx.fillText(p.text, 0, 0);
-    ctx.restore();
-  }
-  // the ghost finger: shows how to fly the unicorn until the child touches the screen
-  if (uni.theme && !uni.touched && !uni.done) {
-    const a = uni.t * 1.4, fx = uni.w * 0.3 + Math.cos(a) * uni.w * 0.18, fy = uni.h * 0.55 + Math.sin(a * 2) * 60 + 60;
-    uni.tx = fx; uni.ty = fy - 46;
-    const ring = (uni.t * 1.5) % 1;
-    ctx.save();
-    ctx.strokeStyle = `rgba(255,255,255,${0.8 * (1 - ring)})`; ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.arc(fx, fy, 18 + ring * 22, 0, 7); ctx.stroke();
-    ctx.shadowColor = "rgba(59,45,92,.3)"; ctx.shadowBlur = 10; ctx.fillStyle = "rgba(255,255,255,.92)";
-    ctx.beginPath(); ctx.arc(fx, fy, 18, 0, 7); ctx.fill();
     ctx.restore();
   }
   // the hearts (lives), under it; a lost one pops and stays as a pale outline
