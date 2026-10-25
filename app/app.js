@@ -1339,7 +1339,7 @@ function uniPad() {
   }
   return null;
 }
-function uniSteer() {
+function uniSteer(dt = 1 / 60) {
   let v = uni.stick;
   if (!v && uniKeys.size) {
     const k = c => uniKeys.has(c);
@@ -1349,8 +1349,19 @@ function uniSteer() {
   if (!v) v = uniPad();
   const demo = !v && uni.theme && !uni.touched && !uni.done;
   if (demo) v = { x: Math.cos(uni.t * 1.3) * 0.8, y: Math.sin(uni.t * 2.6) * 0.6 };
-  if (v) { uni.tx = uni.x + v.x * 220; uni.ty = uni.y + v.y * 220; }
-  else if (uni.steering) { uni.tx = uni.x + uni.vx * 0.12; uni.ty = uni.y + uni.vy * 0.12; } // let go: glide to a stop
+  // gentle for small hands: a dead zone in the middle, a soft curve (a small push flies slowly, it takes a big one
+  // to go fast), a top speed that suits the screen, and a smoothed direction
+  let want = { x: 0, y: 0 };
+  if (v) {
+    const mag = Math.min(1, Math.hypot(v.x, v.y)), m = mag < 0.18 ? 0 : ((mag - 0.18) / 0.82) ** 1.35;
+    if (m) want = { x: v.x / mag * m, y: v.y / mag * m };
+  }
+  const k = 1 - Math.exp(-dt * 9);
+  uni.sv = { x: (uni.sv ? uni.sv.x : 0) + (want.x - (uni.sv ? uni.sv.x : 0)) * k, y: (uni.sv ? uni.sv.y : 0) + (want.y - (uni.sv ? uni.sv.y : 0)) * k };
+  // the flight spring settles at about K/D times the lead: aim a lead that gives the speed wanted
+  const top = Math.max(220, Math.min(uni.w, uni.h) * 0.75), lead = top * (2 * Math.sqrt(34) * 0.78) / 34;
+  if (v) { uni.tx = uni.x + uni.sv.x * lead; uni.ty = uni.y + uni.sv.y * lead; }
+  else if (uni.steering) { uni.tx = uni.x + uni.vx * 0.1; uni.ty = uni.y + uni.vy * 0.1; uni.sv = { x: 0, y: 0 }; } // let go: glide to a stop
   uni.steering = !!v && !demo;
   // the joystick on the screen shows the direction, and only while there is something to catch
   const stick = $("uniStick"), show = !!uni.theme && !uni.done && !uni.over;
@@ -1363,7 +1374,7 @@ function uniSteer() {
   const stick = $("uniStick");
   const move = e => {
     const r = stick.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
-    const d = Math.hypot(dx, dy), max = r.width * 0.36, k = d > max ? max / d : 1;
+    const d = Math.hypot(dx, dy), max = r.width * 0.4, k = d > max ? max / d : 1;
     uni.stick = { x: dx * k / max, y: dy * k / max };
   };
   stick.addEventListener("pointerdown", e => { e.preventDefault(); e.stopPropagation(); audio(); uni.touched = true; stick.setPointerCapture?.(e.pointerId); stick.classList.add("held"); move(e); });
@@ -1397,7 +1408,7 @@ function uniStep(dt) {
   uniMusic(dt);
   // the unicorn follows the finger, smoothly; alone, it floats up and down
   // (when the rainbow is full, it dances a loop above it)
-  uniSteer();
+  uniSteer(dt);
   const tx = uni.done ? w / 2 + Math.cos(uni.t * 1.8) * w * 0.3 : uni.tx ?? w * 0.3;
   const ty = uni.done ? h * 0.42 + Math.sin(uni.t * 3.6) * h * 0.1 : uni.ty ?? h * 0.55 + Math.sin(uni.t * 1.6) * 30;
   // Flight: a soft spring pulls it towards the finger (it speeds up, slows down and overshoots a little, as a
