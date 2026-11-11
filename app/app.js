@@ -1252,11 +1252,13 @@ const UNI_LEVELS = { 1: { need: 2, speed: 0.17, target: 0.65, lives: 5 }, 2: { n
 // Each theme asks for six things, one per stripe of the rainbow, from a pool that grows with the level. In the
 // Colours, Numbers, ABC and Shapes topics the game plays that theme; in Fairy tales the child picks one.
 const UNI_SHAPES = ["circle", "square", "triangle", "heart", "star", "moon", "diamond", "hexagon"];
+// `all`: everything the theme has; the six to catch are drawn from all of it at random (never the first ones of the
+// alphabet every time), and the level only sets how many others float around with them (`others`).
 const UNI_THEMES = {
-  colours: { pool: () => [0, 1, 2, 3, 4, 5], ordered: true },
-  numbers: { pool: l => Array.from({ length: [5, 9, 10][l - 1] }, (_, k) => k + 1) },
-  letters: { pool: l => [...["AEIOUMSL", "AEIOUMSLBDPRTNF", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"][l - 1]] },
-  shapes: { pool: l => UNI_SHAPES.slice(0, [6, 7, 8][l - 1]) },
+  colours: { all: [0, 1, 2, 3, 4, 5], ordered: true },
+  numbers: { all: Array.from({ length: 10 }, (_, k) => k + 1), others: [2, 4, 10] },
+  letters: { all: [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"], others: [4, 10, 26] },
+  shapes: { all: UNI_SHAPES, others: [2, 4, 8] },
 };
 const UNI_TOPIC_THEME = { colors: "colours", numbers: "numbers", letters: "letters", shapes: "shapes" };
 // what the voice says to ask for v, and to name a v caught by mistake
@@ -1300,8 +1302,9 @@ function openUnicorn() {
 }
 function uniBegin(theme) {
   $("uniPick").hidden = true;
-  const pool = UNI_THEMES[theme].pool(uni.level);
-  Object.assign(uni, { theme, pool, targets: UNI_THEMES[theme].ordered ? pool : shuffle([...pool]).slice(0, 6), spawn: 0.8,
+  const th = UNI_THEMES[theme], targets = th.ordered ? th.all : shuffle(th.all).slice(0, 6);
+  const pool = th.ordered ? th.all : [...targets, ...shuffle(th.all.filter(v => !targets.includes(v))).slice(0, th.others[uni.level - 1])];
+  Object.assign(uni, { theme, pool, targets, spawn: 0.8,
     flyers: [], pops: [], filled: 0, slotPop: {}, begun: uni.t, hinted: false, ease: 1, miss: 0, recap: 0, recapSound: 0 });
   if (!UNI_TOPIC_THEME[topic.id]) uni.lastTheme = theme;
   say([T().uniGo, uniAsk(uni.targets[0])]);
@@ -1584,7 +1587,23 @@ function uniFace(ctx, r, dy = 0) {
 }
 let uniFont = "";
 // one thing to catch: a colour star, a number on a star, a letter in a bubble or a smiling shape
-function uniItem(ctx, x, y, r, v, c, rot) {
+// a speaker in a bubble: the thing to catch is to be heard (tap it to hear it again)
+function uniSpeaker(ctx, x, y, r) {
+  ctx.save(); ctx.translate(x, y);
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, 7); ctx.fillStyle = "#9575cd"; ctx.fill();
+  ctx.lineWidth = Math.max(2, r * 0.09); ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.stroke();
+  ctx.fillStyle = "#fff"; ctx.strokeStyle = "#fff"; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.beginPath(); ctx.moveTo(-r * 0.5, -r * 0.18); ctx.lineTo(-r * 0.26, -r * 0.18); ctx.lineTo(r * 0.02, -r * 0.42);
+  ctx.lineTo(r * 0.02, r * 0.42); ctx.lineTo(-r * 0.26, r * 0.18); ctx.lineTo(-r * 0.5, r * 0.18); ctx.closePath(); ctx.fill();
+  const wave = (uni.t * 2) % 1; // the sound waves come and go
+  ctx.lineWidth = r * 0.1;
+  for (const [k, rr] of [[0, 0.32], [1, 0.55]]) {
+    ctx.globalAlpha = 0.5 + 0.5 * Math.sin((wave - k * 0.3) * Math.PI * 2);
+    ctx.beginPath(); ctx.arc(r * 0.05, 0, r * rr, -0.8, 0.8); ctx.stroke();
+  }
+  ctx.restore();
+}
+function uniItem(ctx, x, y, r, v, c, rot, dotsOnly) {
   const colour = c < 0 ? "#9575cd" : RAINBOW[c]; // c -1: the model at the top, in a neutral colour (any colour is right)
   if (uni.theme === "colours") return uniStar(ctx, x, y, r, colour, rot, true);
   ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
@@ -1601,13 +1620,14 @@ function uniItem(ctx, x, y, r, v, c, rot) {
     ctx.font = `700 ${Math.round(r * (num ? 0.9 : 1.15))}px ${uniFont}`;
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     const t = String(v), ty = r * (num ? -0.18 : 0.06);
-    ctx.lineWidth = r * 0.16; ctx.strokeStyle = "#3b2d5c"; ctx.strokeText(t, 0, ty);
-    ctx.fillStyle = "#ffffff"; ctx.fillText(t, 0, ty);
+    if (!dotsOnly) { ctx.lineWidth = r * 0.16; ctx.strokeStyle = "#3b2d5c"; ctx.strokeText(t, 0, ty); ctx.fillStyle = "#ffffff"; ctx.fillText(t, 0, ty); }
     if (num) { // as many dots as the number says, in rows of five: the numeral and its quantity together
       const rows = v > 5 ? [5, v - 5] : [v], d = r * 0.21;
       rows.forEach((n, row) => {
         for (let i = 0; i < n; i++) {
-          ctx.beginPath(); ctx.arc((i - (n - 1) / 2) * d, r * (rows.length > 1 ? 0.42 + row * 0.24 : 0.52), r * 0.075, 0, 7);
+          // the dots alone (the panel at the top) are bigger and centred
+          const dy = dotsOnly ? r * (rows.length > 1 ? -0.14 + row * 0.3 : 0) : r * (rows.length > 1 ? 0.42 + row * 0.24 : 0.52);
+          ctx.beginPath(); ctx.arc((i - (n - 1) / 2) * d * (dotsOnly ? 1.25 : 1), dy, r * (dotsOnly ? 0.1 : 0.075), 0, 7);
           ctx.fillStyle = "#fff"; ctx.fill(); ctx.lineWidth = r * 0.035; ctx.strokeStyle = "#3b2d5c"; ctx.stroke();
         }
       });
@@ -1699,7 +1719,10 @@ function uniDraw(ctx) {
     ctx.fillStyle = "rgba(255,255,255,.9)";
     ctx.beginPath(); ctx.roundRect(hud.x0, hud.y - 36, hud.bw, 72, 36); ctx.fill();
     ctx.restore();
-    uniItem(ctx, hud.targetX, hud.y, 29 * pulse, want, uni.theme === "colours" ? want : -1, 0);
+    // what to catch: letters are only heard (a speaker to hear it again), numbers show only their dots (count
+    // them, then find the numeral), colours and shapes are shown
+    if (uni.theme === "letters") uniSpeaker(ctx, hud.targetX, hud.y, 29 * pulse);
+    else uniItem(ctx, hud.targetX, hud.y, 29 * pulse, want, uni.theme === "colours" ? want : -1, 0, uni.theme === "numbers");
     // the slots to fill, as star outlines; a caught one flies in and fills its slot with a pop
     for (let i = 0; i < uni.lvl.need; i++) {
       const x = hud.slotX(i), pop = uni.slotPop[i] ? Math.max(0, 1 - (uni.t - uni.slotPop[i]) * 4) : 0;
