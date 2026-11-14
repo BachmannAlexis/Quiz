@@ -2546,7 +2546,7 @@ LANGS.forEach(l => {
   $("langList").appendChild(b);
 });
 document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => openSheet($("langs")));
-holdToOpen(document.querySelector(".info-btn"), () => { renderRecog(); renderOffline(); openSheet($("about")); });
+holdToOpen(document.querySelector(".info-btn"), () => { renderRecog(); renderOffline(); renderUpdate(); openSheet($("about")); });
 $("shareUrl").textContent = SHARE_URL;
 $("shareBtn").onclick = share;
 $("voiceTest").onclick = () => {
@@ -2679,7 +2679,51 @@ document.addEventListener("keydown", e => {
 addEventListener("visibilitychange", () => { if (document.hidden) stopListening(); });
 if ("speechSynthesis" in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
 // offline support when served from a website (not from a file or inside a preview frame)
-if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").then(() => navigator.serviceWorker.ready).then(offlineSoon).catch(() => {});
+if ("serviceWorker" in navigator && window.isSecureContext && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").then(() => navigator.serviceWorker.ready).then(offlineSoon).catch(() => {});
+
+// ---------- Updates from inside the app (the parents' page): look for a new version, fetch the app's files again,
+// and restart. On a start the browser checks too; when it finds a new version, a "New version" button shows on
+// the home screen.
+const swAsk = (msg, ms = 15000) => new Promise(ok => {
+  const sw = navigator.serviceWorker && navigator.serviceWorker.controller;
+  if (!sw) return ok(null);
+  const done = e => { navigator.serviceWorker.removeEventListener("message", done); ok(e.data); };
+  navigator.serviceWorker.addEventListener("message", done);
+  sw.postMessage(msg);
+  setTimeout(() => { navigator.serviceWorker.removeEventListener("message", done); ok(null); }, ms);
+});
+const versionNumber = v => String(v || "").replace(/^\D+/, "");
+async function renderUpdate() {
+  const r = await swAsk("version", 3000);
+  if (r && r.version && !$("updateStatus").dataset.busy) $("updateStatus").textContent = T().updateVersion(versionNumber(r.version));
+}
+async function updateApp() {
+  const status = $("updateStatus"), btn = $("updateBtn");
+  if (!navigator.onLine) { status.textContent = T().updateNoNet; return; }
+  btn.disabled = true; status.dataset.busy = "1"; status.textContent = T().updateChecking;
+  try {
+    const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration();
+    if (reg) {
+      // a new service worker (a new version) installs and takes over by itself; wait for it a moment
+      const changed = new Promise(ok => { navigator.serviceWorker.addEventListener("controllerchange", ok, { once: true }); setTimeout(ok, 8000); });
+      await reg.update();
+      if (reg.installing || reg.waiting) await changed;
+      await swAsk("refresh"); // and the app's files fetched again, even when the version number did not change
+    }
+    store.set("pikolo-updated", "1");
+    location.reload();
+  } catch (e) { btn.disabled = false; delete status.dataset.busy; status.textContent = T().updateFail; }
+}
+$("updateBtn").onclick = updateApp;
+$("updateReady").onclick = () => { $("updateReady").hidden = true; updateApp(); };
+// after an update: say so, with the version
+if (store.get("pikolo-updated") === "1") {
+  store.set("pikolo-updated", "");
+  swAsk("version", 3000).then(r => toast(T().updateDone(versionNumber(r && r.version))));
+}
+// a new version found by the browser on its own: a button on the home screen
+if (navigator.serviceWorker && navigator.serviceWorker.controller)
+  navigator.serviceWorker.addEventListener("controllerchange", () => { $("updateReady").hidden = false; });
 
 translate();
 loadAsset("pictures", "home");

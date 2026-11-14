@@ -623,3 +623,5 @@ canvas.solid { display: block; width: 74%; height: 74%; touch-action: none; }
 .uni-stick.hint::after { content: ""; position: absolute; inset: -10px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, .9); animation: stickhint 1.4s ease-out infinite; }
 @keyframes stickhint { from { transform: scale(.85); opacity: 1; } to { transform: scale(1.25); opacity: 0; } }
 @media (max-height: 500px) { .uni-stick { width: 112px; height: 112px; } .uni-knob { width: 52px; height: 52px; } }
+.update-pill { align-self: center; display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: #fff; animation: enter .4s ease-out; }
+.update-pill .ic { width: 20px; height: 20px; }

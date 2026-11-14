@@ -98,6 +98,8 @@ The workflow in `.github/workflows/pages.yml` publishes the app to GitHub Pages 
 
 ## Sounds and pictures
 
+**Updates.** The app updates itself a little after it starts (when the browser finds a new version, a "New version" button shows on the home screen). In the parents' page, **Check for updates** downloads the newest version right away and restarts, then says which version is installed.
+
 Everything is bundled with the app, so it works offline:
 
 - `app/sounds/<topic>.js`: for each instrument a short tune and the notes for the play mode, and the real recordings, built by `tools/make_sounds.py`.

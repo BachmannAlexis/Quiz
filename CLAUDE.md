@@ -24,7 +24,7 @@ description, the asset sources and the full rebuild commands.
 - After changing the list of app files, bump `VERSION` in `sw.js`. The service worker serves everything from the device
   first (the app shell is refreshed in the background, packs are kept until their version in `app/packs.js` changes), so
   after changing a pack by hand rerun `tools/make_packs.py`. Installed, the app downloads every pack of the language
-  and works offline.
+  and works offline. The parents' page has a "Check for updates" button (sw.js answers the messages "version" and "refresh"), so bump `VERSION` on every release: it is the version number parents see.
 
 ## Layout
 

@@ -4,7 +4,7 @@
 //   they are until a new version replaces them.
 // - The speech models (app/vosk/*.tar.gz) are kept by Vosk itself, so not a second time here.
 // Bump VERSION when this file or the list of app files changes.
-const VERSION = "pikolo-34";
+const VERSION = "pikolo-35";
 const CACHE = "pikolo"; // one cache across versions: what was downloaded stays for offline use
 const SHELL = [
   "./", "index.html", "manifest.webmanifest",
@@ -23,6 +23,14 @@ self.addEventListener("activate", e => {
   e.waitUntil(caches.keys()
     .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
+});
+
+// the parents' "Check for updates" button: what version this is, and fetch the app's files again now
+self.addEventListener("message", e => {
+  if (e.data === "version") e.source.postMessage({ version: VERSION });
+  if (e.data === "refresh") e.waitUntil(caches.open(CACHE)
+    .then(c => Promise.all(SHELL.map(u => fetch(new Request(u, { cache: "reload" })).then(r => r.ok ? c.put(u, r) : null))))
+    .then(() => e.source.postMessage({ refreshed: true }), () => e.source.postMessage({ refreshed: false })));
 });
 
 self.addEventListener("fetch", e => {

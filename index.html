@@ -88,6 +88,7 @@
       </div>
     </header>
     <p class="tagline" data-t="tagline"></p>
+    <button class="pill update-pill" type="button" id="updateReady" hidden><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.1-5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M4.5 3.5v4.5H9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="updateNew"></span></button>
     <div id="topicGrid"></div>
   </section>
 
@@ -270,6 +271,12 @@
   <div class="share-row">
     <button class="btn btn-primary" type="button" id="offlineBtn"></button>
     <span class="small muted" id="offlineStatus" aria-live="polite"></span>
+  </div>
+  <h3 data-t="updateTitle"></h3>
+  <p class="small" data-t="updateText"></p>
+  <div class="share-row">
+    <button class="btn btn-primary" type="button" id="updateBtn" data-t="updateBtn"></button>
+    <span class="small muted" id="updateStatus" aria-live="polite"></span>
   </div>
   <h3 data-t="recogTitle"></h3>
   <p class="small" data-t="recogText"></p>
