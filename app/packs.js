@@ -39,7 +39,7 @@ const PACKS = {
   "pictures/maths.js": ["bed207ee2e", 18543],
   "pictures/mushrooms.js": ["6f15318f73", 39189],
   "pictures/numbers.js": ["5d73339305", 549089],
-  "pictures/reading.js": ["5d6f666f77", 388351],
+  "pictures/reading.js": ["88478771c2", 877202],
   "pictures/scenery.js": ["0591c51873", 97213],
   "pictures/shapes.js": ["87d303ca6e", 6676],
   "pictures/sounds.js": ["9b75cded8e", 634873],
