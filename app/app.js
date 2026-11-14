@@ -660,6 +660,10 @@ function renderProgress() {
 }
 let results = []; // per round: true if found on the first try
 
+// What is written above the pictures. When the cards show the answer written (letters, numbers, syllables, sound
+// cards), "Where is the letter N?" would give it away: then only "Listen!" is written, and the voice says the rest.
+const WRITTEN_TOPICS = new Set(["letters", "numbers", "syllables", "sounds"]);
+const promptShown = () => mode === "name" && WRITTEN_TOPICS.has(topic.id) ? T().hearIt : promptText();
 function promptText() {
   if (mode === "say") return topic.id === "emotions" ? T().sayFeel : topic.id === "sounds" || topic.id === "reading" ? T().sayRead : T().sayWhat;
   if (mode === "read") return T().readIt;
@@ -720,7 +724,7 @@ function askQuestion() {
     b.onclick = () => pick(item, b);
     box.appendChild(b);
   });
-  $("promptText").textContent = promptText();
+  $("promptText").textContent = promptShown();
   if (mode === "read") showWord($("promptText"), answer); // the word to read, written big; nothing said
   asked = Date.now();
   ask();
@@ -2475,7 +2479,7 @@ function setLang(l) {
       b.setAttribute("aria-label", nameOf(item));
       if (b.classList.contains("named")) b.querySelector(".label").textContent = shortName(item);
     });
-    $("promptText").textContent = locked ? yesOf(answer) : promptText();
+    $("promptText").textContent = locked ? yesOf(answer) : promptShown();
     if (!locked) ask();
   }
   if (screen === "play" && playing) {

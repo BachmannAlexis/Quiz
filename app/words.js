@@ -6,6 +6,7 @@ const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const SOURCE_URL = "https://github.com/BachmannAlexis/Quiz";
 const TEXT = {
   en: {
+    hearIt: "Listen!",
     where: (n, many, bare) => `Where ${many ? "are" : "is"} ${bare ? "" : "the "}${n}?`, listen: "Listen! Who is playing?",
     who: sound => `Who says ${sound}?`, says: (n, sound, like) => `The ${n} says ${sound}${like ? `, like ${like}` : ""}!`,
     whichLetter: sound => `Listen! Which letter says ${sound}?`,
@@ -110,6 +111,7 @@ const TEXT = {
     creditsText: `Pictures from <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) and drawn for Pikolo. Real animal and kitchen recordings by Joseph Sardin from <a href="https://bigsoundbank.com" target="_blank" rel="noopener">BigSoundBank</a> (CC0, listed in <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Photos from <a href="https://www.inaturalist.org" target="_blank" rel="noopener">iNaturalist</a> and <a href="https://openverse.org" target="_blank" rel="noopener">Openverse</a> (CC0, CC BY, CC BY-SA, photographers listed in <a href="${SOURCE_URL}/blob/main/PHOTO-CREDITS.md" target="_blank" rel="noopener">PHOTO-CREDITS.md</a>). Instruments from VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, and the MusyngKite and GeneralUser GS sound banks. Voice recorded with Piper (LJ Speech, public domain; SIWIS, CC BY 4.0; Thorsten, CC0; Riccardo, M-AILABS, public domain). Speech recognition: Vosk (Apache 2.0, Alpha Cephei). Flags: Circle Flags (MIT). Font: Fredoka. Full credits and source on <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
   fr: {
+    hearIt: "Écoute !",
     where: (n, many) => `Où ${many || n.startsWith("les ") ? "sont" : "est"} ${n} ?`, listen: "Écoute ! Qui joue ?",
     who: sound => `Qui fait ${sound} ?`, says: (n, sound, like) => `${cap(n)} fait ${sound}${like ? `, comme ${like}` : ""} !`,
     whichLetter: sound => `Écoute ! Quelle lettre fait ${sound} ?`,
@@ -214,6 +216,7 @@ const TEXT = {
     creditsText: `Images de <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) et dessinées pour Pikolo. Vrais cris d'animaux et bruits de cuisine enregistrés par Joseph Sardin, <a href="https://bigsoundbank.com" target="_blank" rel="noopener">BigSoundBank</a> (CC0, liste dans <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Photos d'<a href="https://www.inaturalist.org" target="_blank" rel="noopener">iNaturalist</a> et d'<a href="https://openverse.org" target="_blank" rel="noopener">Openverse</a> (CC0, CC BY, CC BY-SA, photographes dans <a href="${SOURCE_URL}/blob/main/PHOTO-CREDITS.md" target="_blank" rel="noopener">PHOTO-CREDITS.md</a>). Instruments : VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, banques de sons MusyngKite et GeneralUser GS. Voix enregistrée avec Piper (LJ Speech, domaine public ; SIWIS, CC BY 4.0 ; Thorsten, CC0 ; Riccardo, M-AILABS, domaine public). Reconnaissance vocale : Vosk (Apache 2.0, Alpha Cephei). Drapeaux : Circle Flags (MIT). Police : Fredoka. Crédits complets et code source sur <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
   de: {
+    hearIt: "Hör zu!",
     where: (n, many) => `Wo ${many ? "sind" : "ist"} ${n}?`, listen: "Hör zu! Wer spielt?",
     who: sound => `Wer macht ${sound}?`, says: (n, sound, like) => `${cap(n)} macht ${sound}${like ? `, wie ${like}` : ""}!`,
     whichLetter: sound => `Hör zu! Welcher Buchstabe macht ${sound}?`,
@@ -319,6 +322,7 @@ const TEXT = {
     creditsText: `Bilder von <a href="https://github.com/googlefonts/noto-emoji" target="_blank" rel="noopener">Noto Emoji</a> (Apache 2.0) und für Pikolo gezeichnet. Echte Tier- und Küchengeräusche von Joseph Sardin, <a href="https://bigsoundbank.com" target="_blank" rel="noopener">BigSoundBank</a> (CC0, Liste in <a href="${SOURCE_URL}/blob/main/SOUND-CREDITS.md" target="_blank" rel="noopener">SOUND-CREDITS.md</a>). Fotos von <a href="https://www.inaturalist.org" target="_blank" rel="noopener">iNaturalist</a> und <a href="https://openverse.org" target="_blank" rel="noopener">Openverse</a> (CC0, CC BY, CC BY-SA, Fotografen in <a href="${SOURCE_URL}/blob/main/PHOTO-CREDITS.md" target="_blank" rel="noopener">PHOTO-CREDITS.md</a>). Instrumente: VSCO 2 Community Edition, Salamander Grand Piano, tonejs-instruments, Sonic Pi, Klangbanken MusyngKite und GeneralUser GS. Stimme aufgenommen mit Piper (LJ Speech, gemeinfrei; SIWIS, CC BY 4.0; Thorsten, CC0; Riccardo, M-AILABS, gemeinfrei). Spracherkennung: Vosk (Apache 2.0, Alpha Cephei). Flaggen: Circle Flags (MIT). Schrift: Fredoka. Alle Angaben und Quellcode auf <a href="${SOURCE_URL}" target="_blank" rel="noopener">GitHub</a>.`,
   },
   it: {
+    hearIt: "Ascolta!",
     where: (n, many) => many ? `Dove sono ${n}?` : `Dov'è ${n}?`, listen: "Ascolta! Chi suona?",
     who: sound => `Chi fa ${sound}?`, says: (n, sound, like) => `${cap(n)} fa ${sound}${like ? `, come ${like}` : ""}!`,
     whichLetter: sound => `Ascolta! Quale lettera fa ${sound}?`,
