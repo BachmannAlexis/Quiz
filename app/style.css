@@ -627,4 +627,4 @@ canvas.solid { display: block; width: 74%; height: 74%; touch-action: none; }
 .update-pill .ic { width: 20px; height: 20px; }
 /* Animal families: the dad or mum whose baby is asked for, big above the choices */
 .math-visual.parent-visual { display: flex; justify-content: center; }
-.parent-visual img { width: min(40vw, 30vh, 190px); height: auto; aspect-ratio: 1; padding: 10px; border-radius: 28px; background: var(--surface); box-shadow: var(--lift), var(--edge); animation: enter .35s ease-out; }
+.parent-visual img { width: min(44vw, 30vh, 200px); height: auto; aspect-ratio: 1; animation: enter .35s ease-out; }
