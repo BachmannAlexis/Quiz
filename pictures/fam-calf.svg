@@ -7,6 +7,7 @@
   <g fill="#455a64"><rect x="26" y="110" width="10" height="6" rx="2"/><rect x="59" y="110" width="10" height="6" rx="2"/><rect x="34.5" y="108" width="8" height="5" rx="2"/><rect x="69.5" y="108" width="8" height="5" rx="2"/></g>
   <path d="M22 62 C22 52 34 48 50 50 L74 50 C84 54 84 72 78 78 C66 84 40 84 30 80 C22 76 20 70 22 62 Z" fill="#fff" stroke="#b0bec5" stroke-width="2"/>
   <g clip-path="url(#cc)" fill="#263238"><path d="M36 46 C48 48 50 62 42 66 C32 70 26 60 28 52 Z"/><path d="M60 64 C68 60 80 64 78 74 C76 84 62 82 58 76 C56 72 56 66 60 64 Z"/></g>
+  <g transform="translate(-6 0)">
   <ellipse cx="68" cy="34" rx="13" ry="6.5" fill="#fff" stroke="#b0bec5" stroke-width="2" transform="rotate(25 68 34)"/>
   <ellipse cx="120" cy="34" rx="12" ry="6.5" fill="#fff" stroke="#b0bec5" stroke-width="2" transform="rotate(-25 118 34)"/>
   <ellipse cx="68" cy="34" rx="7" ry="3" fill="#f8bbd0" transform="rotate(25 68 34)"/>
@@ -19,4 +20,5 @@
   <ellipse cx="94" cy="68" rx="18" ry="12" fill="#f8bbd0"/>
   <ellipse cx="88" cy="67" rx="2.4" ry="3.2" fill="#c2185b"/><ellipse cx="100" cy="67" rx="2.4" ry="3.2" fill="#c2185b"/>
   <path d="M89 74 C92 77 96 77 99 74" stroke="#c2185b" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  </g>
 </svg>

@@ -9,6 +9,7 @@
   <path d="M35 94 l0 6 M42 96 l0 6 M49 94 l0 6" stroke="#f06292" stroke-width="3.5" stroke-linecap="round"/>
   <path d="M14 60 C14 46 30 42 50 44 L90 44 C102 50 100 74 92 84 C76 92 36 92 22 86 C14 80 12 70 14 60 Z" fill="#fff" stroke="#b0bec5" stroke-width="2"/>
   <g clip-path="url(#cb)" fill="#263238"><path d="M30 40 C46 42 50 58 40 64 C28 70 20 58 22 48 Z"/><path d="M60 60 C72 54 86 62 82 74 C78 86 60 84 56 76 C52 70 54 64 60 60 Z"/><path d="M10 74 C18 72 24 80 20 92 L8 92 Z"/></g>
+  <g transform="translate(-5 0)">
   <path d="M90 46 C86 38 86 30 90 26 C92 32 94 36 98 40 Z M116 46 C120 38 120 30 116 26 C114 32 112 36 108 40 Z" fill="#f5e6c8"/>
   <ellipse cx="86" cy="50" rx="9" ry="5" fill="#fff" stroke="#b0bec5" stroke-width="2" transform="rotate(20 86 50)"/>
   <ellipse cx="120" cy="50" rx="9" ry="5" fill="#fff" stroke="#b0bec5" stroke-width="2" transform="rotate(-20 120 50)"/>
@@ -23,4 +24,5 @@
   <ellipse cx="97" cy="75" rx="2.4" ry="3.2" fill="#c2185b"/><ellipse cx="109" cy="75" rx="2.4" ry="3.2" fill="#c2185b"/>
   <path d="M88 84 C96 90 110 90 118 84" stroke="#e53935" stroke-width="4" fill="none" stroke-linecap="round"/>
   <path d="M97 88 L109 88 L112 102 L94 102 Z" fill="#fbc02d"/><circle cx="103" cy="103" r="2.6" fill="#f57f17"/>
+  </g>
 </svg>

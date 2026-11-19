@@ -6,13 +6,14 @@
   <path d="M30 80 C30 58 48 46 68 48 C86 50 94 62 92 78 C90 94 74 100 58 100 C42 100 30 94 30 80 Z" fill="#ec407a"/>
   <path d="M38 88 C48 96 66 98 80 90" stroke="#f8bbd0" stroke-width="6" fill="none" stroke-linecap="round"/>
   <path d="M42 66 C50 74 62 78 76 76 C66 84 52 84 42 78 Z" fill="#c2185b"/>
-  <path d="M74 54 C78 44 80 38 82 32 L94 36 C92 44 90 50 86 60 Z" fill="#ec407a"/>
-  <path d="M80 24 C80 12 90 8 98 10 C106 12 112 18 110 28 C108 36 100 40 92 40 C84 40 80 34 80 24 Z" fill="#ec407a"/>
-  <path d="M84 14 C84 4 92 -2 100 2 C96 6 96 10 98 12 Z" fill="#ff7043"/>
-  <path d="M84 14 C82 6 88 0 96 2 C92 4 90 8 90 12 Z" fill="#ff8a65"/>
-  <path d="M106 18 C114 20 120 26 118 34 C114 38 108 36 104 32 Z" fill="#ffb300"/>
-  <path d="M106 30 C110 32 114 34 118 34" stroke="#e65100" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-  <circle cx="96" cy="22" r="3" fill="#212121"/><circle cx="97" cy="21" r="1" fill="#fff"/>
+  <path d="M72 56 C76 50 78 46 80 40 L92 44 C90 50 88 54 84 62 Z" fill="#ec407a"/>
+  <path d="M82 26 C78 12 84 0 96 2 C104 4 104 12 100 22 Z" fill="#ff7043"/>
+  <path d="M86 22 C84 14 88 6 94 6" stroke="#ffab91" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M78 34 C78 24 86 18 96 20 C104 22 108 28 106 36 C104 44 96 48 88 48 C82 48 78 42 78 34 Z" fill="#ec407a"/>
+  <path d="M102 24 C112 22 120 30 118 42 C116 46 112 46 110 42 C108 46 104 44 102 40 Z" fill="#ffb300"/>
+  <path d="M118 42 C117 46 114 48 112 46" stroke="#e65100" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M104 36 C108 38 112 38 116 37" stroke="#e65100" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <circle cx="94" cy="30" r="3" fill="#212121"/><circle cx="95" cy="29" r="1" fill="#fff"/>
   <path d="M82 66 C90 70 96 76 98 84" stroke="#c2185b" stroke-width="5" fill="none" stroke-linecap="round"/>
   <g fill="#e0f2f1" stroke="#80cbc4" stroke-width="1.5"><ellipse cx="40" cy="104" rx="8" ry="10"/><ellipse cx="64" cy="106" rx="8" ry="10"/><ellipse cx="88" cy="104" rx="8" ry="10"/></g>
   <path d="M8 100 C28 112 100 112 120 100 C116 116 96 122 64 122 C32 122 12 116 8 100 Z" fill="#8d6e63"/>

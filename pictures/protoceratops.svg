@@ -4,11 +4,12 @@
   <path d="M30 66 C40 58 54 54 68 56" stroke="#f3e2c0" stroke-width="5" fill="none" stroke-linecap="round"/>
   <g fill="#c9a66b"><rect x="28" y="90" width="13" height="22" rx="6"/><rect x="72" y="90" width="13" height="22" rx="6"/></g>
   <g fill="#d6b47a"><rect x="42" y="92" width="13" height="22" rx="6"/><rect x="84" y="88" width="13" height="24" rx="6"/></g>
-  <path d="M72 50 C64 26 82 12 100 18 C108 22 110 32 106 44 L96 64 C86 64 76 60 72 50 Z" fill="#b8894e"/>
-  <path d="M80 44 C78 32 86 24 96 26" stroke="#d6b47a" stroke-width="4" fill="none" stroke-linecap="round"/>
-  <path d="M90 44 C96 38 110 40 116 48 C122 56 124 66 122 74 C118 78 112 78 108 76 C100 80 92 76 88 68 C84 60 84 50 90 44 Z" fill="#e3c38c"/>
-  <path d="M114 50 C120 54 126 62 124 74 C120 78 114 76 110 72 C112 64 114 58 114 50 Z" fill="#6d4c41"/>
-  <path d="M108 50 l4 -6 l3 6 Z" fill="#c9a66b"/>
-  <circle cx="104" cy="54" r="3" fill="#212121"/><circle cx="105" cy="53" r="1" fill="#fff"/>
-  <path d="M96 70 q6 3 12 0" stroke="#8d6e63" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M66 62 C56 44 62 22 82 16 C96 12 106 18 106 28 L100 60 C88 66 74 66 66 62 Z" fill="#c49352"/>
+  <path d="M70 54 C64 40 70 26 84 22 C94 20 100 24 100 30" stroke="#ddb47a" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M84 50 C92 40 108 40 116 48 C122 54 122 62 120 70 C114 78 100 80 92 76 C84 72 80 60 84 50 Z" fill="#e3c38c"/>
+  <path d="M112 46 C122 46 128 56 126 66 C125 72 122 76 118 76 C119 70 118 64 114 60 Z" fill="#6d4c41"/>
+  <path d="M112 66 C116 68 118 72 118 76 C114 76 110 74 108 70 Z" fill="#8d6e63"/>
+  <path d="M100 46 L104 38 L108 46 Z" fill="#c49352"/>
+  <circle cx="102" cy="54" r="3" fill="#212121"/><circle cx="103" cy="53" r="1" fill="#fff"/>
+  <path d="M96 68 q5 3 10 0" stroke="#8d6e63" stroke-width="2" fill="none" stroke-linecap="round"/>
 </svg>
