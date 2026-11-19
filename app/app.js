@@ -4,7 +4,7 @@
 
 const SHARE_URL = "https://bachmannalexis.github.io/Quiz/";
 
-const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum", unicorn: "star", add: "plus", subtract: "minus", line: "line" };
+const MODE_ICONS = { name: "image", say: "mic", listen: "ear", play: "keys", explore: "search", read: "book", puzzle: "puzzle", drums: "drum", unicorn: "star", babies: "heart", add: "plus", subtract: "minus", line: "line" };
 // an icon from the sprite in index.html (one line style for every control)
 const icon = (id, cls = "") => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 
@@ -365,6 +365,7 @@ function groupPool() {
 // what a game asks about: in the listening game, only items with a sound; if the chosen
 // group has too few, all of the topic's
 function gamePool() {
+  if (mode === "babies") { const b = groupPool().filter(i => i.role === "baby"); return b.length >= 3 ? b : itemsOf(topic).filter(i => i.role === "baby"); }
   if (mode !== "listen") return groupPool();
   const pool = groupPool().filter(hasSound);
   return new Set(pool.map(soundFamily)).size >= choices() ? pool : itemsOf(topic).filter(hasSound);
@@ -664,7 +665,9 @@ let results = []; // per round: true if found on the first try
 // cards), "Where is the letter N?" would give it away: then only "Listen!" is written, and the voice says the rest.
 const WRITTEN_TOPICS = new Set(["letters", "numbers", "syllables", "sounds"]);
 const promptShown = () => mode === "name" && WRITTEN_TOPICS.has(topic.id) ? T().hearIt : promptText();
+let kinParent = null; // the dad or mum shown in "Whose baby?"
 function promptText() {
+  if (mode === "babies") return T().whoseBaby(nameOf(kinParent));
   if (mode === "say") return topic.id === "emotions" ? T().sayFeel : topic.id === "sounds" || topic.id === "reading" ? T().sayRead : T().sayWhat;
   if (mode === "read") return T().readIt;
   if (mode !== "listen" && topic.id === "emotions") return T().whoFeels(nameOf(answer));
@@ -708,12 +711,23 @@ function askQuestion() {
   lastAnswer = answer;
   if (hasRecording(answer)) recording(answer.id).catch(() => {}); // start decoding now so the sound is ready
   if (mode === "say") return askSay();
+  // Animal families: "Whose baby?" shows a dad or a mum (big, above the choices) and asks for its baby among other
+  // babies; the other games ask among the same family first (the bull, the cow, the calf)
+  $("mathVisual").hidden = mode !== "babies";
+  if (mode === "babies") {
+    const parents = itemsOf(topic).filter(i => i.kin === answer.kin && i.role !== "baby");
+    kinParent = parents[Math.floor(Math.random() * parents.length)];
+    const v = $("mathVisual");
+    v.className = "math-visual parent-visual"; v.innerHTML = "";
+    v.appendChild(picture(kinParent.id));
+  }
   // wrong choices come from other families, so pictures and sounds are easy to tell
   // apart; prefer the same group, and in the animal sound game animals with a sound
-  const fallback = mode === "listen" ? itemsOf(topic).filter(hasSound) : itemsOf(topic);
+  const fallback = mode === "listen" ? itemsOf(topic).filter(hasSound) : mode === "babies" ? itemsOf(topic).filter(i => i.role === "baby") : itemsOf(topic);
   const kind = mode === "listen" ? soundFamily : i => i.family;
   const others = [];
-  for (const i of [...shuffle(pool), ...shuffle(fallback)]) {
+  const kinFirst = topic.kin && mode !== "babies" ? shuffle(itemsOf(topic).filter(i => i.kin === answer.kin)) : [];
+  for (const i of [...kinFirst, ...shuffle(pool), ...shuffle(fallback)]) {
     if (others.length < choices() - 1 && i.family !== answer.family && kind(i) !== kind(answer) && !others.some(o => o.family === i.family || kind(o) === kind(i))) others.push(i);
   }
   const box = $("choices");

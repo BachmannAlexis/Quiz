@@ -49,6 +49,8 @@ for (const lang of LANGS.filter(l => TOPICS[0].items[0][l])) {
       out[lang][t.id] = [...s];
       continue;
     }
+    // Animal families: "The cow! Where is its baby?" for every dad and mum
+    if (t.kin) for (const p of t.items.filter(i => i.role !== "baby")) s.add(T.whoseBaby(p[lang]));
     for (const item of t.items) {
       if (item.only && item.only !== lang) continue; // sounds and words of another language
       if (t.id !== "reading") s.add(t.id === "clock" ? T.showTime(item[lang]) : t.id === "emotions" ? T.whoFeels(item[lang]) : T.where(item[lang], manyOf(item), t.bare));

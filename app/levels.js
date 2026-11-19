@@ -9,6 +9,10 @@ const LEVELS = {
       "pufferfish", "coral", "grasshopper", "beetle", "ox", "water-buffalo", "ram", "poodle", "cheetah", "leopard",
       "mole", "toad", "seagull", "robin", "blackbird", "woodpecker", "cuckoo", "hummingbird", "scorpion", "mosquito"],
   },
+  families: {
+    easy: ["fam-rooster", "fam-hen", "fam-chick", "fam-cow", "fam-calf", "fam-duck", "fam-duckling", "fam-lion", "fam-lion-cub"],
+    hard: ["fam-boar", "fam-sow", "fam-drake", "fam-stallion", "fam-mare", "fam-ram", "fam-ewe", "fam-billy-goat"],
+  },
   insects: {
     easy: ["ins-bee", "ins-ant", "ins-ladybug", "ins-butterfly", "ins-caterpillar", "ins-fly", "ins-spider", "ins-snail", "ins-worm"],
     hard: ["ins-mantis", "ins-stick", "ins-cicada", "ins-moth", "ins-cockroach", "ins-scorpion", "ins-centipede", "ins-firefly"],
@@ -27,7 +31,8 @@ const LEVELS = {
   },
   dinosaurs: {
     easy: ["t-rex", "triceratops", "stegosaurus", "diplodocus", "brachiosaurus", "pterodactyl", "mammoth", "dinosaur-egg"],
-    hard: ["parasaurolophus", "pachycephalosaurus", "iguanodon", "dimetrodon", "ichthyosaurus", "archaeopteryx"],
+    hard: ["parasaurolophus", "pachycephalosaurus", "iguanodon", "dimetrodon", "ichthyosaurus", "archaeopteryx",
+      "therizinosaurus", "quetzalcoatlus", "compsognathus", "kentrosaurus", "edmontosaurus", "protoceratops", "styracosaurus"],
   },
   flowers: {
     easy: ["rose", "poppy", "tulip", "sunflower", "daisy", "dandelion", "cherry-blossom", "lavender", "water-lily",

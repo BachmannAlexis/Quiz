@@ -28,8 +28,9 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 |---|---|---|
 | 🐄 Animals | 106, 26 of them with a real recording (cow, horse, rooster, owl, robin, bee…) and 24 with what they say ("the cow says moo") | farm, wild, sea, birds, bugs |
 | 🎻 Music | 85 instruments, the whole symphony orchestra and many more, each with a short tune in its style; a piano with black keys, a drum kit with 12 pads and a drum machine (16 steps, 15 styles from rock to samba, each with its own kit, accents, swing and fills) | orchestra, jazz, rock & pop, world, latin, folk & country, electronic |
+| 👪 Animal families | The dad, the mum and the baby of eight animals: rooster, hen and chick; bull, cow and calf; ram, ewe and lamb; stallion, mare and foal; boar, sow and piglet; drake, duck and duckling; billy goat, nanny goat and kid; lion, lioness and cub. **Whose baby?**: a dad or a mum is shown and the voice asks "The cow! Where is its baby?"; the other games ask among the same family ("Where is the calf?" between the bull, the cow and the calf), and each one says who it is ("The calf is the baby of the cow and the bull.") | dads, mums, babies |
 | 🐞 Small creatures | 23: 18 insects (bee, bumblebee, wasp, ant, ladybug, butterfly, moth, caterpillar, dragonfly, grasshopper, praying mantis, stick insect, cicada, firefly, beetle, fly, mosquito, cockroach) and 5 that are not insects (spider, scorpion, centipede, snail, earthworm), each with a short fact ("The spider has eight legs: it is not an insect!") | insects, not insects |
-| 🦖 Dinosaurs | 20 (with the mammoth, the sabre-toothed cat, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
+| 🦖 Dinosaurs | 32 (with the mammoth, the sabre-toothed cat, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
 | 🌻 Flowers | 36 | |
 | 🌳 Trees | 28 | |
 | 🍄 Mushrooms | 24, including the chanterelle and four boletes | |

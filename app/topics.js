@@ -380,6 +380,18 @@ const DINOSAURS = [
   { id: "ichthyosaurus", en: "ichthyosaurus", fr: "l'ichtyosaure", family: "swimmer", says: ["splish splash", "plic ploc"] },
   { id: "archaeopteryx", en: "archaeopteryx", fr: "l'archéoptéryx", family: "flyer", says: ["tweet tweet", "cui cui"] },
   { id: "smilodon", en: "sabre-toothed cat", fr: "le tigre à dents de sabre", family: "cat", says: ["grrraou", "grrraou"] },
+  { id: "carnotaurus", en: "carnotaurus", fr: "le carnotaure", family: "theropod", says: ["grrrah", "grrraa"] },
+  { id: "therizinosaurus", en: "therizinosaurus", fr: "le thérizinosaure", family: "claws", says: ["swish swish", "chhh chhh"] },
+  { id: "oviraptor", en: "oviraptor", fr: "l'oviraptor", family: "oviraptor", says: ["cluck cluck", "cot cot"] },
+  { id: "gallimimus", en: "gallimimus", fr: "le gallimimus", family: "ostrich", says: ["zoom zoom", "zoum zoum"] },
+  { id: "styracosaurus", en: "styracosaurus", fr: "le styracosaure", family: "horns", says: ["huff huff", "pfou pfou"] },
+  { id: "protoceratops", en: "protoceratops", fr: "le protocératops", family: "frill", says: ["grunt grunt", "grou grou"] },
+  { id: "mosasaurus", en: "mosasaurus", fr: "le mosasaure", family: "sea-jaws", says: ["chomp chomp", "crounch crounch"] },
+  { id: "quetzalcoatlus", en: "quetzalcoatlus", fr: "le quetzalcoatlus", family: "flyer", says: ["whoosh", "fiouuu"] },
+  { id: "compsognathus", en: "compsognathus", fr: "le compsognathus", family: "tiny", says: ["peep peep", "pip pip"] },
+  { id: "kentrosaurus", en: "kentrosaurus", fr: "le kentrosaure", family: "plates", says: ["clank clank", "clac clac"] },
+  { id: "edmontosaurus", en: "edmontosaurus", fr: "l'edmontosaure", family: "crest", says: ["honk honk", "pouet pouet"] },
+  { id: "woolly-rhino", en: "woolly rhinoceros", fr: "le rhinocéros laineux", family: "rhino", says: ["snort snort", "brrr brrr"] },
 ];
 
 // ---------- Fruits and vegetables
@@ -1692,9 +1704,70 @@ const INSECT_GROUPS = [
   { id: NOT_INSECT, pic: "ins-spider",    en: "Not insects", fr: "Pas des insectes" },
 ];
 
+// ---------- Animal families: the dad, the mum and the baby of eight animals (`kin`: the animal, `role`: dad, mum, baby).
+// The quiz asks among the same family ("Where is the calf?" between the bull, the cow and the calf), and the
+// "Whose baby?" game shows a dad or a mum and asks for its baby among other babies.
+const DAD = "dads", MUM = "mums", BABY = "babies";
+const FAMILIES = [
+  { id: "fam-rooster", en: "rooster", fr: "le coq", de: "der Hahn", it: "il gallo", family: "fam-rooster", kin: "chicken", role: "dad", styles: [DAD],
+    fact: ["The rooster is the chick's dad. He sings cock-a-doodle-doo!", "Le coq est le papa du poussin. Il chante cocorico !", "Der Hahn ist der Papa vom Küken. Er kräht kikeriki!", "Il gallo è il papà del pulcino. Canta chicchirichì!"] },
+  { id: "fam-hen", en: "hen", fr: "la poule", de: "das Huhn", it: "la gallina", family: "fam-hen", kin: "chicken", role: "mum", styles: [MUM],
+    fact: ["The hen is the chick's mum. She lays eggs.", "La poule est la maman du poussin. Elle pond des œufs.", "Das Huhn ist die Mama vom Küken. Es legt Eier.", "La gallina è la mamma del pulcino. Fa le uova."] },
+  { id: "fam-chick", en: "chick", fr: "le poussin", de: "das Küken", it: "il pulcino", family: "fam-chick", kin: "chicken", role: "baby", styles: [BABY],
+    fact: ["The chick is the baby of the hen and the rooster.", "Le poussin est le bébé de la poule et du coq.", "Das Küken ist das Baby von Huhn und Hahn.", "Il pulcino è il piccolo della gallina e del gallo."] },
+  { id: "fam-bull", en: "bull", fr: "le taureau", de: "der Stier", it: "il toro", family: "fam-bull", kin: "cattle", role: "dad", styles: [DAD],
+    fact: ["The bull is the calf's dad.", "Le taureau est le papa du veau.", "Der Stier ist der Papa vom Kalb.", "Il toro è il papà del vitello."] },
+  { id: "fam-cow", en: "cow", fr: "la vache", de: "die Kuh", it: "la mucca", family: "fam-cow", kin: "cattle", role: "mum", styles: [MUM],
+    fact: ["The cow is the calf's mum. She gives milk.", "La vache est la maman du veau. Elle donne du lait.", "Die Kuh ist die Mama vom Kalb. Sie gibt Milch.", "La mucca è la mamma del vitello. Dà il latte."] },
+  { id: "fam-calf", en: "calf", fr: "le veau", de: "das Kalb", it: "il vitello", family: "fam-calf", kin: "cattle", role: "baby", styles: [BABY],
+    fact: ["The calf is the baby of the cow and the bull.", "Le veau est le bébé de la vache et du taureau.", "Das Kalb ist das Baby von Kuh und Stier.", "Il vitello è il piccolo della mucca e del toro."] },
+  { id: "fam-ram", en: "ram", fr: "le bélier", de: "der Widder", it: "il montone", family: "fam-ram", kin: "sheep", role: "dad", styles: [DAD],
+    fact: ["The ram is the lamb's dad.", "Le bélier est le papa de l'agneau.", "Der Widder ist der Papa vom Lamm.", "Il montone è il papà dell'agnello."] },
+  { id: "fam-ewe", en: "ewe", fr: "la brebis", de: "das Mutterschaf", it: "la pecora", family: "fam-ewe", kin: "sheep", role: "mum", styles: [MUM],
+    fact: ["The ewe is the lamb's mum.", "La brebis est la maman de l'agneau.", "Das Mutterschaf ist die Mama vom Lamm.", "La pecora è la mamma dell'agnello."] },
+  { id: "fam-lamb", en: "lamb", fr: "l'agneau", de: "das Lamm", it: "l'agnello", family: "fam-lamb", kin: "sheep", role: "baby", styles: [BABY],
+    fact: ["The lamb is the baby of the ewe and the ram.", "L'agneau est le bébé de la brebis et du bélier.", "Das Lamm ist das Baby von Mutterschaf und Widder.", "L'agnello è il piccolo della pecora e del montone."] },
+  { id: "fam-stallion", en: "stallion", fr: "l'étalon", de: "der Hengst", it: "lo stallone", family: "fam-stallion", kin: "horse", role: "dad", styles: [DAD],
+    fact: ["The stallion is the foal's dad.", "L'étalon est le papa du poulain.", "Der Hengst ist der Papa vom Fohlen.", "Lo stallone è il papà del puledro."] },
+  { id: "fam-mare", en: "mare", fr: "la jument", de: "die Stute", it: "la cavalla", family: "fam-mare", kin: "horse", role: "mum", styles: [MUM],
+    fact: ["The mare is the foal's mum.", "La jument est la maman du poulain.", "Die Stute ist die Mama vom Fohlen.", "La cavalla è la mamma del puledro."] },
+  { id: "fam-foal", en: "foal", fr: "le poulain", de: "das Fohlen", it: "il puledro", family: "fam-foal", kin: "horse", role: "baby", styles: [BABY],
+    fact: ["The foal is the baby of the mare and the stallion.", "Le poulain est le bébé de la jument et de l'étalon.", "Das Fohlen ist das Baby von Stute und Hengst.", "Il puledro è il piccolo della cavalla e dello stallone."] },
+  { id: "fam-boar", en: "boar", fr: "le verrat", de: "der Eber", it: "il verro", family: "fam-boar", kin: "pig", role: "dad", styles: [DAD],
+    fact: ["The boar is the piglet's dad.", "Le verrat est le papa du porcelet.", "Der Eber ist der Papa vom Ferkel.", "Il verro è il papà del maialino."] },
+  { id: "fam-sow", en: "sow", fr: "la truie", de: "die Sau", it: "la scrofa", family: "fam-sow", kin: "pig", role: "mum", styles: [MUM],
+    fact: ["The sow is the piglet's mum.", "La truie est la maman du porcelet.", "Die Sau ist die Mama vom Ferkel.", "La scrofa è la mamma del maialino."] },
+  { id: "fam-piglet", en: "piglet", fr: "le porcelet", de: "das Ferkel", it: "il maialino", family: "fam-piglet", kin: "pig", role: "baby", styles: [BABY],
+    fact: ["The piglet is the baby of the sow and the boar.", "Le porcelet est le bébé de la truie et du verrat.", "Das Ferkel ist das Baby von Sau und Eber.", "Il maialino è il piccolo della scrofa e del verro."] },
+  { id: "fam-drake", en: "drake", fr: "le canard", de: "der Erpel", it: "il germano", family: "fam-drake", kin: "duck", role: "dad", styles: [DAD],
+    fact: ["The drake is the duckling's dad.", "Le canard est le papa du caneton.", "Der Erpel ist der Papa vom Entenküken.", "Il germano è il papà dell'anatroccolo."] },
+  { id: "fam-duck", en: "duck", fr: "la cane", de: "die Ente", it: "l'anatra", family: "fam-duck", kin: "duck", role: "mum", styles: [MUM],
+    fact: ["The duck is the duckling's mum.", "La cane est la maman du caneton.", "Die Ente ist die Mama vom Entenküken.", "L'anatra è la mamma dell'anatroccolo."] },
+  { id: "fam-duckling", en: "duckling", fr: "le caneton", de: "das Entenküken", it: "l'anatroccolo", family: "fam-duckling", kin: "duck", role: "baby", styles: [BABY],
+    fact: ["The duckling is the baby of the duck and the drake.", "Le caneton est le bébé de la cane et du canard.", "Das Entenküken ist das Baby von Ente und Erpel.", "L'anatroccolo è il piccolo dell'anatra e del germano."] },
+  { id: "fam-billy-goat", en: "billy goat", fr: "le bouc", de: "der Ziegenbock", it: "il caprone", family: "fam-billy-goat", kin: "goat", role: "dad", styles: [DAD],
+    fact: ["The billy goat is the kid's dad.", "Le bouc est le papa du chevreau.", "Der Ziegenbock ist der Papa vom Zicklein.", "Il caprone è il papà del capretto."] },
+  { id: "fam-nanny-goat", en: "nanny goat", fr: "la chèvre", de: "die Ziege", it: "la capra", family: "fam-nanny-goat", kin: "goat", role: "mum", styles: [MUM],
+    fact: ["The nanny goat is the kid's mum.", "La chèvre est la maman du chevreau.", "Die Ziege ist die Mama vom Zicklein.", "La capra è la mamma del capretto."] },
+  { id: "fam-kid", en: "kid", fr: "le chevreau", de: "das Zicklein", it: "il capretto", family: "fam-kid", kin: "goat", role: "baby", styles: [BABY],
+    fact: ["The kid is the baby of the nanny goat and the billy goat.", "Le chevreau est le bébé de la chèvre et du bouc.", "Das Zicklein ist das Baby von Ziege und Ziegenbock.", "Il capretto è il piccolo della capra e del caprone."] },
+  { id: "fam-lion", en: "lion", fr: "le lion", de: "der Löwe", it: "il leone", family: "fam-lion", kin: "lion", role: "dad", styles: [DAD],
+    fact: ["The lion is the cub's dad.", "Le lion est le papa du lionceau.", "Der Löwe ist der Papa vom Löwenjungen.", "Il leone è il papà del leoncino."] },
+  { id: "fam-lioness", en: "lioness", fr: "la lionne", de: "die Löwin", it: "la leonessa", family: "fam-lioness", kin: "lion", role: "mum", styles: [MUM],
+    fact: ["The lioness is the cub's mum.", "La lionne est la maman du lionceau.", "Die Löwin ist die Mama vom Löwenjungen.", "La leonessa è la mamma del leoncino."] },
+  { id: "fam-lion-cub", en: "lion cub", fr: "le lionceau", de: "das Löwenjunge", it: "il leoncino", family: "fam-lion-cub", kin: "lion", role: "baby", styles: [BABY],
+    fact: ["The lion cub is the baby of the lioness and the lion.", "Le lionceau est le bébé de la lionne et du lion.", "Das Löwenjunge ist das Baby von Löwin und Löwe.", "Il leoncino è il piccolo della leonessa e del leone."] },
+];
+const FAMILY_GROUPS = [
+  { id: "all", pic: "fam-cow",     en: "All",    fr: "Tous" },
+  { id: DAD,   pic: "fam-rooster", en: "Dads",   fr: "Les papas" },
+  { id: MUM,   pic: "fam-hen",     en: "Mums",   fr: "Les mamans" },
+  { id: BABY,  pic: "fam-chick",   en: "Babies", fr: "Les bébés" },
+];
+
 // the home screen's sections (names in app/words.js), in order; a topic not listed goes in the last one
 const SECTIONS = {
-  nature: ["animals", "insects", "dinosaurs", "flowers", "trees", "mushrooms", "scenery", "weather", "space"],
+  nature: ["animals", "families", "insects", "dinosaurs", "flowers", "trees", "mushrooms", "scenery", "weather", "space"],
   food: ["food", "herbs", "spices", "dishes", "kitchen"],
   music: ["instruments"],
   reading: ["letters", "sounds", "syllables", "reading"],
@@ -1723,6 +1796,7 @@ const TOPICS = [
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "maths",       pic: "math-apple", en: "Maths",      fr: "Les maths",   unit: ["games", "jeux"],               color: "#00897b", tint: "#e0f2f1", items: MATHS, math: true, pics: ["frog"], modes: ["add", "subtract", "line"] },
   { id: "fantasy",     pic: "unicorn",    en: "Fairy tales", fr: "Les contes", unit: ["characters", "personnages"],  color: "#8e24aa", tint: "#f3e5f5", items: FANTASY, groups: FANTASY_GROUPS, modes: ["unicorn", "name", "say", "explore", "puzzle"] },
+  { id: "families",    pic: "fam-chick",  en: "Animal families", fr: "Les familles d'animaux", unit: ["animals", "animaux"], color: "#ef6c00", tint: "#fff3e0", items: FAMILIES, groups: FAMILY_GROUPS, kin: true, modes: ["babies", "name", "say", "explore", "puzzle"] },
   { id: "insects",     pic: "ins-ladybug", en: "Small creatures", fr: "Les petites bêtes", unit: ["creatures", "petites bêtes"], color: "#558b2f", tint: "#f1f8e9", items: INSECTS, groups: INSECT_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "space",       pic: "saturn",     en: "Solar system", fr: "Le système solaire", unit: ["things in space", "objets de l'espace"], color: "#283593", tint: "#e8eaf6", items: SPACE, groups: SPACE_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
   { id: "sounds",      pic: "snd-fr-ou",  en: "Sounds",     fr: "Les sons",    unit: ["sounds", "sons"],              color: "#c2185b", tint: "#fce4ec", items: SOUND_CARDS, groups: SOUND_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
