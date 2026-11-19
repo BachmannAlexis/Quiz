@@ -7,7 +7,7 @@
   <path d="M16 60 C16 44 34 40 52 40 C64 28 86 26 96 38 C104 50 100 74 92 86 C76 94 36 94 22 88 C14 82 14 70 16 60 Z" fill="#5d4037"/>
   <path d="M58 40 C70 32 84 32 90 40" stroke="#795548" stroke-width="4" fill="none" stroke-linecap="round"/>
   <path d="M30 62 C34 72 44 76 52 74" stroke="#4e342e" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <g transform="translate(97 62) scale(1.08) translate(-102 -62)">
+  <g transform="translate(95 62) scale(1.08) translate(-102 -62)">
   <path d="M93 48 C80 47 72 38 74 16 C78 30 86 36 97 38 Z" fill="#f5e6c8"/>
   <path d="M113 48 C126 47 134 38 132 16 C128 30 120 36 109 38 Z" fill="#f5e6c8"/>
   <path d="M74 16 C73 22 74 26 75 29 L79 25 Z M132 16 C133 22 132 26 131 29 L127 25 Z" fill="#6d4c41"/>
