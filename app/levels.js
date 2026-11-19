@@ -9,6 +9,10 @@ const LEVELS = {
       "pufferfish", "coral", "grasshopper", "beetle", "ox", "water-buffalo", "ram", "poodle", "cheetah", "leopard",
       "mole", "toad", "seagull", "robin", "blackbird", "woodpecker", "cuckoo", "hummingbird", "scorpion", "mosquito"],
   },
+  insects: {
+    easy: ["ins-bee", "ins-ant", "ins-ladybug", "ins-butterfly", "ins-caterpillar", "ins-fly", "ins-spider", "ins-snail", "ins-worm"],
+    hard: ["ins-mantis", "ins-stick", "ins-cicada", "ins-moth", "ins-cockroach", "ins-scorpion", "ins-centipede", "ins-firefly"],
+  },
   emotions: {
     easy: ["happy", "sad", "angry", "scared", "surprised", "tired"],
     hard: ["worried", "calm", "confused", "embarrassed"],

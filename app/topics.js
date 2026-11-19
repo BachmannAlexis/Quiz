@@ -1635,9 +1635,66 @@ function mathQuestions(mode, level) {
   return out;
 }
 
+// ---------- Small creatures: insects (six legs) and other small creatures, each with a short fact (`fact`: en, fr, de, it).
+// The two groups are the lesson: an insect has six legs; a spider has eight, a snail and a worm none.
+const INSECT = "insects", NOT_INSECT = "not-insects";
+const INSECTS = [
+  { id: "ins-bee", en: "bee", fr: "l'abeille", de: "die Biene", it: "l'ape", family: "ins-bee", styles: [INSECT], noto: "honeybee",
+    fact: ["The bee makes honey from flowers.", "L'abeille fabrique le miel avec les fleurs.", "Die Biene macht Honig aus Blüten.", "L'ape fa il miele con i fiori."] },
+  { id: "ins-bumblebee", en: "bumblebee", fr: "le bourdon", de: "die Hummel", it: "il bombo", family: "ins-bee", styles: [INSECT],
+    fact: ["The bumblebee is round and furry.", "Le bourdon est tout rond et poilu.", "Die Hummel ist rund und pelzig.", "Il bombo è tondo e peloso."] },
+  { id: "ins-wasp", en: "wasp", fr: "la guêpe", de: "die Wespe", it: "la vespa", family: "ins-bee", styles: [INSECT],
+    fact: ["The wasp has a very thin waist.", "La guêpe a une taille toute fine.", "Die Wespe hat eine ganz dünne Taille.", "La vespa ha la vita sottilissima."] },
+  { id: "ins-ant", en: "ant", fr: "la fourmi", de: "die Ameise", it: "la formica", family: "ins-ant", styles: [INSECT], noto: "ant",
+    fact: ["Ants live together in a big nest.", "Les fourmis vivent ensemble dans une grande fourmilière.", "Ameisen wohnen zusammen in einem großen Bau.", "Le formiche vivono insieme in un grande formicaio."] },
+  { id: "ins-ladybug", en: "ladybug", fr: "la coccinelle", de: "der Marienkäfer", it: "la coccinella", family: "ins-ladybug", styles: [INSECT], noto: "lady-beetle",
+    fact: ["The ladybug eats tiny green bugs.", "La coccinelle mange les pucerons.", "Der Marienkäfer frisst Blattläuse.", "La coccinella mangia gli afidi."] },
+  { id: "ins-butterfly", en: "butterfly", fr: "le papillon", de: "der Schmetterling", it: "la farfalla", family: "ins-wings", styles: [INSECT], noto: "butterfly",
+    fact: ["The butterfly was a caterpillar first.", "Le papillon était d'abord une chenille.", "Der Schmetterling war zuerst eine Raupe.", "La farfalla prima era un bruco."] },
+  { id: "ins-moth", en: "moth", fr: "le papillon de nuit", de: "der Nachtfalter", it: "la falena", family: "ins-wings", styles: [INSECT],
+    fact: ["The moth flies at night.", "Le papillon de nuit vole la nuit.", "Der Nachtfalter fliegt in der Nacht.", "La falena vola di notte."] },
+  { id: "ins-caterpillar", en: "caterpillar", fr: "la chenille", de: "die Raupe", it: "il bruco", family: "ins-caterpillar", styles: [INSECT], noto: "bug",
+    fact: ["The caterpillar will become a butterfly.", "La chenille deviendra un papillon.", "Die Raupe wird ein Schmetterling.", "Il bruco diventerà una farfalla."] },
+  { id: "ins-dragonfly", en: "dragonfly", fr: "la libellule", de: "die Libelle", it: "la libellula", family: "ins-dragonfly", styles: [INSECT],
+    fact: ["The dragonfly has four wings.", "La libellule a quatre ailes.", "Die Libelle hat vier Flügel.", "La libellula ha quattro ali."] },
+  { id: "ins-grasshopper", en: "grasshopper", fr: "la sauterelle", de: "die Heuschrecke", it: "la cavalletta", family: "ins-green", styles: [INSECT], noto: "cricket",
+    fact: ["The grasshopper jumps very far.", "La sauterelle saute très loin.", "Die Heuschrecke springt sehr weit.", "La cavalletta salta lontanissimo."] },
+  { id: "ins-mantis", en: "praying mantis", fr: "la mante religieuse", de: "die Gottesanbeterin", it: "la mantide", family: "ins-green", styles: [INSECT],
+    fact: ["The mantis holds its front legs together.", "La mante religieuse joint ses pattes de devant.", "Die Gottesanbeterin hält ihre Vorderbeine zusammen.", "La mantide tiene unite le zampe davanti."] },
+  { id: "ins-stick", en: "stick insect", fr: "le phasme", de: "die Stabschrecke", it: "l'insetto stecco", family: "ins-stick", styles: [INSECT],
+    fact: ["The stick insect looks like a little twig.", "Le phasme ressemble à une brindille.", "Die Stabschrecke sieht aus wie ein Zweig.", "L'insetto stecco sembra un rametto."] },
+  { id: "ins-cicada", en: "cicada", fr: "la cigale", de: "die Zikade", it: "la cicala", family: "ins-cicada", styles: [INSECT],
+    fact: ["The cicada sings in the summer sun.", "La cigale chante au soleil de l'été.", "Die Zikade singt in der Sommersonne.", "La cicala canta al sole d'estate."] },
+  { id: "ins-firefly", en: "firefly", fr: "la luciole", de: "das Glühwürmchen", it: "la lucciola", family: "ins-firefly", styles: [INSECT],
+    fact: ["The firefly makes light at night.", "La luciole fait de la lumière la nuit.", "Das Glühwürmchen leuchtet in der Nacht.", "La lucciola fa luce di notte."] },
+  { id: "ins-beetle", en: "beetle", fr: "le scarabée", de: "der Käfer", it: "lo scarabeo", family: "ins-beetle", styles: [INSECT], noto: "beetle",
+    fact: ["The beetle has hard wings, like a shell.", "Le scarabée a des ailes dures comme une carapace.", "Der Käfer hat harte Flügel wie ein Panzer.", "Lo scarabeo ha ali dure come un guscio."] },
+  { id: "ins-fly", en: "fly", fr: "la mouche", de: "die Fliege", it: "la mosca", family: "ins-fly", styles: [INSECT], noto: "fly",
+    fact: ["The fly can walk on the ceiling.", "La mouche marche au plafond.", "Die Fliege läuft an der Decke.", "La mosca cammina sul soffitto."] },
+  { id: "ins-mosquito", en: "mosquito", fr: "le moustique", de: "die Mücke", it: "la zanzara", family: "ins-fly", styles: [INSECT], noto: "mosquito",
+    fact: ["The mosquito buzzes at night.", "Le moustique bourdonne la nuit.", "Die Mücke summt in der Nacht.", "La zanzara ronza di notte."] },
+  { id: "ins-cockroach", en: "cockroach", fr: "le cafard", de: "die Kakerlake", it: "lo scarafaggio", family: "ins-beetle", styles: [INSECT], noto: "cockroach",
+    fact: ["The cockroach runs very fast.", "Le cafard court très vite.", "Die Kakerlake rennt sehr schnell.", "Lo scarafaggio corre velocissimo."] },
+  { id: "ins-spider", en: "spider", fr: "l'araignée", de: "die Spinne", it: "il ragno", family: "ins-spider", styles: [NOT_INSECT], noto: "spider",
+    fact: ["The spider has eight legs: it is not an insect!", "L'araignée a huit pattes : ce n'est pas un insecte !", "Die Spinne hat acht Beine: Sie ist kein Insekt!", "Il ragno ha otto zampe: non è un insetto!"] },
+  { id: "ins-scorpion", en: "scorpion", fr: "le scorpion", de: "der Skorpion", it: "lo scorpione", family: "ins-scorpion", styles: [NOT_INSECT], noto: "scorpion",
+    fact: ["The scorpion has eight legs and a tail.", "Le scorpion a huit pattes et une queue.", "Der Skorpion hat acht Beine und einen Schwanz.", "Lo scorpione ha otto zampe e una coda."] },
+  { id: "ins-centipede", en: "centipede", fr: "le mille-pattes", de: "der Tausendfüßer", it: "il millepiedi", family: "ins-centipede", styles: [NOT_INSECT],
+    fact: ["The centipede has lots and lots of legs.", "Le mille-pattes a plein, plein de pattes.", "Der Tausendfüßer hat ganz viele Beine.", "Il millepiedi ha tantissime zampe."] },
+  { id: "ins-snail", en: "snail", fr: "l'escargot", de: "die Schnecke", it: "la chiocciola", family: "ins-snail", styles: [NOT_INSECT], noto: "snail",
+    fact: ["The snail carries its house on its back.", "L'escargot porte sa maison sur son dos.", "Die Schnecke trägt ihr Haus auf dem Rücken.", "La chiocciola porta la casa sulla schiena."] },
+  { id: "ins-worm", en: "earthworm", fr: "le ver de terre", de: "der Regenwurm", it: "il lombrico", family: "ins-worm", styles: [NOT_INSECT], noto: "worm",
+    fact: ["The earthworm has no legs at all.", "Le ver de terre n'a pas de pattes du tout.", "Der Regenwurm hat gar keine Beine.", "Il lombrico non ha nessuna zampa."] },
+];
+const INSECT_GROUPS = [
+  { id: "all",      pic: "ins-butterfly", en: "All",         fr: "Toutes" },
+  { id: INSECT,     pic: "ins-ladybug",   en: "Insects",     fr: "Les insectes" },
+  { id: NOT_INSECT, pic: "ins-spider",    en: "Not insects", fr: "Pas des insectes" },
+];
+
 // the home screen's sections (names in app/words.js), in order; a topic not listed goes in the last one
 const SECTIONS = {
-  nature: ["animals", "dinosaurs", "flowers", "trees", "mushrooms", "scenery", "weather", "space"],
+  nature: ["animals", "insects", "dinosaurs", "flowers", "trees", "mushrooms", "scenery", "weather", "space"],
   food: ["food", "herbs", "spices", "dishes", "kitchen"],
   music: ["instruments"],
   reading: ["letters", "sounds", "syllables", "reading"],
@@ -1666,6 +1723,7 @@ const TOPICS = [
   { id: "body",        pic: "hand",       en: "My body",    fr: "Le corps",    unit: ["body parts", "parties du corps"], color: "#d9486b", tint: "#fde8ee", items: BODY, groups: BODY_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "maths",       pic: "math-apple", en: "Maths",      fr: "Les maths",   unit: ["games", "jeux"],               color: "#00897b", tint: "#e0f2f1", items: MATHS, math: true, pics: ["frog"], modes: ["add", "subtract", "line"] },
   { id: "fantasy",     pic: "unicorn",    en: "Fairy tales", fr: "Les contes", unit: ["characters", "personnages"],  color: "#8e24aa", tint: "#f3e5f5", items: FANTASY, groups: FANTASY_GROUPS, modes: ["unicorn", "name", "say", "explore", "puzzle"] },
+  { id: "insects",     pic: "ins-ladybug", en: "Small creatures", fr: "Les petites bêtes", unit: ["creatures", "petites bêtes"], color: "#558b2f", tint: "#f1f8e9", items: INSECTS, groups: INSECT_GROUPS, modes: ["name", "say", "explore", "puzzle"] },
   { id: "space",       pic: "saturn",     en: "Solar system", fr: "Le système solaire", unit: ["things in space", "objets de l'espace"], color: "#283593", tint: "#e8eaf6", items: SPACE, groups: SPACE_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
   { id: "sounds",      pic: "snd-fr-ou",  en: "Sounds",     fr: "Les sons",    unit: ["sounds", "sons"],              color: "#c2185b", tint: "#fce4ec", items: SOUND_CARDS, groups: SOUND_GROUPS, bare: true, modes: ["name", "say", "explore", "puzzle"] },
   { id: "reading",     pic: "read-fr-lune", en: "I read",   fr: "Je lis",      unit: ["words", "mots"],               color: "#3949ab", tint: "#e8eaf6", items: READING, bare: true, modes: ["read", "say", "explore", "puzzle"] },

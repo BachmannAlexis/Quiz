@@ -28,6 +28,7 @@ A game has 10 rounds, shown as a progress bar; each first-try answer earns a sta
 |---|---|---|
 | 🐄 Animals | 106, 26 of them with a real recording (cow, horse, rooster, owl, robin, bee…) and 24 with what they say ("the cow says moo") | farm, wild, sea, birds, bugs |
 | 🎻 Music | 85 instruments, the whole symphony orchestra and many more, each with a short tune in its style; a piano with black keys, a drum kit with 12 pads and a drum machine (16 steps, 15 styles from rock to samba, each with its own kit, accents, swing and fills) | orchestra, jazz, rock & pop, world, latin, folk & country, electronic |
+| 🐞 Small creatures | 23: 18 insects (bee, bumblebee, wasp, ant, ladybug, butterfly, moth, caterpillar, dragonfly, grasshopper, praying mantis, stick insect, cicada, firefly, beetle, fly, mosquito, cockroach) and 5 that are not insects (spider, scorpion, centipede, snail, earthworm), each with a short fact ("The spider has eight legs: it is not an insect!") | insects, not insects |
 | 🦖 Dinosaurs | 20 (with the mammoth, the sabre-toothed cat, the plesiosaurus and a dinosaur egg), each with a sound ("the T. rex says roar") | |
 | 🌻 Flowers | 36 | |
 | 🌳 Trees | 28 | |

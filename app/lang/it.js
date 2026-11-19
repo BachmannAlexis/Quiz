@@ -31,5 +31,6 @@ addLanguage("it", {
   "reading": {"items": {}, "topic": ["Leggo", "parole"]},
   "space": {"items": {}, "topic": ["Il sistema solare", "cose nello spazio"], "groups": {"planets": "I pianeti", "sky": "Nel cielo", "travel": "Viaggi nello spazio"}},
   "fantasy": {"items": {}, "topic": ["Le fiabe", "personaggi"], "groups": {"creatures": "Creature", "tale-people": "Personaggi", "magic": "Magia"}},
-  "maths": {"items": {}, "topic": ["La matematica", "giochi"]}
+  "maths": {"items": {}, "topic": ["La matematica", "giochi"]},
+  "insects": {"items": {}, "topic": ["Animaletti", "animaletti"], "groups": {"insects": "Gli insetti", "not-insects": "Non insetti"}}
 });
